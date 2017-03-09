@@ -12,3 +12,6 @@ These are some matlab scripts to preprocess plot3d format data. They were develo
  - *sphere.f, sphere.g, sphere.grd, sphere.nam:* Example: function file, cell-cenerted grid, vertex-centered grid and name file
  - *PLOT3D_post.m:* script to involke the post processing of previous sample
 Use these scripts with care. In addition, I strongly recommend use [mat2tecplot](https://www.cfd-online.com/Forums/tecplot/103860-mat2tecplot.html) to export the data to tecplot.
+
+# Licenses:
+[Apache 2.0](https://www.apache.org/licenses/LICENSE-2.0)
