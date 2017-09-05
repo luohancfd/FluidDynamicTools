@@ -18,7 +18,7 @@ class Macheret_dissociation : public Generalised_Arrhenius {
 public:
     Macheret_dissociation(lua_State *L, Gas_model &g, double T_upper, double T_lower);
     Macheret_dissociation(double A, double n, double E_a, double T_upper, double T_lower,
-			  std::string v_name, std::string c_name );
+			  std::string v_name, std::string c_name, int khigh );
     ~Macheret_dissociation();
 
 private:
@@ -38,6 +38,8 @@ private:
     double theta_dstar_,delta_d_;
     double b_;
     double fac_;
+
+    int khigh_;
 };
 
 Reaction_rate_coefficient* create_Macheret_dissociation_coefficient(lua_State *L, Gas_model &g, double T_upper, double T_lower);
