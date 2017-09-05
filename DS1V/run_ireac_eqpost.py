@@ -41,7 +41,7 @@ def MFrate(T,Tv,A,n,D,m,M,theta):
     k2h = (1-L2)*A*T**n*fac*exp(-D/Tv);#+deltaD*(1/Tv-1/T));
     k2 = k21+k2h;
     E2l = alpha*Dstar*(Tv/Ta)**2
-    E2h = Dstar
+    E2h = D
     E2 = (E2l*k21+E2h*k2h)/k2
     keq = A*T**n*exp(-D/T)
     return (keq,k2,E2,E2/D)
@@ -121,12 +121,12 @@ def ExtractEqrate(ArrheniusConstant,sp,spfolder=None):
             f.write('{:>9.2f} {:>13.5G} {:>13.5G} {:>13.5G} \n'.format(T,a[0],a[2],a[3] ))
 
 
-    if os.path.isfile('rate.lay'):
-        copy2(os.path.join('.','rate.lay'),os.path.join('.',sp+'_Rate.lay'))
-        TecplotSub(os.path.join('.',sp+'_Rate.lay'),sp+'_EqRate.dat')
-    if os.path.isfile('Evrem.lay'):
-        copy2(os.path.join('.','Evrem.lay'),os.path.join('.',sp+'_Evrem.lay'))
-        TecplotSub(os.path.join('.',sp+'_Evrem.lay'),sp+'_EqRate.dat')
+#    if os.path.isfile('rate.lay'):
+#        copy2(os.path.join('.','rate.lay'),os.path.join('.',sp+'_Rate.lay'))
+#        TecplotSub(os.path.join('.',sp+'_Rate.lay'),sp+'_EqRate.dat')
+#    if os.path.isfile('Evrem.lay'):
+#        copy2(os.path.join('.','Evrem.lay'),os.path.join('.',sp+'_Evrem.lay'))
+#        TecplotSub(os.path.join('.',sp+'_Evrem.lay'),sp+'_EqRate.dat')
     copy2(datafile,os.path.join('.',sp+'_EqRate.dat'))
 
 
