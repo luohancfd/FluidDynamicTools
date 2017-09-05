@@ -25,7 +25,7 @@ Coupling_component::Coupling_component( lua_State *L, Reaction *r, string type, 
     isp_ = X->get_isp();
     m_ = X->get_M() / PC_Avogadro;
     nu_ = r->get_nu(isp_);
-    
+
     // Search for the corresponding energy modes
     bool found = false;
     for ( int itm=0; itm<X->get_n_modes(); ++itm ) {
@@ -42,7 +42,7 @@ Coupling_component::Coupling_component( lua_State *L, Reaction *r, string type, 
     	     << "Exiting." << endl;
     	exit( BAD_INPUT_ERROR );
     }
-    
+
     imode_ = sems_[0]->get_iT();
 }
 
@@ -92,7 +92,7 @@ void create_Coupling_components_for_reaction( lua_State * L, Reaction * r, int i
     	    	else {
 		    ostringstream oss;
 		    oss << "create_Coupling_components_for_reaction()" << endl
-		        << "The requested model: " << model 
+		        << "The requested model: " << model
 		        << " is not available for chemistry-vibration coupling." << endl;
 		    input_error( oss );
 		}
@@ -110,7 +110,7 @@ void create_Coupling_components_for_reaction( lua_State * L, Reaction * r, int i
     	    else {
     	    	ostringstream oss;
     	    	oss << "create_Coupling_components_for_reaction()" << endl
-    	    	    << "The reqested mode: " << mode 
+    	    	    << "The reqested mode: " << mode
     	    	    << " does not have any coupling models available" << endl;
     	    	input_error( oss );
     	    }
@@ -118,7 +118,7 @@ void create_Coupling_components_for_reaction( lua_State * L, Reaction * r, int i
     	}
     }
     lua_pop(L,1);	// pop the 'chemistry_energy_coupling' field
-    
+
     return;
 }
 
@@ -136,7 +136,7 @@ Simple_dissociation_component( const Simple_dissociation_component &c )
 : Coupling_component( c ), D_hat_( c.D_hat_ ) {}
 
 Simple_dissociation_component::
-~Simple_dissociation_component() 
+~Simple_dissociation_component()
 {}
 
 Simple_dissociation_component*
@@ -150,18 +150,18 @@ Simple_dissociation_component::
 specific_compute_contribution( Gas_data &Q, vector<double> &delta_c )
 {
     if( Q.massf[isp_] < min_mass_frac ) return 0.0;
-    
+
     // 1. Set the vanishing vibration energy
     double e_va = D_hat_;
-    
+
     // 2. Calculate delta_E
     double delta_N = nu_ * delta_c[idc_] * PC_Avogadro;
     double delta_E = ( e_va - e_old_ ) * delta_N;
-    
+
     // cout << "Simple_dissociation_component::compute_contribution()" << endl
     //      << "delta_c[idc_] = " << delta_c[idc_] << ", delta_N = " << delta_N << endl
     //      << "delta_E = " << delta_E << endl;
-    
+
     return delta_E;
 }
 
@@ -170,17 +170,17 @@ Simple_dissociation_component::
 specific_compute_source_term( Gas_data &Q, vector<double> &dcdt )
 {
     if( Q.massf[isp_] < min_mass_frac ) return 0.0;
-    
+
     // 1. Set the vanishing vibration energy
     double e_va = D_hat_;
-    
+
     // 2. Calculate dEdt
     // NOTE: minus e_old_ is required as average energy flux due to reactions is taken into account separately
     double dEdt = ( e_va - e_old_ ) * nu_ * dcdt[idc_] * PC_Avogadro;
-    
+
     // cout << "Simple_dissociation_component::specific_compute_source_term()" << endl
     //      << "dEdt = " << dEdt << ", nu_ = " << nu_ << ", dcdt = " << dcdt[idc_] << endl;
-    
+
     return dEdt;
 }
 
@@ -198,7 +198,7 @@ TreanorMarrone_dissociation_component( const TreanorMarrone_dissociation_compone
 : Coupling_component( c ), U_( c.U_ ) {}
 
 TreanorMarrone_dissociation_component::
-~TreanorMarrone_dissociation_component() 
+~TreanorMarrone_dissociation_component()
 {}
 
 TreanorMarrone_dissociation_component*
@@ -212,30 +212,30 @@ TreanorMarrone_dissociation_component::
 specific_compute_contribution( Gas_data &Q, vector<double> &delta_c )
 {
     if( Q.massf[isp_] < min_mass_frac ) return 0.0;
-    
+
     // 0. Pull out translational and vibrational temperatures
     //    NOTE: assuming mode '0' is translation, as it always should be
     double T = Q.T[0];
     double Tv = Q.T[imode_];
-    
+
     // 1. Calculate pseudo-temperature gamma
     double gamma_inv = 1.0/Tv - 1.0/T - 1.0/U_;
     double gamma = 1.0 / gamma_inv;
-    
+
     // 2. Evaluate the vibrational energy at T=gamma
     double e_va = 0.0;
-    for ( size_t i = 0; i < sems_.size(); ++i ) 
+    for ( size_t i = 0; i < sems_.size(); ++i )
     	e_va += sems_[i]->eval_energy_from_T( gamma ) * m_;
-    
+
     // 3. Calculate delta_E
     double delta_N = nu_ * delta_c[idc_] * PC_Avogadro;
     double delta_E = ( e_va - e_old_ ) * delta_N;
-    
+
     //    cout << "TreanorMarrone_dissociation_component::compute_contribution()" << endl
     //	 << "gamma = " << gamma << ", Tv = " << Tv << ", T = " << T << endl
     //	 << "delta_c[idc_] = " << delta_c[idc_] << ", delta_N = " << delta_N << endl
     //	 << "delta_E = " << delta_E << endl;
-    
+
     return delta_E;
 }
 
@@ -244,28 +244,28 @@ TreanorMarrone_dissociation_component::
 specific_compute_source_term( Gas_data &Q, vector<double> &dcdt )
 {
     if( Q.massf[isp_] < min_mass_frac ) return 0.0;
-    
+
     // 0. Pull out translational and vibrational temperatures
     //    NOTE: assuming mode '0' is translation, as it always should be
     double T = Q.T[0];
     double Tv = Q.T[imode_];
-    
+
     // 1. Calculate pseudo-temperature gamma
     double gamma_inv = 1.0/Tv - 1.0/T - 1.0/U_;
     double gamma = 1.0 / gamma_inv;
-    
+
     // 2. Evaluate the vibrational energy at T=gamma
     double e_va = 0.0;
-    for ( size_t i = 0; i < sems_.size(); ++i ) 
+    for ( size_t i = 0; i < sems_.size(); ++i )
     	e_va += sems_[i]->eval_energy_from_T( gamma ) * m_;
-    
+
     // 3. Calculate dEdt
     // NOTE: minus e_old_ is required as average energy flux due to reactions is taken into account separately
     double dEdt = ( e_va - e_old_ ) * nu_ * dcdt[idc_] * PC_Avogadro;
-    
+
     // cout << "TreanorMarrone_dissociation_component::specific_compute_source_term()" << endl
     //      << "dEdt = " << dEdt << ", nu_ = " << nu_ << ", dcdt = " << dcdt[idc_] << endl;
-    
+
     return dEdt;
 }
 
@@ -285,7 +285,7 @@ Park_dissociation_component( const Park_dissociation_component &c )
 : Coupling_component( c ), n_( c.n_ ), D_( c.D_ ), s_v_( c.s_v_ ) {}
 
 Park_dissociation_component::
-~Park_dissociation_component() 
+~Park_dissociation_component()
 {}
 
 Park_dissociation_component*
@@ -299,24 +299,24 @@ Park_dissociation_component::
 specific_compute_contribution( Gas_data &Q, vector<double> &delta_c )
 {
     if( Q.massf[isp_] < min_mass_frac ) return 0.0;
-    
+
     // 0. Pull out translational and vibrational temperatures
     //    NOTE: assuming mode '0' is translation, as it always should be
     double T = Q.T[0];
     double Tv = Q.T[imode_];
-    
+
     // 2. Evaluate the vanishing vibrational energy (J/particle)
     //    NOTE: the '+ e_old_' is required, see AMOD TN 3.2
     double e_va = (1.0 - s_v_) * ( n_ * PC_k_SI * Tv + D_ * pow( Tv/T, s_v_ ) ); // + e_old_;
-    
+
     // 3. Calculate delta_E
     double delta_N = nu_ * delta_c[idc_] * PC_Avogadro;
     double delta_E = ( e_va - e_old_ ) * delta_N;
-    
+
     // cout << "Park_dissociation_component::compute_contribution()" << endl
     //      << "delta_c[idc_] = " << delta_c[idc_] << ", delta_N = " << delta_N << endl
     //      << "delta_E = " << delta_E << endl;
-    
+
     return delta_E;
 }
 
@@ -325,26 +325,26 @@ Park_dissociation_component::
 specific_compute_source_term( Gas_data &Q, vector<double> &dcdt )
 {
     if( Q.massf[isp_] < min_mass_frac ) return 0.0;
-    
+
     // 0. Pull out translational and vibrational temperatures
     //    NOTE: assuming mode '0' is translation, as it always should be
     double T = Q.T[0];
     double Tv = Q.T[imode_];
-    
+
     // 2. Evaluate the vanishing vibrational energy (J/particle)
     // 2a. Energy addition
     double e_va = (1.0 - s_v_) * ( n_ * PC_k_SI * Tv + D_ * pow( Tv/T, s_v_ ) );
     // 2b. Average energy
-    // for ( size_t i=0; i<sems_.size(); ++i ) 
+    // for ( size_t i=0; i<sems_.size(); ++i )
     //	e_va += sems_[i]->eval_energy_from_T(Tv) * m_;
-    
+
     // 3. Calculate dEdt
     // NOTE: minus e_old_ is required as average energy flux due to reactions is taken into account separately
     double dEdt = ( e_va - e_old_ ) * nu_ * dcdt[idc_] * PC_Avogadro;
-    
+
     // cout << "Park_dissociation_component::specific_compute_source_term()" << endl
     //      << "dEdt = " << dEdt << ", nu_ = " << nu_ << ", dcdt = " << dcdt[idc_] << endl;
-    
+
     return dEdt;
 }
 
@@ -361,16 +361,16 @@ Macheret_dissociation_component(lua_State *L, Reaction *r, int idc )
     	    << sems_.size() << " energy modes found, just one expcted." << endl;
     	input_error( oss );
     }
-    
+
     // 1. GA data
     A_ = get_number(L,-1,"A") * 1.0e-6;		// Convert cm**3/mole-s -> m**3/mole-s
     n_ = get_number(L,-1,"n");
     theta_d_ = get_number(L,-1,"T_d");
-    
+
     // 2. Dissociating species data
     theta_v_ = dynamic_cast<Vibration*>(sems_[0])->get_theta();
     double M_v = m_ * PC_Avogadro;
-    
+
     // 2. Colliding species data
     string c_name = get_string(L,-1,"c_name");
     Chemical_species * X = get_library_species_pointer_from_name( c_name );
@@ -378,8 +378,19 @@ Macheret_dissociation_component(lua_State *L, Reaction *r, int idc )
     else monatomic_collider_ = false;
     double M_c = X->get_M();
 
+    lua_getfield(L, -1, "khigh");
+    if ( lua_isnil(L, -1) ) khigh_ =0;
+    else khigh_ = luaL_checknumber(L, -1);
+    lua_pop(L, 1);
+    cout<<"khigh = "<<khigh_<<endl;
+
     // 3. Pre-calculate alpha
-    alpha_ = pow( ( M_v * 0.5 / ( M_v * 0.5 + M_c ) ), 2.0 );
+    if (monatomic_collider_)
+       alpha_ = pow( ( M_v*0.5  / ( M_v*0.5 + M_c ) ), 2.0 );
+    else
+       alpha_ = pow( ( M_v / (M_v + M_c)),2.0);
+    cout<<"alpha for MF model in ecoupling"<<alpha_<<endl;
+
     b_ = 2.0;
     delta_d_ = 3.0*b_*alpha_*alpha_*theta_d_;
     theta_dstar_ = theta_d_ - delta_d_;
@@ -388,14 +399,14 @@ Macheret_dissociation_component(lua_State *L, Reaction *r, int idc )
 Macheret_dissociation_component::
 Macheret_dissociation_component( const Macheret_dissociation_component &c )
 : Coupling_component( c ), A_( c.A_ ), n_( c.n_ ), theta_d_( c.theta_d_ ),
-theta_v_( c.theta_v_ ), alpha_( c.alpha_ ), monatomic_collider_( c.monatomic_collider_ ) {
+theta_v_( c.theta_v_ ), alpha_( c.alpha_ ), monatomic_collider_( c.monatomic_collider_ ),khigh_(c.khigh_) {
     b_ = 2.0;
     delta_d_ = 3.0*b_*alpha_*alpha_*theta_d_;
     theta_dstar_ = theta_d_ - delta_d_;
 }
 
 Macheret_dissociation_component::
-~Macheret_dissociation_component() 
+~Macheret_dissociation_component()
 {}
 
 Macheret_dissociation_component*
@@ -409,24 +420,25 @@ Macheret_dissociation_component::
 specific_compute_contribution( Gas_data &Q, vector<double> &delta_c )
 {
     if( Q.massf[isp_] < min_mass_frac ) return 0.0;
-    
+
     // 1. Get the appropriate temperatures
     double Tv = Q.T[imode_];
     double T = Q.T[0];
     double Ta = alpha_ * Tv + ( 1.0 - alpha_ ) * T;
-    fac_ = (1.0-exp(-theta_v_/Tv)) / (1.0-exp(-theta_v_/T)); 
-    
+    fac_ = (1.0-exp(-theta_v_/Tv)) / (1.0-exp(-theta_v_/T));
+
     // 2. Evaluate the vanishing vibrational energy (J/particle)
     // 2a. Eval Arrhenius rate
     double k_f = A_ * pow(Q.T[0], n_) * exp(-theta_d_ / Q.T[0] );
-    
+
     // 2b. Calculate nonequilibrium factor
     double L;
     if ( monatomic_collider_ ) {
         //L = 9.0 * sqrt( M_PI * ( 1.0 - alpha_ ) ) / 64.0 * pow( T / theta_d_, 1.0 - n_ ) * \
 	    //( 1.0 + 5.0 * ( 1.0 - alpha_) * T / ( 2.0 * theta_d_ ));
-        L = 9.0 * sqrt( M_PI * ( 1.0 - alpha_ ) ) / 64.0 *(1.0+5.0*(1.0-alpha_)*T/2.0/theta_dstar_) * pow( T / theta_d_, 1.0 - n_ ) * \
-	    sqrt(theta_d_/theta_dstar_)*sqrt(12.0*M_PI*b_*alpha_*(1.0-alpha_)*theta_d_/T);
+        L = sqrt(1.0 - alpha_)/ pow(M_PI,1.5)*(1.0+5.0*(1.0-alpha_)*T/2.0/theta_dstar_) * pow( T / theta_d_, 1.0 - n_ ) * \
+	    sqrt(theta_d_/theta_dstar_);
+        L = L*sqrt(12.0*M_PI*b_*alpha_*(1.0-alpha_)*theta_d_/T);
     }
     else {
 	//L = 2.0 * ( 1.0 - alpha_ ) / ( M_PI * M_PI * pow( alpha_, 0.75 ) ) * \
@@ -435,34 +447,34 @@ specific_compute_contribution( Gas_data &Q, vector<double> &delta_c )
             pow( T / theta_d_, 1.5 - n_ ) * ( 1.0 + 7.0 * ( 1.0 - alpha_) * ( 1.0 + sqrt(alpha_) ) * T / ( 2.0 * theta_dstar_ ));
         L = L*sqrt(12.0*M_PI*b_*alpha_*(1.0-alpha_)*theta_d_/T);
     }
-    
+
     //double Z = ( ( 1.0 - exp( - theta_v_ / Tv ) ) / ( 1.0 - exp( - theta_v_ / T ) ) ) * ( 1.0 - L ) * \
                     //exp( - theta_d_ * ( 1.0 / Tv - 1.0 / T ) ) + L * exp( - theta_d_ * ( 1.0 / Ta - 1.0 / T ) );
     double Zl,Zh;
     Zl = L * exp(-theta_d_*(1.0/Ta-1.0/T) + delta_d_*(1.0/Ta - 1.0/T));
-    Zh = (1.0 - L)*fac_*exp(-theta_d_*(1.0/Tv - 1.0/T) + delta_d_*(1.0/Tv - 1.0/T));
-	
+    Zh = (1.0 - L)*fac_*exp(-(theta_d_-khigh_*delta_d_)*(1.0/Tv-1.0/T) );
+
     // 2d. Eval low and high reaction rates
     //double k_f_l = ( 1.0 - L ) * A_ * pow(T,n_) * exp( - theta_d_ / Ta );
     //double k_f_h =  ( 1.0 - exp( - theta_v_ / Tv ) ) / ( 1.0 - exp( - theta_v_ / T ) ) * ( L * A_ * pow(T,n_) * exp( - theta_d_ / Tv ) );
     double k_f_l = Zl*k_f;
     double k_f_h =  Zh*k_f;
-    
+
     // 2c. Augment Arrhenius rate by noneq factor
     k_f = k_f_l + k_f_h;
-    
+
     // 2e. Eval the vanishing energy per particle (thus we use k instead of R_i)
     //double e_va = ( alpha_ * PC_k_SI * theta_d_ * pow( T / Ta, 2 ) * k_f_l + PC_k_SI * theta_d_ * k_f_h ) / k_f;
-    double e_va = ( alpha_ * PC_k_SI * theta_dstar_ * pow( Tv / Ta, 2 ) * k_f_l + PC_k_SI * theta_dstar_ * k_f_h ) / k_f;
-    
+    double e_va = ( alpha_ * PC_k_SI * theta_dstar_ * pow( Tv / Ta, 2 ) * k_f_l + PC_k_SI * (theta_d_ - khigh_*delta_d_) * k_f_h ) / k_f;
+
     // 3. Calculate delta_E
     double delta_N = nu_ * delta_c[idc_] * PC_Avogadro;
     double delta_E = ( e_va - e_old_ ) * delta_N;
-    
+
     // cout << "Macheret_dissociation_component::compute_contribution()" << endl
     //      << "delta_c[idc_] = " << delta_c[idc_] << ", delta_N = " << delta_N << endl
     //      << "delta_E = " << delta_E << endl;
-    
+
     return delta_E;
 }
 
@@ -471,23 +483,24 @@ Macheret_dissociation_component::
 specific_compute_source_term( Gas_data &Q, vector<double> &dcdt )
 {
     if( Q.massf[isp_] < min_mass_frac ) return 0.0;
-    
+
     // 1. Get the appropriate temperatures
     double Tv = Q.T[imode_];
     double T = Q.T[0];
     double Ta = alpha_ * Tv + ( 1.0 - alpha_ ) * T;
-    
+    fac_ = (1.0-exp(-theta_v_/Tv)) / (1.0-exp(-theta_v_/T));
+
     // 2. Evaluate the vanishing vibrational energy (J/particle)
     // 2a. Eval Arrhenius rate
     double k_f = A_ * pow(Q.T[0], n_) * exp(-theta_d_ / Q.T[0] );
-    
+
     // 2b. Calculate nonequilibrium factor
     double L;
     if ( monatomic_collider_ ) {
         //L = 9.0 * sqrt( M_PI * ( 1.0 - alpha_ ) ) / 64.0 * pow( T / theta_d_, 1.0 - n_ ) * \
 	    //( 1.0 + 5.0 * ( 1.0 - alpha_) * T / ( 2.0 * theta_d_ ));
-        L = 9.0 * sqrt( M_PI * ( 1.0 - alpha_ ) ) / 64.0 *(1.0+5.0*(1.0-alpha_)*T/2.0/theta_dstar_) * pow( T / theta_d_, 1.0 - n_ ) * \
-	    sqrt(theta_d_/theta_dstar_)*sqrt(12.0*M_PI*b_*alpha_*(1.0-alpha_)*theta_d_/T);
+        L = sqrt(1.0 - alpha_ ) / pow(M_PI,1.5) *(1.0+5.0*(1.0-alpha_)*T/2.0/theta_dstar_) * pow( T / theta_d_, 1.0 - n_ );
+        L = L*sqrt(theta_d_/theta_dstar_)*sqrt(12.0*M_PI*b_*alpha_*(1.0-alpha_)*theta_d_/T);
     }
     else {
 	//L = 2.0 * ( 1.0 - alpha_ ) / ( M_PI * M_PI * pow( alpha_, 0.75 ) ) * \
@@ -496,30 +509,30 @@ specific_compute_source_term( Gas_data &Q, vector<double> &dcdt )
             pow( T / theta_d_, 1.5 - n_ ) * ( 1.0 + 7.0 * ( 1.0 - alpha_) * ( 1.0 + sqrt(alpha_) ) * T / ( 2.0 * theta_dstar_ ));
         L = L*sqrt(12.0*M_PI*b_*alpha_*(1.0-alpha_)*theta_d_/T);
     }
-    
+
     //double Z = ( ( 1.0 - exp( - theta_v_ / Tv ) ) / ( 1.0 - exp( - theta_v_ / T ) ) ) * ( 1.0 - L ) * \
                     //exp( - theta_d_ * ( 1.0 / Tv - 1.0 / T ) ) + L * exp( - theta_d_ * ( 1.0 / Ta - 1.0 / T ) );
     double Zl,Zh;
     Zl = L * exp(-theta_d_*(1.0/Ta-1.0/T) + delta_d_*(1.0/Ta - 1.0/T));
-    Zh = (1.0 - L)*fac_*exp(-theta_d_*(1.0/Tv - 1.0/T) + delta_d_*(1.0/Tv - 1.0/T));
-	
+    Zh = (1.0 - L)*fac_*exp(-(theta_d_-khigh_*delta_d_)*(1.0/Tv-1.0/T) );
+
     // 2d. Eval low and high reaction rates
     //double k_f_l = ( 1.0 - L ) * A_ * pow(T,n_) * exp( - theta_d_ / Ta );
     //double k_f_h =  ( 1.0 - exp( - theta_v_ / Tv ) ) / ( 1.0 - exp( - theta_v_ / T ) ) * ( L * A_ * pow(T,n_) * exp( - theta_d_ / Tv ) );
     double k_f_l = Zl*k_f;
     double k_f_h =  Zh*k_f;
-    
+
     // 2c. Augment Arrhenius rate by noneq factor
     k_f = k_f_l + k_f_h;
-    
+
     // 2e. Eval the vanishing energy per particle (thus we use k instead of R_i)
     //double e_va = ( alpha_ * PC_k_SI * theta_d_ * pow( T / Ta, 2 ) * k_f_l + PC_k_SI * theta_d_ * k_f_h ) / k_f;
-    double e_va = ( alpha_ * PC_k_SI * theta_dstar_ * pow( Tv / Ta, 2 ) * k_f_l + PC_k_SI * theta_dstar_ * k_f_h ) / k_f;
-    
+    double e_va = ( alpha_ * PC_k_SI * theta_dstar_ * pow( Tv / Ta, 2 ) * k_f_l + PC_k_SI * (theta_d_-khigh_*delta_d_) * k_f_h ) / k_f;
+
     // 3. Calculate dEdt
     // NOTE: minus e_old_ is required as average energy flux due to reactions is taken into account separately
     double dEdt = ( e_va - e_old_ ) * nu_ * dcdt[idc_] * PC_Avogadro;
-    
+
     // cout << "Macheret_dissociation_component::specific_compute_source_term()" << endl
         // << "dcdt[idc_] = " << dcdt[idc_] << endl
         // << "dEdt = " << dEdt << endl
@@ -530,11 +543,11 @@ specific_compute_source_term( Gas_data &Q, vector<double> &dcdt )
         // << "k_f_h = " << k_f_h << endl
         // << "Tv = " << Tv << endl
         // << "Ta = " << Ta << endl;
-    // 
+    //
     // cout << "Macheret_dissociation_component::specific_compute_source_term()" << endl
          // << "dEdt = " << dEdt << ", nu_ = " << nu_ << ", dcdt = " << dcdt[idc_] << endl
          // << "e_va = " << e_va << ", e_average = " << sems_[0]->eval_energy_from_T(Tv)*m_ << endl;
-    
+
     return dEdt;
 }
 
@@ -553,7 +566,7 @@ Simple_recombination_component( const Simple_recombination_component &c )
 : Coupling_component( c ), D_hat_( c.D_hat_ ) {}
 
 Simple_recombination_component::
-~Simple_recombination_component() 
+~Simple_recombination_component()
 {}
 
 Simple_recombination_component*
@@ -567,18 +580,18 @@ Simple_recombination_component::
 specific_compute_contribution( Gas_data &Q, vector<double> &delta_c )
 {
     if( Q.massf[isp_] < min_mass_frac ) return 0.0;
-    
+
     // 1. Set the appearing vibration energy
     double e_app = D_hat_;
-    
+
     // 2. Calculate delta_E
     double delta_N = - nu_ * delta_c[idc_] * PC_Avogadro;
     double delta_E = ( e_app - e_old_ ) * delta_N;
-    
+
     // cout << "Simple_recombination_component::compute_contribution()" << endl
     //      << "delta_c[idc_] = " << delta_c[idc_] << ", delta_N = " << delta_N << endl
     //      << "delta_E = " << delta_E << endl;
-    
+
     return delta_E;
 }
 
@@ -587,16 +600,16 @@ Simple_recombination_component::
 specific_compute_source_term( Gas_data &Q, vector<double> &dcdt )
 {
     if( Q.massf[isp_] < min_mass_frac ) return 0.0;
-    
+
     // 1. Set the appearing vibration energy
     double e_app = D_hat_;
-    
+
     // 2. Calculate delta_E
     double dEdt = - ( e_app - e_old_ ) * nu_ * dcdt[idc_] * PC_Avogadro;
-    
+
     // cout << "Simple_recombination_component::specific_compute_source_term()" << endl
     //      << "dEdt = " << dEdt << ", nu_ = " << nu_ << ", dcdt = " << dcdt[idc_] << endl;
-    
+
     return dEdt;
 }
 
@@ -615,7 +628,7 @@ TreanorMarrone_recombination_component( const TreanorMarrone_recombination_compo
 : Coupling_component( c ), U_( c.U_ ) {}
 
 TreanorMarrone_recombination_component::
-~TreanorMarrone_recombination_component() 
+~TreanorMarrone_recombination_component()
 {}
 
 TreanorMarrone_recombination_component*
@@ -629,26 +642,26 @@ TreanorMarrone_recombination_component::
 specific_compute_contribution( Gas_data &Q, vector<double> &delta_c )
 {
     if( Q.massf[isp_] < min_mass_frac ) return 0.0;
-    
+
     // 1. Calculate pseudo-temperature gamma
     //    NOTE: Since Tv=T for the recombination reaction, gamma = -U
     //          The negative temperature indicates formation in high lying vibrational levels
     double gamma = - U_;
-    
+
     // 2. Evaluate the vibrational energy at T=gamma
     double e_app = 0.0;
-    for ( size_t i = 0; i < sems_.size(); ++i ) 
+    for ( size_t i = 0; i < sems_.size(); ++i )
     	e_app += sems_[i]->eval_energy_from_T( gamma ) * m_;
-    
+
     // 3. Calculate delta_E
     double delta_N = - nu_ * delta_c[idc_] * PC_Avogadro;
     double delta_E = ( e_app - e_old_ ) * delta_N;
-    
+
     // cout << "TreanorMarrone_recombination_component::compute_contribution()" << endl
     //      << "gamma = " << gamma << ", Tv = " << Q.T[imode_] << ", T = " << Q.T[0] << endl
     //      << "delta_c[idc_] = " << delta_c[idc_] << ", delta_N = " << delta_N << endl
     //      << "delta_E = " << delta_E << endl;
-    
+
     return delta_E;
 }
 
@@ -657,24 +670,24 @@ TreanorMarrone_recombination_component::
 specific_compute_source_term( Gas_data &Q, vector<double> &dcdt )
 {
     if( Q.massf[isp_] < min_mass_frac ) return 0.0;
-    
+
     // 1. Calculate pseudo-temperature gamma
     //    NOTE: Since Tv=T for the recombination reaction, gamma = -U
     //          The negative temperature indicates formation in high lying vibrational levels
     double gamma = - U_;
-    
+
     // 2. Evaluate the vibrational energy at T=gamma
     double e_app = 0.0;
-    for ( size_t i = 0; i < sems_.size(); ++i ) 
+    for ( size_t i = 0; i < sems_.size(); ++i )
     	e_app += sems_[i]->eval_energy_from_T( gamma ) * m_;
-    
+
     // 3. Calculate dEdt
     // NOTE: minus e_old_ is required as average energy flux due to reactions is taken into account separately
     double dEdt = - ( e_app - e_old_ ) * nu_ * dcdt[idc_] * PC_Avogadro;
-    
+
     // cout << "TreanorMarrone_recombination_component::specific_compute_source_term()" << endl
     //      << "dEdt = " << dEdt << ", nu_ = " << nu_ << ", dcdt = " << dcdt[idc_] << endl;
-    
+
     return dEdt;
 }
 
@@ -694,7 +707,7 @@ Park_recombination_component( const Park_recombination_component &c )
 : Coupling_component( c ), n_( c.n_ ), D_( c.D_ ), s_v_( c.s_v_ ) {}
 
 Park_recombination_component::
-~Park_recombination_component() 
+~Park_recombination_component()
 {}
 
 Park_recombination_component*
@@ -708,26 +721,26 @@ Park_recombination_component::
 specific_compute_contribution( Gas_data &Q, vector<double> &delta_c )
 {
     if( Q.massf[isp_] < min_mass_frac ) return 0.0;
-    
+
     // 0. Pull out translational and vibrational temperatures
     //    NOTE: assuming mode '0' is translation, as it always should be
     //    NOTE: Tv=T for the recombination reaction
     double T = Q.T[0];
     double Tv = T;
-    
+
     // 2. Evaluate the appearing vibrational energy (J/particle)
     //    NOTE: The '+ e_old_' is required, see AMOD TN 3.2
     //          Omitting 'pow( Tv/T, s_v_ )' which will be unity
     double e_app = (1.0 - s_v_) * ( n_ * PC_k_SI * Tv + D_ ); //  + e_old_;
-    
+
     // 3. Calculate delta_E
     double delta_N = - nu_ * delta_c[idc_] * PC_Avogadro;
     double delta_E = ( e_app - e_old_ ) * delta_N;
-    
+
     // cout << "Park_recombination_component::compute_contribution()" << endl
     //      << "delta_c[idc_] = " << delta_c[idc_] << ", delta_N = " << delta_N << endl
     //      << "delta_E = " << delta_E << endl;
-    
+
     return delta_E;
 }
 
@@ -736,26 +749,26 @@ Park_recombination_component::
 specific_compute_source_term( Gas_data &Q, vector<double> &dcdt )
 {
     if( Q.massf[isp_] < min_mass_frac ) return 0.0;
-    
+
     // 0. Pull out translational and vibrational temperatures
     //    NOTE: assuming mode '0' is translation, as it always should be
     //    NOTE: Tv=T for the recombination reaction
     double T = Q.T[0];
     double Tv = T;
-    
+
     // 2. Evaluate the appearing vibrational energy (J/particle)
     double e_app = (1.0 - s_v_) * ( n_ * PC_k_SI * Tv + D_ );
     // 2b. Average energy
-    // for ( size_t i=0; i<sems_.size(); ++i ) 
+    // for ( size_t i=0; i<sems_.size(); ++i )
     // 	e_app += sems_[i]->eval_energy_from_T(Tv) * m_;
-    
+
     // 3. Calculate dEdt
     // NOTE: minus e_old_ is required as average energy flux due to reactions is taken into account separately
     double dEdt = - ( e_app - e_old_ ) * nu_ * dcdt[idc_] * PC_Avogadro;
-    
+
     // cout << "Park_recombination_component::specific_compute_source_term()" << endl
     //      << "dEdt = " << dEdt << ", nu_ = " << nu_ << ", dcdt = " << dcdt[idc_] << endl;
-    
+
     return dEdt;
 }
 
@@ -772,14 +785,14 @@ Macheret_recombination_component(lua_State *L, Reaction *r, int idc )
     	    << sems_.size() << " energy modes found, just one expcted." << endl;
     	input_error( oss );
     }
-    
+
     // 1. GA data
     n_ = get_number(L,-1,"n");
     theta_d_ = get_number(L,-1,"T_d");
-    
+
     // 2. Dissociating species data
     double M_v = m_ * PC_Avogadro;
-    
+
     // 2. Colliding species data
     string c_name = get_string(L,-1,"c_name");
     Chemical_species * X = get_library_species_pointer_from_name( c_name );
@@ -787,8 +800,17 @@ Macheret_recombination_component(lua_State *L, Reaction *r, int idc )
     else monatomic_collider_ = false;
     double M_c = X->get_M();
 
+    lua_getfield(L, -1, "khigh");
+    if ( lua_isnil(L, -1) ) khigh_ =0;
+    else khigh_ = luaL_checknumber(L, -1);
+    lua_pop(L, 1);
+
     // 3. Pre-calculate alpha
-    alpha_ = pow( ( 0.5 * M_v / ( 0.5 * M_v + M_c ) ), 2.0 );
+    if (monatomic_collider_)
+       alpha_ = pow( ( M_v*0.5  / ( M_v*0.5 + M_c ) ), 2.0 );
+    else
+       alpha_ = pow( ( M_v / (M_v + M_c)),2.0);
+
     b_ = 2.0;
     delta_d_ = 3.0*b_*alpha_*alpha_*theta_d_;
     theta_dstar_ = theta_d_ - delta_d_;
@@ -797,14 +819,14 @@ Macheret_recombination_component(lua_State *L, Reaction *r, int idc )
 Macheret_recombination_component::
 Macheret_recombination_component( const Macheret_recombination_component &c )
 : Coupling_component( c ), n_( c.n_ ), theta_d_( c.theta_d_ ), alpha_( c.alpha_ ),
-monatomic_collider_( c.monatomic_collider_ ) {
+monatomic_collider_( c.monatomic_collider_ ),khigh_(c.khigh_) {
     b_ = 2.0;
     delta_d_ = 3.0*b_*alpha_*alpha_*theta_d_;
     theta_dstar_ = theta_d_ - delta_d_;
 }
 
 Macheret_recombination_component::
-~Macheret_recombination_component() 
+~Macheret_recombination_component()
 {}
 
 Macheret_recombination_component*
@@ -818,15 +840,15 @@ Macheret_recombination_component::
 specific_compute_contribution( Gas_data &Q, vector<double> &delta_c )
 {
     if( Q.massf[isp_] < min_mass_frac ) return 0.0;
-    
+
     // 0. Pull out translational and vibrational temperatures
     //    NOTE: Tv=T for the recombination reaction
     double T = Q.T[0];
-    
+
     // 2. Evaluate the appearing vibrational energy (J/particle)
     double L;
     if ( monatomic_collider_ ) {
-        L = 9.0 * sqrt( M_PI * ( 1.0 - alpha_ ) ) / 64.0 *(1.0+5.0*(1.0-alpha_)*T/2.0/theta_dstar_) * pow( T / theta_d_, 1.0 - n_ ) * \
+        L = sqrt(1.0 - alpha_ )/pow(M_PI,1.5) *(1.0+5.0*(1.0-alpha_)*T/2.0/theta_dstar_) * pow( T / theta_d_, 1.0 - n_ ) * \
 	    sqrt(theta_d_/theta_dstar_)*sqrt(12.0*M_PI*b_*alpha_*(1.0-alpha_)*theta_d_/T);
     }
     else {
@@ -836,16 +858,16 @@ specific_compute_contribution( Gas_data &Q, vector<double> &delta_c )
     }
 
     // Ta = T
-    double e_app = PC_k_SI * theta_dstar_ * (alpha_ * ( 1.0 - L ) + L);
-    
+    double e_app = PC_k_SI * (theta_dstar_*(alpha_)*(1.0-L) + (theta_d_ - delta_d_*khigh_)*L);
+
     // 3. Calculate delta_E
     double delta_N = - nu_ * delta_c[idc_] * PC_Avogadro;
     double delta_E = ( e_app - e_old_ ) * delta_N;
-    
+
     // cout << "Macheret_recombination_component::compute_contribution()" << endl
     //      << "delta_c[idc_] = " << delta_c[idc_] << ", delta_N = " << delta_N << endl
     //      << "delta_E = " << delta_E << endl;
-    
+
     return delta_E;
 }
 
@@ -854,11 +876,11 @@ Macheret_recombination_component::
 specific_compute_source_term( Gas_data &Q, vector<double> &dcdt )
 {
     if( Q.massf[isp_] < min_mass_frac ) return 0.0;
-    
+
     // 0. Pull out translational and vibrational temperatures
     //    NOTE: Tv=T for the recombination reaction
     double T = Q.T[0];
-    
+
     // 2. Evaluate the appearing vibrational energy (J/particle)
     double L;
     if ( monatomic_collider_ ) {
@@ -870,16 +892,16 @@ specific_compute_source_term( Gas_data &Q, vector<double> &dcdt )
             pow( T / theta_d_, 1.5 - n_ ) * ( 1.0 + 7.0 * ( 1.0 - alpha_) * ( 1.0 + sqrt(alpha_) ) * T / ( 2.0 * theta_dstar_ ));
         L = L*sqrt(12.0*M_PI*b_*alpha_*(1.0-alpha_)*theta_d_/T);
     }
-    double e_app = PC_k_SI * theta_dstar_ * ( alpha_ * ( 1.0 - L ) + L );
-    
+    double e_app = PC_k_SI * (theta_dstar_*(alpha_)*(1.0-L) + (theta_d_ - delta_d_*khigh_)*L);
+
     // 3. Calculate dEdt
     // NOTE: minus e_old_ is required as average energy flux due to reactions is taken into account separately
     double dEdt = - ( e_app - e_old_ ) * nu_ * dcdt[idc_] * PC_Avogadro;
-    
+
     // cout << "Macheret_recombination_component::specific_compute_source_term()" << endl
     //      << "dEdt = " << dEdt << ", nu_ = " << nu_ << ", dcdt = " << dcdt[idc_] << endl
     //      << "e_app = " << e_app << ", e_average = " << sems_[0]->eval_energy_from_T(Q.T[1])*m_ << endl;
-    
+
     return dEdt;
 }
 
@@ -897,7 +919,7 @@ Electron_impact_ionization_component( const Electron_impact_ionization_component
 : Coupling_component( c ), I_( c.I_ ) {}
 
 Electron_impact_ionization_component::
-~Electron_impact_ionization_component() 
+~Electron_impact_ionization_component()
 {}
 
 Electron_impact_ionization_component*
@@ -911,15 +933,15 @@ Electron_impact_ionization_component::
 specific_compute_contribution( Gas_data &Q, vector<double> &delta_c )
 {
     if( Q.massf[isp_] < min_mass_frac ) return 0.0;
-    
+
     // 1. Calculate delta_E
     double delta_N = nu_ * ( delta_c[idc_] - delta_c[idc_+1] ) * PC_Avogadro;
     double delta_E = - ( I_ - e_old_ ) * delta_N;
-    
+
     // cout << "Electron_impact_ionization_component::compute_contribution()" << endl
     //      << "delta_c[idc_] = " << delta_c[idc_] << ", delta_N = " << delta_N << endl
     //      << "delta_E = " << delta_E << endl;
-    
+
     return delta_E;
 }
 
@@ -928,15 +950,15 @@ Electron_impact_ionization_component::
 specific_compute_source_term( Gas_data &Q, vector<double> &dcdt )
 {
     if( Q.massf[isp_] < min_mass_frac ) return 0.0;
-    
+
     // 1. Calculate dEdt:
     // NOTE: this is a special case as it represents energy lost in the reaction
     //       so we don't have to include e_old_
     double dEdt = - I_ * nu_ * ( dcdt[idc_] - dcdt[idc_+1] ) * PC_Avogadro;
-    
+
     // cout << "Electron_impact_ionization_component::specific_compute_source_term()" << endl
     //      << "dEdt = " << dEdt << ", nu_ = " << nu_ << ", dcdt = " << dcdt[idc_] << endl;
-    
+
     return dEdt;
 }
 
@@ -954,7 +976,7 @@ Associative_ionization_component( const Associative_ionization_component &c )
 : Coupling_component( c ), alpha_( c.alpha_ ) {}
 
 Associative_ionization_component::
-~Associative_ionization_component() 
+~Associative_ionization_component()
 {}
 
 Associative_ionization_component*
@@ -968,25 +990,25 @@ Associative_ionization_component::
 specific_compute_contribution( Gas_data &Q, vector<double> &delta_c )
 {
     if( Q.massf[isp_] < min_mass_frac ) return 0.0;
-    
+
     // 1. Pull out the translational and free-electron temperatures
     double T = Q.T[0];
     double Te = Q.T[imode_];
-    
-    // 2. Model the free electrons as being formed at some temperature between 
+
+    // 2. Model the free electrons as being formed at some temperature between
     //    the free-electron and translation temperatures
     double T_star =  Te + (T - Te)*alpha_;
     double e_app = 1.5 * T_star * PC_k_SI;
-    
+
     // 1. Calculate delta_E
     double delta_N = nu_ * ( delta_c[idc_] - delta_c[idc_+1] ) * PC_Avogadro;
     double delta_E = ( e_app - e_old_ ) * delta_N;
-    
+
     // cout << "Associative_ionization_component::compute_contribution()" << endl
     //      << "delta_c[idc_] = " << delta_c[idc_] << ", delta_N = " << delta_N << endl
     //      << "delta_E = " << delta_E << endl
     //      << "e_app = " << e_app << ", e_old_ = " << e_old_ << endl;
-    
+
     return delta_E;
 }
 
@@ -995,24 +1017,24 @@ Associative_ionization_component::
 specific_compute_source_term( Gas_data &Q, vector<double> &dcdt )
 {
     if( Q.massf[isp_] < min_mass_frac ) return 0.0;
-    
+
     // 1. Pull out the translational and free-electron temperatures
     double T = Q.T[0];
     double Te = Q.T[imode_];
-    
-    // 2. Model the free electrons as being formed at some temperature between 
+
+    // 2. Model the free electrons as being formed at some temperature between
     //    the free-electron and translation temperatures
     double T_star =  Te + (T - Te)*alpha_;
     double e_app = 1.5 * T_star * PC_k_SI;
-    
+
     // 3. Calculate dEdt
     // NOTE: minus e_old_ is required as average energy flux due to reactions is taken into account separately
     double dEdt = ( e_app - e_old_ ) * nu_ * ( dcdt[idc_] - dcdt[idc_+1] ) * PC_Avogadro;
-    
+
     // cout << "Associative_ionization_component::specific_compute_source_term()" << endl
     //      << "dEdt = " << dEdt << ", nu_ = " << nu_ << ", dcdt = " << dcdt[idc_] << endl;
-    
-    
+
+
     return dEdt;
 }
 
@@ -1028,7 +1050,7 @@ EII_recombination_component(lua_State *L, Reaction *r, int idc )
 // : Coupling_component( c ) {}
 
 EII_recombination_component::
-~EII_recombination_component() 
+~EII_recombination_component()
 {}
 
 EII_recombination_component*
@@ -1052,7 +1074,7 @@ EII_recombination_component::
 specific_compute_source_term( Gas_data &Q, vector<double> &dcdt )
 {
     // Assume recombination at average electron energy
-    
+
     return 0.0;
 }
 
@@ -1069,7 +1091,7 @@ AI_recombination_component(lua_State *L, Reaction *r, int idc )
 // {}
 
 AI_recombination_component::
-~AI_recombination_component() 
+~AI_recombination_component()
 {}
 
 AI_recombination_component*
@@ -1157,9 +1179,9 @@ double calculate_Knab_energy( std::vector<Species_energy_mode*> &sems,
     // by zero problem.
     //
     // Instead, we'll set the average vibrational energy
-    // of either appearing or vanishing molecules based on 
+    // of either appearing or vanishing molecules based on
     // the local translational.
-    
+
     if ( isnan(val) || isinf(val) ) {
 	// Just return the energy from the first mode
 	// assuming that it's dominant.
@@ -1295,12 +1317,12 @@ specific_compute_contribution( Gas_data &Q, vector<double> &delta_c )
     // 3. Calculate delta_E
     double delta_N = - nu_ * delta_c[idc_] * PC_Avogadro;
     double delta_E = ( e_app - e_old_ ) * delta_N;
-    
+
     // cout << "Knab_appearing_component::compute_contribution()" << endl
     //      << "gamma = " << gamma << ", Tv = " << Q.T[imode_] << ", T = " << Q.T[0] << endl
     //      << "delta_c[idc_] = " << delta_c[idc_] << ", delta_N = " << delta_N << endl
     //      << "delta_E = " << delta_E << endl;
-    
+
     return delta_E;
 }
 
@@ -1320,13 +1342,13 @@ specific_compute_source_term( Gas_data &Q, vector<double> &dcdt )
     double e_app = calculate_Knab_energy( sems_, U0_, U1_, alpha_, A_var_, T, Tv );
     // Convert to J/particle
     e_app *= m_;
-    
+
     // 3. Calculate dEdt
     // NOTE: minus e_old_ is required as average energy flux due to reactions is taken into account separately
     double dEdt = - ( e_app - e_old_ ) * nu_ * dcdt[idc_] * PC_Avogadro;
-    
+
     // cout << "Knab_appearing_component::specific_compute_source_term()" << endl
     //      << "dEdt = " << dEdt << ", nu_ = " << nu_ << ", dcdt = " << dcdt[idc_] << endl;
-    
+
     return dEdt;
 }
