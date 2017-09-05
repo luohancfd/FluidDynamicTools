@@ -42,7 +42,7 @@ def MFrate(T,Tv,A,n,D,m,M,theta):
     k2h = (1-L2)*A*T**n*fac*exp(-D/Tv);#+deltaD*(1/Tv-1/T));
     k2 = k21+k2h;
     E2l = alpha*Dstar*(Tv/Ta)**2
-    E2h = Dstar
+    E2h = D
     E2 = (E2l*k21+E2h*k2h)/k2
     keq = A*T**n*exp(-D/T)
     return (keq,k2,E2,E2/D)
@@ -202,7 +202,7 @@ def ExtractNeqrate(ArrheniusConstant,sp,spfolder=None,eqfolder=None):
                 f.write('\n')
             f.write('\n')
 
-            Tvrange = np.arange(1000.0,20500.0,500.0)
+            Tvrange = np.arange(1000.0,20500.0,200.0)
             f.write('ZONE I = %d, T = "CFD: %.2f"\n'%(len(Tvrange),tt))
             for ctv in Tvrange:
                 MF = MFrate(tt,ctv,A,eta,D,m,M,thetaV)
@@ -212,3 +212,11 @@ def ExtractNeqrate(ArrheniusConstant,sp,spfolder=None,eqfolder=None):
                 f.write('{:>13.5G} '.format(MF[2]))
                 f.write('{:>13.5G}\n'.format(MF[3]))
             f.write('\n')
+
+    copy2(os.path.join(spfolder,sp+'_NeqRate.dat'), os.path.join(sp+'_NeqRate.dat'))
+
+
+if __name__ == '__main__':
+    ExtractNeqrate(ArrheniusConstant,sp='N2O',spfolder='N2O',eqfolder=None)
+    ExtractNeqrate(ArrheniusConstant,sp='O3',spfolder='O3',eqfolder=None)
+    ExtractNeqrate(ArrheniusConstant,sp='N3',spfolder='N3',eqfolder=None)
