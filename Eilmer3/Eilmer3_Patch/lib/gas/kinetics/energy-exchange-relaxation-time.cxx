@@ -98,6 +98,164 @@ specific_relaxation_time(Gas_data &Q, vector<double> &molef)
     return tau;
 }
 
+VT_PolyFit::
+VT_PolyFit(lua_State *L, int ip, int iq, int itrans)
+    : Relaxation_time(), ip_(ip), iq_(iq), iT_(itrans)
+{
+
+    Chemical_species *p = get_library_species_pointer(ip);
+    Chemical_species *q = get_library_species_pointer(iq);
+
+    M_p_ = p->get_M();
+    M_q_ = q->get_M();
+    if ( p->get_type().find("diatomic")!=string::npos ) {
+        Diatomic_species *P = dynamic_cast<Diatomic_species*>(p);
+        theta_ = P->get_theta_v();
+    }
+    else if ( p->get_type().find("polyatomic")!=string::npos ) {
+        Polyatomic_species *P = dynamic_cast<Polyatomic_species*>(p);
+        theta_ = P->get_theta_v();
+    }
+    else {
+        cout << "VT_Polyfit::VT_PolyFit()" << endl
+             << "Species: " << p->get_name() << " is not declared as a molecule!" << endl;
+        exit( BAD_INPUT_ERROR );
+    }
+
+    lua_getfield(L, -1, "thetav");
+    if ( ! lua_isnil(L, -1) ) {
+       // Take directly from table.
+       theta_ = luaL_checknumber(L, -1);
+    }
+    lua_pop(L, 1);
+
+    mu_ = ((M_p_ * M_q_) / (M_p_ + M_q_))*1000.0;
+
+    type_ = get_number(L,-1,"type");
+    if (type_ > 2 || type_ < 0){
+       ostringstream ost;
+       ost << "VT_PolyFit::VT_PolyFit()\n";
+       ost << "Incorrect value for 'type', it should be between 0 and 2\n";
+       input_error(ost);
+    }
+
+    /* type = 0:
+     *     p*tau = a * sqrt(T) / (1-exp(thetav/T))*exp(b/T^(-1/3))
+     * type = 1:
+     *     polybase < 0:
+     *           p*tau = scale*exp(polyval[coeffs,T/Tnorm^(T_pow)])
+     *     polybase > 0:
+     *           p*tau = scale*pow(polybase,polyval[coeffs,T/Tnorm^(T_pow)])
+     * type = 2:
+     *     T < Thigh
+     *        use type 1
+     *     T > Thigh
+     *        use type 0*/
+
+    if (type_ == 2) {
+       T_high_ = get_positive_number(L,-1,"T_high");
+    }
+
+    if ( type_ != 1 ) {
+       a_ = get_number(L,-1,"a");
+       b_ = get_number(L,-1,"b");
+    }
+
+    if ( type_ != 0 ){
+       polybase_ = get_number(L,-1,"polybase");
+
+       lua_getfield(L, -1, "coeff");
+       if ( !lua_istable(L, -1) ) {
+          ostringstream ost;
+          ost << "VT_PolyFit::VT_PolyFit()\n";
+          ost << "A 'coeffs' table is expected with the 'parameters' table, but it's not found.\n";
+          input_error(ost);
+       }
+
+       n_poly_ = lua_objlen(L, -1);
+       if ( n_poly_ < 1 ) {
+          cout << "VT_PolyFit::VT_PolyFit()\n";
+          cout << " At least one coeffs should be provided. \n";
+          exit(BAD_INPUT_ERROR);
+       }
+
+       c_.resize(n_poly_);
+       for ( size_t i = 0; i < c_.size(); ++i ) {
+          lua_rawgeti(L, -1, i+1);
+          c_[i] = luaL_checknumber(L, -1);
+          lua_pop(L, 1);
+       }
+       lua_pop(L,1); //pop coeffs
+
+       lua_getfield(L, -1, "T_norm");
+       if ( lua_isnil(L, -1) ) {
+          // No 'T_norm' value supplied. Compute according to Millikan and White.
+          T_norm_ = 1000.0;
+       }
+       else {
+          // Take directly from table.
+          T_norm_ = luaL_checknumber(L, -1);
+       }
+       lua_pop(L, 1);
+
+       lua_getfield(L, -1, "T_pow");
+       if ( lua_isnil(L, -1) ) {
+          // No 'T_pow' value supplied. Compute according to Millikan and White.
+          T_pow_ = 1.0;
+       }
+       else {
+          // Take directly from table.
+          T_pow_ = luaL_checknumber(L, -1);
+       }
+       lua_pop(L, 1);
+
+       lua_getfield(L, -1, "scale");
+       if ( lua_isnil(L, -1) ) {
+          // No 'T_pow' value supplied. Compute according to Millikan and White.
+          prescale_ = 1.0;
+       }
+       else {
+          // Take directly from table.
+          prescale_ = luaL_checknumber(L, -1);
+       }
+       lua_pop(L, 1);
+    }
+}
+
+VT_PolyFit::
+~VT_PolyFit() {}
+
+double
+VT_PolyFit::
+specific_relaxation_time(Gas_data &Q, vector<double> &molef)
+{
+    // When the 'bath' pressure is very small,
+    // practically no relaxation occurs.
+    if ( molef[iq_] <= DEFAULT_MIN_MASS_FRACTION ) {
+	return -1.0;
+    }
+    double ptau;
+    double T = Q.T[iT_];
+    // Set the 'bath' pressure as that of the 'q' colliders
+    // and compute in atm for use in Millikan-White expression
+    double p_bath = molef[iq_]*Q.p/PC_P_atm;
+
+    if ( type_ == 0 || (type_ == 2 && T <= T_high_))
+       ptau = a_ * sqrt(T) / (1.0 - exp(-theta_/ T))*exp(b_*pow(T,-1.0/3.0));
+    else if (type_ == 1 || (type_ == 2 && T > T_high_)){
+       ptau = 0.0;
+       double T2 = pow(T/T_norm_,T_pow_);
+       for (size_t i = 0; i < n_poly_; i++){
+          ptau += c_[i]*pow(T2,n_poly_-i-1);
+       }
+       if (polybase_ < 0.0) ptau =  prescale_ * exp(ptau);
+       else  ptau = prescale_*pow(polybase_,ptau);
+    }
+    //    cout << "tau= " << tau << endl;
+    return ptau/p_bath;
+}
+
+
 VT_LandauTeller_cf::
 VT_LandauTeller_cf(lua_State *L, int ip, int iq, int itrans)
     : Relaxation_time(), ip_(ip), iq_(iq), iT_(itrans)
@@ -233,10 +391,10 @@ VT_MillikanWhite_HTC::
 specific_relaxation_time(Gas_data &Q, vector<double> &molef)
 {
     double p_bath = molef[iq_]*Q.p/PC_P_atm;
-    double n_col = p_bath * PC_P_atm / PC_k_SI / Q.T[iT_] * 1.0e-6; 
+    double n_col = p_bath * PC_P_atm / PC_k_SI / Q.T[iT_] * 1.0e-6;
     double tau = VT_MW_->compute_relaxation_time(Q, molef);
     // high-temperature correction
-    double sigma = HTC_model_->eval_sigma(Q.T[iT_]);				
+    double sigma = HTC_model_->eval_sigma(Q.T[iT_]);
     tau += 1.0 / (n_col * sqrt(8.0*PC_k_CGS*Q.T[iT_] / (M_PI*m_av_)) * sigma);
     return tau;
 }
@@ -255,7 +413,7 @@ ET_AppletonBray_Ion( lua_State * L, int ie, int ic )
 	input_error(ost);
     }
     M_c_ = X->get_M();
-    
+
     // 2. Electron data
     X = get_library_species_pointer( ie );
     if ( X->get_Z()!=-1 ) {
@@ -277,7 +435,7 @@ specific_relaxation_time(Gas_data &Q, std::vector<double> &molef)
 {
     double n_c = Q.massf[ic_] * Q.rho / M_c_ * PC_Avogadro * 1.0e-6;	// Number density of colliders (in cm**-3)
     double n_e = Q.massf[ie_] * Q.rho / M_e_ * PC_Avogadro * 1.0e-6;	// Number density of electrons (in cm**-3)
-    
+
     // If there are no participating species set a negative relaxation time
     if ( n_e==0.0 || n_c==0.0 ) return -1.0;
 
@@ -285,11 +443,11 @@ specific_relaxation_time(Gas_data &Q, std::vector<double> &molef)
     double tmpB = n_c * pow ( PC_e_CGS, 4.0 ) / pow ( 2.0 * PC_k_CGS * Q.T[iTe_], 1.5 );
     double tmpC = log( pow( PC_k_CGS * Q.T[iTe_], 3.0 ) / ( M_PI * n_e * pow ( PC_e_CGS, 6.0 ) ) );
     double nu_ec = tmpA * tmpB * tmpC;
-        
+
     double tau_ec = M_c_ / nu_ec;
-    
+
     return tau_ec;
-    
+
 }
 
 ET_AppletonBray_Neutral::
@@ -307,7 +465,7 @@ ET_AppletonBray_Neutral( lua_State * L, int ie, int ic )
 	input_error(ost);
     }
     M_c_ = X->get_M();
-    
+
     // 2. Electron data
     X = get_library_species_pointer( ie );
     if ( X->get_Z()!=-1 ) {
@@ -317,7 +475,7 @@ ET_AppletonBray_Neutral( lua_State * L, int ie, int ic )
 	input_error(ost);
     }
     iTe_ = X->get_iT_trans();
-    
+
     // 3.  Sigma quadratic curve fit coefficients
     lua_getfield(L, -1, "sigma_coefficients" );
     if ( !lua_istable(L, -1) ) {
@@ -352,7 +510,7 @@ ET_AppletonBray_Neutral::
 specific_relaxation_time(Gas_data &Q, std::vector<double> &molef)
 {
     double n_c = Q.massf[ic_] * Q.rho / M_c_ * PC_Avogadro * 1.0e-6;	// Number density of colliders (in cm**-3)
-    
+
     // If there are no colliding species set a negative relaxation time
     if ( n_c==0.0 ) return -1.0;
 
@@ -364,7 +522,7 @@ specific_relaxation_time(Gas_data &Q, std::vector<double> &molef)
     sigma_ec *= 1.0e4;
     double nu_ec = n_c * sigma_ec * sqrt( 8.0 * PC_k_CGS * T / ( M_PI * PC_m_CGS ) );
     double tau_ec = M_c_ / nu_ec;
-    
+
     return tau_ec;
 }
 
@@ -662,7 +820,7 @@ double collider_distance_B(Diatomic_species &p, Diatomic_species &n)
 /**
  * \brief Calculate xi (a correction factor)
  *
- * This function calculates a correction factor needed for the 
+ * This function calculates a correction factor needed for the
  * the empirical combining laws when there is a collision
  * between polar and nonpolar molecules.
  *
@@ -739,7 +897,7 @@ double potential_well_B(Diatomic_species &p, Diatomic_species &n)
  * Note that this gives collision frequency: the average number of collisions
  * for any one molecule per unit time per unit volume. This is not to be confused
  * with total number of collisions (sometimes called collision rate).
- * 
+ *
  * \author Rowan J Gollan
  * \date 01-Mar-2005
  **/
@@ -758,7 +916,7 @@ double collision_frequency(double sigma, double mu, double T, double nB)
 /**
  * \brief Calculate expansion parameter beta.
  *
- * \[ \beta = \{ \frac{1}{2} (2 \epsilon^0_{pq} / \mu_{pq})^9 
+ * \[ \beta = \{ \frac{1}{2} (2 \epsilon^0_{pq} / \mu_{pq})^9
  *              (3h\mu_{pq}/\pi^2 r^0_{pq} k T \Delta E)^6 \}^{1/19} \]
  *
  * \author Rowan J Gollan
@@ -886,7 +1044,7 @@ double SSH_alpha_pq(double mu, double del_E, double del_star)
  * p and q.
  * Implements:
  * \[ \chi^*_{pq} = \frac{1}{2} \left( \frac{alpha_{pq}}{T} \right)^{1/3} \]
- * 
+ *
  * \author Rowan J Gollan
  * \date 01-Mar-05
  **/
@@ -912,7 +1070,7 @@ double SSH_chi_pq(double alpha_pq, double T)
 double SSH_Z_0(double del_star, double r_eq)
 {
     double tmp_a;
-    
+
     tmp_a = del_star * r_eq;
 
     return ( tmp_a + 5.0/2.0 * ( 1.0 / (tmp_a * tmp_a)) );
@@ -1072,7 +1230,7 @@ VT_SSH(lua_State *L, int ip, int iq, int itrans)
 VT_SSH::
 ~VT_SSH() {}
 
-double 
+double
 VT_SSH::
 specific_transition_probability(Gas_data &Q, vector<double> &molef)
 {
@@ -1109,18 +1267,18 @@ specific_relaxation_time(Gas_data &Q, vector<double> &molef)
 	 molef[iq_] <= DEFAULT_MIN_MOLE_FRACTION ) {
 	return -1.0;
     }
-    
+
     // The computed collision frequency is independent
     // of whether the collisions are between:
     //     like colliders : ip == iq; or
     //     unlike colliders : ip != iq
     // See pp 87,88 of Chapman and Cowling
-    // 
+    //
     // Chapman and Cowling (1970)
     // The Mathematical Theory of Non-Uniform Gases, Third edition
     // Cambridge University Press, London
     //
-    
+
     double n_q = molef[iq_]*Q.p/(PC_k_SI*T);
     double Z = collision_frequency(sigma_, mu_, T, n_q);
     double P = specific_transition_probability(Q, molef);
@@ -1252,7 +1410,7 @@ specific_relaxation_time(Gas_data &Q, std::vector<double> &molef)
     //     like colliders : ip == iq; or
     //     unlike colliders : ip != iq
     // See pp 87,88 of Chapman and Cowling
-    // 
+    //
     // Chapman and Cowling (1970)
     // The Mathematical Theory of Non-Uniform Gases, Third edition
     // Cambridge University Press, London
@@ -1276,19 +1434,19 @@ specific_relaxation_time(Gas_data &Q, std::vector<double> &molef)
 //     iT_ = P->get_mode_pointer_from_type("translation")->get_iT();
 //     double M_p = P->get_M();
 //     double r0_p = P->get_r0();
-    
+
 //     // 2. Vibrating species 'q'
 //     string q_name = get_string(L, -1, "q_name");
 //     Diatomic_species * Q = get_library_diatom_pointer_from_name( q_name );
 //     iq_ = Q->get_isp();
 //     M_q_ = Q->get_M();
 //     double r0_q = Q->get_r0();
-    
+
 //     // 3. derived parameters
 //     mu_ = ((M_p * M_q_) / (M_p + M_q_)) / PC_Avogadro;
-//     // CHECKME: Candler uses d_p*dq here. is there a difference between r0 and d? 
+//     // CHECKME: Candler uses d_p*dq here. is there a difference between r0 and d?
 //     sigma_ = r0_p * r0_q;	// collision cross-section
-    
+
 //     // 4. Transition probability (use fixed value as recommended in Candler thesis)
 //     P_ = 1.0e-2;
 // }
@@ -1306,14 +1464,14 @@ specific_relaxation_time(Gas_data &Q, std::vector<double> &molef)
 //     if( molef[ip_] <= 0.0 || molef[iq_] <= 0.0 ) {
 // 	return -1.0;
 //     }
-    
+
 //     // Calculate collision frequency x average vibrational energy
-//     double Z_eps = PC_Avogadro * sigma_ * sqrt( 8.0 * PC_R_u * Q.T[iT_] / ( M_PI * mu_ ) ) 
+//     double Z_eps = PC_Avogadro * sigma_ * sqrt( 8.0 * PC_R_u * Q.T[iT_] / ( M_PI * mu_ ) )
 //     			* Q.rho * Q.massf[iq_] / M_q_;
-    
+
 //     // Calculate relaxation time
 //     double tau = 1.0 / ( P_ * Z_eps );
-    
+
 //     return tau;
 // }
 
@@ -1542,7 +1700,7 @@ VE_Lee( lua_State * L, int ie, int iv )
      	lua_pop(L,1);
      }
      lua_pop(L,1);	// pop 'T_switches'
-    
+
      // 3. p.tau coefficients
      ptau_coeffs_.resize( T_switches_.size() + 1 );
      for ( size_t ic=0; ic<T_switches_.size()+1; ++ic ) {
@@ -1590,13 +1748,13 @@ specific_relaxation_time(Gas_data &Q, std::vector<double> &molef)
     for ( iptc=0; iptc<T_switches_.size(); ++iptc ) {
      	if ( Te < T_switches_[iptc] ) break;
     }
-    
+
     // Calculate tau
     // NOTE: pe_atm should be > 0 as molef[ie_] > 0
     double pe_atm = Q.p_e / PC_P_atm;
     double log_ptau = ptau_coeffs_[iptc][0] * log10(Te) * log10(Te) + ptau_coeffs_[iptc][1] * log10(Te) + ptau_coeffs_[iptc][2];
     double tau = pow( 10.0, log_ptau ) / pe_atm;
-    
+
     return tau;
 }
 
@@ -1609,6 +1767,9 @@ Relaxation_time* create_new_relaxation_time(lua_State *L, int ip, int iq, int it
     // 2. create the relaxation time instance
     if ( relaxation_time == "Millikan-White" ) {
 	return new VT_MillikanWhite(L, ip, iq, itrans);
+    }
+    else if ( relaxation_time == "PolyFit" ){
+        return new VT_PolyFit(L, ip, iq, itrans);
     }
     else if ( relaxation_time == "Landau-Teller-cf" ) {
 	return new VT_LandauTeller_cf(L, ip, iq, itrans);
@@ -1681,7 +1842,7 @@ void parse_input_for_rts(string cfile, Gas_model &g, lua_State *L)
     lua_pushinteger(L, g.get_number_of_species());
     lua_setfield(L, -2, "size");
     lua_setglobal(L, "species");
-    
+
     // Setup a table of thermal modes
     lua_newtable(L);
     for ( int imode = 0; imode < g.get_number_of_modes(); ++imode ) {
@@ -1714,7 +1875,7 @@ void parse_input_for_rts(string cfile, Gas_model &g, lua_State *L)
     }
     string script_file(home);
     script_file.append("/energy_exchange_parser.lua");
-    
+
     if ( luaL_dofile(L, script_file.c_str()) != 0 ) {
 	ostringstream ost;
 	ost << "create_energy_exchange_update():\n";
@@ -1750,7 +1911,7 @@ Relaxation_time* get_rt_from_file(int irt, string cfile, Gas_model &g)
 	ost << "Error finding 'mechs' table.\n";
 	input_error(ost);
     }
-    
+
     int nmechs = lua_objlen(L, -1);
     if ( irt >= nmechs ) {
 	ostringstream ost;
@@ -1764,7 +1925,7 @@ Relaxation_time* get_rt_from_file(int irt, string cfile, Gas_model &g)
     int ip = get_int(L, -1, "ip");
     int iq = get_int(L, -1, "iq");
     int itrans = get_int(L, -1, "itrans");
-    
+
     lua_getfield(L,-1,"relaxation_time");
     Relaxation_time *rt = create_new_relaxation_time(L, ip, iq, itrans);
     lua_close(L);
@@ -1787,7 +1948,7 @@ int get_no_rts_from_file(string cfile, Gas_model &g)
 	ost << "Error finding 'mechs' table.\n";
 	input_error(ost);
     }
-    
+
     int nmechs = lua_objlen(L, -1);
     lua_close(L);
     return nmechs;
