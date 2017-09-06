@@ -20,15 +20,10 @@ ode_t = {
 
 mechanism{
    'O2 ~~ ( O ) : V-T',
---   rt={'Millikan-White:HTC', a=47.7, b=0.059, HTCS = { type = "Park", sigma_dash = 3.0e-17 } }
-   --   Marat O2+O
-   --rt={'PolyFit', type=1, polybase=-10.0, coeff={1.92, -5.119, -14.19},T_norm=1000.0,T_pow=-1.0/3.0 }
-   -- Ibraguimova
-   rt={'PolyFit', type=0, a = 1.5e-12, b = 86.4, thetav = 2238.0} 
+   rt={'Millikan-White:HTC', a=47.7, b=0.059, HTCS = { type = "Park", sigma_dash = 3.0e-17 } }
 }
 
 mechanism{
    'O2 ~~ ( O2 ) : V-T',
-   -- Ibraguimova O2+O2
-   rt={'PolyFit', type=2, a = 8.8e-14, b = 172.7, thetav = 2238.0, T_high=6000.0, polybase=10.0, coeff={-31307.9, 6600.9, -407.1, 1.11},T_norm=1.0,T_pow=-1.0/3.0 }
+   rt={'Millikan-White:HTC', a=138, b=0.03, HTCS = { type = "Park", sigma_dash = 3.0e-17 } }
 }
