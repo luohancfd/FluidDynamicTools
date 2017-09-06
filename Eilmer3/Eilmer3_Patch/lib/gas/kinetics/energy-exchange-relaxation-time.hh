@@ -50,6 +50,26 @@ private:
     { return 0.0; }
 };
 
+class VT_PolyFit : public Relaxation_time {
+public:
+    VT_PolyFit(lua_State *L, int ip, int iq, int itrans);
+
+    ~VT_PolyFit();
+private:
+    int ip_, iq_, type_;
+    double M_p_, M_q_;
+    double theta_, polybase_;
+    int iT_,n_poly_;
+    std::vector<double> c_;
+    double mu_;
+    double T_high_,T_norm_,T_pow_,prescale_;
+    double a_,b_;
+    
+    double specific_relaxation_time(Gas_data &Q, std::vector<double> &molef);
+    double specific_transition_probability(Gas_data &Q, std::vector<double> &molef)
+    { return 0.0; }
+};
+
 class VT_LandauTeller_cf : public Relaxation_time {
 public:
     VT_LandauTeller_cf(lua_State *L, int ip, int iq, int itrans);
