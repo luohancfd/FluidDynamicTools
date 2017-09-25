@@ -247,8 +247,8 @@ INTEGER, ALLOCATABLE, DIMENSION(:,:,:) :: ISPVM,NEX,IRCD,JREA,NEVIB
 INTEGER, ALLOCATABLE, DIMENSION(:,:,:,:) :: ISPEX
 INTEGER, ALLOCATABLE, DIMENSION(:,:,:,:,:) :: NPVIB  !--isebasti: UVFX,UFND,UFTMP,UVMP,FRTMP,IDL,CPER,NPVIB,FVIB,FPTEM,ITMAX included
 INTEGER :: IMF
-INTEGER, ALLOCATABLE, DIMENSION(:) :: MFTYPE
-REAL(KIND=8),ALLOCATABLE,DIMENSION(:) :: MFALPHA
+INTEGER, ALLOCATABLE, DIMENSION(:) :: NMFANG
+REAL(KIND=8),ALLOCATABLE,DIMENSION(:) :: MFALPHA,MFALPHA2
 REAL(8) :: NMFER0(1000), NMFET0(1000), NMFEV0(0:100)
 REAL(8) :: NMFER(1000),  NMFET(1000),  NMFEV(0:100)
 REAL(8) :: NMFERR(1000), NMFETR(1000), NMFEVR(0:100)
@@ -397,7 +397,7 @@ REAL(KIND=8) :: FTMP0,FVTMP0
 !--TREACG(N,L) the total number of species L gained from reaction type N=1 for dissociation, 2 for recombination, 3 for forward exchange, 4 for reverse exchange
 !--TREACL(N,L) the total number of species L lost from reaction type N=1 for dissociation, 2 for recombination, 3 for forward exchange, 4 for reverse exchange
 !--IMF only applied to Reaction using TCE model, 0 for TCE, 1 for MC-MF, 2 for P-MF
-!--MFTYPE = 1 for atom-diatom = 2 for diatom-diatom
+!--NMFANG = number of angle to sample for MF model, 4 for atom-diatom,  8 for diatom-diatom
 !--MFALPHA the alpha constant for MF model
 END MODULE GAS
 !
@@ -1337,7 +1337,7 @@ ENDIF
 !
 !-- Allocate variables related to MF model
 IF (MNRE > 0 .AND. IMF > 0) THEN
-  ALLOCATE(MFTYPE(MNRE), MFALPHA(MNRE), STAT = ERROR)
+  ALLOCATE(NMFANG(MNRE), MFALPHA(MNRE), MFALPHA2(MNRE), STAT = ERROR)
   IF (ERROR /= 0) THEN
     WRITE(*,*) 'PROGRAM COULD NOT ALLOCATE SPACE FOR MF RELATED VARIBALES', ERROR
     STOP
@@ -4317,6 +4317,21 @@ IF (JCD == 0 .AND. IRM == 140) THEN
 END IF
 !--------------------------------------------------------------
 !
+IF (JCD == 0 .AND. IRM == 141) THEN
+!--REACTION 140 IS N2+N2>N2+N+N (from Bender data)
+  LE(J)=1
+  ME(J)=1
+  KP(J)=2
+  LP(J)=2
+  MP(J)=1
+  CI(J)=VDC
+  AE(J)=117000.d0*BOLTZ         !from AHO model
+  AC(J)=4.5d-6*1.0d-6        ! fit from Jaffe data
+  BC(J)=-0.675
+  ER(J)=-AE(J)
+END IF
+!--------------------------------------------------------------
+!
 IF (JCD == 0 .AND. IRM == 150) THEN
 !--REACTION 150 IS O2+O>O+O+O (from QCT data)
   LE(J)=3
@@ -4348,9 +4363,12 @@ IF (JCD == 0 .AND. IRM == 160) THEN
   LP(J)=4
   MP(J)=3
   CI(J)=VDC
-  AE(J)=5.21275d0*EVOLT           !from AHO model
-  AC(J)=1.9337d22/(AVOG*1000.d0)  !AC and BC from park1990
-  BC(J)=-1.7334d0
+  !AE(J)=5.21275d0*EVOLT           !from AHO model
+  !AC(J)=1.9337d22/(AVOG*1000.d0)  !AC and BC from park1990
+  !BC(J)=-1.7334d0
+  AE(J) = 59500.d0*BOLTZ   !Han use park rate
+  AC(J) = 2.0d21/(AVOG*1000.d0)
+  BC(J) = -1.5d0
   IF (JRATE == 1) THEN
     IF (CI(J) < 0.) THEN
       AC(J)=9.3069d19/(AVOG*1000.d0) !TCE-corrected
@@ -4360,7 +4378,8 @@ IF (JCD == 0 .AND. IRM == 160) THEN
       BC(J)=-1.1919d0
     END IF
   END IF
-  ER(J)=-8.276d-19 !based on heat of formation !-5.21275d0*EVOLT !from AHO model
+  !ER(J)=-8.276d-19 !based on heat of formation !-5.21275d0*EVOLT !from AHO model
+  ER(J) = -AE(J)
 END IF
 !
 IF (JCD == 0 .AND. IRM == 170) THEN
@@ -5353,7 +5372,7 @@ IF (ERROR /= 0) THEN
 ENDIF
 !
 IF (MNRE > 0 .AND. IMF > 0) THEN
-  ALLOCATE(MFTYPE(MNRE), MFALPHA(MNRE), STAT = ERROR)
+  ALLOCATE(NMFANG(MNRE), MFALPHA(MNRE), MFALPHA2(MNRE), STAT = ERROR)
 ENDIF
 
 IF (ERROR /= 0) THEN
@@ -5376,7 +5395,7 @@ READ (7) AC,AE,AVDTM,BC,BOLTZ,EVOLT,CCELL,CELL,CI,CLSEP,COLLS, &
          TREACG,TREACL,TOUT,TPDTM,TREF,TSAMP,TSURF,VAR,VARS,VARSP,VELOB,VFX,VFY,UVFX,UFND,UFTMP,UVMP,VMP, &
          VMPM,VNMAX,VSURF,WCOLLS,WFM,XB,XREM,XVELS,YVELS,TNEX,NEVIB,FEVIB,QCTMODEL,IVMODEL,VIBEN,IGS,AMEG,ZCHECK,EVREM
 !--isebasti: CST,BINS,BIN,PDFS,PDF,UVFX,UFND,UFTMP,UVMP,IDL,CPER,DPER,ENERS,ENERS0,IREV,NPVIB,FPVIB,FPTEMP included
-READ (7) MFTYPE,MFALPHA
+READ (7) NMFANG,MFALPHA, MFALPHA2
 CLOSE(7)
 !
 IF (ZCHECK /= 1234567) THEN
@@ -5424,7 +5443,7 @@ WRITE (7)AC,AE,AVDTM,BC,BOLTZ,EVOLT,CCELL,CELL,CI,CLSEP,COLLS, &
          TREACG,TREACL,TOUT,TPDTM,TREF,TSAMP,TSURF,VAR,VARS,VARSP,VELOB,VFX,VFY,UVFX,UFND,UFTMP,UVMP,VMP, &
          VMPM,VNMAX,VSURF,WCOLLS,WFM,XB,XREM,XVELS,YVELS,TNEX,NEVIB,FEVIB,QCTMODEL,IVMODEL,VIBEN,IGS,AMEG,ZCHECK,EVREM
 !--isebasti: CST,BINS,BIN,PDFS,PDF,UVFX,IDL,CPER,DPER,ENERS,ENERS0,IREV,NPVIB,FPVIB,FPTEMP,UVFX,UFND,UFTMP,UVMP included
-WRITE(7) MFTYPE,MFALPHA
+WRITE(7) NMFANG,MFALPHA, MFALPHA2
 CLOSE(7)
 !
 WRITE (9,*) 'Restart files written'
@@ -5709,7 +5728,7 @@ END IF
 !
 IF (MNRE > 0) THEN
   REA=0.; IREA=0; NREA=0; JREA=0; NRSP=0; IRCD=0 ; REAC=0.
-  MFALPHA = 0.;  MFTYPE = 1; EVREM = 0.
+  MFALPHA = 0.; MFALPHA2=0.; NMFANG = 4; EVREM = 0.
 !
   DO  N=1,MNRE
     L=LE(N)
@@ -5821,11 +5840,16 @@ DO K=1,MNRE
     IF (IMF .ne. 0) THEN  !pre set for Macheret Fridman model
       ! LS is always the one to be dissociated
       IF (ISPV(MS) == 1)THEN
-        MFTYPE(K) = 1
+        NMFANG(K) = 8
         MFALPHA(K) = (SP(5,LS) / (SP(5,LS) + SP(5,MS)))**2
-      ELSE
-        MFTYPE(K) = 2
+        MFALPHA2(K) = DSQRT(1.0/(1.0d0/DSQRT(MFALPHA(K))-1.0d0))
+      ELSEIF (ISPV(MS) == 0) THEN !MS is an atom
+        NMFANG(K) = 4
         MFALPHA(K) = (SP(5,LS)/(SP(5,LS)+2.0d0*SP(5,MS)))**2
+        MFALPHA2(K) = DSQRT(1.0/(1.0d0/DSQRT(MFALPHA(K))-1.0d0))
+      ELSE
+        WRITE(*,*) "Reaction ",K," is not suppoted for MF model"
+        STOP
       ENDIF
     END IF
   END IF
@@ -8010,7 +8034,7 @@ REAL(KIND=8) :: A,B,ECT,ECR,ECV,EC,THBCELL,WF,PXSECTION,VR,VRR,RML,RMM,ECM,ECN,R
                 VRC(3),VCM(3),SXSECTION,RXSECTION(MNRE),STER(MNRE),ECA(MNRE),CF,VRCP(3),TVAR(7,MNRE),PROB,CVR,&
                 ALPHA1,ALPHA2,EA,CC,DD
 REAL(KIND=8),ALLOCATABLE :: VEC_I(:),VEC_J(:),VALUES(:),ARRAY_TEMP(:,:)
-REAL(KIND=8) :: MFANG(9),MFF,MFV1,MFV2,MFR1,MFR2,MFDSTAR
+REAL(KIND=8) :: MFANG(8),MFF,MFV1,MFV2,MFR1,MFR2,MFDSTAR
 !
 !--A,B,C working variables
 !--J,K,KK,MK,KA,KAA,MKK,JR,KR,JS,KV,IA working integers
@@ -8231,16 +8255,27 @@ IF (NRE > 0) THEN
               END IF
               MFDSTAR = REA(2,K) - MFR1 + 2.0d0*MFR1**1.5d0/(3.0d0 * dsqrt(3.0d0*2.0d0*REA(2,K)))
               IF ( IMF == 1 ) THEN
-               !IF (MFTYPE(K) == 1)THEN
-                DO II = 1,4
+                ! atom-diatom: gamma1, gamma2, theta, phi
+                ! diatom-diatom: gamma1, gamma2, theta, phi0, phi1, beta1, beta2, delta
+                DO II = 1,NMFANG(K)
                   CALL ZGF(MFANG(II),IDT)
-                  IF (IREAC == 2)THEN
-                     JJ = FLOOR(MFANG(II)*180.0d0)+1
-                     JJ = MIN(JJ,180)
-       !              NCANGLE(II,JJ) = NCANGLE(II,JJ)+1.d0
-                  END IF
                   MFANG(II) = MFANG(II)*PI
                 END DO
+
+                IF ( NMFANG(K) == 8) THEN
+                  MFANG(3) = MFANG(3)*2.0d0
+                  MFANG(7) = MFANG(7)*2.0d0
+                  MFANG(8) = MFANG(8)*2.0d0
+                END IF
+                
+                ! log angles for binning
+                IF (IREAC == 2)THEN
+                  DO II = 1,NMFANG(K)
+                    JJ = FLOOR(MFANG(II)*180.0d0)+1
+                    JJ = MIN(JJ,180)
+       !              NCANGLE(II,JJ) = NCANGLE(II,JJ)+1.d0
+                  END DO
+                END IF
                 
                 AA = MFDSTAR - MFV1*DSIN(MFANG(4))**2
                 IF (AA .LE. 0.0D0 )THEN
@@ -8248,8 +8283,16 @@ IF (NRE > 0) THEN
                 ELSE 
                   MFF = DSQRT(AA)+DSQRT(MFV1)*DCOS(MFANG(4))
                   MFF = MFF/((1.0D0-DSQRT(MFALPHA(K)))*DCOS(MFANG(3)))-DSQRT(MFV1)*DCOS(MFANG(3))*DCOS(MFANG(4))
+                  IF (NMFANG(K) == 8) THEN
+                    CC = DCOS(MFANG(8))*DCOS(MFANG(7))*DSIN(MFANG(6))+DSIN(MFANG(8))*DSIN(MFANG(7))
+                    DD = DCOS(MFANG(5))*DCOS(MFANG(6))*DCOS(MFANG(7))
+                    MFF = MFF - MFALPHA2(K)*(DSQRT(MFR2)*CC-DSQRT(MFV2)*DD)
+                  END IF
                   MFF = (MFF/DCOS(MFANG(1))/DCOS(MFANG(2)))**2 
-                  MFF = MFF*(1.0D0-DSQRT(MFALPHA(K)))/(1.0D0+DSQRT(MFALPHA(K)))
+                  MFF = MFF*(1.0D0-DSQRT(MFALPHA(K)))
+                  IF (NMFANG(K) == 4) THEN
+                    MFF = MFF/(1.0D0+DSQRT(MFALPHA(K)))
+                  END IF
                 END IF
                 IF (ECT >= MFF) THEN
                   STER(J) = 1.0D0
