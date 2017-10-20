@@ -246,7 +246,7 @@ INTEGER, ALLOCATABLE, DIMENSION(:,:) :: ISPR,IREA,NREA,NRSP,LIS,LRS,ISRCD,ISPRC,
 INTEGER, ALLOCATABLE, DIMENSION(:,:,:) :: ISPVM,NEX,IRCD,JREA,NEVIB
 INTEGER, ALLOCATABLE, DIMENSION(:,:,:,:) :: ISPEX
 INTEGER, ALLOCATABLE, DIMENSION(:,:,:,:,:) :: NPVIB  !--isebasti: UVFX,UFND,UFTMP,UVMP,FRTMP,IDL,CPER,NPVIB,FVIB,FPTEM,ITMAX included
-INTEGER :: IMF
+INTEGER :: IMF,IMFS, nonVHS
 INTEGER, ALLOCATABLE, DIMENSION(:) :: NMFANG
 REAL(KIND=8),ALLOCATABLE,DIMENSION(:) :: MFALPHA,MFALPHA2
 REAL(8) :: NMFER0(1000), NMFET0(1000), NMFEV0(0:100)
@@ -396,7 +396,8 @@ REAL(KIND=8) :: FTMP0,FVTMP0
 !--CR(L) collision rate of species L
 !--TREACG(N,L) the total number of species L gained from reaction type N=1 for dissociation, 2 for recombination, 3 for forward exchange, 4 for reverse exchange
 !--TREACL(N,L) the total number of species L lost from reaction type N=1 for dissociation, 2 for recombination, 3 for forward exchange, 4 for reverse exchange
-!--IMF only applied to Reaction using TCE model, 0 for TCE, 1 for MC-MF, 2 for P-MF
+!--IMF only applied when QCTMODEL = 1, 0 for TCE, 1 for MC-MF, 2 for P-MF
+!--IMFS = 0, not sample anything related to MF model =1 sample
 !--NMFANG = number of angle to sample for MF model, 4 for atom-diatom,  8 for diatom-diatom
 !--MFALPHA the alpha constant for MF model
 END MODULE GAS
@@ -680,6 +681,8 @@ IREAC=2      !0 reaction on and rate sampling off (standard case)
 !             1 reaction on and rate sampling on (samples only NSPDF cell, requires ISF>0)
 !             2 reaction off and rate sampling on (called by run_ireac_ds1v.sh, samples only NSPDF cell, requires ISF=0 & NSEED>= 0)
 QCTMODEL=1   !0 for LB+SHO vibrational levels, 1 for TCE+LB+AHO, 2 MEQCT+AHO (for O2+O and N2+O)
+IMFS = 1     ! 0 for not sampling 1 for sampling
+nonVHS = 1   !1 use nonVHS model for N2+O, 0 use VHS model everywhere
 !
 !--variables for vibratioal sampling
 ALLOCATE (NSVEC(NSCELLS))
@@ -1228,6 +1231,7 @@ ELSE
   WRITE(3,*) ' ERROR: Wrong input for Macheret-Fridman model',IMF
   stop
 ENDIF
+IF ( IMF .EQ. 0 ) IMFS = 0
 IF (QCTMODEL == 2 .AND. IMF .NE. 0)THEN
   WRITE(3,*) ' WARNING: MF MODEL BE NOT BE USED!'
 ENDIF
@@ -1572,6 +1576,11 @@ DO N=1,NCCELLS
   CCELL(2,N)=RANF
   CCELL(5,N)=0.D00
 END DO
+
+!-- Han: enlarge CCELL(4) in case of error
+IF (nonVHS == 1) THEN
+  CCELL(4,:) = CCELL(4,:)*1.2D0
+END IF
 !
 !--set the entry quantities
 !
@@ -5329,7 +5338,7 @@ INTEGER :: ZCHECK
 !
 101 CONTINUE
 OPEN (7,FILE='PARAMETERS.DAT',FORM='UNFORMATTED',ERR=101) !--isebasti: replace binary by unformatted
-READ (7) NCCELLS,NCELLS,MMRM,MMVM,MNM,MNRE,MNSR,MSP,MTBP,ILEVEL,MDIV,IRECOM,MMEX,MEX,ISF,NBINS,NSNAP,ITMAX,IMF !--isebasti: included ISF,NBINS,NSAP
+READ (7) NCCELLS,NCELLS,MMRM,MMVM,MNM,MNRE,MNSR,MSP,MTBP,ILEVEL,MDIV,IRECOM,MMEX,MEX,ISF,NBINS,NSNAP,ITMAX,IMF, IMFS !--isebasti: included ISF,NBINS,NSAP
 CLOSE(7)
 !
 IF (MMVM > 0) THEN
@@ -5426,7 +5435,7 @@ ZCHECK=1234567
 !
 101 CONTINUE
 OPEN (7,FILE='PARAMETERS.DAT',FORM='UNFORMATTED',ERR=101) !--isebasti: replace binary by unformatted
-WRITE (7) NCCELLS,NCELLS,MMRM,MMVM,MNM,MNRE,MNSR,MSP,MTBP,ILEVEL,MDIV,IRECOM,MMEX,MEX,ISF,NBINS,NSNAP,ITMAX,IMF !--isebasti: included ISF,NBINS,NSAP,ITMAX
+WRITE (7) NCCELLS,NCELLS,MMRM,MMVM,MNM,MNRE,MNSR,MSP,MTBP,ILEVEL,MDIV,IRECOM,MMEX,MEX,ISF,NBINS,NSNAP,ITMAX,IMF,IMFS !--isebasti: included ISF,NBINS,NSAP,ITMAX
 CLOSE(7)
 !
 102 CONTINUE
@@ -6662,6 +6671,11 @@ TNEX=0.D00    !--isebasti: uncommented
  CS=0. ; CSS=0. ; CSSS=0. ; CST=0.d0; BINS=0.d0; BIN=0.d0 !--isebasti: CST,BINS,BIN included
  CST(0,:)=1.d0; BINS(0,:,:)=1.d0; BIN(0,:)=1.d0           !--isebasti: to avoid dividing by zero
  CCELL(4,:)=SQRT(2.D00*BOLTZ*VAR(8,:)/SP(5,3))*SPM(2,3,3) !--isebasti: included
+
+IF (nonVHS == 1)THEN
+  CCELL(4,:) = CCELL(4,:)*1.2d0
+ENDIF
+
 !
 REAC=0.       !--isebasti: uncommented
 SREAC=0.      !--isebasti: uncommented
@@ -6677,7 +6691,7 @@ EVREM = 0.0d0
 IF (MNRE > 0) NPVIB=0 !bin counter
 IF (MNRE > 0) NEVIB=0 !bin counter
 !
-IF (MNRE > 0  .and. IMF > 0 .and. IREAC == 2) THEN
+IF (MNRE > 0  .and. IMF > 0 .and. IREAC == 2 .and. IMFS == 1) THEN
    NMFEV0 = 0.; NMFER0 = 0.; NMFET0 = 0.
    NMFEV = 0.; NMFER = 0.; NMFET = 0.
    NMFEVR = 0.; NMFERR = 0.; NMFETR = 0.
@@ -7322,7 +7336,7 @@ END IF
 7788 FORMAT('ZONE I = ',i6,', T = "REAC',I2,'"')
 7790 FORMAT('ZONE I = ',i6,', J = ',i6,', T= "REAC',I2,'", DATAPACKING = POINT')
 7789 FORMAT(F13.8,3X,10(G13.6,3X))
-IF (IREAC == 2 .AND. IMF > 0 .AND. MNRE == 1) THEN
+IF (IREAC == 2 .AND. IMF > 0 .AND. MNRE == 1 .AND. IMFS == 1) THEN
   ! -- Distribution of Et and Er
   OPEN (3,FILE='IMF_ETR.DAT')
   WRITE(3,*) 'VARIABLES = "E/kT","ET0_N","ET0_P",',&
@@ -8753,7 +8767,7 @@ IF (IKA > 0) THEN
     !$omp atomic
     NPVIB(1,IKA,3,KV,K)=NPVIB(1,IKA,3,KV,K)+1
     !$omp critical 
-    IF (IREAC == 2 .and. NPM == 3 .and. IMF > 0 .and. KV == 1) THEN
+    IF (IREAC == 2 .and. NPM == 3 .and. IMF > 0 .and. KV == 1 .and. IMFS == 1) THEN
       IF (IVDC == 1) THEN
         II = FLOOR(ECR1/BOLTZ/FTMP0/0.01D0)+1
       ELSE
@@ -9090,6 +9104,8 @@ DO N=1,NCELLS
     CCELL(5,NCCELLS)=FTIME
   END DO
 END DO
+
+IF (nonVHS == 1) CCELL(4,:) = CCELL(4,:)*1.2D0
 !
 !--assign the molecules to the cells
 !
@@ -9289,7 +9305,7 @@ REAL(KIND=8) :: A,AA,AAA,AB,B,BB,BBB,ASEL,DTC,SEP,VRI,VR,VRR,ECT,EVIB,ECC,ZV,COL
                 QNU,A1,A2,B1,B2,C1,C2,ET,EROT,EV,SIGMA_REF,EV_POST,SUMF,E,F,EL,ED,EF,S !ME-QCT variables
 REAL(KIND=8),DIMENSION(0:100) :: VTXSECTION
 REAL(KIND=8),DIMENSION(3) :: VRC,VCM,VRCP,VRCT
-REAL(KIND=8) :: ECR
+REAL(KIND=8) :: ECR,EVIBEV,CTOT(8)
 INTEGER :: IETDX,IERDX,IEVDX
 logical :: IREACSP
 !
@@ -9324,6 +9340,17 @@ logical :: IREACSP
 !--EA activation energy
 !
 NUMEXR=0
+IF (nonVHS == 1) THEN
+  CTOT(1) = 46.039504155886434  ! A^2
+  CTOT(2) = 0.051004420857885
+  CTOT(3) = -0.584551057667247
+  CTOT(4) = -0.002969283806997
+  CTOT(5) = 0.281618756125794 
+  CTOT(6) = 0.030181202283512
+  CTOT(7) = -0.436592532266083
+  CTOT(8) = 0.152224780739684
+END IF
+
 !
 !$omp parallel &
 !$omp private(idt) & !always =0 outside parallel regions
@@ -9333,13 +9360,14 @@ NUMEXR=0
 !$omp private(tcolt,kt,aa,bb,kvv,ji,lsi,ivm,nmc,nvm,ectot,psf,jj,ea,den,iax,jx,ika,npm,nstep,it,dt) &
 !$omp private(SXSECTION,RXSECTION,VTXSECTION,TXSECTION) &
 !$omp private(QNU,A1,A2,B1,B2,C1,C2,E,F,EL,ED,ET,EROT,EV,SIGMA_REF,EV_POST,SUMF,EF,S) &
-!$omp private(ECR)&
+!$omp private(ECR,EVIBEV)&
 !$omp reduction(+:ndissoc,ndissl,trecomb,nrecomb,treacl,treacg,tnex,tforex,trevex) & !Q-K
 !$omp reduction(+:totdup,totcol,pcolls,tcol,cscr,colls,wcolls,clsep,reac,npvib) &
 !$omp reduction(+:NMFET0,NMFER0,NMFEV0,NMFVT0,NMFEV,NMFET,NMFER,NMFVT) &
 !$omp private(IETDX,IEVDX,IERDX,IREACSP)
 !$    idt=omp_get_thread_num()  !thread id
 !$omp do !schedule (dynamic,NCCELLS/32)
+
 DO N=1,NCCELLS
 !
   IF (FTIME-CCELL(5,N) > CCELL(3,N)) THEN
@@ -9579,7 +9607,7 @@ DO N=1,NCCELLS
 !--Calculate the total scattering (VHS) cross-section
             CVR=VR*SPM(2,LS,MS)*((2.D00*BOLTZ*SPM(5,LS,MS)/(SPM(1,LS,MS)*VRR))**(SPM(3,LS,MS)-0.5D00))*SPM(6,LS,MS)
             SXSECTION=CVR*1d20/VR !in Angstrons^2
-!
+            
 !--Calculate the reaction cross-sections
           !  RXSECTION=0.d0
           !  IF (MNRE>0) THEN
@@ -9614,15 +9642,35 @@ DO N=1,NCCELLS
             ELSE IF ((ISPV(MS) == 1) .and. (ISPV(LS) == 0))THEN
               IVP = IPVIB(1,M)
               J = MS
-            ELSE
-              IVP = -1  !this shouldn't happen
-              write(*,*) "Find an abnormal collision"
+            ELSE ! both are diatom, select the one with higher vibrational energy to be dissociated
+              IF (IPVIB(1,L) >= IPVIB(1,M)) THEN
+                J = LS
+                IVP = IPVIB(1,L)
+              ELSE
+                J = MS
+                IVP = IPVIB(1,M)
+              ENDIF
             END IF
             IF (J > 0)THEN
               CALL VIB_ENERGY(EVIB,IVP,1,J)
             END IF
 
-            IF ((IREAC .eq. 2) .and. (IMF .gt. 0) .and. (MNRE == 1)) THEN
+            ! Han: add nonVHS cross section model for N2+O
+            IF (nonVHS == 1) THEN
+              IF ((LS == 1 .and. MS == 4) .or. (LS ==4 .and. MS == 1)) THEN
+                EVIBEV = EVIB/EVOLT
+                SXSECTION = DLOG(ET) - (CTOT(8) + EVIBEV*(CTOT(7) + EVIBEV*CTOT(6)))
+                SXSECTION = (CTOT(3)+CTOT(4)*EVIBEV*EVIBEV)*DTANH(CTOT(5)*SXSECTION) + CTOT(2)*EVIBEV
+                SXSECTION = CTOT(1)*DEXP(SXSECTION)
+                CVR = SXSECTION/1.0d20*VR
+              END IF
+            END IF
+
+
+
+            ! Sample rotational, translational and vibrational energy 
+            ! of colliding pairs that are selected to check collision
+            IF ((IREAC .eq. 2) .and. (IMF .gt. 0) .and. (MNRE == 1) .and. (IMFS == 1)) THEN
               IERDX = FLOOR(ECR/BOLTZ/FTMP0/0.01D00)+1
               IERDX = MIN(IERDX,1000)
               NMFER0(IERDX) = NMFER0(IERDX) + 1.0D0
@@ -9643,6 +9691,7 @@ DO N=1,NCCELLS
               END IF
             END IF
 !
+            ! QCT VT cross sections
             VTXSECTION=0.d0
             IF (QCTMODEL==2.AND.GASCODE==8.AND.J>0) THEN
 !
@@ -9724,10 +9773,17 @@ DO N=1,NCCELLS
             TXSECTION=DMAX1(SXSECTION,SUM(VTXSECTION(:)))      !trick
             !TXSECTION=DMAX1(SXSECTION,SUM(RXSECTION(:)))
             !TXSECTION=DMAX1(TXSECTION,SUM(VTXSECTION(:)))     !total cross-section in Angstrons^2
-            IF (TXSECTION*VRI/1.d20 > CCELL(4,N)) CCELL(4,N)=TXSECTION*VRI/1.d20 !update maximum value in (m2)*(m/s)
+
+            IF (TXSECTION*VRI/1.d20 > CCELL(4,N)) THEN
+              !IF (((LS==1.AND.MS==4).OR.(LS==4.AND.MS==1)) .and. nonVHS ==1) THEN
+                !WRITE(*,*) TXSECTION*VRI/1.d20/CCELL(4,N)
+              !ENDIF
+              CCELL(4,N)=TXSECTION*VRI/1.d20 !update maximum value in (m2)*(m/s)
+            END IF
 !
 !--NTC approach based on total cross-section
             PROB=(TXSECTION*VRI/1.d20)/CCELL(4,N)
+
             CALL ZGF(RANF,IDT)
             IF (PROB > RANF) THEN !collision occurs
 !
@@ -9752,7 +9808,8 @@ DO N=1,NCCELLS
 !
 !--Sample internal states and energy
 !-------------------------------------------------
-              IF ((IREAC .eq. 2) .and. (IMF .gt. 0) .and. (MNRE == 1)) THEN
+              ! sample t,r,v energy for particles that collide
+              IF ((IREAC .eq. 2) .and. (IMF .gt. 0) .and. (MNRE == 1) .and. (IMFS == 1)) THEN
                 NMFER(IERDX) = NMFER(IERDX) + 1.0D0
                 NMFET(IETDX) = NMFET(IETDX) + 1.0D0
                 IF (IEVDX >= 0 )THEN
@@ -10109,10 +10166,18 @@ DO N=1,NCCELLS
 !--calculate new velocities
 !-------------------------------------------------
               VRC(1:3)=PV(1:3,L)-PV(1:3,M)
-              IF (JX == 2) THEN
-                CALL VHSS(LS,MS,VR,VRC,VRCP,IDT)
-              ELSE
-                CALL VHSS(IREA(1,IKA),IREA(2,IKA),VR,VRC,VRCP,IDT)
+              IF (((LS == 1 .AND. MS ==4) .OR. (LS ==4 .AND. MS ==1)) .AND. nonVHS ==1)THEN
+                IF (JX == 2) THEN
+                  CALL NVHSS(LS,MS,VR,VRC,VRCP,IDT)
+                ELSE
+                  CALL NVHSS(IREA(1,IKA),IREA(2,IKA),VR,VRC,VRCP,IDT)
+                END IF
+              ELSE 
+                IF (JX == 2) THEN
+                  CALL VHSS(LS,MS,VR,VRC,VRCP,IDT)
+                ELSE
+                  CALL VHSS(IREA(1,IKA),IREA(2,IKA),VR,VRC,VRCP,IDT)
+                END IF
               END IF
               PV(1:3,L)=VCM(1:3)+RMM*VRCP(1:3)
               PV(1:3,M)=VCM(1:3)-RML*VRCP(1:3)
@@ -10226,6 +10291,69 @@ END SUBROUTINE VHSS
 !
 !*****************************************************************************
 !
+SUBROUTINE NVHSS(LS,MS,VR,VRC,VRCP,IDT)
+!
+! -- calculate new scattering angles based on non VHS model
+! -- only for N2+O collision
+!
+USE GAS
+USE CALC
+USE OMP_LIB
+!
+IMPLICIT NONE
+!
+INTEGER :: LS,MS,IDT
+REAL(KIND=8) :: B,VR,VRC(3),VRCP(3),RANF,C,D
+REAL(8) :: COF(6), CTOT(8), BMAX, ET, RMASS, EVIBEV,C1,C2,CHI,CCHI,SCHI
+REAL(8) :: EPSI,CEPSI,SEPSI
+
+COF(1) = 1.783071942310433  
+COF(2) = 0.016980219000487/1000.0D0
+COF(3) = 2.846002511624816  
+COF(4) = 0.294962630947434/1000.0D0 
+COF(5) = 2.189954664950628  
+COF(6) = 0.078701684994745
+
+CTOT(1) = 46.039504155886434  ! A^2
+CTOT(2) = 0.051004420857885
+CTOT(3) = -0.584551057667247
+CTOT(4) = -0.002969283806997
+CTOT(5) = 0.281618756125794 
+CTOT(6) = 0.030181202283512
+CTOT(7) = -0.436592532266083
+CTOT(8) = 0.152224780739684
+
+ET = 0.5d0*SPM(1,LS,MS)*VR*VR/EVOLT
+EVIBEV =  0.063577602025999  !Erv(v=0,J=0) for N2
+BMAX = DLOG(ET) - (CTOT(8) + EVIBEV*(CTOT(7) + EVIBEV*CTOT(6)))
+BMAX = (CTOT(3)+CTOT(4)*EVIBEV*EVIBEV)*DTANH(CTOT(5)*BMAX) + CTOT(2)*EVIBEV
+BMAX = CTOT(1)*DEXP(BMAX)
+BMAX = DSQRT(BMAX)/SPI
+
+CALL ZGF(RANF,IDT)
+B = DSQRT(RANF)*BMAX  !sampled impact parameter
+C1 = COF(3)*DEXP(-COF(4)*VR) +COF(5)*DEXP(-COF(6)*EVIBEV)
+C2 = COF(1) + COF(2)*VR
+CHI = C2*(1.0d0 - 1.0d0/(C1+DLOG(2.0D0))*(B-DLOG(DCOSH(B-C1))))
+! this two condition shouldn't occur, for safety we set it here
+IF (CHI > PI) CHI = PI
+IF (CHI < 0) CHI = 0.0D0
+CCHI = DCOS(CHI); SCHI = DSIN(CHI)
+
+CALL ZGF(RANF,IDT)
+EPSI = RANF*2.0D0*PI
+CEPSI = DCOS(EPSI)
+SEPSI = DSIN(EPSI)
+
+D=DSQRT(VRC(2)**2+VRC(3)**2)
+VRCP(1) = CCHI*VRC(1) + SCHI*SEPSI*D
+VRCP(2) = CCHI*VRC(2) + SCHI*(VR*VRC(3)*CEPSI-VRC(1)*VRC(2)*SEPSI)/D
+VRCP(3) = CCHI*VRC(3) - SCHI*(VR*VRC(2)*CEPSI+VRC(1)*VRC(3)*SEPSI)/D
+
+RETURN
+END SUBROUTINE NVHSS
+!
+!*****************************************************************************
 SUBROUTINE THERMOPHORETIC
 !
 !--author: isebasti
