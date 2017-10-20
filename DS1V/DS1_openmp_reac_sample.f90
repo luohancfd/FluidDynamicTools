@@ -9659,6 +9659,7 @@ DO N=1,NCCELLS
             IF (nonVHS == 1) THEN
               IF ((LS == 1 .and. MS == 4) .or. (LS ==4 .and. MS == 1)) THEN
                 EVIBEV = EVIB/EVOLT
+                IF (EVIBEV >= 6.9d0  ) EVIBEV = 6.9d0  ! extrapolate 
                 SXSECTION = DLOG(ET) - (CTOT(8) + EVIBEV*(CTOT(7) + EVIBEV*CTOT(6)))
                 SXSECTION = (CTOT(3)+CTOT(4)*EVIBEV*EVIBEV)*DTANH(CTOT(5)*SXSECTION) + CTOT(2)*EVIBEV
                 SXSECTION = CTOT(1)*DEXP(SXSECTION)
@@ -10165,7 +10166,10 @@ DO N=1,NCCELLS
 !
 !--calculate new velocities
 !-------------------------------------------------
-              VRC(1:3)=PV(1:3,L)-PV(1:3,M)
+              VRC(1:3)=PV(1:3,L)-PV(1:3,M) ! intial relative velocity vector
+              VRI = DSQRT(VRC(1)**2 + VRC(2)**2 + VRC(3)**2)
+              VRC = VRC/VRI*VR             ! rescale to match current magnitude
+              
               IF (((LS == 1 .AND. MS ==4) .OR. (LS ==4 .AND. MS ==1)) .AND. nonVHS ==1)THEN
                 IF (JX == 2) THEN
                   CALL NVHSS(LS,MS,VR,VRC,VRCP,IDT)
