@@ -246,10 +246,28 @@ INTEGER, ALLOCATABLE, DIMENSION(:,:) :: ISPR,IREA,NREA,NRSP,LIS,LRS,ISRCD,ISPRC,
 INTEGER, ALLOCATABLE, DIMENSION(:,:,:) :: ISPVM,NEX,IRCD,JREA,NEVIB
 INTEGER, ALLOCATABLE, DIMENSION(:,:,:,:) :: ISPEX
 INTEGER, ALLOCATABLE, DIMENSION(:,:,:,:,:) :: NPVIB  !--isebasti: UVFX,UFND,UFTMP,UVMP,FRTMP,IDL,CPER,NPVIB,FVIB,FPTEM,ITMAX included
-INTEGER :: IMF
-INTEGER, ALLOCATABLE, DIMENSION(:) :: MFTYPE
-REAL(KIND=8),ALLOCATABLE,DIMENSION(:) :: MFALPHA
+INTEGER :: IMF,IMFS, nonVHS,NMFpair=0
+INTEGER, ALLOCATABLE :: NMFANG(:),IMFpair(:,:)
+REAL(8),ALLOCATABLE,DIMENSION(:,:)   :: MFRMASS(:,:),NMFET0,NMFET,NMFETR
+REAL(8),ALLOCATABLE,DIMENSION(:,:,:) :: NMFER0, NMFEV0, NMFER, NMFEV
+REAL(8),ALLOCATABLE,DIMENSION(:,:,:) :: NMFERR, NMFEVR
+REAL(8),ALLOCATABLE,DIMENSION(:,:,:,:) :: NMFVT0, NMFVT,NMFVTR
+!REAL(8)  :: NCANGLE(4,180),NCRANGLE(4,180)
+REAL(KIND=8) :: FTMP0,FVTMP0
+
 !
+!--IMF only applied when QCTMODEL = 1, 0 for TCE, 1 for MC-MF, 2 for P-MF
+!--IMFS = 0, not sample anything related to MF model =1 sample
+!--nonVHS flag to control nonVHS model for N2+O
+!--NMFANG = number of angle to sample for MF model, <8 for atom-diatom, >= 8 for diatom-diatom
+!--NMFpair number of molecular pairs to use MF dissociation model
+!--IMFpair store the index of different molecular pair
+!--MFRMASS store reduced mass
+
+!--NCANGLE sample of angle
+!--NCRANGLE sample of angle which react
+!--NMFVT count of mf Et and Ev
+!--NMFVTR count of MF Et and Ev react
 !--MSP the number of molecular species
 !--MMVM the maximum number of vibrational modes of any species
 !--MEX number of exchange or chain reactions
@@ -385,9 +403,6 @@ REAL(KIND=8),ALLOCATABLE,DIMENSION(:) :: MFALPHA
 !--CR(L) collision rate of species L
 !--TREACG(N,L) the total number of species L gained from reaction type N=1 for dissociation, 2 for recombination, 3 for forward exchange, 4 for reverse exchange
 !--TREACL(N,L) the total number of species L lost from reaction type N=1 for dissociation, 2 for recombination, 3 for forward exchange, 4 for reverse exchange
-!--IMF only applied to Reaction using TCE model, 0 for TCE, 1 for MC-MF, 2 for P-MF
-!--MFTYPE = 1 for atom-diatom = 2 for diatom-diatom
-!--MFALPHA the alpha constant for MF model
 END MODULE GAS
 !
 !********************************************************************
@@ -470,6 +485,7 @@ REAL(KIND=8), ALLOCATABLE, DIMENSION(:) :: COLLS,WCOLLS,CLSEP,REAC,SREAC
 REAL(KIND=8), ALLOCATABLE, DIMENSION(:,:) :: VAR,VARS,CSSS,CST,PDF,BIN !--isebasti:CST,PDF,BIN included
 REAL(KIND=8), ALLOCATABLE, DIMENSION(:,:,:) :: CS,VARSP,PDFS,BINS !--isebasti:PDFS,BINS included
 REAL(KIND=8), ALLOCATABLE, DIMENSION(:,:,:,:) :: CSS
+REAL(KIND=8), ALLOCATABLE, DIMENSION(:) :: EVREM
 !
 !--NSAMP the number of samples
 !--TISAMP the time at which the sampling was last reset
@@ -668,6 +684,9 @@ IREAC=2      !0 reaction on and rate sampling off (standard case)
 !             1 reaction on and rate sampling on (samples only NSPDF cell, requires ISF>0)
 !             2 reaction off and rate sampling on (called by run_ireac_ds1v.sh, samples only NSPDF cell, requires ISF=0 & NSEED>= 0)
 QCTMODEL=1   !0 for LB+SHO vibrational levels, 1 for TCE+LB+AHO, 2 MEQCT+AHO (for O2+O and N2+O)
+IMF = 1      !use MF model
+IMFS = 1     ! 0 for not sampling 1 for sampling
+nonVHS = 0   !1 use nonVHS model for N2+O, 0 use VHS model everywhere
 !
 !--variables for vibratioal sampling
 ALLOCATE (NSVEC(NSCELLS))
@@ -793,6 +812,8 @@ IF (IRUN == 3) THEN
     FRTMP=FTMP(1)
     FVTMP=FVTMP(1)
     TSURF = FTMP
+    FTMP0 = FTMP(1)
+    FVTMP0 = FVTMP(1)
     ! FND=101325.d0/(BOLTZ*FTMP(1))
     !  IF (AE(1) <= 0.) FND=2.5d25*(FTMP/300.d0)  !101325.d0/(BOLTZ*FTMP(1))
   END IF
@@ -1203,7 +1224,10 @@ IF (IRECOM == 1) WRITE (3,*) ' Any recombination reactions are included'
 READ (4,*) IFI !--isebasti: included IFI option
 IF (IFI == 0) WRITE (3,*) ' Forced ignition is not allowed',IFI
 IF (IFI >  0) WRITE (3,*) ' Forced ignition is allowed',IFI
-READ (4,*) IMF !--han: flag to control Macheret-Fridman model
+
+!=================== ALL the following is commented out
+!=== set model in DS1 head region
+!READ (4,*) IMF !--han: flag to control Macheret-Fridman model
 IF (IMF == 0)THEN
   WRITE(3,*) ' Macheret-Fridman model will not be applied anywhere',IMF
 ELSE IF( IMF == 1)THEN
@@ -1214,10 +1238,11 @@ ELSE
   WRITE(3,*) ' ERROR: Wrong input for Macheret-Fridman model',IMF
   stop
 ENDIF
+IF ( IMF .EQ. 0 ) IMFS = 0
 IF (QCTMODEL == 2 .AND. IMF .NE. 0)THEN
   WRITE(3,*) ' WARNING: MF MODEL BE NOT BE USED!'
 ENDIF
-
+!==============================================================
 !
 CLOSE (3)
 CLOSE (4)
@@ -1317,18 +1342,11 @@ ALLOCATE (COLLS(NCELLS),WCOLLS(NCELLS),CLSEP(NCELLS),REAC(MNRE),SREAC(MNSR),VAR(
           VARSP(0:11,NCELLS,MSP),VARS(0:32+MSP,2),CS(0:8+MMVM,NCELLS,MSP),CSS(0:8,2,MSP,2), &  !-isebasti: correcting CS allocation
           CSSS(6,2),CST(0:4,NCELLS),BINS(0:NBINS,5,MSP),BIN(0:NBINS,5),PDFS(0:NBINS,5,MSP),PDF(0:NBINS,5), &
           NDROT(MSP,100),NDVIB(NSCELLS,0:MMVM,MSP,0:100),STAT=ERROR) !--isebasti: CST,PDFS,PDF,BINS,BIN included
+ALLOCATE (EVREM(MNRE),STAT=ERROR)
 IF (ERROR /= 0) THEN
   WRITE (*,*) 'PROGRAM COULD NOT ALLOCATE SPACE FOR SAMPLING ARRAYS',ERROR
 ENDIF
 !
-!-- Allocate variables related to MF model
-IF (MNRE > 0 .AND. IMF > 0) THEN
-  ALLOCATE(MFTYPE(MNRE), MFALPHA(MNRE), STAT = ERROR)
-  IF (ERROR /= 0) THEN
-    WRITE(*,*) 'PROGRAM COULD NOT ALLOCATE SPACE FOR MF RELATED VARIBALES', ERROR
-    STOP
-  ENDIF
-ENDIF
 !
 CALL INITIALISE_SAMPLES
 !
@@ -1417,13 +1435,57 @@ DO L=1,MSP
 END DO
 !
 IF (GASCODE==8) THEN !special code with wysong2014 data for O2-O collisions
-    SPM(3,3,4)=0.75       !omega_ref
-    SPM(4,3,4)=3.442d-10  !d_ref
+    ! O-O2
+    SPM(3,3,4)=0.75d0      !omega_ref
+    SPM(4,3,4)=3.7215d-10  !d_ref
     SPM(5,3,4)=273.d0     !t_ref
-    SPM(3,4,3)=SPM(3,3,4)
-    SPM(4,4,3)=SPM(4,3,4)
-    SPM(5,4,3)=SPM(5,3,4)
+    SPM(2,3,4)=PI*SPM(4,3,4)**2
+    SPM(6,3,4)=1.D00/GAM(2.5D0 - SPM(3,3,4))
+    DO L = 2,6
+      SPM(L,4,3) = SPM(L,3,4)
+    ENDDO
+    
+    ! N2-O2
+    L = 3; M = 1;
+    SPM(3,L,M)=0.7343d0      !omega_ref
+    SPM(4,L,M)=4.0512d-10  !d_ref
+    SPM(5,L,M)=273.d0     !t_ref
+    SPM(2,L,M)=PI*SPM(4,L,M)**2
+    SPM(6,L,M)=1.D00/GAM(2.5D0 - SPM(3,L,M))
+    DO N = 2,6
+      SPM(N,M,L) = SPM(N,L,M)
+    ENDDO
+
+    ! NO-N2
+    L = 1; M = 5;
+    SPM(3,L,M)=0.7292554d0      !omega_ref
+    SPM(4,L,M)=4.34104d-10  !d_ref
+    SPM(5,L,M)=273.d0     !t_ref
+    SPM(2,L,M)=PI*SPM(4,L,M)**2
+    SPM(6,L,M)=1.D00/GAM(2.5D0 - SPM(3,L,M))
+    DO N = 2,6
+      SPM(N,M,L) = SPM(N,L,M)
+    ENDDO
 END IF
+
+!IF (GASCODE == 8 )THEN
+  !SPM(3,3,4) = 0.75d0
+  !SPM(4,3,4) = 9.61877d-10
+  !SPM(5,3,4) = 273.d0
+  !SPM(2,3,4) = PI*SPM(4,3,4)**2
+  !SPM(3,4,3) = SPM(3,3,4)
+  !SPM(4,4,3) = SPM(4,3,4)
+  !SPM(5,4,3) = SPM(5,3,4)
+  !SPM(2,4,3) = SPM(2,4,3)
+
+  !SPM(3,3,3) = 1.678d0
+  !SPM(4,3,3) = 24.926d-10
+  !SPM(5,3,3) = 273.d0
+  !SPM(2,3,3) = PI*SPM(4,3,3)**2
+!END IF
+
+
+
 !
 IF (MNRE > 0) CALL INIT_REAC
 !
@@ -1558,6 +1620,11 @@ DO N=1,NCCELLS
   CCELL(2,N)=RANF
   CCELL(5,N)=0.D00
 END DO
+
+!-- Han: enlarge CCELL(4) in case of error
+IF (nonVHS == 1) THEN
+  CCELL(4,:) = CCELL(4,:)*1.2D0
+END IF
 !
 !--set the entry quantities
 !
@@ -2832,6 +2899,7 @@ IF (JCD == 0) THEN
   IF(IRM == 2) MNRE=34    !Davidenko
   IF(IRM >= 100) MNRE=1   !testing only one reaction
   IF(IRM >= 200) MNRE=2   !testing only two reactions
+  IF(IRM >= 400) MNRE=4   !testing only four reactions
   MTBP=0
   MEX=0
   MMEX=0
@@ -2890,14 +2958,19 @@ SP(5,2)=2.325D-26
 ISPR(1,2)=0
 ISPV(2)=0
 !--species 3 is oxygen O2
-SP(1,3)=3.985d-10       !wysong2014/vss/vhs 3.985/4.01/4.07
-SP(2,3)=273.D00         !t_ref
-SP(3,3)=0.71D00         !wysong2014
+!SP(1,3)=3.985d-10       !wysong2014/vss/vhs 3.985/4.01/4.07
+!SP(2,3)=273.D00         !t_ref
+!SP(3,3)=0.71D00         !wysong2014
+
+SP(1,3)=4.1515d-10     !Han correct by fitting esposito's data
+SP(2,3)=273.D0
+SP(3,3)=0.7318d0
+
 SP(4,3)=1.d0            !vss 1./1.4d0 !there is some bug with vss model
 SP(5,3)=5.312D-26       !vss correction in collision subroutine must be tested
 ISPR(1,3)=2
 ISPR(2,3)=0             !1 for polinomial Zr, 0 for constant Zr
-SPR(1,3)=1.d0 !5.d0           !constant Zr
+SPR(1,3)=1.0 !5.d0           !constant Zr
 ISPV(3)=1               !the number of vibrational modes
 SPVM(1,1,3)=2273.54     !obtained from nist 2256.D00    !the characteristic vibrational temperature
 SPVM(2,1,3)=ZV  !18000.D00   !constant Zv, or the reference Zv
@@ -2935,7 +3008,7 @@ SP(1,5)=4.2D-10        !same as in DS1V
 SP(2,5)=273.D00
 SP(3,5)=0.79D00
 SP(4,5)=1.0D00
-SP(5,5)=4.98D-26
+SP(5,5)=4.981D-26
 ISPR(1,5)=2
 ISPR(2,5)=0
 SPR(1,5)=5.D00
@@ -4303,6 +4376,21 @@ IF (JCD == 0 .AND. IRM == 140) THEN
 END IF
 !--------------------------------------------------------------
 !
+IF (JCD == 0 .AND. IRM == 141) THEN
+!--REACTION 140 IS N2+N2>N2+N+N (from Bender data)
+  LE(J)=1
+  ME(J)=1
+  KP(J)=2
+  LP(J)=2
+  MP(J)=1
+  CI(J)=VDC
+  AE(J)=117000.d0*BOLTZ         !from AHO model
+  AC(J)=4.5d-6*1.0d-6        ! fit from Jaffe data
+  BC(J)=-0.675
+  ER(J)=-AE(J)
+END IF
+!--------------------------------------------------------------
+!
 IF (JCD == 0 .AND. IRM == 150) THEN
 !--REACTION 150 IS O2+O>O+O+O (from QCT data)
   LE(J)=3
@@ -4334,9 +4422,13 @@ IF (JCD == 0 .AND. IRM == 160) THEN
   LP(J)=4
   MP(J)=3
   CI(J)=VDC
-  AE(J)=5.21275d0*EVOLT           !from AHO model
-  AC(J)=1.9337d22/(AVOG*1000.d0)  !AC and BC from park1990
-  BC(J)=-1.7334d0
+  !AE(J)=5.21275d0*EVOLT           !from AHO model
+  !AC(J)=1.9337d22/(AVOG*1000.d0)  !AC and BC from park1990
+  !BC(J)=-1.7334d0
+  AE(J) = 59380.d0*BOLTZ+(5.21275d0-5.1153d0)*EVOLT
+   !Han use Byron's rate but shift to add zeropoint energy
+  AC(J) = 1.9392865d21/(AVOG*1000.d0)
+  BC(J) = -1.5d0
   IF (JRATE == 1) THEN
     IF (CI(J) < 0.) THEN
       AC(J)=9.3069d19/(AVOG*1000.d0) !TCE-corrected
@@ -4346,7 +4438,72 @@ IF (JCD == 0 .AND. IRM == 160) THEN
       BC(J)=-1.1919d0
     END IF
   END IF
-  ER(J)=-8.276d-19 !based on heat of formation !-5.21275d0*EVOLT !from AHO model
+  !ER(J)=-8.276d-19 !based on heat of formation !-5.21275d0*EVOLT !from AHO model
+  ER(J) = -AE(J)
+END IF
+!
+IF (JCD == 0 .AND. IRM == 161) THEN
+!--REACTION 160 IS O2+N2>O+O+N2 (fit from park1990 but using the DSMC value of activation energy)
+  LE(J)=3
+  ME(J)=1
+  KP(J)=4
+  LP(J)=4
+  MP(J)=1
+  CI(J)=VDC
+  AE(J) = 5.21275d0*EVOLT
+  AC(J) = 1.586878535d15/(AVOG*1000.d0)
+  BC(J) = 4.255d-3
+  ER(J) = -AE(J)
+END IF
+!
+IF (JCD == 0 .AND. IRM == 162) THEN
+!--REACTION 160 IS N2+O2>N+N+O2 
+  LE(J) = 1
+  ME(J) = 3
+  KP(J) = 2
+  LP(J) = 2
+  MP(J) = 3
+  CI(J) = VDC
+  !  Wray: doi:10.2514/5.2018-0240 fit good with Andrienko's QCT
+  ! here we refit to match dissociation energy
+  AC(J) = 1.1447510d18/(AVOG*1000.d0)
+  BC(J) = -0.6823d0
+  AE(J) = 9.82163d0*EVOLT
+  ER(J) = -AE(J)
+END IF
+!
+IF (JCD == 0 .AND. IRM == 163) THEN
+!--REACTION 160 IS NO+N2>N+O+N2 
+  LE(J) = 5
+  ME(J) = 1
+  KP(J) = 2
+  LP(J) = 4
+  MP(J) = 1
+  CI(J) = VDC
+  ! Park's rate, match well with Andrienko's QCT
+  ! 5.0e15, 0 , 75500K 
+  ! here we refit to match dissociation energy
+  AC(J) = 1.08705682d16/(AVOG*1000.d0)
+  BC(J) = -0.0766715d0
+  AE(J) = 6.55879*EVOLT
+  ER(J) = -AE(J)
+END IF
+!
+IF (JCD == 0 .AND. IRM == 164) THEN
+!--REACTION 160 IS N2+NO>N+N+NO
+  LE(J) = 1
+  ME(J) = 5
+  KP(J) = 2
+  LP(J) = 2
+  MP(J) = 5
+  CI(J) = VDC
+  ! Park uses N2+N2 as N2+NO
+  ! Wray suggest N2+Ar as N2+NO
+  ! here we refit Wray's data to match dissociation energy
+  AC(J) = 9.0558360d17/(AVOG*1000.d0)
+  BC(J) = -0.662299d0
+  AE(J) = 9.82163d0*EVOLT
+  ER(J) = -AE(J)
 END IF
 !
 IF (JCD == 0 .AND. IRM == 170) THEN
@@ -4366,7 +4523,7 @@ IF (JCD == 0 .AND. IRM == 170) THEN
   AE(J) = 113950.d0*BOLTZ
   AC(J) = 8.934d-13
   BC(J) = -0.4807
-  ER(J) = -AE(J) 
+  ER(J) = -AE(J)
 END IF
 !
 IF (JCD == 0 .AND. IRM == 180) THEN
@@ -5065,6 +5222,70 @@ IF (JCD == 0 .AND. IRM == 250) THEN
   IREV(J)=1
 END IF
 !--------------------------------------------------------------
+IF (JCD == 0 .AND. IRM == 251) THEN
+!--REACTION 1 is O2+N2>O+O+N2 
+  LE(1) = 3
+  ME(1) = 1
+  KP(1) = 4
+  LP(1) = 4
+  MP(1) = 1
+  CI(1) = VDC
+  ! Park 2E21cc/mol/sec -1.5 59700
+  ! Boyd 8.132E-9 cc/sec -0.131 59380
+  ! fit1 2.7212E14 cc/mol/sec 0.22006 59380
+  ! fit2 1.5869E15 cc/mol/sec 0.004255  60490
+  AC(1) = 1.586878535d15/(AVOG*1000.d0)
+  BC(1) = 4.255d-3
+  AE(1) = 5.21275d0*EVOLT
+  ER(1) = -AE(1)
+!--REACTION 2 is N2+O2->N+N+O2
+  LE(2) = 1
+  ME(2) = 3
+  KP(2) = 2
+  LP(2) = 2
+  MP(2) = 3
+  CI(2) = VDC
+  !  Wray: doi:10.2514/5.2018-0240
+  ! here we refit to match dissociation energy
+  AC(2) = 1.1447510d18/(AVOG*1000.d0)
+  BC(2) = -0.6823
+  AE(2) = 9.82163d0*EVOLT
+  ER(2) = -AE(2)
+END IF
+!
+IF (JCD == 0 .AND. IRM == 252) THEN
+  !--REACTION 160 IS NO+N2>N+O+N2 
+  J = 1
+  LE(J) = 5
+  ME(J) = 1
+  KP(J) = 2
+  LP(J) = 4
+  MP(J) = 1
+  CI(J) = VDC
+  ! Park's rate, match well with Andrienko's QCT
+  ! 5.0e15, 0 , 75500K 
+  ! here we refit to match dissociation energy
+  AC(J) = 1.08705682d16/(AVOG*1000.d0)
+  BC(J) = -0.0766715d0
+  AE(J) = 6.55879*EVOLT
+  ER(J) = -AE(J)
+  !--REACTION 160 IS N2+NO>N+N+NO
+  J = 2
+  LE(J) = 1
+  ME(J) = 5
+  KP(J) = 2
+  LP(J) = 2
+  MP(J) = 5
+  CI(J) = VDC
+  ! Park uses N2+N2 as N2+NO
+  ! Wray suggest N2+Ar as N2+NO
+  ! here we refit Wray's data to match dissociation energy
+  AC(J) = 9.0558360d17/(AVOG*1000.d0)
+  BC(J) = -0.662299d0
+  AE(J) = 9.82163d0*EVOLT
+  ER(J) = -AE(J)
+END IF
+!--------------------------------------------------------------
 !
 IF (IPRS == 1) THEN !--read pre-collision vibrational pdfs
   DO I=1,MNRE
@@ -5205,6 +5426,64 @@ IF (QCTMODEL > 0) THEN
   VIBEN(46,J)=-0.00029275d0
   VIBEN(:,J)=5.21275d0+VIBEN(:,J)  !add the zero point energy
 !
+  J=5                    !NO vibrational levels from: Han's Luo (Purdue AAE) Master Thesis (2016)
+  IVMODEL(J,2)=52        !max possible vibrational level
+  IVMODEL(J,1)=1         !use pre-computed vibrational levels for this species
+  VIBEN(0,J)=-6.495503d0 !in eV
+  VIBEN(1,J)=-6.261055d0
+  VIBEN(2,J)=-6.030857d0
+  VIBEN(3,J)=-5.804906d0
+  VIBEN(4,J)=-5.583201d0
+  VIBEN(5,J)=-5.365739d0
+  VIBEN(6,J)=-5.152521d0
+  VIBEN(7,J)=-4.943543d0
+  VIBEN(8,J)=-4.738807d0
+  VIBEN(9,J)=-4.538309d0
+  VIBEN(10,J)=-4.342050d0
+  VIBEN(11,J)=-4.150030d0
+  VIBEN(12,J)=-3.962248d0
+  VIBEN(13,J)=-3.778704d0
+  VIBEN(14,J)=-3.599398d0
+  VIBEN(15,J)=-3.424332d0
+  VIBEN(16,J)=-3.253505d0
+  VIBEN(17,J)=-3.086920d0
+  VIBEN(18,J)=-2.924577d0
+  VIBEN(19,J)=-2.766480d0
+  VIBEN(20,J)=-2.612630d0
+  VIBEN(21,J)=-2.463031d0
+  VIBEN(22,J)=-2.317685d0
+  VIBEN(23,J)=-2.176598d0
+  VIBEN(24,J)=-2.039773d0
+  VIBEN(25,J)=-1.907217d0
+  VIBEN(26,J)=-1.778935d0
+  VIBEN(27,J)=-1.654934d0
+  VIBEN(28,J)=-1.535221d0
+  VIBEN(29,J)=-1.419806d0
+  VIBEN(30,J)=-1.308699d0
+  VIBEN(31,J)=-1.201909d0
+  VIBEN(32,J)=-1.099450d0
+  VIBEN(33,J)=-1.001335d0
+  VIBEN(34,J)=-9.075788d-1
+  VIBEN(35,J)=-8.181986d-1
+  VIBEN(36,J)=-7.332134d-1
+  VIBEN(37,J)=-6.526442d-1
+  VIBEN(38,J)=-5.765146d-1
+  VIBEN(39,J)=-5.048512d-1
+  VIBEN(40,J)=-4.376836d-1
+  VIBEN(41,J)=-3.750456d-1
+  VIBEN(42,J)=-3.169752d-1
+  VIBEN(43,J)=-2.635155d-1
+  VIBEN(44,J)=-2.147164d-1
+  VIBEN(45,J)=-1.706349d-1
+  VIBEN(46,J)=-1.313377d-1
+  VIBEN(47,J)=-9.690349d-2
+  VIBEN(48,J)=-6.742670d-2
+  VIBEN(49,J)=-4.302306d-2
+  VIBEN(50,J)=-2.383927d-2
+  VIBEN(51,J)=-1.007100d-2
+  VIBEN(52,J)=-2.005209d-3
+  VIBEN(:,J)=6.55879d0+VIBEN(:,J)   !add the NO dissociation energy
+!
   VIBEN=VIBEN*EVOLT  !convert to Joules
 END IF
 !--------------------------------------------------------------
@@ -5223,6 +5502,7 @@ USE CALC
 USE MOLECS
 !
 IMPLICIT NONE
+INTEGER :: NMFpair0
 !
 ALLOCATE (FSP(MSP,2),SP(5,MSP),SPR(3,MSP),SPM(8,MSP,MSP),ISPR(2,MSP),ISPV(MSP),ENTR(6,MSP,2),NRSP(MSP,MSP),      &
           VMP(MSP,2),UVMP(MSP,2),VNMAX(MSP),CR(MSP),TCOL(MSP,MSP),CSCR(MSP,MSP),ISPRC(MSP,MSP),SPRC(2,MSP,MSP,MSP),STAT=ERROR)  !--isebasti: UVMP included
@@ -5276,6 +5556,23 @@ IF (MNSR > 0) THEN
   END IF
 END IF
 !
+!-- Allocate variables related to MF model
+IF (MNRE > 0 .AND. IMF == 1) THEN
+  ALLOCATE(NMFANG(MNRE),IMFpair(MSP,MSP),MFRMASS(3,MNRE),STAT = ERROR)
+  !--count number of pairs
+  NMFpair0 = FLOOR(DBLE(MSP*(MSP+1))/2.0d0)
+  IF (IMFS == 1 ) THEN
+    ALLOCATE(NMFER0(1000,2,NMFpair0), NMFET0(1000,NMFpair0),NMFEV0(0:100,2,NMFpair0), &
+      NMFER(1000,2,NMFpair0), NMFET(1000,NMFpair0),NMFEV(0:100,2,NMFpair0), &
+      NMFERR(1000,2,MNRE),   NMFETR(1000,MNRE),  NMFEVR(0:100,2,MNRE), &
+      NMFVT0(0:100,1000,2,NMFpair0), NMFVT(0:100,1000,2,NMFpair0),NMFVTR(0:100,1000,2,MNRE),STAT=ERROR) 
+    IF (ERROR /= 0) THEN
+      WRITE(*,*) 'PROGRAM COULD NOT ALLOCATE SPACE FOR MF RELATED VARIBALES', ERROR
+      STOP
+    ENDIF
+  END IF
+ENDIF
+
 RETURN
 END SUBROUTINE ALLOCATE_GAS
 !
@@ -5291,11 +5588,12 @@ USE OUTPUT
 !
 IMPLICIT NONE
 !
-INTEGER :: ZCHECK
+INTEGER :: ZCHECK,ZCHECK2
+ZCHECK = 0; ZCHECK2 = 0
 !
 101 CONTINUE
 OPEN (7,FILE='PARAMETERS.DAT',FORM='UNFORMATTED',ERR=101) !--isebasti: replace binary by unformatted
-READ (7) NCCELLS,NCELLS,MMRM,MMVM,MNM,MNRE,MNSR,MSP,MTBP,ILEVEL,MDIV,IRECOM,MMEX,MEX,ISF,NBINS,NSNAP,ITMAX !--isebasti: included ISF,NBINS,NSAP
+READ (7) NCCELLS,NCELLS,MMRM,MMVM,MNM,MNRE,MNSR,MSP,MTBP,ILEVEL,MDIV,IRECOM,MMEX,MEX,ISF,NBINS,NSNAP,ITMAX,IMF, IMFS, NMFpair !--isebasti: included ISF,NBINS,NSAP
 CLOSE(7)
 !
 IF (MMVM > 0) THEN
@@ -5331,10 +5629,12 @@ IF (MNRE > 0) THEN
   ALLOCATE (NEVIB(MNRE,2,0:100),FEVIB(MNRE,ITMAX,2,0:100),STAT=ERROR) !--isebasti: included
 ELSE
   ALLOCATE (NPVIB(1,1,1,1,1),FPVIB(1,1,1,1,1),FPTEMP(1),NEVIB(1,1,1),FEVIB(1,1,1,1),STAT=ERROR) !--isebasti: included
+  ALLOCATE (EVREM(MNRE),STAT=ERROR)
 END IF
 IF (ERROR /= 0) THEN
   WRITE (*,*) 'PROGRAM COULD NOT ALLOCATE SPACE FOR SAMPLING ARRAYS',ERROR
 ENDIF
+!
 !
 CALL ALLOCATE_GAS
 !
@@ -5350,17 +5650,26 @@ READ (7) AC,AE,AVDTM,BC,BOLTZ,EVOLT,CCELL,CELL,CI,CLSEP,COLLS, &
          REAC,RGFS,RMAS,REA,SP,SPEX,SPI,SPM,SPR,SPRC,SPV,SPVM,IDL,CPER,DPER,ENERS,ENERS0,IREV,SREAC,NPVIB,FPVIB,FPTEMP,IRM, &
          TCOL,CSCR,TDISS,TFOREX,TRECOMB,TREVEX,THBP,TISAMP,TPOUT,TREF,TLIM,TOTCOL,PCOLLS,TOTDUP,TOTMOV,     &
          TREACG,TREACL,TOUT,TPDTM,TREF,TSAMP,TSURF,VAR,VARS,VARSP,VELOB,VFX,VFY,UVFX,UFND,UFTMP,UVMP,VMP, &
-         VMPM,VNMAX,VSURF,WCOLLS,WFM,XB,XREM,XVELS,YVELS,TNEX,NEVIB,FEVIB,QCTMODEL,IVMODEL,VIBEN,IGS,AMEG,ZCHECK
+         VMPM,VNMAX,VSURF,WCOLLS,WFM,XB,XREM,XVELS,YVELS,TNEX,NEVIB,FEVIB,QCTMODEL,IVMODEL,VIBEN,IGS,AMEG,EVREM,ZCHECK
 !--isebasti: CST,BINS,BIN,PDFS,PDF,UVFX,UFND,UFTMP,UVMP,IDL,CPER,DPER,ENERS,ENERS0,IREV,NPVIB,FPVIB,FPTEMP included
-READ (7) MFTYPE,MFALPHA
-CLOSE(7)
-!
 IF (ZCHECK /= 1234567) THEN
-  WRITE (9,*) NM,' Molecules, Check integer =',ZCHECK
+  WRITE (9,*) 'Wrong', NM,' Molecules, Check integer =',ZCHECK
   STOP
-ELSE
-  WRITE (9,*) 'Restart file read, Check integer=',ZCHECK
 END IF
+
+IF (MNRE >0 .AND. IMF == 1) THEN
+  READ(7) NMFANG, IMFpair,MFRMASS
+  IF (IMFS == 1 .AND. NMFpair > 0)THEN
+    READ(7) NMFER0,NMFET0,NMFEV0,NMFER,NMFET,NMFEV,&
+      NMFERR,NMFETR,NMFEVR,NMFVT0,NMFVT,NMFVTR
+  END IF
+  READ(7) ZCHECK2
+  IF (ZCHECK2 /= 1234567) THEN
+    WRITE (9,*) 'WrongIMFpair, Check integer =',ZCHECK2
+    STOP
+  END IF
+END IF
+CLOSE(7)
 !
 RETURN
 END SUBROUTINE READ_RESTART
@@ -5377,13 +5686,14 @@ USE OUTPUT
 !
 IMPLICIT NONE
 !
-INTEGER :: ZCHECK
+INTEGER :: ZCHECK,ZCHECK2
 !
 ZCHECK=1234567
+ZCHECK2 = 1234567
 !
 101 CONTINUE
 OPEN (7,FILE='PARAMETERS.DAT',FORM='UNFORMATTED',ERR=101) !--isebasti: replace binary by unformatted
-WRITE (7) NCCELLS,NCELLS,MMRM,MMVM,MNM,MNRE,MNSR,MSP,MTBP,ILEVEL,MDIV,IRECOM,MMEX,MEX,ISF,NBINS,NSNAP,ITMAX,IMF !--isebasti: included ISF,NBINS,NSAP,ITMAX
+WRITE (7) NCCELLS,NCELLS,MMRM,MMVM,MNM,MNRE,MNSR,MSP,MTBP,ILEVEL,MDIV,IRECOM,MMEX,MEX,ISF,NBINS,NSNAP,ITMAX,IMF,IMFS,NMFpair !--isebasti: included ISF,NBINS,NSAP,ITMAX
 CLOSE(7)
 !
 102 CONTINUE
@@ -5398,9 +5708,16 @@ WRITE (7)AC,AE,AVDTM,BC,BOLTZ,EVOLT,CCELL,CELL,CI,CLSEP,COLLS, &
          REAC,RGFS,RMAS,REA,SP,SPEX,SPI,SPM,SPR,SPRC,SPV,SPVM,IDL,CPER,DPER,ENERS,ENERS0,IREV,SREAC,NPVIB,FPVIB,FPTEMP,IRM, &
          TCOL,CSCR,TDISS,TFOREX,TRECOMB,TREVEX,THBP,TISAMP,TPOUT,TREF,TLIM,TOTCOL,PCOLLS,TOTDUP,TOTMOV,     &
          TREACG,TREACL,TOUT,TPDTM,TREF,TSAMP,TSURF,VAR,VARS,VARSP,VELOB,VFX,VFY,UVFX,UFND,UFTMP,UVMP,VMP, &
-         VMPM,VNMAX,VSURF,WCOLLS,WFM,XB,XREM,XVELS,YVELS,TNEX,NEVIB,FEVIB,QCTMODEL,IVMODEL,VIBEN,IGS,AMEG,ZCHECK
+         VMPM,VNMAX,VSURF,WCOLLS,WFM,XB,XREM,XVELS,YVELS,TNEX,NEVIB,FEVIB,QCTMODEL,IVMODEL,VIBEN,IGS,AMEG,EVREM,ZCHECK
 !--isebasti: CST,BINS,BIN,PDFS,PDF,UVFX,IDL,CPER,DPER,ENERS,ENERS0,IREV,NPVIB,FPVIB,FPTEMP,UVFX,UFND,UFTMP,UVMP included
-WRITE(7) MFTYPE,MFALPHA
+IF (MNRE >0 .AND. IMF == 1) THEN
+  WRITE(7) NMFANG, IMFpair,MFRMASS
+  IF (IMFS == 1 .AND. NMFpair > 0)THEN
+    WRITE(7) NMFER0,NMFET0,NMFEV0,NMFER,NMFET,NMFEV,&
+      NMFERR,NMFETR,NMFEVR,NMFVT0,NMFVT,NMFVTR
+  END IF
+  WRITE(7) ZCHECK2
+END IF
 CLOSE(7)
 !
 WRITE (9,*) 'Restart files written'
@@ -5660,7 +5977,7 @@ USE OUTPUT
 !
 IMPLICIT NONE
 !
-INTEGER :: I,K,KK,L,M,N,LS,MS,NNRE,NTBP
+INTEGER :: I,K,KK,L,M,N,LS,MS,NNRE,NTBP,II,JJ
 REAL(KIND=8) :: A,B,C,D,EPS,AL,X,AA,BB
 REAL(8),EXTERNAL :: GAM
 !
@@ -5684,8 +6001,10 @@ ELSE
 END IF
 !
 IF (MNRE > 0) THEN
-  REA=0.; IREA=0; NREA=0; JREA=0; NRSP=0; IRCD=0 ; REAC=0.
-  MFALPHA = 0.;  MFTYPE = 1
+  REA=0.; IREA=0; NREA=0; JREA=0; NRSP=0; IRCD=0 ; REAC=0.; EVREM = 0.d0
+  IF ( IMF == 1) THEN
+     MFRMASS=-100.d0; NMFANG = 4;  
+   END IF
 !
   DO  N=1,MNRE
     L=LE(N)
@@ -5753,6 +6072,17 @@ END DO
 !
 !--calculate the coefficients of the energy terms in steric factors (see SMILE documentation)
 !
+NMFpair = 0
+IF (IMF == 1 .and. IMFS == 1) THEN
+  DO I=1,MSP
+    DO K = I,MSP
+      NMFpair = NMFpair+1
+      IMFpair(I,K) = NMFpair
+      IMFpair(K,I) = NMFpair
+    END DO
+  END DO
+END IF
+
 DO K=1,MNRE
   LS=IREA(1,K)
   MS=IREA(2,K)
@@ -5796,13 +6126,39 @@ DO K=1,MNRE
 
     IF (IMF .ne. 0) THEN  !pre set for Macheret Fridman model
       ! LS is always the one to be dissociated
-      IF (ISPV(MS) == 1)THEN
-        MFTYPE(K) = 1
-        MFALPHA(K) = (SP(5,LS) / (SP(5,LS) + SP(5,MS)))**2
-      ELSE
-        MFTYPE(K) = 2
-        MFALPHA(K) = (SP(5,LS)/(SP(5,LS)+2.0d0*SP(5,MS)))**2
-      ENDIF
+      ! MFRAMSS(1): reduced mass of whole system
+      IF ((LS .gt. 5) .or. (MS .gt. 5)) THEN
+        STOP "Unsupported for MF"
+      END IF
+      !
+      !----- calculated reduced mass
+      MFRMASS(1,K) = SP(5,LS)*SP(5,MS)/(SP(5,LS)+SP(5,MS))
+      DO II = 1,2
+        IF (ISPV(IREA(II,K)) == 0) THEN
+         MFRMASS(II+1,K) =  SP(5,IREA(II,K))
+        ELSE IF (IREA(II,K) == 1) THEN
+          MFRMASS(II+1,K) = SP(5,2)/2.0d0
+        ELSE IF (IREA(II,K) == 3) THEN
+          MFRMASS(II+1,K) = SP(5,4)/2.0d0
+        ELSE IF (IREA(II,K) == 5) THEN
+          MFRMASS(2,K)=SP(5,2)*SP(5,4)/(SP(5,2)+SP(5,4))
+        ELSE
+          WRITE(*,*) "Not supported MFRMASS"
+          STOP
+        END IF
+      END DO
+      !
+      !----- determine reaction type
+      NMFANG(K) = 4 ! default: homo-atom
+      IF (ISPV(MS) == 1) NMFANG(K) = 8  !default: homo-homo
+      IF (LS == 5) NMFANG(K) = NMFANG(K)+1 !hetero-homo or hetero-atom: 5,9
+      IF (MS == 5) NMFANG(K) = NMFANG(K)+2
+      ! ----- homo   hetero   !dissociated molecule
+      !atom    4       5
+      !homo    8       9
+      !hetero  10     11
+      !
+      !----- prepare IMFpair
     END IF
   END IF
 !
@@ -6614,6 +6970,11 @@ TNEX=0.D00    !--isebasti: uncommented
  CS=0. ; CSS=0. ; CSSS=0. ; CST=0.d0; BINS=0.d0; BIN=0.d0 !--isebasti: CST,BINS,BIN included
  CST(0,:)=1.d0; BINS(0,:,:)=1.d0; BIN(0,:)=1.d0           !--isebasti: to avoid dividing by zero
  CCELL(4,:)=SQRT(2.D00*BOLTZ*VAR(8,:)/SP(5,3))*SPM(2,3,3) !--isebasti: included
+
+IF (nonVHS == 1)THEN
+  CCELL(4,:) = CCELL(4,:)*1.2d0
+ENDIF
+
 !
 REAC=0.       !--isebasti: uncommented
 SREAC=0.      !--isebasti: uncommented
@@ -6624,9 +6985,18 @@ NDISSL=0    !used in qk
 NDROT=0     !bin counter
 NDVIB=0     !bin
 NDVIB(:,0,:,0)=1.d0 !to avoid dividing by zero
+EVREM = 0.0d0
 !
 IF (MNRE > 0) NPVIB=0 !bin counter
 IF (MNRE > 0) NEVIB=0 !bin counter
+!
+IF (MNRE > 0  .and. IMF == 0 .and. IREAC == 2 .and. IMFS == 1) THEN
+   NMFEV0 = 0.; NMFER0 = 0.; NMFET0 = 0.
+   NMFEV = 0.; NMFER = 0.; NMFET = 0.
+   NMFEVR = 0.; NMFERR = 0.; NMFETR = 0.
+   NMFVT0 = 0.; NMFVT = 0.; NMFVTR = 0.
+   !NCANGLE = 0; NCRANGLE = 0.
+ END IF
 !
 END SUBROUTINE INITIALISE_SAMPLES
 !
@@ -6716,10 +7086,10 @@ USE OUTPUT
 !
 IMPLICIT NONE
 !
-INTEGER :: I,IJ,J,JJ,K,KK,KR,L,M,N,NN,NMCR,CTIME,NMS(MSP),ISNAP(1,NSNAP),ZCHECK,NSS,MCT,MAXLEVEL,IDT=0 !--isebasti: included ZCHECK,NSS,IDT
+INTEGER :: I,IJ,J,JJ,K,KK,JR,KR,L,M,N,NN,NMCR,CTIME,NMS(MSP),ISNAP(1,NSNAP),ZCHECK,NSS,MCT,MAXLEVEL,IDT=0 !--isebasti: included ZCHECK,NSS,IDT
 INTEGER(KIND=8) :: NNN
-REAL(KIND=8) :: AA,BB,CC,AS,AT,GAM  !--isebasti: included RANF,GAM
-REAL(KIND=8) :: A,B,C,D,SDTM,SMCR,DOF,AVW,UU,VDOFM,TVIBM,DTMI,TT,EVIBT,RANF,F(MMVM),TVPDF(MMVM,MSP)  !--isebasti: included RANF,F,TVPDF
+REAL(KIND=8) :: AA,BB,BB2,CC,AS,AT,AU,AQ  !--isebasti: included RANF,GAM
+REAL(KIND=8) :: A,B,C,C2,D,SDTM,SMCR,DOF,AVW,UU,VDOFM,TVIBM,DTMI,TT,EVIBT,RANF,F(MMVM,0:100,MSP),TVPDF(MMVM,MSP)  !--isebasti: included RANF,F,TVPDF
 REAL(KIND=8) :: VPF(MMVM,MSP),EQROT(MSP,100),EQVIBVT(MMVM,MSP,0:100),EQVIBOT(MMVM,MSP,0:100)  !--isebsati: included
 REAL(KIND=8) :: DSUM(0:12),SUMS(0:8,2),TV(MMVM,MSP),TVIB(MSP),DF(NCELLS,MMVM,MSP),VDOF(MSP),PPA(MSP),&
                 THCOL(MSP,MSP),PSNAP(1,NSNAP),VSNAP(3,NSNAP),SDOF(MSP),SRR(MNRE),EVIB,QVIBVT,QVIBOT,COEF(0:9),ROOTF
@@ -6728,7 +7098,7 @@ REAL(KIND=PQKIND) :: AQUAD
 CHARACTER (LEN=32) :: FILENAME,TNAME
 CHARACTER (LEN=4) :: E
 REAL(8) :: COLRR(MNRE)
-REAL(8),EXTERNAL :: ERF
+REAL(8),EXTERNAL :: ERF,gamain,GAM
 !
 !--CTIME  computer time (microseconds)
 !--SUMS(N,L) sum over species of CSS(N,J,L,M) for surface properties
@@ -6953,7 +7323,6 @@ DO N=1,NCELLS
               IF (IVMODEL(L,1) == 0) THEN
                 TV(K,L)=SPVM(1,K,L)/DLOG(1.d0+BOLTZ*SPVM(1,K,L)/AQUAD)  !--Eqn.(4.45) - assuming SHO
               ELSE
-                IF (L == 1 .OR. L == 3) THEN
 !do i=0,100
 !aquad=VIBEN(0,L)*.9999+(0.09745000001d0*EVOLT-VIBEN(0,L))*DFLOAT(i)/100.d0
                   IF (AQUAD >= VIBEN(0,L)) THEN
@@ -6969,7 +7338,6 @@ DO N=1,NCELLS
 !pause
 !end do
 !stop
-                END IF
               END IF
             ELSE
               TV(K,L)=0.
@@ -7230,7 +7598,7 @@ IF (MNRE > 0) THEN
       WRITE (3,993) FTIME,AS,REAC(1:MNRE)/AS  !no reaction rate sampling
     ELSE
       DO K=1,MNRE
-        A=REAC(K)*(FNUM/CELL(4,NSPDF))/(FTIME-TISAMP)
+        A=REAC(K)*(FNUM/CELL(4,NSPDF))/(FTIME-TISAMP) !# of reaction/V/t
         C=TCOL(LE(K),ME(K))*(FNUM/CELL(4,NSPDF))/(FTIME-TISAMP)
         IF(KP(K) >= 0) THEN
           B=(VARSP(1,NSPDF,LE(K))*VARSP(1,NSPDF,ME(K))*VAR(3,NSPDF)**2.d0)/(AVOG*1.d3)                             !exchange/dissociation
@@ -7246,7 +7614,229 @@ IF (MNRE > 0) THEN
   END IF
 !
   CLOSE(3)
+
+7787 FORMAT('#Reaction: ',I3,' Sp: ',I2,'+',I2,'->',I2,'+',I2,'+',I2)
+7786 FORMAT("#",A13,3X,4(A14,3X))
+  DO K=1,MNRE
+    IF (KP(K) > 0) THEN !only for dissociation reaction
+      WRITE(FILENAME,'("REAC_COUNT_",I3.3,".DAT")') K
+      IF (K == 1) FILENAME='REAC_COUNT.DAT'
+      OPEN(3,FILE=trim(FILENAME),ACCESS = 'APPEND')
+      IF (NOUT < 1) THEN
+        WRITE(3,7787) K, LE(K),ME(K),KP(K),LP(K),MP(K)
+        WRITE(3,7786) 'Nreac','Evrem (K)','Evrem/D','Evrem (eV)','Time'
+      END IF
+      IF (REAC(K) > 1.0d0) THEN 
+        WRITE(3,'(5(E14.6,3x))') REAC(K), EVREM(K)/REAC(K)/BOLTZ, EVREM(K)/REAC(K)/REA(2,K), &
+          EVREM(K)/EVOLT/REAC(K),FTIME
+      ELSE
+        WRITE(3,'(5(E14.6,3x))') 0.d0, 0.d0, 0.d0, 0.d0, FTIME
+      END IF
+      CLOSE(3)
+    END IF
+  END DO
+
 END IF
+!
+!
+!---------------------------------------------------------------------------
+!--write debug information for imf method
+7788 FORMAT('ZONE I=',I6,', T="REAC',I3.3,'", SOLUTIONTIME=',F14.6)
+7789 FORMAT(F6.2,3X,21(G14.6,3X))
+7790 FORMAT('ZONE I = ',i6,', J = ',i6,', T= "REAC',I3.3,'_',I1,'", DATAPACKING = POINT')
+7785 FORMAT(I3,2X,F10.6,2X,7(G14.6,2X))
+7784 FORMAT(I3,2X,F10.6,2X,F10.6,2X,14(G14.6,2X))
+IF (IREAC == 2 .AND. IMF == 1 .AND. MNRE <= 2.AND. IMFS == 1 .AND. MNRE>0) THEN
+  ! 
+  !----- Distribution of Et and Er------------------------
+  !
+  OPEN (3,FILE='IMF_ETR.DAT')
+  WRITE(3,'(A,F9.2,A,F9.2,A)') "# Nomralize by T: ",FTMP0,"K, Current T: ",VAR(8,NSPDF),"K "
+  WRITE(3,'(20A)') 'VARIABLES = "E/kT",',&
+    '"ET0_N","ET0_P","ET_N","ET_P","ETR_N","ETR_P",',&
+    '"ER0_N","ER0_P","ER_N","ER_P","ERR_N","ERR_P",',&
+    '"ER01_N","ER01_P","ER1_N","ER1_P","ERR1_N","ERR1_P",',&
+    '"PEQ","PCOL","PBOLTZ"'
+  DO L = 1,MNRE
+    IF (KP(L) > 0) THEN ! dissociation alone
+      WRITE(3,7788) 1000,L,FTIME
+      K = IMFpair(IREA(1,L),IREA(2,L))
+
+      IF (IREA(1,L) <= IREA(2,L)) THEN
+        IJ = 1; JJ = 2
+      ELSE IF (IREA(1,L) > IREA(2,L)) THEN
+        IJ = 2; JJ = 1
+      END IF
+
+      AA = SUM(NMFET0(:,K))
+      BB = SUM(NMFER0(:,IJ,K)); BB2 = SUM(NMFER0(:,JJ,K))
+
+      A = SUM(NMFET(:,K))
+      C = SUM(NMFER(:,IJ,K));   C2 = SUM(NMFER(:,JJ,K))
+
+      AS = SUM(NMFETR(:,L))
+      AU = SUM(NMFERR(:,1,L)); AT = SUM(NMFERR(:,2,L))
+
+
+      CC = 2.5d0-SPM(3,IREA(1,L),IREA(2,L))
+      DO N = 1,1000
+        B = DFLOAT(N)*0.01d0
+        D = 0.5d0*SPI*(ERF(dsqrt(B))-ERF(dsqrt(B-0.01d0)))
+        !WRITE(3,7789) B,NMFET0(N),NMFET0(N)/AA,&
+        !NMFER0(N), NMFER0(N)/BB,&
+        !NMFET(L,N),DFLOAT(NMFET(L,N))/A,&
+        !NMFER(L,N),DFLOAT(NMFER(L,N))/C, &
+        !NMFETR(L,N),DFLOAT(NMFETR(L,N))/AS, &
+        !NMFERR(L,N),DFLOAT(NMFERR(L,N))/SRR,&
+        !(0.99d0+B)*dexp(-B+0.01d0)-(1.0d0+B)*dexp(-B),&
+        !dcosh(B-0.01d0)-dcosh(B)-dsinh(B-0.01d0)+dsinh(B)
+        WRITE(3,7789) B,&
+          NMFET0(N,K),   NMFET0(N,K)/AA,  NMFET(N,K),    NMFET(N,K)/A,&
+          NMFETR(N,L),   NMFETR(N,L)/AS,  NMFER0(N,IJ,K),NMFER0(N,IJ,K)/BB, &
+          NMFER(N,IJ,K), NMFER(N,IJ,K)/C, NMFERR(N,1,L), NMFERR(N,1,L)/AU, &
+          NMFER0(N,JJ,K),NMFER0(N,JJ,K)/BB2, &
+          NMFER(N,JJ,K), NMFER(N,JJ,K)/C2,NMFERR(N,2,L), NMFERR(N,2,L)/AT, &
+          gamain(B,1.5d0,NN) - gamain(B-0.01d0,1.5d0,NN),&
+          gamain(B,CC,NN) - gamain(B-0.01d0,CC,NN),&
+          dcosh(B-0.01d0)-dcosh(B)-dsinh(B-0.01d0)+dsinh(B)
+      END DO
+      WRITE(3,*)
+    END IF
+  END DO
+  CLOSE(3)
+  !
+  ! -- Distribution of Ev
+  !
+  OPEN (3,FILE='IMF_EV.DAT')
+  WRITE(3,"(A,F9.2,A,F9.2,A)") "# Initial T: ",FVTMP0,"K Current T: ",VAR(10,NSPDF),"K"
+  WRITE(3,"(20A)")'VARIABLES = "v","Ev (eV)","Ev2 (eV)",', &
+    '"Ev0_N","Ev0_P","Ev_N","Ev_P","EvR_N","EvR_P","P0",',&
+    '"Ev01_N","Ev01_P","Ev1_N","Ev1_P","EvR1_N","EvR1_P","P1"'
+  DO L = 1,MNRE
+    IF (KP(L) > 0) THEN ! dissociation alone
+      K = IMFpair(IREA(1,L),IREA(2,L))
+
+      IF (IREA(1,L) <= IREA(2,L)) THEN
+        IJ = 1; JJ = 2
+      ELSE
+        IJ = 2; JJ = 1
+      END IF
+
+      BB = SUM(NMFEV0(:,IJ,K)); AA = SUM(NMFEV(:,IJ,K)); C = SUM(NMFEVR(:,1,L))
+
+      KK = 100
+      IF (ISPV(IREA(2,L)) == 0) THEN
+        IF (IVMODEL(IREA(1,L),1) == 1) KK = IVMODEL(IREA(1,L),2)
+        !--- write zone header 
+        WRITE(3,7788) KK+1,L,FTIME  !write zone header
+        WRITE(3,*) 'PASSIVEVARLISTWRITE = [3,11-17]'
+        !--- write data
+        DO N = 0,KK
+          CALL VIB_ENERGY(EVIB,N,1,IREA(1,L))
+          WRITE(3,7785) N,EVIB/EVOLT, NMFEV0(N,IJ,K),NMFEV0(N,IJ,K)/BB,&
+            NMFEV(N,IJ,K),NMFEV(N,IJ,K)/AA,NMFEVR(N,1,L),NMFEVR(N,1,L)/C,&
+            DEXP(-EVIB/BOLTZ/VAR(10,NSPDF))
+        END DO
+      ELSE
+        BB2 = SUM(NMFEV0(:,JJ,K));
+        A = SUM(NMFEV(:,JJ,K))
+        CC = SUM(NMFEVR(:,2,L))
+
+        KR = 100; JR = 100;
+        IF (IVMODEL(IREA(1,L),1) == 1)    KR = IVMODEL(IREA(1,L),2)  
+        IF (IVMODEL(IREA(2,L),1) == 1)    JR = IVMODEL(IREA(2,L),2)  
+        KK = MAX(KR,JR)
+
+        !--- write zone header 
+        WRITE(3,7788) KK+1,L,FTIME
+        !--- write data
+        DO N=0,MIN(KR,JR)
+          CALL VIB_ENERGY(EVIB,N,1,IREA(1,L))
+          CALL VIB_ENERGY(AS,N,1,IREA(2,L))
+          WRITE(3,7784) N,EVIB/EVOLT,AS/EVOLT,&
+            NMFEV0(N,IJ,K),NMFEV0(N,IJ,K)/BB, NMFEV(N,IJ,K),NMFEV(N,IJ,K)/AA,&
+            NMFEVR(N,1,L),NMFEVR(N,1,L)/C, DEXP(-EVIB/BOLTZ/VAR(10,NSPDF)),&
+            NMFEV0(N,JJ,K),NMFEV0(N,JJ,K)/BB2, NMFEV(N,JJ,K),NMFEV(N,JJ,K)/A,&
+            NMFEVR(N,2,L),NMFEVR(N,2,L)/CC, DEXP(-AS/BOLTZ/VAR(10,NSPDF))
+        END DO
+
+        IF (KR < JR) THEN
+          DO N=KR+1,JR
+            CALL VIB_ENERGY(AS,N,1,IREA(2,L))
+            WRITE(3,7785) N,0.0d0,AS/EVOLT,&
+              0.0d0, 0.0d0, 0.0d0, 0.0d0, 0.0d0, 0.d0, 0.d0 ,&
+              NMFEV0(N,JJ,K),NMFEV0(N,JJ,K)/BB2, NMFEV(N,JJ,K),NMFEV(N,JJ,K)/A,&
+              NMFEVR(N,2,L),NMFEVR(N,2,L)/CC, DEXP(-AS/BOLTZ/VAR(10,NSPDF))
+          END DO
+        ELSE IF (KR > JR) THEN
+          DO N=JR+1,KR
+            CALL VIB_ENERGY(EVIB,N,1,IREA(1,L))
+            WRITE(3,7785) N,EVIB/EVOLT,0.0d0,&
+              NMFEV0(N,IJ,K),NMFEV0(N,IJ,K)/BB, NMFEV(N,IJ,K),NMFEV(N,IJ,K)/AA,&
+              NMFEVR(N,1,L),NMFEVR(N,1,L)/C, DEXP(-EVIB/BOLTZ/VAR(10,NSPDF)),&
+              0.0d0, 0.0d0, 0.0d0, 0.0d0, 0.0d0, 0.d0, 0.d0 
+          END DO
+        END IF
+      END IF
+      WRITE(3,*)
+    END IF
+  END DO
+  CLOSE(3)
+  !
+  ! -- Reaction probability
+  OPEN (3,FILE='IMF_Prob.DAT')
+  WRITE(3,"(A,F9.2,A,F9.2,A)") "# Nomralize by T: ",FTMP0,"K, Current T:",VAR(8,NSPDF),"K"
+  WRITE(3,"(20A)")'VARIABLES = "Et/kT", "Ev (eV)","N","NR1","NR2","P1","P2"'
+  DO L = 1,MNRE
+    IF (KP(L) > 0) THEN ! dissociation alone
+      K = IMFpair(IREA(1,L),IREA(2,L))
+      IF (IREA(1,L) <= IREA(2,L)) THEN
+        IJ = 1; JJ = 2
+      ELSE
+        IJ = 2; JJ = 1
+      END IF
+
+      ! write data for the dissociating particle
+      KK = 100
+      IF (IVMODEL(IREA(1,L),1) == 1)     KK = IVMODEL(IREA(1,L),2)
+      WRITE(3,7790) 1000, KK+1,L,1
+
+      DO N = 0,KK
+        DO M = 1,1000
+          CALL VIB_ENERGY(C,N,1,IREA(1,L))
+          A = 0.0D0;       B = 0.0D0
+          IF (NMFVT0(N,M,IJ,K) .NE. 0.0d0)  A = NMFVT(N,M,IJ,K)/NMFVT0(N,M,IJ,K)
+          IF (NMFVT(N,M,IJ,K) .NE. 0.0d0)   B = NMFVTR(N,M,1,L) / NMFVT(N,M,IJ,K)
+
+          WRITE(3,7789) DFLOAT(M)*0.01d0, C/EVOLT,&
+            NMFVT0(N,M,IJ,K),NMFVT(N,M,IJ,K),NMFVTR(N,M,1,L),A,B
+        END DO
+      END DO
+      WRITE(3,*)
+
+      ! write data for the collider
+      KK = 100
+      IF (IVMODEL(IREA(2,L),1) == 1)  KK = IVMODEL(IREA(2,L),2)
+      WRITE(3,7790) 1000, KK+1,L,2
+
+      DO N = 0,KK
+        DO M = 1,1000
+          CALL VIB_ENERGY(C,N,1,IREA(2,L))
+          A = 0.0D0;       B = 0.0D0
+          IF (NMFVT0(N,M,JJ,K) .NE. 0.0d0)  A = NMFVT(N,M,JJ,K)/NMFVT0(N,M,JJ,K)
+          IF (NMFVT(N,M,JJ,K) .NE. 0.0d0)   B = NMFVTR(N,M,2,L) / NMFVT(N,M,JJ,K)
+
+          WRITE(3,7789) DFLOAT(M)*0.01d0, C/EVOLT,&
+            NMFVT0(N,M,JJ,K),NMFVT(N,M,JJ,K),NMFVTR(N,M,2,L),A,B
+        END DO
+      END DO
+      WRITE(3,*)
+    END IF
+  END DO
+  CLOSE(3)
+END IF
+
+
 !
 !----------------------------------------------------------------------------
 !--write flowfield overall properties
@@ -7273,7 +7863,7 @@ WRITE (3,992) 'STRANDID = ',QCTMODEL
 !
 DO N=1,NCELLS
   WRITE (3,996) VAR(1,N),N,VAR(2:21,N),DTM/VAR(14,N),(CELL(3,N)-CELL(2,N))/DFLOAT(NCIS)/VAR(15,N),&
-                CST(1:4,N)/CST(0,N),0.01*VARSP(1,N,1:MSP)
+                CST(1:4,N)/CST(0,N),VARSP(1,N,1:MSP)
 END DO
 CLOSE(3)
 !
@@ -7396,12 +7986,12 @@ IF(IPDF > 0) THEN
   END IF
 !
 !--vibrational levels
+  F =0.0d0
   IF (MMVM > 0) THEN
     DO I=1,NSCELLS
       J=NSVEC(I) !sampling cell
-      F=0.d0
       DO L=1,MSP
-        IF (ISPV(L) > 0 .AND. L==1) THEN !plotting only O2 or N2 populations
+        IF (ISPV(L) > 0 .AND. (L==1 .or. L==3 .or. L==5) ) THEN !plotting only O2 or N2 populations
           K=1 !single vibrational mode
 !
           !calculate the vibrational partition function
@@ -7438,13 +8028,14 @@ IF(IPDF > 0) THEN
           WRITE (7,994) TRIM(TNAME)
           WRITE (7,994) 'SOLUTIONTIME =',FTIME
           WRITE (7,992) 'STRANDID = ',QCTMODEL
-          DO M=0,MAXLEVEL
-            F(1:ISPV(L))=DFLOAT(NDVIB(J,1:ISPV(L),L,M))/DFLOAT(NDVIB(J,0,L,0))
+          !DO M=0,MAXLEVEL
+          DO M=0,IVMODEL(L,2)
+            F(1:ISPV(L),M,L)=DFLOAT(NDVIB(J,1:ISPV(L),L,M))/DFLOAT(NDVIB(J,0,L,0))
             CALL VIB_ENERGY(EVIB,M,K,L)
             A=EVIB/EVOLT !energy in eV
-            WRITE (7,993) M,A,DFLOAT(NDVIB(J,1:ISPV(L),L,M)),F(1:ISPV(L)),&
-                          EQVIBVT(1:ISPV(L),L,M),F(1:ISPV(L))/EQVIBVT(1:ISPV(L),L,M),&
-                          EQVIBOT(1:ISPV(L),L,M),F(1:ISPV(L))/EQVIBOT(1:ISPV(L),L,M)
+            WRITE (7,993) M,A,DFLOAT(NDVIB(J,1:ISPV(L),L,M)),F(1:ISPV(L),M,L),&
+                          EQVIBVT(1:ISPV(L),L,M),F(1:ISPV(L),M,L)/EQVIBVT(1:ISPV(L),L,M),&
+                          EQVIBOT(1:ISPV(L),L,M),F(1:ISPV(L),M,L)/EQVIBOT(1:ISPV(L),L,M)
           END DO
           CLOSE (7)
 !
@@ -7453,6 +8044,29 @@ IF(IPDF > 0) THEN
     END DO
   END IF
 !
+END IF
+ 
+!-- vibrational state-specific rates
+IF (IREAC == 2 .AND. IMF == 1 .AND. MNRE <= 2.AND. IMFS == 1 .AND. MNRE>0 .AND. NSCELLS==1) THEN
+  OPEN(3, FILE='IMF_Vrate.dat')
+  WRITE(3,"(A,G14.6,A,F9.2)") '# time:',FTIME, ' VT: ',VAR(10,NSPDF) 
+  WRITE(3,"(5A)") 'VARIABLES = "Evib(eV)","v","Nreac","Rate (cm3/mol/s)"'
+  DO L = 1,MNRE
+    NN = LE(L)
+    IF (KP(L) > 0 .and. IVMODEL(NN,1) == 1) THEN ! dissociation alone
+      WRITE(3,*) 'ZONE I=',IVMODEL(NN,2)+1,' T="reac',L,'"'
+      DO N=0,IVMODEL(NN,2)
+        CALL VIB_ENERGY(EVIB,N,1,NN)
+        A=NMFEVR(N,1,L)*(FNUM/CELL(4,NSPDF))/(FTIME-TISAMP) !# of reaction/V/t
+        B=(VARSP(1,NSPDF,LE(L))*F(1,N,NN)*VARSP(1,NSPDF,ME(L))*VAR(3,NSPDF)**2.d0)/(AVOG*1.d3)    !number density
+
+        WRITE(3,'(F10.5,I3,2X,E14.6,2X,E14.6)') EVIB/EVOLT,N,NMFEVR(N,1,L),A/B
+        ! IF (VAR(10,NSPDF) < 6.d3)  SRR(K)=SRR(K)/1.d3        !trick to sample low T rates
+      END DO
+      write(3,*)
+    END IF
+  END DO
+  CLOSE(3)
 END IF
 !
 !--sampled pre- and post-reaction vibrational levels
@@ -7880,7 +8494,9 @@ REAL(KIND=8) :: A,B,ECT,ECR,ECV,EC,THBCELL,WF,PXSECTION,VR,VRR,RML,RMM,ECM,ECN,R
                 VRC(3),VCM(3),SXSECTION,RXSECTION(MNRE),STER(MNRE),ECA(MNRE),CF,VRCP(3),TVAR(7,MNRE),PROB,CVR,&
                 ALPHA1,ALPHA2,EA,CC,DD
 REAL(KIND=8),ALLOCATABLE :: VEC_I(:),VEC_J(:),VALUES(:),ARRAY_TEMP(:,:)
-REAL(KIND=8) :: MFANG(9),MFF,MFV1,MFV2,MFR1,MFR2,MFDSTAR
+REAL(KIND=8) :: MFANG(8),MFV1,MFV2,MFR1,MFR2,MFDSTAR,MFtheta
+REAL(KIND=8) :: MFF(2),MFcoll(2)
+INTEGER      :: ISAME, NMFCALL 
 !
 !--A,B,C working variables
 !--J,K,KK,MK,KA,KAA,MKK,JR,KR,JS,KV,IA working integers
@@ -7903,8 +8519,10 @@ REAL(KIND=8) :: MFANG(9),MFF,MFV1,MFV2,MFR1,MFR2,MFDSTAR
 !--VRR square of rel speed
 !--RML,RMM molecule mass parameters
 !--MFANG angles sampled by MF-MC model
-!--MFF threshold function
+!--MFF threshold function maximum 4 kinds of configuration
 !
+ISAME = 0             !check if two species are the same
+NMFCALL = 0           !count of MFmodel using
 NS=ICCELL(3,N)        !sampling cell
 TEMP=VAR(10,NS)       !sampling cell vibrational temperature
 NRE=NRSP(LS,MS)       !number of reaction involving species LS and MS
@@ -7913,6 +8531,7 @@ NRE=NRSP(LS,MS)       !number of reaction involving species LS and MS
 IF (NRE > 0) THEN
 !
   ECT=0.5D00*SPM(1,LS,MS)*VRR
+  MFF = ECT*2.0d0  !initialization
   ECR=0.D00; ECV=0.D00
   EV1=0.D00; EV2=0.D00
   ECR1=0.D00; ECR2=0.D00
@@ -7950,6 +8569,7 @@ IF (NRE > 0) THEN
   ATDOF=(ISPR(1,LS)+ISPR(1,MS)+SVDOF1+SVDOF2+(4.d0-2.d0*AL))*0.5d0 !average number of dofs
   AIDOF=(ISPR(1,LS)+ISPR(1,MS)+SVDOF1+SVDOF2)*0.5d0                !average number of internal dofs
 !
+  IF (LS == MS) ISAME = 1
   DO J=1,NRE
     K=IRCD(J,LS,MS)
     NPM=NREA(1,K)+NREA(2,K)  !number of post-reaction species
@@ -7961,12 +8581,14 @@ IF (NRE > 0) THEN
     IF ((EC >= REA(2,K)).AND.(EC+REA(5,K) > 0)) THEN !2nd condition prevents a negative post-reaction total energy
 !
 !--check if molecules follow the order given by IREA
-      IF (LS /= MS) THEN
+      IF (ISAME == 1) THEN  
+        IF (ISPV(LS) > 0)THEN
+          IF (ECV1 >= ECV2) IVDC=1     !choose the higher energy molecule for dissociation
+          IF (ECV2 >  ECV1) IVDC=2
+        END IF
+      ELSE
         IF (LS == IREA(1,K)) IVDC=1  !corrected order
         IF (MS == IREA(1,K)) IVDC=2  !inverted order
-      ELSE
-        IF (ECV1 >= ECV2) IVDC=1     !choose the higher energy molecule for dissociation
-        IF (ECV2 >  ECV1) IVDC=2
       END IF
 !
 !--check reaction model
@@ -8092,6 +8714,8 @@ IF (NRE > 0) THEN
               STER(J)=CF*(REA(6,K)*(C/D))*(((ECA(J)-REA(2,K))*1.d10)**AA/(ECA(J)*1.d10)**BB)*1.d10**(BB-AA)
             ELSE
               ! Macheret-Fridman-MC mode
+              !
+              !---get energy of each one particle
               IF (IVDC == 1)THEN
                 MFV1 = ECV1; MFR1 = ECR1
                 MFV2 = ECV2; MFR2 = ECR2
@@ -8099,61 +8723,140 @@ IF (NRE > 0) THEN
                 MFV1 = ECV2; MFR1 = ECR2
                 MFV2 = ECV1; MFR2 = ECR1
               END IF
-              MFDSTAR = REA(2,K) - MFR1 + 2.0d0*MFR1**1.5/(3.0d0 * dsqrt(3.0d0*2.0d0*REA(2,K)))
-              IF ( IMF == 1 ) THEN
-               !IF (MFTYPE(K) == 1)THEN
+              MFDSTAR = REA(2,K) - MFR1 + 2.0d0*MFR1**1.5d0/(3.0d0 * dsqrt(3.0d0*2.0d0*REA(2,K)))
+              !
+              !---set mass of colloding particles, mfmb and mfmc must be set
+              MFcoll = -1.0d0
+              DO II=1,2 
+                IF (IREA(II,K) == 1)  MFcoll(II) = 2.325d-26  !N2
+                IF (IREA(II,K) == 3)  MFcoll(II) = 2.656d-26  !O2
+                IF (IREA(II,K) == 5 .and. II ==1 ) THEN  !randomly select one
+                  CALL ZGF(AA,IDT)
+                  IF (AA <0.5d0) THEN
+                    MFcoll(1) = 2.325d-26
+                    MFcoll(2) = 2.656d-26
+                  ELSE
+                    MFcoll(2) = 2.325d-26
+                    MFcoll(1) = 2.656d-26
+                  END IF
+                END IF
+                IF (MFcoll(II) .lt. 0) STOP "Search MFcoll to check error"
+              END DO
+              !
+              !---generate configureation angle or transfer
+              !
+              ! atom-diatom: gamma1, gamma2, theta, phi
+              ! diatom-diatom: gamma1, gamma2, theta, phi0, phi1, beta1, beta2, delta, beta
+              NMFCALL = NMFCALL + 1
+              IF (NMFCALL == 1) THEN
+                !-- first time use MF model, generate angles
                 DO II = 1,4
                   CALL ZGF(MFANG(II),IDT)
                   MFANG(II) = MFANG(II)*PI
                 END DO
-                
-                AA = MFDSTAR - MFV1*DSIN(MFANG(4))**2
-                IF (AA .LE. 0.0D0 )THEN
-                  MFF = 0.0D0
-                ELSE 
-                  MFF = DSQRT(AA)+DSQRT(MFV1)*DCOS(MFANG(4))
-                  MFF = MFF/((1.0D0-DSQRT(MFALPHA(K)))*DCOS(MFANG(3)))-DSQRT(MFV1)*DCOS(MFANG(3))*DCOS(MFANG(4))
-                  MFF = (MFF/DCOS(MFANG(1))/DCOS(MFANG(2)))**2 
-                  MFF = MFF*(1.0D0-DSQRT(MFALPHA(K)))/(1.0D0+DSQRT(MFALPHA(K)))
+                IF (NMFANG(K) .ge. 8) THEN !collider is diatom
+                  DO II=5,8
+                    CALL ZGF(MFANG(II),IDT)
+                    MFANG(II) = MFANG(II)*PI
+                  END DO
+                  MFANG(3) = MFANG(3)*2.0d0    ! For atom-diatom, no symmetry
+                  MFANG(6) = MFANG(6)!-PI*0.5d0 ! beta1 [-pi/2, pi/2] 
+                  MFANG(7) = MFANG(7)*2.0d0    ! beta2 [0,2*pi]
+                  MFANG(8) = MFANG(8)*2.0d0    ! delta [0,2*pi]
                 END IF
-                IF (ECT >= MFF) THEN
-                  STER(J) = 1.0D0
-                ELSE
-                  STER(J) = 0.0D0
-                END IF
-                  !ELSE
-               !DO II = 1,9
-                !CALL ZGF(MFANG(II),IDTL)
-               !MFANG(II) = MFANG(II)*PI
-                !ENDDO
-                !MFF = DSQRT(MFDSTAR(K) - MFV1*DSIN(MFANG(4))**2)+DSQRT(MFV1)*DCOS(MFANG(4))
-                !MFF = MFF/((1.0D0-DSQRT(MFALPHA(K)))*DCOS(MFANG(3)))-DSQRT(MFV1)*DCOS(MFANG(3))*DCOS(MFANG(4))
-                !CC = DSQRT(MFR2)*DCOS(MFANG(5))*DCOS(MFANG(6)) + DSQRT(MFV2)*DCOS(MFANG(9))*DCOS(MFANG(7))*DCOS(MFANG(8))
-                !CC = DSQRT(DSQRT(MFALPHA(K))/(1.0D0-DSQRT(MFALPHA(K))))*CC
-                !MFF = ((MFF+CC)/DCOS(MFANG(1))/DCOS(MFANG(2)))**2
-                !MFF = MFF*(1.0D0-DSQRT(MFALPHA(K))
+                MFtheta = MFANG(3)
+              ELSE IF(NMFCALL == 2) THEN
+                !--this is the second call
+                AA=MFANG(4); MFANG(4)=MFANG(5); MFANG(5)=AA !switch phi
+                ! we don't change other angles
+                MFtheta = PI - DACOS(DCOS(MFANG(6))*DCOS(MFANG(7)))
               ELSE
-                STER(J)=0.0D0
-                IF (MFV1 .LE. 1.0D-5) MFV1 = 0.5d0*BOLTZ*SPVM(1,1,IREA(1,K))
-                C = MFALPHA(K)*MFDSTAR
-                CC = DSQRT(MFV1 / MFDSTAR)
-                DD = DSQRT(MFALPHA(K))
-                IF (MFV1 .LT. C) THEN
-                  MFF = MFDSTAR/(1.0d0-MFALPHA(K))*(1.0d0-DD*CC)**2
-                  IF ( ECT > MFF) THEN
-                    STER(J) = 4.0D0*(ECT-MFF)**1.5d0 /(3.0d0*PI*PI*MFF*DSQRT(MFDSTAR/(1.0d0-MFALPHA(K))))
-                    STER(J) = STER(J) / DSQRT((1.0d0-CC*DD)*(1.0d0-(2.0d0-DD)*CC))
-                  END IF
-                ELSE
-                  MFF = MFDSTAR - MFV1
-                  IF ( ECT > MFF) THEN
-                    STER(J) = (ECT-MFF)**2/(2.0d0*PI*PI*MFF*MFDSTAR*DD/DSQRT((1.0d0+DD)/(1.0d0-DD)))
-                    STER(J) = STER(J) / DSQRT((1.0d0+MFV1/MFDSTAR)*(MFV1/MFDSTAR/MFALPHA(K)-1.0D0))
-                  END IF
-                END IF
-                IF ( DABS(MFV1-MFDSTAR) < 1.0D0 ) STER(J) = 1.0D0
-                IF (STER(J) > 0.999D0)  STER(J) = 1.0D0
+                WRITE(*,*) "Check reaction between ",LS," and ",MS
+                WRITE(*,*) " there are more than 2 dissociation reaction"
+                STOP
               END IF
+
+              ! log angles for binning
+              !IF (IREAC == 2)THEN
+                !DO II = 1,NMFANG(K)
+                  !JJ = FLOOR(MFANG(II)*180.0d0)+1
+                  !JJ = MIN(JJ,180)
+                  !!              NCANGLE(II,JJ) = NCANGLE(II,JJ)+1.d0
+                !END DO
+              !END IF
+
+              AA = MFDSTAR - MFV1*DSIN(MFANG(4))**2
+              IF (AA .LE. 0.0D0 )THEN
+                MFF(NMFCALL) = 0.0D0
+              ELSE
+                AA = (DSQRT(AA)+DSQRT(MFV1)*DCOS(MFANG(4)))/DCOS(MFtheta)
+                AA = AA*(MFcoll(1)/MFcoll(2)+1.0d0)
+
+                BB = -2.0d0*MFRMASS(2,K)/MFcoll(1)*DSQRT(MFV1)*DCOS(MFtheta)*DCOS(MFANG(4))
+
+                CC = 0.0d0
+                IF (ISPV(IREA(2,K)) == 1) THEN
+                  IF (NMFCALL == 1) THEN
+                    CC = DCOS(MFANG(8))*DCOS(MFANG(7))*DSIN(MFANG(6))+DSIN(MFANG(8))*DSIN(MFANG(7))
+                    DD = DCOS(MFANG(5))*DCOS(MFANG(6))*DCOS(MFANG(7))
+                    CC = DSQRT(MFR2)*CC
+                    DD = DSQRT(MFV2)*DD
+                    CC = CC-DD
+                  ELSE
+                    !!!======the following was not verified===========
+                    ! use beta1 as the polar angle for collider's rotational
+                    ! velocity, and randomly select direction
+                    IF ( MFANG(6) > 0.0d0) THEN
+                      CC = DCOS(MFANG(6))*DCOS(MFANG(3)-PI*0.5d0)
+                    ELSE
+                      CC = -DCOS(MFANG(6))*DCOS(MFANG(3) - PI*0.5d0)
+                    END IF
+                    CC = DSQRT(MFR2)*CC
+                    DD = DSQRT(MFV2)*DD
+                    CC = CC+DD
+                  END IF
+                  CC = -2.0d0*CC*DSQRT(MFRMASS(2,K)*MFRMASS(3,K))/MFcoll(2)
+                END IF
+
+                MFF(NMFCALL) = (AA+BB+CC)**2
+                MFF(NMFCALL) = MFF(NMFCALL)*MFRMASS(1,K)/MFRMASS(2,K)/(DCOS(MFANG(1))*DCOS(MFANG(2)))**2
+                MFF(NMFCALL) = MFF(NMFCALL) / 4.d0
+              END IF
+
+              STER(J) = 0.0d0
+              IF (ECT >= MFF(NMFCALL)) STER(J) = 1.0D0
+              IF ((NMFCALL == 2) .and. (STER(J) == 1.0d0) )THEN
+                IF (MFF(2) < MFF(1))THEN
+                  DO II=1,J-1
+                    STER(II) =0.0d0 ! set previous dissociation to 0
+                    RXSECTION(II) = 0.0d0
+                  END DO
+                ELSE
+                  STER(J) = 0.0d0
+                END IF
+              END IF
+              !ELSE  ! MF probability version
+                !STER(J)=0.0D0
+                !IF (MFV1 .LE. 1.0D-5) MFV1 = 0.5d0*BOLTZ*SPVM(1,1,IREA(1,K))
+                !C = MFALPHA(K)*MFDSTAR
+                !CC = DSQRT(MFV1 / MFDSTAR)
+                !DD = DSQRT(MFALPHA(K))
+                !IF (MFV1 .LT. C) THEN
+                  !MFF = MFDSTAR/(1.0d0-MFALPHA(K))*(1.0d0-DD*CC)**2
+                  !IF ( ECT > MFF) THEN
+                    !STER(J) = 4.0D0*(ECT-MFF)**1.5d0 /(3.0d0*PI*PI*MFF*DSQRT(MFDSTAR/(1.0d0-MFALPHA(K))))
+                    !STER(J) = STER(J) / DSQRT((1.0d0-CC*DD)*(1.0d0-(2.0d0-DD)*CC))
+                  !END IF
+                !ELSE
+                  !MFF = MFDSTAR - MFV1
+                  !IF ( ECT > MFF) THEN
+                    !STER(J) = (ECT-MFF)**2/(2.0d0*PI*PI*MFF*MFDSTAR*DD/DSQRT((1.0d0+DD)/(1.0d0-DD)))
+                    !STER(J) = STER(J) / DSQRT((1.0d0+MFV1/MFDSTAR)*(MFV1/MFDSTAR/MFALPHA(K)-1.0D0))
+                  !END IF
+                !END IF
+                !IF ( DABS(MFV1-MFDSTAR) < 1.0D0 ) STER(J) = 1.0D0
+                !IF (STER(J) > 0.999D0)  STER(J) = 1.0D0
+              !END IF
             END IF
             RXSECTION(J)=STER(J)*SXSECTION  !in Angstrons^2
           ELSE
@@ -8454,14 +9157,15 @@ IMPLICIT NONE
 !
 !
 INTEGER :: J,K,L,LM,M,N,LS,LMS,MS,IKA,NRE,KK,KS,MK,KA,KAA,MKK,JR,KR,JS,KV,IA,ISTE(MNRE),&
-           IDT,NS,NPM,I,IVDC,KM,IV,IS,IVAR(MNRE),II,JJ,NSP,nstep
+           IDT,NS,NPM,I,IVDC,KM,IV,IS,IVAR(MNRE),NSP,nstep
 REAL(8) :: CC,DD
 REAL(8),EXTERNAL :: GAM
 REAL(KIND=8) :: A,B,ECT,ECR,ECV,EC,STERT,THBCELL,WF,PSTERT,VR,VRR,RML,RMM,ECM,ECN,RANF,&
                 VDOF1(MMVM),VDOF2(MMVM),EV1(MMVM),EV2(MMVM),EV,ECV1,ECV2,ECV3,SVDOF1,SVDOF2,SVDOF3,ECR1,ECR2,ECR3,AL,&
                 ATDOF,AIDOF,ANDOF,AVDOF,X,C,D,AA,BB,XI,PSI,PHI,CV,EE,SEV(2),EP,EFAC,EVIB,TCOLT,TEMP,ECT2,&
                 VRC(3),VCM(3),STER(MNRE),ECA(MNRE),CF,VRCP(3),TVAR(7,MNRE),PROB,CVR
-!
+INTEGER :: II,IETDX,IERDX(2)
+              !
 !--A,B,C working variables
 !--J,K,KK,MK,KA,KAA,MKK,JR,KR,JS,KV,IA working integers
 !--N the collision cell
@@ -8534,6 +9238,7 @@ IF (IKA > 0) THEN
 !
 !--sample pre-reaction vibrational levels
   DO KV=1,MMVM
+    I=0; J=0; K=0
     IF (IVDC == 1) THEN
       SELECT CASE(NPM)
         CASE(1) !recombination
@@ -8574,6 +9279,39 @@ IF (IKA > 0) THEN
     NPVIB(1,IKA,2,KV,J)=NPVIB(1,IKA,2,KV,J)+1
     !$omp atomic
     NPVIB(1,IKA,3,KV,K)=NPVIB(1,IKA,3,KV,K)+1
+    !$omp critical
+    IF (IREAC == 2 .and. NPM == 3 .and. IMF == 1 .and. KV == 1 .and. IMFS == 1) THEN
+      IETDX = FLOOR(ECT/BOLTZ/FTMP0/0.01D0)+1;
+      IETDX=MIN(IETDX,1000)
+      NMFETR(IETDX,IKA) = NMFETR(IETDX,IKA) + 1.0d0
+
+      IF (IVDC == 1) THEN
+        IERDX(1) = FLOOR(ECR1/BOLTZ/FTMP0/0.01D0)+1
+        IERDX(2) = FLOOR(ECR2/BOLTZ/FTMP0/0.01D0)+1
+      ELSE
+        IERDX(2) = FLOOR(ECR1/BOLTZ/FTMP0/0.01D0)+1
+        IERDX(1) = FLOOR(ECR2/BOLTZ/FTMP0/0.01D0)+1
+      END IF
+
+      DO II = 1,2
+        IERDX(II) = MIN(IERDX(II),1000)
+        NMFERR(IERDX(II),II,IKA) = NMFERR(IERDX(II),II,IKA)+1.0d0
+      END DO
+
+      NMFEVR(I,1,IKA) = NMFEVR(I,1,IKA) + 1.0d0
+      NMFEVR(J,2,IKA) = NMFEVR(J,2,IKA) + 1.0d0
+    
+      NMFVTR(I,IETDX,1,IKA) = NMFVTR(I,IETDX,1,IKA) + 1.0d0
+      NMFVTR(J,IETDX,2,IKA) = NMFVTR(J,IETDX,2,IKA) + 1.0d0
+    ENDIF
+    IF (NPM == 3 .and. KV == 1 .and. NPM ==3) THEN
+      IF (IVDC == 1) THEN
+        EVREM(IKA) = EVREM(IKA) + ECV1  ! EVREM in Joule
+      ELSE
+        EVREM(IKA) = EVREM(IKA) + ECV2
+      END IF
+    END IF
+    !$omp end critical
   END DO
 !
 !--sample pre-reaction vibrational energies (normalized by 1000*BOLTZ)
@@ -8888,6 +9626,8 @@ DO N=1,NCELLS
     CCELL(5,NCCELLS)=FTIME
   END DO
 END DO
+
+IF (nonVHS == 1) CCELL(4,:) = CCELL(4,:)*1.2D0
 !
 !--assign the molecules to the cells
 !
@@ -9087,6 +9827,8 @@ REAL(KIND=8) :: A,AA,AAA,AB,B,BB,BBB,ASEL,DTC,SEP,VRI,VR,VRR,ECT,EVIB,ECC,ZV,COL
                 QNU,A1,A2,B1,B2,C1,C2,ET,EROT,EV,SIGMA_REF,EV_POST,SUMF,E,F,EL,ED,EF,S !ME-QCT variables
 REAL(KIND=8),DIMENSION(0:100) :: VTXSECTION
 REAL(KIND=8),DIMENSION(3) :: VRC,VCM,VRCP,VRCT
+REAL(KIND=8) :: ECR(2),EVIBEV,CTOT(8)
+INTEGER :: IETDX,IERDX(2),IEVDX(2),IVPS(2)
 logical :: IREACSP
 !
 !--N,M,K working integer
@@ -9120,6 +9862,17 @@ logical :: IREACSP
 !--EA activation energy
 !
 NUMEXR=0
+IF (nonVHS == 1) THEN
+  CTOT(1) = 46.039504155886434  ! A^2
+  CTOT(2) = 0.051004420857885
+  CTOT(3) = -0.584551057667247
+  CTOT(4) = -0.002969283806997
+  CTOT(5) = 0.281618756125794
+  CTOT(6) = 0.030181202283512
+  CTOT(7) = -0.436592532266083
+  CTOT(8) = 0.152224780739684
+END IF
+
 !
 !$omp parallel &
 !$omp private(idt) & !always =0 outside parallel regions
@@ -9129,11 +9882,14 @@ NUMEXR=0
 !$omp private(tcolt,kt,aa,bb,kvv,ji,lsi,ivm,nmc,nvm,ectot,psf,jj,ea,den,iax,jx,ika,npm,nstep,it,dt) &
 !$omp private(SXSECTION,RXSECTION,VTXSECTION,TXSECTION) &
 !$omp private(QNU,A1,A2,B1,B2,C1,C2,E,F,EL,ED,ET,EROT,EV,SIGMA_REF,EV_POST,SUMF,EF,S) &
+!$omp private(ECR,EVIBEV,IVPS)&
+!$omp private(IETDX,IEVDX,IERDX,IREACSP) &
 !$omp reduction(+:ndissoc,ndissl,trecomb,nrecomb,treacl,treacg,tnex,tforex,trevex) & !Q-K
 !$omp reduction(+:totdup,totcol,pcolls,tcol,cscr,colls,wcolls,clsep,reac,npvib) &
-!$omp private(IREACSP)
+!$omp reduction(+:NMFET0,NMFER0,NMFEV0,NMFVT0,NMFEV,NMFET,NMFER,NMFVT) 
 !$    idt=omp_get_thread_num()  !thread id
 !$omp do !schedule (dynamic,NCCELLS/32)
+
 DO N=1,NCCELLS
 !
   IF (FTIME-CCELL(5,N) > CCELL(3,N)) THEN
@@ -9262,7 +10018,7 @@ DO N=1,NCCELLS
           ELSE
             IREACSP = .true.
           END IF
-            
+
 !--Simple gas
           IF (MSP == 1) THEN
             CVR=VR*CXSS*((2.D00*BOLTZ*SP(2,1)/(RMAS*VRR))**(SP(3,1)-0.5D00))*RGFS
@@ -9373,18 +10129,117 @@ DO N=1,NCCELLS
 !--Calculate the total scattering (VHS) cross-section
             CVR=VR*SPM(2,LS,MS)*((2.D00*BOLTZ*SPM(5,LS,MS)/(SPM(1,LS,MS)*VRR))**(SPM(3,LS,MS)-0.5D00))*SPM(6,LS,MS)
             SXSECTION=CVR*1d20/VR !in Angstrons^2
-!
+
 !--Calculate the reaction cross-sections
           !  RXSECTION=0.d0
           !  IF (MNRE>0) THEN
            !   CALL CHECK_RXSECTION(RXSECTION,N,L,LM,M,LS,LMS,MS,VRR,SXSECTION,IDT)
            ! END IF
 !
+            ECT=0.5D00*SPM(1,LS,MS)*VRR         !collision translational energy in J
+            ET=ECT/EVOLT                        !convert to eV
+            ECC=(ECT+EVIB)/EVOLT                !available collision energy in eV
+            EL=DMIN1(ECC,ED)                    !in eV
+           
+           ! get rotational energy, ECR1 is always the one with lower sp number 
+            ECR = 0.0d0; IVPS = 0
+            IF (LS < MS ) THEN
+              IF (ISPV(LS) > 0) THEN
+                ECR(1) = PROT(L); IVPS(1) = IPVIB(1,L)
+              END IF
+              IF (ISPV(MS) > 0) THEN
+                ECR(2) = PROT(M); IVPS(2) = IPVIB(1,M)
+              END IF
+            ELSE IF (LS > MS) THEN
+              IF (ISPV(LS) > 0) THEN
+                ECR(2) = PROT(L); IVPS(2) = IPVIB(1,L)
+              END IF
+              IF (ISPV(MS) > 0) THEN
+                ECR(1) = PROT(M); IVPS(1) = IPVIB(1,M)
+              END IF
+            ELSE ! same specie
+              IF (ISPV(LS) > 0) THEN
+                IF (IPVIB(1,L) >= IPVIB(1,M)) THEN ! select one with higher Ev
+                  ECR(1) = PROT(L); IVPS(1) = IPVIB(1,L)
+                  ECR(2) = PROT(M); IVPS(2) = IPVIB(1,M)
+                ELSE
+                  ECR(1) = PROT(M); IVPS(1) = IPVIB(1,M)
+                  ECR(2) = PROT(L); IVPS(2) = IPVIB(1,L)
+                END IF
+              END IF
+            END IF
+            ! 1 is always the one with lower sp number 
+            ! or the one with higher Ev
+
+!
 !--Calculate the VT (ME-QCT) cross-sections (only for O2+O and N2+O collisions)
             J=0
             IF ((LS==1.AND.MS==4).OR.(LS==4.AND.MS==1)) J=1 !N2-O collision
             IF ((LS==3.AND.MS==4).OR.(LS==4.AND.MS==3)) J=3 !O2-O collision
+            ! J is only larger than 0 for the above two pairs
+
+            ! Calcuate pre-collision vibrational energy
+            IVP = -1
+            IF (LS == J) THEN 
+              IVP=IPVIB(1,L);
+            ELSE IF  (MS == J) THEN
+              IVP=IPVIB(1,M)
+            ELSE IF ((ISPV(LS) == 1) .and. (ISPV(MS) == 0))THEN
+              IVP = IPVIB(1,L)
+              J = -LS
+            ELSE IF ((ISPV(MS) == 1) .and. (ISPV(LS) == 0))THEN
+              IVP = IPVIB(1,M)
+              J = -MS
+            ELSE ! both are diatom, select the one with higher vibrational energy to be dissociated
+              IF (IPVIB(1,L) >= IPVIB(1,M)) THEN
+                J = -LS
+                IVP = IPVIB(1,L)
+              ELSE
+                J = -MS
+                IVP = IPVIB(1,M)
+              ENDIF
+            END IF
+            IF (IVP > 0)THEN
+              CALL VIB_ENERGY(EVIB,IVP,1,ABS(J))
+            END IF
+
+            ! Han: add nonVHS cross section model for N2+O
+            IF (nonVHS == 1) THEN
+              IF ((LS == 1 .and. MS == 4) .or. (LS ==4 .and. MS == 1)) THEN
+                EVIBEV = EVIB/EVOLT
+                IF (EVIBEV >= 6.9d0  ) EVIBEV = 6.9d0  ! extrapolate
+                SXSECTION = DLOG(ET) - (CTOT(8) + EVIBEV*(CTOT(7) + EVIBEV*CTOT(6)))
+                SXSECTION = (CTOT(3)+CTOT(4)*EVIBEV*EVIBEV)*DTANH(CTOT(5)*SXSECTION) + CTOT(2)*EVIBEV
+                SXSECTION = CTOT(1)*DEXP(SXSECTION)
+                CVR = SXSECTION/1.0d20*VR
+              END IF
+            END IF
+
+
+
+            ! Sample rotational, translational and vibrational energy
+            ! of colliding pairs that are selected to check collision
+            IF ((IREAC .eq. 2) .and. (IMF == 1) .and. (MNRE <= 2) .and. (IMFS == 1)) THEN
+              IETDX = FLOOR(ECT/BOLTZ/FTMP0/0.010D0)+1
+              IETDX = MIN(IETDX,1000)
+              NMFET0(IETDX,IMFpair(LS,MS)) = NMFET0(IETDX,IMFpair(LS,MS)) + 1.0D0
+              ! KK=1 the one with lower smaller sp number
+              DO KK = 1,2
+                K = KK
+                ! for same specie, X(:,2,:) is always zero
+                ! rotational energy
+                IERDX(KK) = FLOOR(ECR(KK)/BOLTZ/FTMP0/0.01D00)+1
+                IERDX(KK) = MIN(IERDX(KK),1000)
+                NMFER0(IERDX(KK),K,IMFpair(LS,MS)) = NMFER0(IERDX(KK),K,IMFpair(LS,MS)) + 1.0D0
+                ! vibrational energy
+                IEVDX(KK) = IVPS(KK)
+                IF (IEVDX(KK) > 100)    IEVDX(KK) = 100
+                NMFEV0(IEVDX(KK),K,IMFpair(LS,MS)) = NMFEV0(IEVDX(KK),K,IMFpair(LS,MS)) + 1.0d0
+                NMFVT0(IEVDX(KK),IETDX,K,IMFpair(LS,MS)) = NMFVT0(IEVDX(KK),IETDX,K,IMFpair(LS,MS))+1.0D0
+              END DO
+            END IF
 !
+            ! QCT VT cross sections
             VTXSECTION=0.d0
             IF (QCTMODEL==2.AND.GASCODE==8.AND.J>0) THEN
 !
@@ -9418,14 +10273,6 @@ DO N=1,NCCELLS
                 ED=5.21275d0  !E_dissociation in eV
               END IF
 !
-              IF (LS == J) IVP=IPVIB(1,L)
-              IF (MS == J) IVP=IPVIB(1,M)
-              CALL VIB_ENERGY(EVIB,IVP,1,J)
-!
-              ECT=0.5D00*SPM(1,LS,MS)*VRR         !collision translational energy in J
-              ET=ECT/EVOLT                        !convert to eV
-              ECC=(ECT+EVIB)/EVOLT                !available collision energy in eV
-              EL=DMIN1(ECC,ED)                    !in eV
 !
               A=A1+A2*ECC
               B=B1+B2*ECC
@@ -9474,10 +10321,17 @@ DO N=1,NCCELLS
             TXSECTION=DMAX1(SXSECTION,SUM(VTXSECTION(:)))      !trick
             !TXSECTION=DMAX1(SXSECTION,SUM(RXSECTION(:)))
             !TXSECTION=DMAX1(TXSECTION,SUM(VTXSECTION(:)))     !total cross-section in Angstrons^2
-            IF (TXSECTION*VRI/1.d20 > CCELL(4,N)) CCELL(4,N)=TXSECTION*VRI/1.d20 !update maximum value in (m2)*(m/s)
+
+            IF (TXSECTION*VRI/1.d20 > CCELL(4,N)) THEN
+              !IF (((LS==1.AND.MS==4).OR.(LS==4.AND.MS==1)) .and. nonVHS ==1) THEN
+                !WRITE(*,*) TXSECTION*VRI/1.d20/CCELL(4,N)
+              !ENDIF
+              CCELL(4,N)=TXSECTION*VRI/1.d20 !update maximum value in (m2)*(m/s)
+            END IF
 !
 !--NTC approach based on total cross-section
             PROB=(TXSECTION*VRI/1.d20)/CCELL(4,N)
+
             CALL ZGF(RANF,IDT)
             IF (PROB > RANF) THEN !collision occurs
 !
@@ -9498,6 +10352,24 @@ DO N=1,NCCELLS
               JX=2                   !standard number of post reaction species
               IVDC=0                 !to track the order of reacting species
               LMS=1                  !initialize
+
+              !
+              !--Sample internal states and energy
+              !-------------------------------------------------
+              ! sample t,r,v energy for particles that collide
+              IF ((IREAC .eq. 2) .and. (IMF == 1) .and. (MNRE <= 2) .and. (IMFS == 1)) THEN
+                NMFET(IETDX,IMFpair(LS,MS)) = NMFET(IETDX,IMFpair(LS,MS)) + 1.0D0
+                ! KK=1 the one with lower smaller sp number
+                DO KK = 1,2
+                  K = KK
+                  ! for same specie, X(:,2,:) is always zero
+                  ! rotational energy
+                  NMFER(IERDX(KK),K,IMFpair(LS,MS)) = NMFER(IERDX(KK),K,IMFpair(LS,MS)) + 1.0D0
+                  ! vibrational energy
+                  NMFEV(IEVDX(KK),K,IMFpair(LS,MS)) = NMFEV(IEVDX(KK),K,IMFpair(LS,MS)) + 1.0d0
+                  NMFVT(IEVDX(KK),IETDX,K,IMFpair(LS,MS)) = NMFVT(IEVDX(KK),IETDX,K,IMFpair(LS,MS))+1.0D0
+                END DO
+              END IF
 !
 !--Check chemical reaction
 !-------------------------------------------------
@@ -9846,11 +10718,22 @@ DO N=1,NCCELLS
 !
 !--calculate new velocities
 !-------------------------------------------------
-              VRC(1:3)=PV(1:3,L)-PV(1:3,M)
-              IF (JX == 2) THEN
-                CALL VHSS(LS,MS,VR,VRC,VRCP,IDT)
+              VRC(1:3)=PV(1:3,L)-PV(1:3,M) ! intial relative velocity vector
+              VRI = DSQRT(VRC(1)**2 + VRC(2)**2 + VRC(3)**2)
+              VRC = VRC/VRI*VR             ! rescale to match current magnitude
+
+              IF (((LS == 1 .AND. MS ==4) .OR. (LS ==4 .AND. MS ==1)) .AND. nonVHS ==1)THEN
+                IF (JX == 2) THEN
+                  CALL NVHSS(LS,MS,VR,VRC,VRCP,IDT)
+                ELSE
+                  CALL NVHSS(IREA(1,IKA),IREA(2,IKA),VR,VRC,VRCP,IDT)
+                END IF
               ELSE
-                CALL VHSS(IREA(1,IKA),IREA(2,IKA),VR,VRC,VRCP,IDT)
+                IF (JX == 2) THEN
+                  CALL VHSS(LS,MS,VR,VRC,VRCP,IDT)
+                ELSE
+                  CALL VHSS(IREA(1,IKA),IREA(2,IKA),VR,VRC,VRCP,IDT)
+                END IF
               END IF
               PV(1:3,L)=VCM(1:3)+RMM*VRCP(1:3)
               PV(1:3,M)=VCM(1:3)-RML*VRCP(1:3)
@@ -9964,6 +10847,69 @@ END SUBROUTINE VHSS
 !
 !*****************************************************************************
 !
+SUBROUTINE NVHSS(LS,MS,VR,VRC,VRCP,IDT)
+!
+! -- calculate new scattering angles based on non VHS model
+! -- only for N2+O collision
+!
+USE GAS
+USE CALC
+USE OMP_LIB
+!
+IMPLICIT NONE
+!
+INTEGER :: LS,MS,IDT
+REAL(KIND=8) :: B,VR,VRC(3),VRCP(3),RANF,C,D
+REAL(8) :: COF(6), CTOT(8), BMAX, ET, RMASS, EVIBEV,C1,C2,CHI,CCHI,SCHI
+REAL(8) :: EPSI,CEPSI,SEPSI
+
+COF(1) = 1.783071942310433
+COF(2) = 0.016980219000487/1000.0D0
+COF(3) = 2.846002511624816
+COF(4) = 0.294962630947434/1000.0D0
+COF(5) = 2.189954664950628
+COF(6) = 0.078701684994745
+
+CTOT(1) = 46.039504155886434  ! A^2
+CTOT(2) = 0.051004420857885
+CTOT(3) = -0.584551057667247
+CTOT(4) = -0.002969283806997
+CTOT(5) = 0.281618756125794
+CTOT(6) = 0.030181202283512
+CTOT(7) = -0.436592532266083
+CTOT(8) = 0.152224780739684
+
+ET = 0.5d0*SPM(1,LS,MS)*VR*VR/EVOLT
+EVIBEV =  0.063577602025999  !Erv(v=0,J=0) for N2
+BMAX = DLOG(ET) - (CTOT(8) + EVIBEV*(CTOT(7) + EVIBEV*CTOT(6)))
+BMAX = (CTOT(3)+CTOT(4)*EVIBEV*EVIBEV)*DTANH(CTOT(5)*BMAX) + CTOT(2)*EVIBEV
+BMAX = CTOT(1)*DEXP(BMAX)
+BMAX = DSQRT(BMAX)/SPI
+
+CALL ZGF(RANF,IDT)
+B = DSQRT(RANF)*BMAX  !sampled impact parameter
+C1 = COF(3)*DEXP(-COF(4)*VR) +COF(5)*DEXP(-COF(6)*EVIBEV)
+C2 = COF(1) + COF(2)*VR
+CHI = C2*(1.0d0 - 1.0d0/(C1+DLOG(2.0D0))*(B-DLOG(DCOSH(B-C1))))
+! this two condition shouldn't occur, for safety we set it here
+IF (CHI > PI) CHI = PI
+IF (CHI < 0) CHI = 0.0D0
+CCHI = DCOS(CHI); SCHI = DSIN(CHI)
+
+CALL ZGF(RANF,IDT)
+EPSI = RANF*2.0D0*PI
+CEPSI = DCOS(EPSI)
+SEPSI = DSIN(EPSI)
+
+D=DSQRT(VRC(2)**2+VRC(3)**2)
+VRCP(1) = CCHI*VRC(1) + SCHI*SEPSI*D
+VRCP(2) = CCHI*VRC(2) + SCHI*(VR*VRC(3)*CEPSI-VRC(1)*VRC(2)*SEPSI)/D
+VRCP(3) = CCHI*VRC(3) - SCHI*(VR*VRC(2)*CEPSI+VRC(1)*VRC(3)*SEPSI)/D
+
+RETURN
+END SUBROUTINE NVHSS
+!
+!*****************************************************************************
 SUBROUTINE THERMOPHORETIC
 !
 !--author: isebasti
@@ -10671,7 +11617,7 @@ REAL(KIND=8) :: EVIB
 IF (IVMODEL(KS,1) == 0) THEN
   EVIB=IV*BOLTZ*SPVM(1,KV,KS) !SHO model
 ELSE
-  IF (KS==1.OR.KS==3) EVIB=VIBEN(IV,KS) !QCT for N2 and O2
+  EVIB=VIBEN(IV,KS) !QCT for N2 and O2 and NO
 END IF
 !
 RETURN
@@ -10912,3 +11858,624 @@ END FUNCTION ROOTF
 !     ******************************************************************
 !
 !*****************************************************************************
+! include external functions
+function alngam ( xvalue, ifault )
+
+!*****************************************************************************80
+!
+!! ALNGAM computes the logarithm of the gamma function.
+!
+!  Modified:
+!
+!    13 January 2008
+!
+!  Author:
+!
+!    Allan Macleod
+!    FORTRAN90 version by John Burkardt
+!
+!  Reference:
+!
+!    Allan Macleod,
+!    Algorithm AS 245,
+!    A Robust and Reliable Algorithm for the Logarithm of the Gamma Function,
+!    Applied Statistics,
+!    Volume 38, Number 2, 1989, pages 397-402.
+!
+!  Parameters:
+!
+!    Input, real ( kind = 8 ) XVALUE, the argument of the Gamma function.
+!
+!    Output, integer ( kind = 4 ) IFAULT, error flag.
+!    0, no error occurred.
+!    1, XVALUE is less than or equal to 0.
+!    2, XVALUE is too big.
+!
+!    Output, real ( kind = 8 ) ALNGAM, the logarithm of the gamma function of X.
+!
+  implicit none
+
+  real ( kind = 8 ) alngam
+  real ( kind = 8 ), parameter :: alr2pi = 0.918938533204673D+00
+  integer ( kind = 4 ) ifault
+  real ( kind = 8 ), dimension ( 9 ) :: r1 = (/ &
+    -2.66685511495D+00, &
+    -24.4387534237D+00, &
+    -21.9698958928D+00, &
+     11.1667541262D+00, &
+     3.13060547623D+00, &
+     0.607771387771D+00, &
+     11.9400905721D+00, &
+     31.4690115749D+00, &
+     15.2346874070D+00 /)
+  real ( kind = 8 ), dimension ( 9 ) :: r2 = (/ &
+    -78.3359299449D+00, &
+    -142.046296688D+00, &
+     137.519416416D+00, &
+     78.6994924154D+00, &
+     4.16438922228D+00, &
+     47.0668766060D+00, &
+     313.399215894D+00, &
+     263.505074721D+00, &
+     43.3400022514D+00 /)
+  real ( kind = 8 ), dimension ( 9 ) :: r3 = (/ &
+    -2.12159572323D+05, &
+     2.30661510616D+05, &
+     2.74647644705D+04, &
+    -4.02621119975D+04, &
+    -2.29660729780D+03, &
+    -1.16328495004D+05, &
+    -1.46025937511D+05, &
+    -2.42357409629D+04, &
+    -5.70691009324D+02 /)
+  real ( kind = 8 ), dimension ( 5 ) :: r4 = (/ &
+     0.279195317918525D+00, &
+     0.4917317610505968D+00, &
+     0.0692910599291889D+00, &
+     3.350343815022304D+00, &
+     6.012459259764103D+00 /)
+  real ( kind = 8 ) x
+  real ( kind = 8 ) x1
+  real ( kind = 8 ) x2
+  real ( kind = 8 ), parameter :: xlge = 5.10D+05
+  real ( kind = 8 ), parameter :: xlgst = 1.0D+30
+  real ( kind = 8 ) xvalue
+  real ( kind = 8 ) y
+
+  x = xvalue
+  alngam = 0.0D+00
+!
+!  Check the input.
+!
+  if ( xlgst <= x ) then
+    ifault = 2
+    return
+  end if
+
+  if ( x <= 0.0D+00 ) then
+    ifault = 1
+    return
+  end if
+
+  ifault = 0
+!
+!  Calculation for 0 < X < 0.5 and 0.5 <= X < 1.5 combined.
+!
+  if ( x < 1.5D+00 ) then
+
+    if ( x < 0.5D+00 ) then
+
+      alngam = - log ( x )
+      y = x + 1.0D+00
+!
+!  Test whether X < machine epsilon.
+!
+      if ( y == 1.0D+00 ) then
+        return
+      end if
+
+    else
+
+      alngam = 0.0D+00
+      y = x
+      x = ( x - 0.5D+00 ) - 0.5D+00
+
+    end if
+
+    alngam = alngam + x * (((( &
+        r1(5)   * y &
+      + r1(4) ) * y &
+      + r1(3) ) * y &
+      + r1(2) ) * y &
+      + r1(1) ) / (((( &
+                  y &
+      + r1(9) ) * y &
+      + r1(8) ) * y &
+      + r1(7) ) * y &
+      + r1(6) )
+
+    return
+
+  end if
+!
+!  Calculation for 1.5 <= X < 4.0.
+!
+  if ( x < 4.0D+00 ) then
+
+    y = ( x - 1.0D+00 ) - 1.0D+00
+
+    alngam = y * (((( &
+        r2(5)   * x &
+      + r2(4) ) * x &
+      + r2(3) ) * x &
+      + r2(2) ) * x &
+      + r2(1) ) / (((( &
+                  x &
+      + r2(9) ) * x &
+      + r2(8) ) * x &
+      + r2(7) ) * x &
+      + r2(6) )
+!
+!  Calculation for 4.0 <= X < 12.0.
+!
+  else if ( x < 12.0D+00 ) then
+
+    alngam = (((( &
+        r3(5)   * x &
+      + r3(4) ) * x &
+      + r3(3) ) * x &
+      + r3(2) ) * x &
+      + r3(1) ) / (((( &
+                  x &
+      + r3(9) ) * x &
+      + r3(8) ) * x &
+      + r3(7) ) * x &
+      + r3(6) )
+!
+!  Calculation for 12.0 <= X.
+!
+  else
+
+    y = log ( x )
+    alngam = x * ( y - 1.0D+00 ) - 0.5D+00 * y + alr2pi
+
+    if ( x <= xlge ) then
+
+      x1 = 1.0D+00 / x
+      x2 = x1 * x1
+
+      alngam = alngam + x1 * ( ( &
+             r4(3)   * &
+        x2 + r4(2) ) * &
+        x2 + r4(1) ) / ( ( &
+        x2 + r4(5) ) * &
+        x2 + r4(4) )
+
+    end if
+
+  end if
+
+  return
+end
+function gamain ( x, p, ifault )
+
+!*****************************************************************************80
+!
+!! GAMAIN computes the incomplete gamma ratio.
+!
+!  Discussion:
+!
+!    A series expansion is used if P > X or X <= 1.  Otherwise, a
+!    continued fraction approximation is used.
+!    PN(A,X) = 1/Gamma(A) * Integral ( 0 <= T <= X ) T**(A-1) * exp(-T) dT.
+!
+!  Modified:
+!
+!    17 January 2008
+!
+!  Author:
+!
+!    G Bhattacharjee
+!    FORTRAN90 version by John Burkardt
+!
+!  Reference:
+!
+!    G Bhattacharjee,
+!    Algorithm AS 32:
+!    The Incomplete Gamma Integral,
+!    Applied Statistics,
+!    Volume 19, Number 3, 1970, pages 285-287.
+!
+!  Parameters:
+!
+!    Input, real ( kind = 8 ) X, P, the parameters of the incomplete
+!    gamma ratio.  0 <= X, and 0 < P.
+!
+!    Output, integer ( kind = 4 ) IFAULT, error flag.
+!    0, no errors.
+!    1, P <= 0.
+!    2, X < 0.
+!    3, underflow.
+!    4, error return from the Log Gamma routine.
+!
+!    Output, real ( kind = 8 ) GAMAIN, the value of the incomplete
+!    gamma ratio.
+!
+  implicit none
+
+  real ( kind = 8 ) a
+  real ( kind = 8 ), parameter :: acu = 1.0D-08
+  real ( kind = 8 ) alngam
+  real ( kind = 8 ) an
+  real ( kind = 8 ) arg
+  real ( kind = 8 ) b
+  real ( kind = 8 ) dif
+  real ( kind = 8 ) factor
+  real ( kind = 8 ) g
+  real ( kind = 8 ) gamain
+  real ( kind = 8 ) gin
+  integer ( kind = 4 ) i
+  integer ( kind = 4 ) ifault
+  real ( kind = 8 ), parameter :: oflo = 1.0D+37
+  real ( kind = 8 ) p
+  real ( kind = 8 ) pn(6)
+  real ( kind = 8 ) rn
+  real ( kind = 8 ) term
+  real ( kind = 8 ), parameter :: uflo = 1.0D-37
+  real ( kind = 8 ) x
+!
+!  Check the input.
+!
+  if ( p <= 0.0D+00 ) then
+    ifault = 1
+    gamain = 0.0D+00
+    return
+  end if
+
+  if ( x < 0.0D+00 ) then
+    ifault = 2
+    gamain = 0.0D+00
+    return
+  end if
+
+  if ( x == 0.0D+00 ) then
+    ifault = 0
+    gamain = 0.0D+00
+    return
+  end if
+
+  g = alngam ( p, ifault )
+
+  if ( ifault /= 0 ) then
+    ifault = 4
+    gamain = 0.0D+00
+    return
+  end if
+
+  arg = p * log ( x ) - x - g
+
+  if ( arg < log ( uflo ) ) then
+    ifault = 3
+    gamain = 0.0D+00
+    return
+  end if
+
+  ifault = 0
+  factor = exp ( arg )
+!
+!  Calculation by series expansion.
+!
+  if ( x <= 1.0D+00 .or. x < p ) then
+
+    gin = 1.0D+00
+    term = 1.0D+00
+    rn = p
+
+    do
+
+      rn = rn + 1.0D+00
+      term = term * x / rn
+      gin = gin + term
+
+      if ( term <= acu ) then
+        exit
+      end if
+
+    end do
+
+    gamain = gin * factor / p
+    return
+
+  end if
+!
+!  Calculation by continued fraction.
+!
+  a = 1.0D+00 - p
+  b = a + x + 1.0D+00
+  term = 0.0D+00
+
+  pn(1) = 1.0D+00
+  pn(2) = x
+  pn(3) = x + 1.0D+00
+  pn(4) = x * b
+
+  gin = pn(3) / pn(4)
+
+  do
+
+    a = a + 1.0D+00
+    b = b + 2.0D+00
+    term = term + 1.0D+00
+    an = a * term
+    do i = 1, 2
+      pn(i+4) = b * pn(i+2) - an * pn(i)
+    end do
+
+    if ( pn(6) /= 0.0D+00 ) then
+
+      rn = pn(5) / pn(6)
+      dif = abs ( gin - rn )
+!
+!  Absolute error tolerance satisfied?
+!
+      if ( dif <= acu ) then
+!
+!  Relative error tolerance satisfied?
+!
+        if ( dif <= acu * rn ) then
+          gamain = 1.0D+00 - factor * gin
+          exit
+        end if
+
+      end if
+
+      gin = rn
+
+    end if
+
+    do i = 1, 4
+      pn(i) = pn(i+2)
+    end do
+
+    if ( oflo <= abs ( pn(5) ) ) then
+
+      do i = 1, 4
+        pn(i) = pn(i) / oflo
+      end do
+
+    end if
+
+  end do
+
+  return
+end
+subroutine gamma_inc_values ( n_data, a, x, fx )
+
+!*****************************************************************************80
+!
+!! GAMMA_INC_VALUES returns some values of the incomplete Gamma function.
+!
+!  Discussion:
+!
+!    The (normalized) incomplete Gamma function P(A,X) is defined as:
+!
+!      PN(A,X) = 1/Gamma(A) * Integral ( 0 <= T <= X ) T**(A-1) * exp(-T) dT.
+!
+!    With this definition, for all A and X,
+!
+!      0 <= PN(A,X) <= 1
+!
+!    and
+!
+!      PN(A,INFINITY) = 1.0
+!
+!    In Mathematica, the function can be evaluated by:
+!
+!      1 - GammaRegularized[A,X]
+!
+!  Modified:
+!
+!    20 November 2004
+!
+!  Author:
+!
+!    John Burkardt
+!
+!  Reference:
+!
+!    Milton Abramowitz, Irene Stegun,
+!    Handbook of Mathematical Functions,
+!    National Bureau of Standards, 1964,
+!    ISBN: 0-486-61272-4,
+!    LC: QA47.A34.
+!
+!    Stephen Wolfram,
+!    The Mathematica Book,
+!    Fourth Edition,
+!    Cambridge University Press, 1999,
+!    ISBN: 0-521-64314-7,
+!    LC: QA76.95.W65.
+!
+!  Parameters:
+!
+!    Input/output, integer ( kind = 4 ) N_DATA.  The user sets N_DATA to 0
+!    before the first call.  On each call, the routine increments N_DATA by 1,
+!    and returns the corresponding data; when there is no more data, the
+!    output value of N_DATA will be 0 again.
+!
+!    Output, real ( kind = 8 ) A, the parameter of the function.
+!
+!    Output, real ( kind = 8 ) X, the argument of the function.
+!
+!    Output, real ( kind = 8 ) FX, the value of the function.
+!
+  implicit none
+
+  integer ( kind = 4 ), parameter :: n_max = 20
+
+  real ( kind = 8 ) a
+  real ( kind = 8 ), save, dimension ( n_max ) :: a_vec = (/ &
+    0.10D+00, &
+    0.10D+00, &
+    0.10D+00, &
+    0.50D+00, &
+    0.50D+00, &
+    0.50D+00, &
+    0.10D+01, &
+    0.10D+01, &
+    0.10D+01, &
+    0.11D+01, &
+    0.11D+01, &
+    0.11D+01, &
+    0.20D+01, &
+    0.20D+01, &
+    0.20D+01, &
+    0.60D+01, &
+    0.60D+01, &
+    0.11D+02, &
+    0.26D+02, &
+    0.41D+02 /)
+  real ( kind = 8 ) fx
+  real ( kind = 8 ), save, dimension ( n_max ) :: fx_vec = (/ &
+    0.7382350532339351D+00, &
+    0.9083579897300343D+00, &
+    0.9886559833621947D+00, &
+    0.3014646416966613D+00, &
+    0.7793286380801532D+00, &
+    0.9918490284064973D+00, &
+    0.9516258196404043D-01, &
+    0.6321205588285577D+00, &
+    0.9932620530009145D+00, &
+    0.7205974576054322D-01, &
+    0.5891809618706485D+00, &
+    0.9915368159845525D+00, &
+    0.1018582711118352D-01, &
+    0.4421745996289254D+00, &
+    0.9927049442755639D+00, &
+    0.4202103819530612D-01, &
+    0.9796589705830716D+00, &
+    0.9226039842296429D+00, &
+    0.4470785799755852D+00, &
+    0.7444549220718699D+00 /)
+  integer ( kind = 4 ) n_data
+  real ( kind = 8 ) x
+  real ( kind = 8 ), save, dimension ( n_max ) :: x_vec = (/ &
+    0.30D-01, &
+    0.30D+00, &
+    0.15D+01, &
+    0.75D-01, &
+    0.75D+00, &
+    0.35D+01, &
+    0.10D+00, &
+    0.10D+01, &
+    0.50D+01, &
+    0.10D+00, &
+    0.10D+01, &
+    0.50D+01, &
+    0.15D+00, &
+    0.15D+01, &
+    0.70D+01, &
+    0.25D+01, &
+    0.12D+02, &
+    0.16D+02, &
+    0.25D+02, &
+    0.45D+02 /)
+
+  if ( n_data < 0 ) then
+    n_data = 0
+  end if
+
+  n_data = n_data + 1
+
+  if ( n_max < n_data ) then
+    n_data = 0
+    a = 0.0D+00
+    x = 0.0D+00
+    fx = 0.0D+00
+  else
+    a = a_vec(n_data)
+    x = x_vec(n_data)
+    fx = fx_vec(n_data)
+  end if
+
+  return
+end
+subroutine timestamp ( )
+
+!*****************************************************************************80
+!
+!! TIMESTAMP prints the current YMDHMS date as a time stamp.
+!
+!  Example:
+!
+!    31 May 2001   9:45:54.872 AM
+!
+!  Licensing:
+!
+!    This code is distributed under the GNU LGPL license.
+!
+!  Modified:
+!
+!    18 May 2013
+!
+!  Author:
+!
+!    John Burkardt
+!
+!  Parameters:
+!
+!    None
+!
+  implicit none
+
+  character ( len = 8 ) ampm
+  integer ( kind = 4 ) d
+  integer ( kind = 4 ) h
+  integer ( kind = 4 ) m
+  integer ( kind = 4 ) mm
+  character ( len = 9 ), parameter, dimension(12) :: month = (/ &
+    'January  ', 'February ', 'March    ', 'April    ', &
+    'May      ', 'June     ', 'July     ', 'August   ', &
+    'September', 'October  ', 'November ', 'December ' /)
+  integer ( kind = 4 ) n
+  integer ( kind = 4 ) s
+  integer ( kind = 4 ) values(8)
+  integer ( kind = 4 ) y
+
+  call date_and_time ( values = values )
+
+  y = values(1)
+  m = values(2)
+  d = values(3)
+  h = values(5)
+  n = values(6)
+  s = values(7)
+  mm = values(8)
+
+  if ( h < 12 ) then
+    ampm = 'AM'
+  else if ( h == 12 ) then
+    if ( n == 0 .and. s == 0 ) then
+      ampm = 'Noon'
+    else
+      ampm = 'PM'
+    end if
+  else
+    h = h - 12
+    if ( h < 12 ) then
+      ampm = 'PM'
+    else if ( h == 12 ) then
+      if ( n == 0 .and. s == 0 ) then
+        ampm = 'Midnight'
+      else
+        ampm = 'AM'
+      end if
+    end if
+  end if
+
+  write ( *, '(i2,1x,a,1x,i4,2x,i2,a1,i2.2,a1,i2.2,a1,i3.3,1x,a)' ) &
+    d, trim ( month(m) ), y, h, ':', n, ':', s, '.', mm, trim ( ampm )
+
+  return
+end
+
