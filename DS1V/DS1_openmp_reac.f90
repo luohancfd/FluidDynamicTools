@@ -1437,7 +1437,7 @@ END DO
 IF (GASCODE==8) THEN !special code with wysong2014 data for O2-O collisions
     ! O-O2
     SPM(3,3,4)=0.75d0      !omega_ref
-    SPM(4,3,4)=3.7215d-10  !d_ref
+    SPM(4,3,4)=3.442d-10  !d_ref
     SPM(5,3,4)=273.d0     !t_ref
     SPM(2,3,4)=PI*SPM(4,3,4)**2
     SPM(6,3,4)=1.D00/GAM(2.5D0 - SPM(3,3,4))
@@ -7651,8 +7651,8 @@ IF (IREAC == 2 .AND. IMF == 1 .AND. MNRE <= 2.AND. IMFS == 1 .AND. MNRE>0) THEN
   !----- Distribution of Et and Er------------------------
   !
   OPEN (3,FILE='IMF_ETR.DAT')
-  WRITE(3,'(A,F9.2,A,F9.2,A)') "# Nomralize by T: ",FTMP0,"K, Current T: ",VAR(8,NSPDF),"K "
-  WRITE(3,'(20A)') 'VARIABLES = "E/kT",',&
+  WRITE(3,"(A,F10.3,A,F10.3,A)") "# Nomralize by T: ",FTMP0,"K, Current T: ",VAR(8,NSPDF),"K "
+  WRITE(3,"(5A)") 'VARIABLES = "E/kT",',&
     '"ET0_N","ET0_P","ET_N","ET_P","ETR_N","ETR_P",',&
     '"ER0_N","ER0_P","ER_N","ER_P","ERR_N","ERR_P",',&
     '"ER01_N","ER01_P","ER1_N","ER1_P","ERR1_N","ERR1_P",',&
@@ -7708,8 +7708,8 @@ IF (IREAC == 2 .AND. IMF == 1 .AND. MNRE <= 2.AND. IMFS == 1 .AND. MNRE>0) THEN
   ! -- Distribution of Ev
   !
   OPEN (3,FILE='IMF_EV.DAT')
-  WRITE(3,"(A,F9.2,A,F9.2,A)") "# Initial T: ",FVTMP0,"K Current T: ",VAR(10,NSPDF),"K"
-  WRITE(3,"(20A)")'VARIABLES = "v","Ev (eV)","Ev2 (eV)",', &
+  WRITE(3,"(A,F10.3,A,F10.3,A)") "# Initial T: ",FVTMP0,"K Current T: ",VAR(10,NSPDF),"K"
+  WRITE(3,"(3A)")'VARIABLES = "v","Ev (eV)","Ev2 (eV)",', &
     '"Ev0_N","Ev0_P","Ev_N","Ev_P","EvR_N","EvR_P","P0",',&
     '"Ev01_N","Ev01_P","Ev1_N","Ev1_P","EvR1_N","EvR1_P","P1"'
   DO L = 1,MNRE
@@ -7729,7 +7729,7 @@ IF (IREAC == 2 .AND. IMF == 1 .AND. MNRE <= 2.AND. IMFS == 1 .AND. MNRE>0) THEN
         IF (IVMODEL(IREA(1,L),1) == 1) KK = IVMODEL(IREA(1,L),2)
         !--- write zone header 
         WRITE(3,7788) KK+1,L,FTIME  !write zone header
-        WRITE(3,*) 'PASSIVEVARLISTWRITE = [3,11-17]'
+        WRITE(3,"(A)") 'PASSIVEVARLIST = [3,11-17]'
         !--- write data
         DO N = 0,KK
           CALL VIB_ENERGY(EVIB,N,1,IREA(1,L))
@@ -7763,7 +7763,7 @@ IF (IREAC == 2 .AND. IMF == 1 .AND. MNRE <= 2.AND. IMFS == 1 .AND. MNRE>0) THEN
         IF (KR < JR) THEN
           DO N=KR+1,JR
             CALL VIB_ENERGY(AS,N,1,IREA(2,L))
-            WRITE(3,7785) N,0.0d0,AS/EVOLT,&
+            WRITE(3,7784) N,0.0d0,AS/EVOLT,&
               0.0d0, 0.0d0, 0.0d0, 0.0d0, 0.0d0, 0.d0, 0.d0 ,&
               NMFEV0(N,JJ,K),NMFEV0(N,JJ,K)/BB2, NMFEV(N,JJ,K),NMFEV(N,JJ,K)/A,&
               NMFEVR(N,2,L),NMFEVR(N,2,L)/CC, DEXP(-AS/BOLTZ/VAR(10,NSPDF))
@@ -7771,7 +7771,7 @@ IF (IREAC == 2 .AND. IMF == 1 .AND. MNRE <= 2.AND. IMFS == 1 .AND. MNRE>0) THEN
         ELSE IF (KR > JR) THEN
           DO N=JR+1,KR
             CALL VIB_ENERGY(EVIB,N,1,IREA(1,L))
-            WRITE(3,7785) N,EVIB/EVOLT,0.0d0,&
+            WRITE(3,7784) N,EVIB/EVOLT,0.0d0,&
               NMFEV0(N,IJ,K),NMFEV0(N,IJ,K)/BB, NMFEV(N,IJ,K),NMFEV(N,IJ,K)/AA,&
               NMFEVR(N,1,L),NMFEVR(N,1,L)/C, DEXP(-EVIB/BOLTZ/VAR(10,NSPDF)),&
               0.0d0, 0.0d0, 0.0d0, 0.0d0, 0.0d0, 0.d0, 0.d0 
@@ -7785,8 +7785,8 @@ IF (IREAC == 2 .AND. IMF == 1 .AND. MNRE <= 2.AND. IMFS == 1 .AND. MNRE>0) THEN
   !
   ! -- Reaction probability
   OPEN (3,FILE='IMF_Prob.DAT')
-  WRITE(3,"(A,F9.2,A,F9.2,A)") "# Nomralize by T: ",FTMP0,"K, Current T:",VAR(8,NSPDF),"K"
-  WRITE(3,"(20A)")'VARIABLES = "Et/kT", "Ev (eV)","N","NR1","NR2","P1","P2"'
+  WRITE(3,"(A,F10.3,A,F10.3,A)") "# Nomralize by T: ",FTMP0,"K, Current T:",VAR(8,NSPDF),"K"
+  WRITE(3,"(A)")'VARIABLES = "Et/kT", "Ev (eV)","N","NR1","NR2","P1","P2"'
   DO L = 1,MNRE
     IF (KP(L) > 0) THEN ! dissociation alone
       K = IMFpair(IREA(1,L),IREA(2,L))
@@ -8049,18 +8049,22 @@ END IF
 !-- vibrational state-specific rates
 IF (IREAC == 2 .AND. IMF == 1 .AND. MNRE <= 2.AND. IMFS == 1 .AND. MNRE>0 .AND. NSCELLS==1) THEN
   OPEN(3, FILE='IMF_Vrate.dat')
-  WRITE(3,"(A,G14.6,A,F9.2)") '# time:',FTIME, ' VT: ',VAR(10,NSPDF) 
-  WRITE(3,"(5A)") 'VARIABLES = "Evib(eV)","v","Nreac","Rate (cm3/mol/s)"'
+  WRITE(3,"(A,G14.6,A,F10.3)") '# time:',FTIME, ' VT: ',VAR(10,NSPDF) 
+  WRITE(3,"(A)") 'VARIABLES = "Evib(eV)","v","Nreac","Rate (cm3/mol/s)"'
   DO L = 1,MNRE
     NN = LE(L)
     IF (KP(L) > 0 .and. IVMODEL(NN,1) == 1) THEN ! dissociation alone
-      WRITE(3,*) 'ZONE I=',IVMODEL(NN,2)+1,' T="reac',L,'"'
+      WRITE(3,"(A,I5.5,A,I2.2,A)") 'ZONE I=',IVMODEL(NN,2)+1,' T="reac',L,'"'
       DO N=0,IVMODEL(NN,2)
         CALL VIB_ENERGY(EVIB,N,1,NN)
         A=NMFEVR(N,1,L)*(FNUM/CELL(4,NSPDF))/(FTIME-TISAMP) !# of reaction/V/t
         B=(VARSP(1,NSPDF,LE(L))*F(1,N,NN)*VARSP(1,NSPDF,ME(L))*VAR(3,NSPDF)**2.d0)/(AVOG*1.d3)    !number density
-
-        WRITE(3,'(F10.5,I3,2X,E14.6,2X,E14.6)') EVIB/EVOLT,N,NMFEVR(N,1,L),A/B
+        
+        IF (NMFEVR(N,1,L) == 0) THEN
+          WRITE(3,'(F10.5,I3,2X,E14.6,2X,E14.6)') EVIB/EVOLT,N,NMFEVR(N,1,L),A/B
+        ELSE
+          WRITE(3,'(F10.5,I3,2X,E14.6,2X,E14.6)') EVIB/EVOLT,N,NMFEVR(N,1,L),0.0d0
+        END IF
         ! IF (VAR(10,NSPDF) < 6.d3)  SRR(K)=SRR(K)/1.d3        !trick to sample low T rates
       END DO
       write(3,*)
@@ -8494,7 +8498,7 @@ REAL(KIND=8) :: A,B,ECT,ECR,ECV,EC,THBCELL,WF,PXSECTION,VR,VRR,RML,RMM,ECM,ECN,R
                 VRC(3),VCM(3),SXSECTION,RXSECTION(MNRE),STER(MNRE),ECA(MNRE),CF,VRCP(3),TVAR(7,MNRE),PROB,CVR,&
                 ALPHA1,ALPHA2,EA,CC,DD
 REAL(KIND=8),ALLOCATABLE :: VEC_I(:),VEC_J(:),VALUES(:),ARRAY_TEMP(:,:)
-REAL(KIND=8) :: MFANG(8),MFV1,MFV2,MFR1,MFR2,MFDSTAR,MFtheta
+REAL(KIND=8) :: MFANG(8),MFV1,MFV2,MFR1,MFR2,MFDSTAR,MFCtheta,MFbeta
 REAL(KIND=8) :: MFF(2),MFcoll(2)
 INTEGER      :: ISAME, NMFCALL 
 !
@@ -8739,7 +8743,9 @@ IF (NRE > 0) THEN
                     MFcoll(2) = 2.325d-26
                     MFcoll(1) = 2.656d-26
                   END IF
+                  exit
                 END IF
+                IF (IREA(II,K) == 2 .or. IREA(II,K) == 4)      MFcoll(II) = SP(5,IREA(II,K))
                 IF (MFcoll(II) .lt. 0) STOP "Search MFcoll to check error"
               END DO
               !
@@ -8760,16 +8766,16 @@ IF (NRE > 0) THEN
                     MFANG(II) = MFANG(II)*PI
                   END DO
                   MFANG(3) = MFANG(3)*2.0d0    ! For atom-diatom, no symmetry
-                  MFANG(6) = MFANG(6)!-PI*0.5d0 ! beta1 [-pi/2, pi/2] 
+                  MFANG(6) = MFANG(6)-PI*0.5d0 ! beta1 [-pi/2, pi/2] 
                   MFANG(7) = MFANG(7)*2.0d0    ! beta2 [0,2*pi]
                   MFANG(8) = MFANG(8)*2.0d0    ! delta [0,2*pi]
                 END IF
-                MFtheta = MFANG(3)
+                MFCtheta = DCOS(MFANG(3))
               ELSE IF(NMFCALL == 2) THEN
                 !--this is the second call
                 AA=MFANG(4); MFANG(4)=MFANG(5); MFANG(5)=AA !switch phi
                 ! we don't change other angles
-                MFtheta = PI - DACOS(DCOS(MFANG(6))*DCOS(MFANG(7)))
+                MFCtheta = DCOS(MFANG(6))*DCOS(MFANG(7))
               ELSE
                 WRITE(*,*) "Check reaction between ",LS," and ",MS
                 WRITE(*,*) " there are more than 2 dissociation reaction"
@@ -8789,10 +8795,11 @@ IF (NRE > 0) THEN
               IF (AA .LE. 0.0D0 )THEN
                 MFF(NMFCALL) = 0.0D0
               ELSE
-                AA = (DSQRT(AA)+DSQRT(MFV1)*DCOS(MFANG(4)))/DCOS(MFtheta)
+                AA = (DSQRT(AA)+DSQRT(MFV1)*DCOS(MFANG(4)))/MFCtheta
                 AA = AA*(MFcoll(1)/MFcoll(2)+1.0d0)
 
-                BB = -2.0d0*MFRMASS(2,K)/MFcoll(1)*DSQRT(MFV1)*DCOS(MFtheta)*DCOS(MFANG(4))
+                BB =-2.0d0*MFRMASS(2,K)/MFcoll(1)*DSQRT(MFV1)*DCOS(MFANG(4))
+                BB = BB*MFCtheta
 
                 CC = 0.0d0
                 IF (ISPV(IREA(2,K)) == 1) THEN
@@ -8803,17 +8810,11 @@ IF (NRE > 0) THEN
                     DD = DSQRT(MFV2)*DD
                     CC = CC-DD
                   ELSE
-                    !!!======the following was not verified===========
-                    ! use beta1 as the polar angle for collider's rotational
-                    ! velocity, and randomly select direction
-                    IF ( MFANG(6) > 0.0d0) THEN
-                      CC = DCOS(MFANG(6))*DCOS(MFANG(3)-PI*0.5d0)
-                    ELSE
-                      CC = -DCOS(MFANG(6))*DCOS(MFANG(3) - PI*0.5d0)
-                    END IF
-                    CC = DSQRT(MFR2)*CC
-                    DD = DSQRT(MFV2)*DD
-                    CC = CC+DD
+                    CALL ZGF(MFbeta,IDT)
+                    MFbeta = PI*(MFbeta-0.5d0)
+                    CC = DSQRT(MFR2)*DCOS(MFbeta)*DSIN(MFANG(3))
+                    DD = DSQRT(MFV2)*DCOS(MFANG(5))*DCOS(MFANG(3))
+                    CC = -CC-DD
                   END IF
                   CC = -2.0d0*CC*DSQRT(MFRMASS(2,K)*MFRMASS(3,K))/MFcoll(2)
                 END IF
