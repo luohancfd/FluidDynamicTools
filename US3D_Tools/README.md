@@ -1,0 +1,4 @@
+# US3D Information and Licensing
+The US3D software is available from [VirtusAero](https://virtusaero.com/) which develops and supports computational tools for aerospace applications. Information about the [US3D license](https://virtusaero.com/products-services/) is on their Product and Services page.
+
+All scripts provided in this folder are aimed at improving user experience. They do not depend on any parts of original US3D software. The developer of these scripts is not responsible for distributing US3D code and is not allowed to distribute it. Please contact with [VirtusAero](https://virtusaero.com/) for US3D.

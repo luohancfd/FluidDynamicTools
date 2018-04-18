@@ -1,0 +1,21 @@
+#!/bin/bash #useless, just make it easier to comment out in vim
+id
+xc
+yc
+n
+nrho
+rho
+u
+v
+trot
+evib
+tv
+t
+p
+mfp
+#p
+#shx
+#ke
+#erot
+#evib
+#etot

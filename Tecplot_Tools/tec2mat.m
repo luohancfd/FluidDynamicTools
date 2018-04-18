@@ -1,12 +1,14 @@
-function [zone,VARlist] = tec2mat(fname,varargin)
-%% Tool created by Mach6 to load data file in Tecplot ASCII format
+function [zone,VARlist,auxdata] = tec2mat(fname,varargin)
+%% load data file in Tecplot ASCII format
+%% Author: Mach6
 % Github repository: https://github.com/luohancfd/FluidDynamicTools/tree/master/Tecplot_Tools
 % Method of calling:
 %   [zone,VARlist] = tec2mat(fname,debug);
 %   fname(in): name of data file
 %   optional flags:
 %          "debug" print zone information out
-%          For IJK ordered date only:
+%          "safe" check the existence of scientific notation like 100-100
+%        For IJK ordered date only:
 %          "nopassive" include passive variables (0) in the data field
 %          "passive"   not include passive variables in the data field
 % -------------------------------------------------------------------------
@@ -16,6 +18,7 @@ function [zone,VARlist] = tec2mat(fname,varargin)
 %--------------------------------------------------------------------------
 debug = false;
 nopassive = true;
+safe = false;
 if nargin > 1
     for i = 1:length(varargin)
         if strcmp(varargin{i},'debug')
@@ -24,9 +27,24 @@ if nargin > 1
             nopassive = true;
         elseif strcmp(varargin{i},'passive')
             nopassive = false;
+        elseif strcmp(varargin{i},'safe')
+            safe = true;
         else
             error('Unknown option: %s',varargin{i})
         end
+    end
+end
+%% First test if the file has "strange" scientific notations like 
+%  2.333-100
+if ~safe
+    IMY_FSCANF = false;
+else
+    filetext = fileread(fname);
+    strange = regexp(filetext,'(?<!(?:(,|\[)))-?(\d+(\.\d+)?|\.\d+)([-+]\d+)','match','once');
+    if isempty(strange)
+        IMY_FSCANF = false;
+    else
+        IMY_FSCANF = true;
     end
 end
 %% load tecplot ASCII file and write result to zone and VARList
@@ -45,7 +63,7 @@ while ~feof(fid)
                 varnames = regexp(line,'VARIABLES\s*=\s*(.*)','tokens');
                 varline = [varline, varnames{1}{1}];
                 IVAR = true;
-            elseif (contains(line,'ZONE'))
+            elseif (contains(line,'ZONE') || contains(line,'DATASETAUXDATA'))
                 fseek(fid,pos,-1); %jump out at position above zone
                 break
             elseif (IVAR)
@@ -84,6 +102,7 @@ end
 
 nzone = 0;
 zone = [];
+auxdata = {};
 if ~IVAR
     error("there is no variable list")
 else
@@ -94,6 +113,17 @@ else
                 continue
             end
         end
+        if contains(upper(line),'DATASETAUXDATA')
+            if strcmpi(line(1:14),'DATASETAUXDATA')
+                line=strtrim(line(15:end));
+                temp = strsplit(line,'=');
+                temp(2)=strtrim(temp(2));
+                temp(2)=strrep(temp(2),'"','');
+                temp(2)=strrep(temp(2),'''','');
+                auxdata = [auxdata;{temp(1),temp(2)}];
+            end
+        end
+            
         if contains(line,'ZONE')
             nzone = nzone + 1;
                            
@@ -148,6 +178,14 @@ else
             ZONEprop.prop = cell(1,Nzoneprop);
             for i = 1:Nzoneprop-1
                 ZONEprop.name{i} = strtrim(ZONEprop.name{i}(1:end-1)); %remove "=" sign
+                ZONEprop.name{i} = upper(ZONEprop.name{i});  %upper case
+                if strcmpi(ZONEprop.name{i},'Nodes')
+                    ZONEprop.name{i} = 'N';
+                end
+                if strcmpi(ZONEprop.name{i},'Elements')
+                    ZONEprop.name{i} = 'E';
+                end
+                
                 ZONEprop.prop{i} = strtrim(zoneline(ZONEprop.end(i)+1:ZONEprop.start(i+1)-1));
                 if strcmp(ZONEprop.prop{i}(end),',')
                     ZONEprop.prop{i} = ZONEprop.prop{i}(1:end-1);
@@ -156,13 +194,14 @@ else
             ZONEprop.name{Nzoneprop} = strtrim(ZONEprop.name{Nzoneprop}(1:end-1)); 
             ZONEprop.prop{Nzoneprop} = zoneline(ZONEprop.end(Nzoneprop)+1:end);
             
+            
             % reformat properties
             Prop = [];
             for i = 1:Nzoneprop
                 if isstrprop(ZONEprop.prop{i},'digit')
-                    Prop.(upper(ZONEprop.name{i})) = str2num(ZONEprop.prop{i});
+                    Prop.(ZONEprop.name{i}) = str2num(ZONEprop.prop{i});
                 else
-                    Prop.(upper(ZONEprop.name{i})) = strtrim(strrep(ZONEprop.prop{i},'$#','='));
+                    Prop.(ZONEprop.name{i}) = strtrim(strrep(ZONEprop.prop{i},'$#','='));
                 end
             end
             clear ZONEprop;
@@ -254,8 +293,8 @@ else
                     error('Don''t support IJK with varloc now');
                 end
                     
-                % let's load the data             
-                data = fscanf(fid,'%f',ndata*localNVAR);
+                % let's load the data   
+                data = myfscanf(fid,'%f',ndata*localNVAR,IMY_FSCANF);
                 if strcmpi(Prop.DATAPACKING,'POINT')
                     data = reshape(data,localNVAR,idata,jdata,kdata);
                     data2 = zeros(NVAR,idata,jdata,kdata);
@@ -297,7 +336,7 @@ else
                 
                 clear Prop;
 
-            elseif ( isfield(Prop,'N') && isfield(Prop,'E'))
+            elseif (isfield(Prop,'N') && isfield(Prop,'E') )
                 % load zone information
                 Nnode = Prop.N;
                 Ecell = Prop.E;
@@ -321,11 +360,11 @@ else
                         else
                             ndata = Ecell;
                         end
-                        data(i).data = fscanf(fid,'%e',ndata);
+                        data(i).data = myfscanf(fid,'%e',ndata,IMY_FSCANF);
                     end
                 elseif (strcmpi(Prop.DATAPACKING,'POINT') && ~Prop.IVARLOC)
                     %ensure not VARLOCATION and in point mode
-                    data2 = fscanf(fid,'%e',Nnode*localNVAR);
+                    data2 = myfscanf(fid,'%e',Nnode*localNVAR,IMY_FSCANF);
                     data2 = reshape(data2,localNVAR,Nnode);
                     
                     for i = 1:localNVAR
@@ -394,3 +433,17 @@ for i = 1:length(temp)
     end
 end
 end      
+
+function [temp2] = myfscanf(fid,format,n,IMY_FSCANF)
+%% A modified fscanf inorder to read fortran format scientific notation number
+% like 1.234-100 = 1.234E-100
+if IMY_FSCANF
+    temp = textscan(fid,'%s',n,'CommentStyle','#');
+    temp = temp{1};
+    temp2 = regexprep(temp,'(-?)(\d+(.\d+)?|.\d+)([-+]\d+)','$1$2E$3');
+    temp2 = cellfun(@str2double,temp2,'UniformOutput', false);
+    temp2 = cell2mat(temp2);
+else
+    temp2 = fscanf(fid,format,n);
+end
+end
