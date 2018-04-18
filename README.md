@@ -20,6 +20,7 @@ Use these scripts with care. In addition, I strongly recommend use [mat2tecplot]
  - **mat2dat.m**: This is my own script to export data from Matlab to Tecplot. Instead of exporting binary file, it exports ASCII file, which is human readable. Arguments of the function is similar to mat2tecplot. Currently it only supports X-Y line or 2D data.
  - **tec2mat.m**: It serves the opposite function compared to *mat2dat.m*. I usually used it when I need to use Matlab to postprocess results from other software.
  - **tec2py.py**: Python version of *tec2mat.m*.
+ - **ExtractStreamLine.py**: Extract staganation streamline starting at I=0 from a 2D contour and export the results to a dat file.
 
 ## Publication Tools
  - **ExportEPS.py**: A simple python script to batch export *eps* files from Tecplot layout. To use it, you must install Tecplot (ver > 2017) with pytecplot support and have a valid license for pytecplot.
@@ -31,6 +32,9 @@ These are some modifications I made for [Eilmer 3](http://cfcfd.mechmining.uq.ed
  - **poshax2tec.py**: Convert poshax3 output to tecplot format
  - **compileXX**: one-click script to compile the code
 Eilmer3 is licsensed with GPL3.0. I greatly appreciate them to make a compressible CFD solver open source.
+
+## Thermo_Chemical_Properties
+ - Scripts to load thermochemical database and calculate properties
  
 # Licenses:
-All the code defaultly is licensed with [GPL 3.0](https://www.gnu.org/licenses/gpl-3.0.html). 
+All the programs are licensed with [GPL 3.0](https://www.gnu.org/licenses/gpl-3.0.html). You are welcome to distribute the codes and you are not required to cite anything. But if you make any modifications, you are required to open source. I also hope you can submit a pull request if possible.

@@ -1,0 +1,78 @@
+[US3D_GAS_CHEMISTRY]
+! -----------------------------------------------------------------
+format_version = 1
+[/US3D_GAS_CHEMISTRY]
+
+[GAS_SPECIES]
+N2,O2,NO,NO+,N2+,O2+,N,O,N+,O+,e
+[/GAS_SPECIES]
+
+[GAS_REACTIONS]
+! -----------------------------------------------------------------
+! Reaction list
+!
+! Type         Equation                            Cfm         eta       Ea         irxon   txf   txb
+  diss    |    N2  + M   <=> N   + N   + M    |               -1.60d+00, 1.1320d+05,  1,    0.5,  1.0
+  diss    |    O2  + M   <=> O   + O   + M    |               -1.50d+00, 5.9500d+04,  1,    0.5,  1.0
+  diss    |    NO  + M   <=> N   + O   + M    |                0.00d+00, 7.5500d+04,  1,    0.5,  1.0
+  ion     |    N   + e   <=> Np  + e   + e    |    2.500d+31, -3.82d+00, 1.6820d+05,  1,    0.0,  0.0
+  ion     |    O   + e   <=> Op  + e   + e    |    3.900d+30, -3.78d+00, 1.5850d+05,  1,    0.0,  0.0
+  exch    |    N2  + O   <=> NO  + N          |    6.400d+14, -1.00d+00, 3.8400d+04,  1,    1.0,  1.0
+  exch    |    NO  + O   <=> O2  + N          |    8.400d+09,  0.00d+00, 1.9400d+04,  1,    1.0,  1.0
+  exch    |    N   + O   <=> NOp + e          |    5.300d+09,  0.00d+00, 3.1900d+04,  1,    1.0,  1.0
+  exch    |    N   + N   <=> N2p + e          |    2.000d+10,  0.00d+00, 6.7500d+04,  1,    1.0,  1.0
+  exch    |    O   + O   <=> O2p + e          |    1.100d+10,  0.00d+00, 8.0600d+04,  1,    1.0,  1.0
+  exch    |    Op  + N2  <=> N2p + O          |    9.100d+08,  0.36d+00, 2.2800d+04,  1,    1.0,  1.0
+  exch    |    Op  + NO  <=> Np  + O2         |    1.400d+02,  1.90d+00, 1.5300d+04,  1,    1.0,  1.0
+  exch    |    NOp + O2  <=> O2p + NO         |    2.400d+10,  0.41d+00, 3.2600d+04,  1,    1.0,  1.0
+  exch    |    NOp + N   <=> N2p + O          |    7.200d+10,  0.00d+00, 3.5500d+04,  1,    1.0,  1.0
+  exch    |    NOp + O   <=> Np  + O2         |    1.000d+09,  0.50d+00, 7.7200d+04,  1,    1.0,  1.0
+  exch    |    O2p + N   <=> Np  + O2         |    8.700d+10,  0.14d+00, 2.8600d+04,  1,    1.0,  1.0
+  exch    |    O2p + N2  <=> N2p + O2         |    9.900d+09,  0.00d+00, 4.0700d+04,  1,    1.0,  1.0
+  exch    |    NOp + N   <=> Op  + N2         |    3.400d+10, -1.08d+00, 1.2800d+04,  1,    1.0,  1.0
+  exch    |    NOp + O   <=> O2p + N          |    7.200d+09,  0.29d+00, 4.8600d+04,  1,    1.0,  1.0
+[/GAS_REACTIONS]
+
+[GAS_REACTION_PARAMETERS]
+! -----------------------------------------------------------------
+! Collision constants for each nrd reaction
+!
+     1~6:7.000d+18    7~10:3.000d+19  11:3.000d+21
+     1~6:2.000d+18    7~10:1.000d+19  11:0.000d+00
+ 1,2,4~6:5.000d+12  3,7~10:1.100d+14  11:0.000d+00
+[/GAS_REACTION_PARAMETERS]
+
+[NOTES]
+! -----------------------------------------------------------------
+REFERENCE:
+  Park, C., "Nonequilibrium Hypersonic Aerothermdynamics," pp.326, Wiley, 1990.
+    Collision constants for ionized species are not explicitly specified in the
+    text and so are inferred here.
+
+LEGEND:
+
+  Type, Equation: Reaction type and chemical equation
+    diss      = dissociation                          = A2 + M     <=> A  + A + M   (generic  collision partner M)
+    cs_diss   = collision-specific dissociation       = A2 + B     <=> A  + A + B   (specific collision partner B)
+    recomb    = recombination                         = A  + A + M <=> A2 + M       (generic  collision partner M)
+    cs_recomb = collision-specific recombination      = A  + A + B <=> A2 + B       (specific collision partner B)
+    exch      = exchange                              = A  + B     <=> C  + D
+    ion       = electron-impact ionization            = A  + e     <=> Ap + e + e
+    23        = 2-reactant/3-product                  = A  + B     <=> C  + D + E
+    32        = 3-reactant/2-product                  = A  + B + C <=> D  + E
+    user      = user-specified general reaction type
+
+  Cfm,eta,Ea: Arrhenius reaction parameters (Park 90 notation)
+
+  irxon: reaction on/off
+    -1 = turn off backward rate only
+     0 = turn off reaction entirely
+     1 = turn on reaction
+
+  txf,txb: Exponent for computing T-Tv reaction temperature
+    value in range of [0-1]
+    f=forward, b=backward
+    t_reax_f = T^(txf)*Tv^(1 - txf)
+    t_reax_b = T^(txb)*Tv^(1 - txb)
+! -----------------------------------------------------------------
+[/NOTES]
