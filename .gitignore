@@ -1,0 +1,5 @@
+*.asv
+*/*.asv
+_pycache_
+*.pyc
+*.mycopy
