@@ -176,7 +176,7 @@ private:
     double b_;
     double fac_;
 
-    int khigh_;
+    double khigh_;
 
     bool monatomic_collider_;
 
@@ -291,7 +291,7 @@ private:
     double b_;
     double fac_;
 
-    int khigh_;
+    double khigh_;
     bool monatomic_collider_;
 
 private:
