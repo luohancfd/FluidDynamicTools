@@ -1,5 +1,4 @@
 function [ output_args ] = mat2dat(tdata,file)
-%% Author: Han Luo
 %% export ascii format tecplot file
 fid = fopen(file,'w');
 if isfield(tdata,'auxdata')
@@ -23,7 +22,7 @@ fprintf(fid,'"%s"\n',tdata.varnames{i});
 lines = tdata.lines;
 iz = isfield(lines, 'z');
 iv = isfield(lines, 'v');
-idimen = 2;
+idimen = 1;
 if iz
     idimen = idimen+1;
 end
@@ -109,11 +108,10 @@ for ii = 1:length(lines)
     if ivarloc == 0
         for i = 1:lenx
             fprintf(fid,'%.6G  ',datax(i));
-            for j = 1:idimen - 2
+            for j = 1:idimen
                 fprintf(fid,'%.6G  ',data(i,j));
             end
-            j = j+1;
-            fprintf(fid,'%.6G  \n',data(i,j));
+            fprintf(fid,'\n');
         end
     else
         for i = 1:lenx-1

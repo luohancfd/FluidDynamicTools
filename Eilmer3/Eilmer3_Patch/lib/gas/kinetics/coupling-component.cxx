@@ -355,7 +355,7 @@ Macheret_dissociation_component(lua_State *L, Reaction *r, int idc )
 : Coupling_component(L,r,"Macheret_dissociation_component","vibration",idc)
 {
     // 0. Check for just one mode
-    if ( sems_.size()!=1 ) {
+    if ( sems_.size() != 1 ) {
     	ostringstream oss;
     	oss << "Macheret_dissociation_component::Macheret_dissociation_component" << endl
     	    << sems_.size() << " energy modes found, just one expcted." << endl;
@@ -379,17 +379,15 @@ Macheret_dissociation_component(lua_State *L, Reaction *r, int idc )
     double M_c = X->get_M();
 
     lua_getfield(L, -1, "khigh");
-    if ( lua_isnil(L, -1) ) khigh_ =0;
+    if ( lua_isnil(L, -1) ) khigh_ = 0.0;
     else khigh_ = luaL_checknumber(L, -1);
     lua_pop(L, 1);
-    cout<<"khigh = "<<khigh_<<endl;
 
     // 3. Pre-calculate alpha
     if (monatomic_collider_)
        alpha_ = pow( ( M_v*0.5  / ( M_v*0.5 + M_c ) ), 2.0 );
     else
        alpha_ = pow( ( M_v / (M_v + M_c)),2.0);
-    cout<<"alpha for MF model in ecoupling"<<alpha_<<endl;
 
     b_ = 2.0;
     delta_d_ = 3.0*b_*alpha_*alpha_*theta_d_;
@@ -399,11 +397,8 @@ Macheret_dissociation_component(lua_State *L, Reaction *r, int idc )
 Macheret_dissociation_component::
 Macheret_dissociation_component( const Macheret_dissociation_component &c )
 : Coupling_component( c ), A_( c.A_ ), n_( c.n_ ), theta_d_( c.theta_d_ ),
-theta_v_( c.theta_v_ ), alpha_( c.alpha_ ), monatomic_collider_( c.monatomic_collider_ ),khigh_(c.khigh_) {
-    b_ = 2.0;
-    delta_d_ = 3.0*b_*alpha_*alpha_*theta_d_;
-    theta_dstar_ = theta_d_ - delta_d_;
-}
+theta_v_( c.theta_v_ ), alpha_( c.alpha_ ), monatomic_collider_( c.monatomic_collider_ ),khigh_(c.khigh_),
+b_(c.b_), delta_d_(c.delta_d_), theta_dstar_(c.theta_dstar_){}
 
 Macheret_dissociation_component::
 ~Macheret_dissociation_component()
@@ -429,7 +424,7 @@ specific_compute_contribution( Gas_data &Q, vector<double> &delta_c )
 
     // 2. Evaluate the vanishing vibrational energy (J/particle)
     // 2a. Eval Arrhenius rate
-    double k_f = A_ * pow(Q.T[0], n_) * exp(-theta_d_ / Q.T[0] );
+    double k_f = A_ * pow(T, n_) * exp(-theta_d_ / T );
 
     // 2b. Calculate nonequilibrium factor
     double L;
@@ -450,7 +445,7 @@ specific_compute_contribution( Gas_data &Q, vector<double> &delta_c )
 
     //double Z = ( ( 1.0 - exp( - theta_v_ / Tv ) ) / ( 1.0 - exp( - theta_v_ / T ) ) ) * ( 1.0 - L ) * \
                     //exp( - theta_d_ * ( 1.0 / Tv - 1.0 / T ) ) + L * exp( - theta_d_ * ( 1.0 / Ta - 1.0 / T ) );
-    double Zl,Zh;
+    double Zl, Zh;
     Zl = L * exp(-theta_d_*(1.0/Ta-1.0/T) + delta_d_*(1.0/Ta - 1.0/T));
     Zh = (1.0 - L)*fac_*exp(-(theta_d_-khigh_*delta_d_)*(1.0/Tv-1.0/T) );
 
@@ -492,7 +487,7 @@ specific_compute_source_term( Gas_data &Q, vector<double> &dcdt )
 
     // 2. Evaluate the vanishing vibrational energy (J/particle)
     // 2a. Eval Arrhenius rate
-    double k_f = A_ * pow(Q.T[0], n_) * exp(-theta_d_ / Q.T[0] );
+    double k_f = A_ * pow(T, n_) * exp(-theta_d_ / T );
 
     // 2b. Calculate nonequilibrium factor
     double L;
@@ -819,11 +814,8 @@ Macheret_recombination_component(lua_State *L, Reaction *r, int idc )
 Macheret_recombination_component::
 Macheret_recombination_component( const Macheret_recombination_component &c )
 : Coupling_component( c ), n_( c.n_ ), theta_d_( c.theta_d_ ), alpha_( c.alpha_ ),
-monatomic_collider_( c.monatomic_collider_ ),khigh_(c.khigh_) {
-    b_ = 2.0;
-    delta_d_ = 3.0*b_*alpha_*alpha_*theta_d_;
-    theta_dstar_ = theta_d_ - delta_d_;
-}
+monatomic_collider_( c.monatomic_collider_ ),khigh_(c.khigh_),
+b_(c.b_), delta_d_(c.delta_d_), theta_dstar_(c.theta_dstar_){}
 
 Macheret_recombination_component::
 ~Macheret_recombination_component()
