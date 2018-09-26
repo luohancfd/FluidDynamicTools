@@ -6,15 +6,16 @@ function [zone,VARlist,auxdata] = tec2mat(fname,varargin)
 %   [zone,VARlist] = tec2mat(fname,debug);
 %   fname(in): name of data file
 %   optional flags:
-%          "debug" print zone information out
-%          "safe" check the existence of scientific notation like 100-100
+%          "debug" print zone information out (default: false)
+%          "safe" check the existence of scientific notation like 100-100 (default: false)
 %        For IJK ordered date only:
-%          "nopassive" include passive variables (0) in the data field
+%          "nopassive" include passive variables (0) in the data field (default: true)
 %          "passive"   not include passive variables in the data field
 % -------------------------------------------------------------------------
 % ChangeLog:
 % v1: support IJK data without mixing data format (node with cell-centered)
 %     support Finite Element grid
+% v2: add a "safe" optional flag to handle number like 100-100 (100E-100)
 %--------------------------------------------------------------------------
 debug = false;
 nopassive = true;
@@ -34,8 +35,7 @@ if nargin > 1
         end
     end
 end
-%% First test if the file has "strange" scientific notations like 
-%  2.333-100
+%% First test if the file has "strange" scientific notations like  2.3-100 (2.3E-100)
 if ~safe
     IMY_FSCANF = false;
 else
@@ -261,8 +261,6 @@ else
             end
             Prop.VARLOC =VARLOC; 
 
-            
-            
             if isfield(Prop,'I')
                 % IJK ordered ZONE
                 if isfield(Prop,'ZONETYPE')
@@ -336,10 +334,18 @@ else
                 
                 clear Prop;
 
-            elseif (isfield(Prop,'N') && isfield(Prop,'E') )
-                % load zone information
-                Nnode = Prop.N;
-                Ecell = Prop.E;
+            elseif ((isfield(Prop,'N') && isfield(Prop,'E')) || ( isfield(Prop,'NODES') && isfield(Prop,'ELEMENTS')))
+                % load finite element zone
+                if (isfield(Prop,'N') && isfield(Prop,'E') )
+                    % load zone information
+                    Nnode = Prop.N;
+                    Ecell = Prop.E;
+                elseif ( isfield(Prop,'NODES') && isfield(Prop,'ELEMENTS'))
+                    Nnode = Prop.NODES;
+                    Ecell = Prop.ELEMENTS;
+                else
+                    error("No node information found");
+                end
                 
                 if ~isfield(Prop,'DATAPACKING')
                     Prop.DATAPACKING = 'BLOCK';
