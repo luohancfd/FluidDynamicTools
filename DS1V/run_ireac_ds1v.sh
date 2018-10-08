@@ -15,7 +15,10 @@ MNPROC=20   #total number of processors
 # set run directories and running range
 RUN_DIR=`pwd`
 CASE=`basename ${RUN_DIR}`
-TEMPS="3000 5000 7500 10000 12500 15000 17500 20000"
+TEMPS="5000 8000 10000 12500 15000 17500 20000"
+TEMPS="3000 3500 4000 4500"
+TEMPS="6000 7000"
+TEMPS="12000"
 # --------------------------------------------------------------
 if [ ${NMAC} == 2 ]; then
   # load modules
@@ -77,7 +80,7 @@ EOF
     # local run
     cd ${CASE_DIR}
     ulimit -s unlimited
-    nohup ./ds1v_${CASE}_${ii}.exe < input.txt > ${CASE}_${ii}.log 2>&1 &
+    nohup $(pwd)/ds1v_${CASE}_${ii}.exe < input.txt > ${CASE}_${ii}.log 2>&1 &
   fi
 done
 

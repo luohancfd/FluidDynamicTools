@@ -1444,7 +1444,7 @@ IF (GASCODE==8) THEN !special code with wysong2014 data for O2-O collisions
     DO L = 2,6
       SPM(L,4,3) = SPM(L,3,4)
     ENDDO
-    
+
     ! N2-O2
     L = 3; M = 1;
     SPM(3,L,M)=0.7343d0      !omega_ref
@@ -4457,7 +4457,7 @@ IF (JCD == 0 .AND. IRM == 161) THEN
 END IF
 !
 IF (JCD == 0 .AND. IRM == 162) THEN
-!--REACTION 160 IS N2+O2>N+N+O2 
+!--REACTION 160 IS N2+O2>N+N+O2
   LE(J) = 1
   ME(J) = 3
   KP(J) = 2
@@ -4473,7 +4473,7 @@ IF (JCD == 0 .AND. IRM == 162) THEN
 END IF
 !
 IF (JCD == 0 .AND. IRM == 163) THEN
-!--REACTION 160 IS NO+N2>N+O+N2 
+!--REACTION 160 IS NO+N2>N+O+N2
   LE(J) = 5
   ME(J) = 1
   KP(J) = 2
@@ -4481,7 +4481,7 @@ IF (JCD == 0 .AND. IRM == 163) THEN
   MP(J) = 1
   CI(J) = VDC
   ! Park's rate, match well with Andrienko's QCT
-  ! 5.0e15, 0 , 75500K 
+  ! 5.0e15, 0 , 75500K
   ! here we refit to match dissociation energy
   AC(J) = 1.08705682d16/(AVOG*1000.d0)
   BC(J) = -0.0766715d0
@@ -5223,7 +5223,7 @@ IF (JCD == 0 .AND. IRM == 250) THEN
 END IF
 !--------------------------------------------------------------
 IF (JCD == 0 .AND. IRM == 251) THEN
-!--REACTION 1 is O2+N2>O+O+N2 
+!--REACTION 1 is O2+N2>O+O+N2
   LE(1) = 3
   ME(1) = 1
   KP(1) = 4
@@ -5254,7 +5254,7 @@ IF (JCD == 0 .AND. IRM == 251) THEN
 END IF
 !
 IF (JCD == 0 .AND. IRM == 252) THEN
-  !--REACTION 160 IS NO+N2>N+O+N2 
+  !--REACTION 160 IS NO+N2>N+O+N2
   J = 1
   LE(J) = 5
   ME(J) = 1
@@ -5263,7 +5263,7 @@ IF (JCD == 0 .AND. IRM == 252) THEN
   MP(J) = 1
   CI(J) = VDC
   ! Park's rate, match well with Andrienko's QCT
-  ! 5.0e15, 0 , 75500K 
+  ! 5.0e15, 0 , 75500K
   ! here we refit to match dissociation energy
   AC(J) = 1.08705682d16/(AVOG*1000.d0)
   BC(J) = -0.0766715d0
@@ -5565,7 +5565,7 @@ IF (MNRE > 0 .AND. IMF == 1) THEN
     ALLOCATE(NMFER0(1000,2,NMFpair0), NMFET0(1000,NMFpair0),NMFEV0(0:100,2,NMFpair0), &
       NMFER(1000,2,NMFpair0), NMFET(1000,NMFpair0),NMFEV(0:100,2,NMFpair0), &
       NMFERR(1000,2,MNRE),   NMFETR(1000,MNRE),  NMFEVR(0:100,2,MNRE), &
-      NMFVT0(0:100,1000,2,NMFpair0), NMFVT(0:100,1000,2,NMFpair0),NMFVTR(0:100,1000,2,MNRE),STAT=ERROR) 
+      NMFVT0(0:100,1000,2,NMFpair0), NMFVT(0:100,1000,2,NMFpair0),NMFVTR(0:100,1000,2,MNRE),STAT=ERROR)
     IF (ERROR /= 0) THEN
       WRITE(*,*) 'PROGRAM COULD NOT ALLOCATE SPACE FOR MF RELATED VARIBALES', ERROR
       STOP
@@ -6003,10 +6003,13 @@ END IF
 IF (MNRE > 0) THEN
   REA=0.; IREA=0; NREA=0; JREA=0; NRSP=0; IRCD=0 ; REAC=0.; EVREM = 0.d0
   IF ( IMF == 1) THEN
-     MFRMASS=-100.d0; NMFANG = 4;  
-   END IF
+     MFRMASS=-100.d0; NMFANG = 4;
+  END IF
 !
+  OPEN(10, FILE="ChemicalReaction.txt")
+  WRITE(10, "(A, I3)") "Number of reactions",MNRE
   DO  N=1,MNRE
+    WRITE(10, "(A,I3)") "Reaction ",N
     L=LE(N)
     M=ME(N)
 !--the pre-reaction species codes are L and M
@@ -6032,6 +6035,9 @@ IF (MNRE > 0) THEN
     M=MP(N)
 !--three post-collision particles (dissociation)
     IF (K > 0) THEN
+      WRITE(10, "(A,A)") 'ReactionType: ', 'Dissociation'
+      WRITE(10, "(I3,' + ',I3,' -> ',I3,' + ',I3,' + ',I3)") LE(N),ME(N),K,L,M
+      WRITE(10,*)
       NREA(1,N)=2
       NREA(2,N)=1
       JREA(1,N,1)=K
@@ -6040,6 +6046,9 @@ IF (MNRE > 0) THEN
     END IF
 !--two post-collision particles (exchange)
     IF (K == 0) THEN
+      WRITE(10, "(A,A)") 'ReactionType: ', 'Exchange'
+      WRITE(10, "(I3,' + ',I3,' -> ',I3,' + ',I3)") LE(N),ME(N),L,M
+      WRITE(10,*)
       NREA(1,N)=1
       NREA(2,N)=1
       JREA(1,N,1)=L
@@ -6047,6 +6056,9 @@ IF (MNRE > 0) THEN
     END IF
 !--one post collision particle (recombination)
     IF (K == -1) THEN
+      WRITE(10, "(A,A)") 'ReactionType: ', 'Recombination'
+      WRITE(10, "(I3,' + ',I3,' + ',I3,' -> ',I3,' + ',I3)") LE(N),ME(N),M,L,M
+      WRITE(10,*)
       NREA(1,N)=1
       NREA(2,N)=0
       JREA(1,N,1)=L
@@ -6059,6 +6071,7 @@ IF (MNRE > 0) THEN
     REA(4,N)=BC(N)
     REA(5,N)=ER(N)
   END DO
+  CLOSE(10)
 !
 END IF
 !
@@ -6081,6 +6094,13 @@ IF (IMF == 1 .and. IMFS == 1) THEN
       IMFpair(K,I) = NMFpair
     END DO
   END DO
+END IF
+
+IF (IMF .ne. 0) THEN
+  OPEN(10, FILE="ChemicalReaction.txt", ACCESS="APPEND")
+  WRITE(10,*)
+  WRITE(10,*)
+  WRITE(10,*) "Macheret-Fridman model parameter:"
 END IF
 
 DO K=1,MNRE
@@ -6125,28 +6145,37 @@ DO K=1,MNRE
     END IF
 
     IF (IMF .ne. 0) THEN  !pre set for Macheret Fridman model
+      IF (GASCODE .ne. 8)THEN
+        STOP "Only gascode = 8 works with MF model"
+      END IF
       ! LS is always the one to be dissociated
       ! MFRAMSS(1): reduced mass of whole system
       IF ((LS .gt. 5) .or. (MS .gt. 5)) THEN
-        STOP "Unsupported for MF"
+        WRITE(*,*) "MF model: unsupported specie", LS, MS
+        STOP
       END IF
       !
       !----- calculated reduced mass
+      ! reduced mass of A+B
       MFRMASS(1,K) = SP(5,LS)*SP(5,MS)/(SP(5,LS)+SP(5,MS))
       DO II = 1,2
         IF (ISPV(IREA(II,K)) == 0) THEN
-         MFRMASS(II+1,K) =  SP(5,IREA(II,K))
-        ELSE IF (IREA(II,K) == 1) THEN
-          MFRMASS(II+1,K) = SP(5,2)/2.0d0
-        ELSE IF (IREA(II,K) == 3) THEN
-          MFRMASS(II+1,K) = SP(5,4)/2.0d0
+          ! single atom
+          MFRMASS(II+1,K) = SP(5,IREA(II,K))
         ELSE IF (IREA(II,K) == 5) THEN
-          MFRMASS(2,K)=SP(5,2)*SP(5,4)/(SP(5,2)+SP(5,4))
+          ! NO molecule
+          MFRMASS(II+1,K) = SP(5,2)*SP(5,4)/(SP(5,2)+SP(5,4))
+        ELSE IF (IREA(II,K) == 3 .or. IREA(II,K) == 1) THEN
+          ! nitogen, oxygen and other homonuclear molecule
+          ! reduced mass should be 1/4 of the mass of molecule
+          MFRMASS(II+1,K) = SP(5,IREA(II,K))/4.0d0
         ELSE
-          WRITE(*,*) "Not supported MFRMASS"
+          WRITE(*,*) "Not supported MFRMASS", IREA(II,K)
           STOP
         END IF
       END DO
+      WRITE(10, "(A, I3, A, I3)") "Reaction: ",LS, ' + ',MS
+      WRITE(10, "(A, 3(G10.3, 1X))") "Reduced mass (kg): ", MFRMASS(1,K), MFRMASS(2,K),MFRMASS(3,K)
       !
       !----- determine reaction type
       NMFANG(K) = 4 ! default: homo-atom
@@ -6163,6 +6192,9 @@ DO K=1,MNRE
   END IF
 !
 END DO
+IF (IMF .ne. 0) THEN
+  CLOSE(10)
+END IF
 !
 RETURN
 !
@@ -7626,7 +7658,7 @@ IF (MNRE > 0) THEN
         WRITE(3,7787) K, LE(K),ME(K),KP(K),LP(K),MP(K)
         WRITE(3,7786) 'Nreac','Evrem (K)','Evrem/D','Evrem (eV)','Time'
       END IF
-      IF (REAC(K) > 1.0d0) THEN 
+      IF (REAC(K) > 1.0d0) THEN
         WRITE(3,'(5(E14.6,3x))') REAC(K), EVREM(K)/REAC(K)/BOLTZ, EVREM(K)/REAC(K)/REA(2,K), &
           EVREM(K)/EVOLT/REAC(K),FTIME
       ELSE
@@ -7647,7 +7679,7 @@ END IF
 7785 FORMAT(I3,2X,F10.6,2X,7(G14.6,2X))
 7784 FORMAT(I3,2X,F10.6,2X,F10.6,2X,14(G14.6,2X))
 IF (IREAC == 2 .AND. IMF == 1 .AND. MNRE <= 2.AND. IMFS == 1 .AND. MNRE>0) THEN
-  ! 
+  !
   !----- Distribution of Et and Er------------------------
   !
   OPEN (3,FILE='IMF_ETR.DAT')
@@ -7727,7 +7759,7 @@ IF (IREAC == 2 .AND. IMF == 1 .AND. MNRE <= 2.AND. IMFS == 1 .AND. MNRE>0) THEN
       KK = 100
       IF (ISPV(IREA(2,L)) == 0) THEN
         IF (IVMODEL(IREA(1,L),1) == 1) KK = IVMODEL(IREA(1,L),2)
-        !--- write zone header 
+        !--- write zone header
         WRITE(3,7788) KK+1,L,FTIME  !write zone header
         WRITE(3,"(A)") 'PASSIVEVARLIST = [3,11-17]'
         !--- write data
@@ -7743,11 +7775,11 @@ IF (IREAC == 2 .AND. IMF == 1 .AND. MNRE <= 2.AND. IMFS == 1 .AND. MNRE>0) THEN
         CC = SUM(NMFEVR(:,2,L))
 
         KR = 100; JR = 100;
-        IF (IVMODEL(IREA(1,L),1) == 1)    KR = IVMODEL(IREA(1,L),2)  
-        IF (IVMODEL(IREA(2,L),1) == 1)    JR = IVMODEL(IREA(2,L),2)  
+        IF (IVMODEL(IREA(1,L),1) == 1)    KR = IVMODEL(IREA(1,L),2)
+        IF (IVMODEL(IREA(2,L),1) == 1)    JR = IVMODEL(IREA(2,L),2)
         KK = MAX(KR,JR)
 
-        !--- write zone header 
+        !--- write zone header
         WRITE(3,7788) KK+1,L,FTIME
         !--- write data
         DO N=0,MIN(KR,JR)
@@ -7774,7 +7806,7 @@ IF (IREAC == 2 .AND. IMF == 1 .AND. MNRE <= 2.AND. IMFS == 1 .AND. MNRE>0) THEN
             WRITE(3,7784) N,EVIB/EVOLT,0.0d0,&
               NMFEV0(N,IJ,K),NMFEV0(N,IJ,K)/BB, NMFEV(N,IJ,K),NMFEV(N,IJ,K)/AA,&
               NMFEVR(N,1,L),NMFEVR(N,1,L)/C, DEXP(-EVIB/BOLTZ/VAR(10,NSPDF)),&
-              0.0d0, 0.0d0, 0.0d0, 0.0d0, 0.0d0, 0.d0, 0.d0 
+              0.0d0, 0.0d0, 0.0d0, 0.0d0, 0.0d0, 0.d0, 0.d0
           END DO
         END IF
       END IF
@@ -8045,11 +8077,11 @@ IF(IPDF > 0) THEN
   END IF
 !
 END IF
- 
+
 !-- vibrational state-specific rates
 IF (IREAC == 2 .AND. IMF == 1 .AND. MNRE <= 2.AND. IMFS == 1 .AND. MNRE>0 .AND. NSCELLS==1) THEN
   OPEN(3, FILE='IMF_Vrate.dat')
-  WRITE(3,"(A,G14.6,A,F10.3)") '# time:',FTIME, ' VT: ',VAR(10,NSPDF) 
+  WRITE(3,"(A,G14.6,A,F10.3)") '# time:',FTIME, ' VT: ',VAR(10,NSPDF)
   WRITE(3,"(A)") 'VARIABLES = "Evib(eV)","v","Nreac","Rate (cm3/mol/s)"'
   DO L = 1,MNRE
     NN = LE(L)
@@ -8059,7 +8091,7 @@ IF (IREAC == 2 .AND. IMF == 1 .AND. MNRE <= 2.AND. IMFS == 1 .AND. MNRE>0 .AND. 
         CALL VIB_ENERGY(EVIB,N,1,NN)
         A=NMFEVR(N,1,L)*(FNUM/CELL(4,NSPDF))/(FTIME-TISAMP) !# of reaction/V/t
         B=(VARSP(1,NSPDF,LE(L))*F(1,N,NN)*VARSP(1,NSPDF,ME(L))*VAR(3,NSPDF)**2.d0)/(AVOG*1.d3)    !number density
-        
+
         IF (NMFEVR(N,1,L) == 0) THEN
           WRITE(3,'(F10.5,I3,2X,E14.6,2X,E14.6)') EVIB/EVOLT,N,NMFEVR(N,1,L),A/B
         ELSE
@@ -8500,7 +8532,7 @@ REAL(KIND=8) :: A,B,ECT,ECR,ECV,EC,THBCELL,WF,PXSECTION,VR,VRR,RML,RMM,ECM,ECN,R
 REAL(KIND=8),ALLOCATABLE :: VEC_I(:),VEC_J(:),VALUES(:),ARRAY_TEMP(:,:)
 REAL(KIND=8) :: MFANG(8),MFV1,MFV2,MFR1,MFR2,MFDSTAR,MFCtheta,MFbeta
 REAL(KIND=8) :: MFF(2),MFcoll(2)
-INTEGER      :: ISAME, NMFCALL 
+INTEGER      :: ISAME, NMFCALL
 !
 !--A,B,C working variables
 !--J,K,KK,MK,KA,KAA,MKK,JR,KR,JS,KV,IA working integers
@@ -8585,7 +8617,7 @@ IF (NRE > 0) THEN
     IF ((EC >= REA(2,K)).AND.(EC+REA(5,K) > 0)) THEN !2nd condition prevents a negative post-reaction total energy
 !
 !--check if molecules follow the order given by IREA
-      IF (ISAME == 1) THEN  
+      IF (ISAME == 1) THEN
         IF (ISPV(LS) > 0)THEN
           IF (ECV1 >= ECV2) IVDC=1     !choose the higher energy molecule for dissociation
           IF (ECV2 >  ECV1) IVDC=2
@@ -8729,24 +8761,28 @@ IF (NRE > 0) THEN
               END IF
               MFDSTAR = REA(2,K) - MFR1 + 2.0d0*MFR1**1.5d0/(3.0d0 * dsqrt(3.0d0*2.0d0*REA(2,K)))
               !
-              !---set mass of colloding particles, mfmb and mfmc must be set
+              !---set mass of mb (MFcol(1)) and mc (MFcol(2))
               MFcoll = -1.0d0
-              DO II=1,2 
-                IF (IREA(II,K) == 1)  MFcoll(II) = 2.325d-26  !N2
-                IF (IREA(II,K) == 3)  MFcoll(II) = 2.656d-26  !O2
-                IF (IREA(II,K) == 5 .and. II ==1 ) THEN  !randomly select one
+              DO II=1,2
+                IF (IREA(II,K) == 1 .or. IREA(II,K) == 3) THEN
+                  ! homo-nuclear molecule like N2 or O2
+                  ! MFcoll is the mass of atom
+                  MFcoll(II) = SP(5,IREA(II,K))/2.0
+                ELSE IF (IREA(II,K) == 2 .or. IREA(II,K) == 4) THEN
+                  MFcoll(II) = SP(5,IREA(II,K))
+                ELSE IF (IREA(II,K) == 5) THEN  !randomly select one
+                  ! NO dissocation reaction
                   CALL ZGF(AA,IDT)
                   IF (AA <0.5d0) THEN
-                    MFcoll(1) = 2.325d-26
-                    MFcoll(2) = 2.656d-26
+                    MFcoll(II) = 2.325d-26 ! N atom
+                    ! MFcoll(2) = 2.656d-26 ! O atom
                   ELSE
-                    MFcoll(2) = 2.325d-26
-                    MFcoll(1) = 2.656d-26
+                    ! MFcoll(2) = 2.325d-26
+                    MFcoll(II) = 2.656d-26
                   END IF
-                  exit
+                ELSE
+                  STOP "CHECK_RXSECTION: MFcoll is not found"
                 END IF
-                IF (IREA(II,K) == 2 .or. IREA(II,K) == 4)      MFcoll(II) = SP(5,IREA(II,K))
-                IF (MFcoll(II) .lt. 0) STOP "Search MFcoll to check error"
               END DO
               !
               !---generate configureation angle or transfer
@@ -8754,6 +8790,10 @@ IF (NRE > 0) THEN
               ! atom-diatom: gamma1, gamma2, theta, phi
               ! diatom-diatom: gamma1, gamma2, theta, phi0, phi1, beta1, beta2, delta, beta
               NMFCALL = NMFCALL + 1
+              IF (NMFCALL > 2) THEN
+                WRITE (*,"(A,I3,'+',I3)") "There are more than 2 MF-diss for ",LS,MS
+                STOP
+              END IF
               IF (NMFCALL == 1) THEN
                 !-- first time use MF model, generate angles
                 DO II = 1,4
@@ -8766,7 +8806,7 @@ IF (NRE > 0) THEN
                     MFANG(II) = MFANG(II)*PI
                   END DO
                   MFANG(3) = MFANG(3)*2.0d0    ! For atom-diatom, no symmetry
-                  MFANG(6) = MFANG(6)-PI*0.5d0 ! beta1 [-pi/2, pi/2] 
+                  MFANG(6) = MFANG(6)-PI*0.5d0 ! beta1 [-pi/2, pi/2]
                   MFANG(7) = MFANG(7)*2.0d0    ! beta2 [0,2*pi]
                   MFANG(8) = MFANG(8)*2.0d0    ! delta [0,2*pi]
                 END IF
@@ -9301,7 +9341,7 @@ IF (IKA > 0) THEN
 
       NMFEVR(I,1,IKA) = NMFEVR(I,1,IKA) + 1.0d0
       NMFEVR(J,2,IKA) = NMFEVR(J,2,IKA) + 1.0d0
-    
+
       NMFVTR(I,IETDX,1,IKA) = NMFVTR(I,IETDX,1,IKA) + 1.0d0
       NMFVTR(J,IETDX,2,IKA) = NMFVTR(J,IETDX,2,IKA) + 1.0d0
     ENDIF
@@ -9887,7 +9927,7 @@ END IF
 !$omp private(IETDX,IEVDX,IERDX,IREACSP) &
 !$omp reduction(+:ndissoc,ndissl,trecomb,nrecomb,treacl,treacg,tnex,tforex,trevex) & !Q-K
 !$omp reduction(+:totdup,totcol,pcolls,tcol,cscr,colls,wcolls,clsep,reac,npvib) &
-!$omp reduction(+:NMFET0,NMFER0,NMFEV0,NMFVT0,NMFEV,NMFET,NMFER,NMFVT) 
+!$omp reduction(+:NMFET0,NMFER0,NMFEV0,NMFVT0,NMFEV,NMFET,NMFER,NMFVT)
 !$    idt=omp_get_thread_num()  !thread id
 !$omp do !schedule (dynamic,NCCELLS/32)
 
@@ -10141,8 +10181,8 @@ DO N=1,NCCELLS
             ET=ECT/EVOLT                        !convert to eV
             ECC=(ECT+EVIB)/EVOLT                !available collision energy in eV
             EL=DMIN1(ECC,ED)                    !in eV
-           
-           ! get rotational energy, ECR1 is always the one with lower sp number 
+
+           ! get rotational energy, ECR1 is always the one with lower sp number
             ECR = 0.0d0; IVPS = 0
             IF (LS < MS ) THEN
               IF (ISPV(LS) > 0) THEN
@@ -10169,7 +10209,7 @@ DO N=1,NCCELLS
                 END IF
               END IF
             END IF
-            ! 1 is always the one with lower sp number 
+            ! 1 is always the one with lower sp number
             ! or the one with higher Ev
 
 !
@@ -10181,7 +10221,7 @@ DO N=1,NCCELLS
 
             ! Calcuate pre-collision vibrational energy
             IVP = -1
-            IF (LS == J) THEN 
+            IF (LS == J) THEN
               IVP=IPVIB(1,L);
             ELSE IF  (MS == J) THEN
               IVP=IPVIB(1,M)
