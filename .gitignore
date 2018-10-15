@@ -3,3 +3,6 @@
 _pycache_
 *.pyc
 *.mycopy
+*.mod
+tgas
+*/tags
