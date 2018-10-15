@@ -225,6 +225,7 @@ REAL(KIND=8), ALLOCATABLE, DIMENSION(:,:) :: CELL,CCELL
 !
 END MODULE GEOM
 !
+
 !********************************************************************
 !
 MODULE GAS
@@ -246,23 +247,9 @@ INTEGER, ALLOCATABLE, DIMENSION(:,:) :: ISPR,IREA,NREA,NRSP,LIS,LRS,ISRCD,ISPRC,
 INTEGER, ALLOCATABLE, DIMENSION(:,:,:) :: ISPVM,NEX,IRCD,JREA,NEVIB
 INTEGER, ALLOCATABLE, DIMENSION(:,:,:,:) :: ISPEX
 INTEGER, ALLOCATABLE, DIMENSION(:,:,:,:,:) :: NPVIB  !--isebasti: UVFX,UFND,UFTMP,UVMP,FRTMP,IDL,CPER,NPVIB,FVIB,FPTEM,ITMAX included
-INTEGER :: IMF,IMFS, nonVHS,NMFpair=0
-INTEGER, ALLOCATABLE :: NMFANG(:),IMFpair(:,:)
-REAL(8),ALLOCATABLE,DIMENSION(:,:)   :: MFRMASS(:,:),NMFET0,NMFET,NMFETR
-REAL(8),ALLOCATABLE,DIMENSION(:,:,:) :: NMFER0, NMFEV0, NMFER, NMFEV
-REAL(8),ALLOCATABLE,DIMENSION(:,:,:) :: NMFERR, NMFEVR
-REAL(8),ALLOCATABLE,DIMENSION(:,:,:,:) :: NMFVT0, NMFVT,NMFVTR
 !REAL(8)  :: NCANGLE(4,180),NCRANGLE(4,180)
 REAL(KIND=8) :: FTMP0,FVTMP0
-
-!
-!--IMF only applied when QCTMODEL = 1, 0 for TCE, 1 for MC-MF, 2 for P-MF
-!--IMFS = 0, not sample anything related to MF model =1 sample
-!--nonVHS flag to control nonVHS model for N2+O
-!--NMFANG = number of angle to sample for MF model, <8 for atom-diatom, >= 8 for diatom-diatom
-!--NMFpair number of molecular pairs to use MF dissociation model
-!--IMFpair store the index of different molecular pair
-!--MFRMASS store reduced mass
+INTEGER, ALLOCATABLE, DIMENSION(:,:) :: IVMODEL !--isebasti: included
 
 !--NCANGLE sample of angle
 !--NCRANGLE sample of angle which react
@@ -421,7 +408,6 @@ REAL(KIND=8) :: FREM,XREM,FTIME,TLIM,PI,SPI,DPI,BOLTZ,FNUM,DTM,TREF,TSAMP,TOUT,A
 REAL(KIND=8), ALLOCATABLE, DIMENSION(:) :: VNMAX
 REAL(KIND=8), ALLOCATABLE, DIMENSION(:,:) :: TCOL,CSCR
 INTEGER, ALLOCATABLE, DIMENSION(:) :: ISEED     !--isebasti: included
-INTEGER, ALLOCATABLE, DIMENSION(:,:) :: IVMODEL !--isebasti: included
 !
 !--NVER.MVER the version number
 !--AMEG the initial number of megabytes to be used by the program
@@ -468,6 +454,136 @@ INTEGER, ALLOCATABLE, DIMENSION(:,:) :: IVMODEL !--isebasti: included
 !
 !
 END MODULE CALC
+!
+!********************************************************************
+!
+MODULE MFDSMC
+!
+!--declares of the variables used in MF-DSMC model
+INTEGER :: IMF,IMFS, nonVHS,NMFpair=0
+INTEGER, ALLOCATABLE :: NMFANG(:),IMFpair(:,:)
+REAL(8),ALLOCATABLE,DIMENSION(:,:)   :: MFRMASS(:,:),NMFET0,NMFET,NMFETR
+REAL(8),ALLOCATABLE,DIMENSION(:,:,:) :: NMFER0, NMFEV0, NMFER, NMFEV
+REAL(8),ALLOCATABLE,DIMENSION(:,:,:) :: NMFERR, NMFEVR
+REAL(8),ALLOCATABLE,DIMENSION(:,:,:,:) :: NMFVT0, NMFVT,NMFVTR
+type :: aho_dt
+  logical :: iaho=.false.
+  integer :: vmax, mnphase
+  real(8),pointer :: vphase(:,:,:)
+end type aho_dt
+type(aho_dt),pointer :: aho_dat(:)
+
+contains
+  subroutine MF_SET_AHO()
+    USE GAS, only : IVMODEL, MSP, GASCODE, ISPV
+    USE CALC, only : QCTMODEL
+    implicit none
+
+    integer :: i
+    CHARACTER(len=20),ALLOCATABLE :: FILENAME(:)
+
+    IF (GASCODE .ne. 8) THEN
+      STOP "Only gascode = 8 works with MF model"
+    END IF
+    IF (IMF .NE. 2) THEN
+      STOP "IMF != 2 but program gets into MF_SET_AHO"
+    END IF
+
+    ALLOCATE(aho_dat(MSP), FILENAME(MSP))
+    do i=1,MSP
+      FILENAME(i) = 'na'
+    end do
+    ! hard coded
+    FILENAME(1) = 'n2.bin'
+    FILENAME(3) = 'oo.bin'
+    FILENAME(5) = 'no.bin'
+    OPEN(3,FILE="DS1VD.txt", ACCESS="APPEND")
+    write(3,'(a)') "Start setting AHO model for MFDSMC"
+    do i=1,MSP
+      if (ISPV(i) == 1 .and. FILENAME(i) .ne. 'na' .and. IVMODEL(i,1) ==1 ) then
+        aho_dat(i)%iaho = .true.
+        open(10,file=FILENAME(i),form='unformatted', action='read')
+        read(10) aho_dat(i)%vmax
+        if (aho_dat(i)%vmax < IVMODEL(i,2)) then
+          write(*,'("Specie: ", I2, " don''t have enought vlevel ")') i
+          stop
+        end if
+        read(10) aho_dat(i)%mnphase
+        allocate(aho_dat(i)%vphase(aho_dat(i)%mnphase,2,aho_dat(i)%vmax+1))
+        read(10) aho_dat(i)%vphase(:,1,:)
+        read(10) aho_dat(i)%vphase(:,2,:)
+        ! write(*,*) aho_dat(i)%vphase(aho_dat(i)%mnphase,2,aho_dat(i)%vmax+1)
+        close(10)
+        write(3,'(" SP:", I3, " Vmax:", I3, " MNPHASE: ", I8)') i,aho_dat(i)%vmax, aho_dat(i)%mnphase
+      end if
+    end do
+    close(3)
+  end subroutine MF_SET_AHO
+
+  subroutine MF_CLEAN()
+    implicit none
+    integer :: i
+    if (associated(aho_dat)) then
+      do i=1,size(aho_dat)
+        if (associated(aho_dat(i)%vphase)) then
+          deallocate(aho_dat(i)%vphase)
+        end if
+      end do
+      deallocate(aho_dat)
+    end if
+  end subroutine MF_CLEAN
+
+  subroutine MF_SAMPLE_PHASE(LS, R, Vlevel)
+    use CALC, only : PI
+    implicit none
+    integer,intent(in) :: LS
+    real(8) :: R
+    integer :: ii, ij, itry, imaxtry = 5, Vlevel
+    logical :: ierror
+    ! LS: specie of the molecule
+    ! R: a random number between 0 and 1
+    if (IMF .ne. 2) then
+      R = R*PI
+      ! it shouldn't make difference if just use R*2.0*PI
+    else
+      if (aho_dat(LS)%iaho) then
+        ierror = .false.
+        do itry = 1, imaxtry
+          call binary_search(ii,ij,R,aho_dat(LS)%vphase(:,1,Vlevel+1),&
+            1, aho_dat(LS)%mnphase, ierror)
+          if (.not. ierror) then
+            exit
+          end if
+        end do
+        if ( .not. ierror) then
+          if (ii == ij) then
+            R = aho_dat(LS)%vphase(ii,2,Vlevel+1)
+          else
+            R = R - aho_dat(LS)%vphase(ii,1,Vlevel+1)
+            R = R/(aho_dat(LS)%vphase(ii,1,Vlevel+1) - aho_dat(LS)%vphase(ij,1,Vlevel+1))
+            R = R*(aho_dat(LS)%vphase(ii,2,Vlevel+1) - aho_dat(LS)%vphase(ij,2,Vlevel+1))
+            R = R + aho_dat(LS)%vphase(ii,2,Vlevel+1)
+          end if
+        else
+          write(*,'(A, G15.6)') "Failed to sampling for ", R
+        end if
+      else
+        R = R*PI
+      end if
+    end if
+  end subroutine MF_SAMPLE_PHASE
+
+!
+!--IMF only applied when QCTMODEL = 1, 0 for TCE, 1 for MFDSMC, 2 for MFDSMC-AHO
+!--IMFS = 0, not sample anything related to MF model =1 sample
+!--nonVHS flag to control nonVHS model for N2+O
+!--NMFANG = number of angle to sample for MF model, <8 for atom-diatom, >= 8 for diatom-diatom
+!--NMFpair number of molecular pairs to use MF dissociation model
+!--IMFpair store the index of different molecular pair
+!--MFRMASS store reduced mass
+
+END MODULE MFDSMC
+!
 !
 !********************************************************************
 !
@@ -642,6 +758,7 @@ USE GAS
 USE CALC
 USE OUTPUT
 USE OMP_LIB
+USE MFDSMC,only : IMF, IMFS, nonVHS, MF_CLEAN
 !
 IMPLICIT NONE
 !
@@ -951,6 +1068,7 @@ DO WHILE (FTIME < TLIM)
   WRITE(9,*)
 !
 END DO
+CALL MF_CLEAN()
 !
 STOP
 END PROGRAM DS1
@@ -964,6 +1082,7 @@ USE GEOM
 USE GAS
 USE CALC
 USE OUTPUT
+USE MFDSMC, only : IMF, IMFS
 !
 IMPLICIT NONE
 !
@@ -1227,13 +1346,13 @@ IF (IFI >  0) WRITE (3,*) ' Forced ignition is allowed',IFI
 
 !=================== ALL the following is commented out
 !=== set model in DS1 head region
-!READ (4,*) IMF !--han: flag to control Macheret-Fridman model
+READ (4,*) IMF !--han: flag to control Macheret-Fridman model
 IF (IMF == 0)THEN
   WRITE(3,*) ' Macheret-Fridman model will not be applied anywhere',IMF
 ELSE IF( IMF == 1)THEN
   WRITE(3,*) ' Macheret-Fridman-Monte-Carlo will be used for dissociation',IMF
 ELSE IF( IMF == 2)THEN
-  WRITE(3,*) ' Macheret-Fridman-Probability will be used for dissociation',IMF
+  WRITE(3,*) ' Macheret-Fridman-Monte-Carlo model with AHO vibrational phase',IMF
 ELSE
   WRITE(3,*) ' ERROR: Wrong input for Macheret-Fridman model',IMF
   stop
@@ -1259,6 +1378,7 @@ USE GEOM
 USE GAS
 USE CALC
 USE OUTPUT
+USE MFDSMC,only : IMF,nonVHS, IMFS
 !
 IMPLICIT NONE
 !
@@ -5500,6 +5620,8 @@ SUBROUTINE ALLOCATE_GAS
 USE GAS
 USE CALC
 USE MOLECS
+USE MFDSMC,only : IMF, IMFS, NMFANG, IMFpair, MFRMASS, NMFER0, NMFET0,NMFEV0,NMFER,&
+  NMFET,NMFEV,NMFERR,NMFETR,NMFEVR,NMFVT0,NMFVT,NMFVTR
 !
 IMPLICIT NONE
 INTEGER :: NMFpair0
@@ -5557,7 +5679,7 @@ IF (MNSR > 0) THEN
 END IF
 !
 !-- Allocate variables related to MF model
-IF (MNRE > 0 .AND. IMF == 1) THEN
+IF (MNRE > 0 .AND. IMF .ne. 0) THEN
   ALLOCATE(NMFANG(MNRE),IMFpair(MSP,MSP),MFRMASS(3,MNRE),STAT = ERROR)
   !--count number of pairs
   NMFpair0 = FLOOR(DBLE(MSP*(MSP+1))/2.0d0)
@@ -5585,6 +5707,9 @@ USE GEOM
 USE GAS
 USE CALC
 USE OUTPUT
+USE MFDSMC, only:IMF,IMFS,NMFpair,NMFANG, IMFpair, &
+  MFRMASS, NMFER0, NMFET0,NMFEV0,NMFER,&
+  NMFET,NMFEV,NMFERR,NMFETR,NMFEVR,NMFVT0,NMFVT,NMFVTR
 !
 IMPLICIT NONE
 !
@@ -5657,7 +5782,7 @@ IF (ZCHECK /= 1234567) THEN
   STOP
 END IF
 
-IF (MNRE >0 .AND. IMF == 1) THEN
+IF (MNRE >0 .AND. IMF .ne. 0) THEN
   READ(7) NMFANG, IMFpair,MFRMASS
   IF (IMFS == 1 .AND. NMFpair > 0)THEN
     READ(7) NMFER0,NMFET0,NMFEV0,NMFER,NMFET,NMFEV,&
@@ -5683,6 +5808,9 @@ USE GEOM
 USE GAS
 USE CALC
 USE OUTPUT
+USE MFDSMC, only:IMF,IMFS,NMFpair,NMFANG, IMFpair, &
+  MFRMASS, NMFER0, NMFET0,NMFEV0,NMFER,&
+  NMFET,NMFEV,NMFERR,NMFETR,NMFEVR,NMFVT0,NMFVT,NMFVTR
 !
 IMPLICIT NONE
 !
@@ -5710,7 +5838,7 @@ WRITE (7)AC,AE,AVDTM,BC,BOLTZ,EVOLT,CCELL,CELL,CI,CLSEP,COLLS, &
          TREACG,TREACL,TOUT,TPDTM,TREF,TSAMP,TSURF,VAR,VARS,VARSP,VELOB,VFX,VFY,UVFX,UFND,UFTMP,UVMP,VMP, &
          VMPM,VNMAX,VSURF,WCOLLS,WFM,XB,XREM,XVELS,YVELS,TNEX,NEVIB,FEVIB,QCTMODEL,IVMODEL,VIBEN,IGS,AMEG,EVREM,ZCHECK
 !--isebasti: CST,BINS,BIN,PDFS,PDF,UVFX,IDL,CPER,DPER,ENERS,ENERS0,IREV,NPVIB,FPVIB,FPTEMP,UVFX,UFND,UFTMP,UVMP included
-IF (MNRE >0 .AND. IMF == 1) THEN
+IF (MNRE >0 .AND. IMF .ne. 0) THEN
   WRITE(7) NMFANG, IMFpair,MFRMASS
   IF (IMFS == 1 .AND. NMFpair > 0)THEN
     WRITE(7) NMFER0,NMFET0,NMFEV0,NMFER,NMFET,NMFEV,&
@@ -5974,6 +6102,7 @@ USE GAS
 USE CALC
 USE GEOM
 USE OUTPUT
+USE MFDSMC, only : IMF,IMFS,MFRMASS, NMFANG,NMFpair, IMFpair,MF_SET_AHO
 !
 IMPLICIT NONE
 !
@@ -6002,7 +6131,7 @@ END IF
 !
 IF (MNRE > 0) THEN
   REA=0.; IREA=0; NREA=0; JREA=0; NRSP=0; IRCD=0 ; REAC=0.; EVREM = 0.d0
-  IF ( IMF == 1) THEN
+  IF ( IMF .ne. 0) THEN
      MFRMASS=-100.d0; NMFANG = 4;
   END IF
 !
@@ -6086,7 +6215,7 @@ END DO
 !--calculate the coefficients of the energy terms in steric factors (see SMILE documentation)
 !
 NMFpair = 0
-IF (IMF == 1 .and. IMFS == 1) THEN
+IF (IMF .ne. 0 .and. IMFS == 1) THEN
   DO I=1,MSP
     DO K = I,MSP
       NMFpair = NMFpair+1
@@ -6094,6 +6223,11 @@ IF (IMF == 1 .and. IMFS == 1) THEN
       IMFpair(K,I) = NMFpair
     END DO
   END DO
+END IF
+
+
+IF (IMF == 2) THEN
+  CALL MF_SET_AHO()
 END IF
 
 IF (IMF .ne. 0) THEN
@@ -6980,6 +7114,9 @@ USE GEOM
 USE GAS
 USE OUTPUT
 USE MOLECS
+USE MFDSMC,only: IMF, IMFS, NMFEV0 , NMFER0 , NMFET0 ,&
+  NMFEV , NMFER , NMFET , NMFEVR , NMFERR , NMFETR ,&
+  NMFVT0 , NMFVT , NMFVTR, nonVHS
 !
 IMPLICIT NONE
 !
@@ -7115,6 +7252,7 @@ USE CALC
 USE GEOM
 USE GAS
 USE OUTPUT
+USE MFDSMC
 !
 IMPLICIT NONE
 !
@@ -7633,12 +7771,18 @@ IF (MNRE > 0) THEN
         A=REAC(K)*(FNUM/CELL(4,NSPDF))/(FTIME-TISAMP) !# of reaction/V/t
         C=TCOL(LE(K),ME(K))*(FNUM/CELL(4,NSPDF))/(FTIME-TISAMP)
         IF(KP(K) >= 0) THEN
+          ! nA * nB
           B=(VARSP(1,NSPDF,LE(K))*VARSP(1,NSPDF,ME(K))*VAR(3,NSPDF)**2.d0)/(AVOG*1.d3)                             !exchange/dissociation
         ELSE
           B=(VARSP(1,NSPDF,LE(K))*VARSP(1,NSPDF,ME(K))*VARSP(1,NSPDF,MP(K))*VAR(3,NSPDF)**3.d0)/(AVOG*1.d3)**2.d0  !recombination
         END IF
         SRR(K)=A/B !sampled reaction rate (cm3/mol/s)
         COLRR(K) = C/B
+        ! COLRR is the collision rate, but not the collision frequency
+        ! For different specie, collision frequency = COLRR * n1 * n2
+        ! For the same specie, collision frequency = COLRR * n1 * n2 *0.5
+
+
        ! IF (VAR(10,NSPDF) < 6.d3)  SRR(K)=SRR(K)/1.d3        !trick to sample low T rates
       END DO
       WRITE (3,993) FTIME,VAR(8:11,NSPDF),VAR(18,NSPDF),AS,REAC(1:MNRE)/AS,SRR(1:MNRE),COLRR(1:MNRE)
@@ -7673,12 +7817,12 @@ END IF
 !
 !---------------------------------------------------------------------------
 !--write debug information for imf method
-7788 FORMAT('ZONE I=',I6,', T="REAC',I3.3,'", SOLUTIONTIME=',F14.6)
+7788 FORMAT('ZONE I=',I6,', T="REAC',I3.3,'", SOLUTIONTIME=',G14.6)
 7789 FORMAT(F6.2,3X,21(G14.6,3X))
 7790 FORMAT('ZONE I = ',i6,', J = ',i6,', T= "REAC',I3.3,'_',I1,'", DATAPACKING = POINT')
 7785 FORMAT(I3,2X,F10.6,2X,7(G14.6,2X))
 7784 FORMAT(I3,2X,F10.6,2X,F10.6,2X,14(G14.6,2X))
-IF (IREAC == 2 .AND. IMF == 1 .AND. MNRE <= 2.AND. IMFS == 1 .AND. MNRE>0) THEN
+IF (IREAC == 2 .AND. IMF .ne. 0 .AND. MNRE <= 2.AND. IMFS == 1 .AND. MNRE>0) THEN
   !
   !----- Distribution of Et and Er------------------------
   !
@@ -7747,6 +7891,9 @@ IF (IREAC == 2 .AND. IMF == 1 .AND. MNRE <= 2.AND. IMFS == 1 .AND. MNRE>0) THEN
   DO L = 1,MNRE
     IF (KP(L) > 0) THEN ! dissociation alone
       K = IMFpair(IREA(1,L),IREA(2,L))
+      ! write chemical reaction
+      WRITE(3,*)
+      WRITE(3,'("#",I3,"+",I3,"->",I3,"+",I3,"+",I3)') LE(L),ME(L),KP(L),LP(L),MP(L)
 
       IF (IREA(1,L) <= IREA(2,L)) THEN
         IJ = 1; JJ = 2
@@ -7755,9 +7902,26 @@ IF (IREAC == 2 .AND. IMF == 1 .AND. MNRE <= 2.AND. IMFS == 1 .AND. MNRE>0) THEN
       END IF
 
       BB = SUM(NMFEV0(:,IJ,K)); AA = SUM(NMFEV(:,IJ,K)); C = SUM(NMFEVR(:,1,L))
+      IF (BB .ge. 1.0d0) THEN
+        BB = 1.0d0/BB
+      ELSE
+        BB = 0.0d0
+      END IF
+      IF (AA .ge. 1.0d0) THEN
+        AA = 1.0d0/AA
+      ELSE
+        AA = 0.0d0
+      END IF
+      IF (C  .ge. 1.0d0) THEN
+        C = 1.0d0/C
+      ELSE
+        C = 0.0d0
+      END IF
 
       KK = 100
       IF (ISPV(IREA(2,L)) == 0) THEN
+        ! this is an atom-diatom dissociation
+        ! KK is the maximum vibrational level
         IF (IVMODEL(IREA(1,L),1) == 1) KK = IVMODEL(IREA(1,L),2)
         !--- write zone header
         WRITE(3,7788) KK+1,L,FTIME  !write zone header
@@ -7765,14 +7929,29 @@ IF (IREAC == 2 .AND. IMF == 1 .AND. MNRE <= 2.AND. IMFS == 1 .AND. MNRE>0) THEN
         !--- write data
         DO N = 0,KK
           CALL VIB_ENERGY(EVIB,N,1,IREA(1,L))
-          WRITE(3,7785) N,EVIB/EVOLT, NMFEV0(N,IJ,K),NMFEV0(N,IJ,K)/BB,&
-            NMFEV(N,IJ,K),NMFEV(N,IJ,K)/AA,NMFEVR(N,1,L),NMFEVR(N,1,L)/C,&
+          WRITE(3,7785) N,EVIB/EVOLT, NMFEV0(N,IJ,K),NMFEV0(N,IJ,K)*BB,&
+            NMFEV(N,IJ,K),NMFEV(N,IJ,K)*AA,NMFEVR(N,1,L),NMFEVR(N,1,L)*C,&
             DEXP(-EVIB/BOLTZ/VAR(10,NSPDF))
         END DO
       ELSE
         BB2 = SUM(NMFEV0(:,JJ,K));
+        IF (BB2 .ge. 1.0d0) THEN
+          BB2 = 1.0d0/BB2
+        ELSE
+          BB2 = 0.0d0
+        END IF
         A = SUM(NMFEV(:,JJ,K))
+        IF (A .ge. 1.0d0) THEN
+          A = 1.0d0/A
+        ELSE
+          A = 0.0d0
+        END IF
         CC = SUM(NMFEVR(:,2,L))
+        IF (CC .ge. 1.0d0) THEN
+          CC = 1.0d0/CC
+        ELSE
+          CC = 0.0d0
+        END IF
 
         KR = 100; JR = 100;
         IF (IVMODEL(IREA(1,L),1) == 1)    KR = IVMODEL(IREA(1,L),2)
@@ -7786,10 +7965,10 @@ IF (IREAC == 2 .AND. IMF == 1 .AND. MNRE <= 2.AND. IMFS == 1 .AND. MNRE>0) THEN
           CALL VIB_ENERGY(EVIB,N,1,IREA(1,L))
           CALL VIB_ENERGY(AS,N,1,IREA(2,L))
           WRITE(3,7784) N,EVIB/EVOLT,AS/EVOLT,&
-            NMFEV0(N,IJ,K),NMFEV0(N,IJ,K)/BB, NMFEV(N,IJ,K),NMFEV(N,IJ,K)/AA,&
-            NMFEVR(N,1,L),NMFEVR(N,1,L)/C, DEXP(-EVIB/BOLTZ/VAR(10,NSPDF)),&
-            NMFEV0(N,JJ,K),NMFEV0(N,JJ,K)/BB2, NMFEV(N,JJ,K),NMFEV(N,JJ,K)/A,&
-            NMFEVR(N,2,L),NMFEVR(N,2,L)/CC, DEXP(-AS/BOLTZ/VAR(10,NSPDF))
+            NMFEV0(N,IJ,K),NMFEV0(N,IJ,K)*BB, NMFEV(N,IJ,K),NMFEV(N,IJ,K)*AA,&
+            NMFEVR(N,1,L),NMFEVR(N,1,L)*C, DEXP(-EVIB/BOLTZ/VAR(10,NSPDF)),&
+            NMFEV0(N,JJ,K),NMFEV0(N,JJ,K)*BB2, NMFEV(N,JJ,K),NMFEV(N,JJ,K)*A,&
+            NMFEVR(N,2,L),NMFEVR(N,2,L)*CC, DEXP(-AS/BOLTZ/VAR(10,NSPDF))
         END DO
 
         IF (KR < JR) THEN
@@ -7797,15 +7976,15 @@ IF (IREAC == 2 .AND. IMF == 1 .AND. MNRE <= 2.AND. IMFS == 1 .AND. MNRE>0) THEN
             CALL VIB_ENERGY(AS,N,1,IREA(2,L))
             WRITE(3,7784) N,0.0d0,AS/EVOLT,&
               0.0d0, 0.0d0, 0.0d0, 0.0d0, 0.0d0, 0.d0, 0.d0 ,&
-              NMFEV0(N,JJ,K),NMFEV0(N,JJ,K)/BB2, NMFEV(N,JJ,K),NMFEV(N,JJ,K)/A,&
-              NMFEVR(N,2,L),NMFEVR(N,2,L)/CC, DEXP(-AS/BOLTZ/VAR(10,NSPDF))
+              NMFEV0(N,JJ,K),NMFEV0(N,JJ,K)*BB2, NMFEV(N,JJ,K),NMFEV(N,JJ,K)*A,&
+              NMFEVR(N,2,L),NMFEVR(N,2,L)*CC, DEXP(-AS/BOLTZ/VAR(10,NSPDF))
           END DO
         ELSE IF (KR > JR) THEN
           DO N=JR+1,KR
             CALL VIB_ENERGY(EVIB,N,1,IREA(1,L))
             WRITE(3,7784) N,EVIB/EVOLT,0.0d0,&
-              NMFEV0(N,IJ,K),NMFEV0(N,IJ,K)/BB, NMFEV(N,IJ,K),NMFEV(N,IJ,K)/AA,&
-              NMFEVR(N,1,L),NMFEVR(N,1,L)/C, DEXP(-EVIB/BOLTZ/VAR(10,NSPDF)),&
+              NMFEV0(N,IJ,K),NMFEV0(N,IJ,K)*BB, NMFEV(N,IJ,K),NMFEV(N,IJ,K)*AA,&
+              NMFEVR(N,1,L),NMFEVR(N,1,L)*C, DEXP(-EVIB/BOLTZ/VAR(10,NSPDF)),&
               0.0d0, 0.0d0, 0.0d0, 0.0d0, 0.0d0, 0.d0, 0.d0
           END DO
         END IF
@@ -8079,23 +8258,25 @@ IF(IPDF > 0) THEN
 END IF
 
 !-- vibrational state-specific rates
-IF (IREAC == 2 .AND. IMF == 1 .AND. MNRE <= 2.AND. IMFS == 1 .AND. MNRE>0 .AND. NSCELLS==1) THEN
+IF (IREAC == 2 .AND. IMF .ne. 0 .AND. MNRE <= 2.AND. IMFS == 1 .AND. MNRE>0 .AND. NSCELLS==1) THEN
   OPEN(3, FILE='IMF_Vrate.dat')
   WRITE(3,"(A,G14.6,A,F10.3)") '# time:',FTIME, ' VT: ',VAR(10,NSPDF)
   WRITE(3,"(A)") 'VARIABLES = "Evib(eV)","v","Nreac","Rate (cm3/mol/s)"'
   DO L = 1,MNRE
     NN = LE(L)
     IF (KP(L) > 0 .and. IVMODEL(NN,1) == 1) THEN ! dissociation alone
-      WRITE(3,"(A,I5.5,A,I2.2,A)") 'ZONE I=',IVMODEL(NN,2)+1,' T="reac',L,'"'
+      WRITE(3,*)
+      WRITE(3,'("#",I3,"+",I3,"->",I3,"+",I3,"+",I3)') LE(L),ME(L),KP(L),LP(L),MP(L)
+      WRITE(3,7788) IVMODEL(NN,2)+1,L,FTIME  !write zone header
       DO N=0,IVMODEL(NN,2)
         CALL VIB_ENERGY(EVIB,N,1,NN)
         A=NMFEVR(N,1,L)*(FNUM/CELL(4,NSPDF))/(FTIME-TISAMP) !# of reaction/V/t
         B=(VARSP(1,NSPDF,LE(L))*F(1,N,NN)*VARSP(1,NSPDF,ME(L))*VAR(3,NSPDF)**2.d0)/(AVOG*1.d3)    !number density
 
         IF (NMFEVR(N,1,L) == 0) THEN
-          WRITE(3,'(F10.5,I3,2X,E14.6,2X,E14.6)') EVIB/EVOLT,N,NMFEVR(N,1,L),A/B
+          WRITE(3,'(F12.6,2X,I3,2X,E14.6,2X,E14.6)') EVIB/EVOLT,N,NMFEVR(N,1,L),0.0d0
         ELSE
-          WRITE(3,'(F10.5,I3,2X,E14.6,2X,E14.6)') EVIB/EVOLT,N,NMFEVR(N,1,L),0.0d0
+          WRITE(3,'(F12.6,2X,I3,2X,E14.6,2X,E14.6)') EVIB/EVOLT,N,NMFEVR(N,1,L),A/B
         END IF
         ! IF (VAR(10,NSPDF) < 6.d3)  SRR(K)=SRR(K)/1.d3        !trick to sample low T rates
       END DO
@@ -8517,6 +8698,7 @@ USE CALC
 USE OUTPUT
 USE GEOM
 USE OMP_LIB
+USE MFDSMC,only:IMF,NMFANG,MFRMASS, MF_SAMPLE_PHASE
 !
 IMPLICIT NONE
 !
@@ -8532,7 +8714,7 @@ REAL(KIND=8) :: A,B,ECT,ECR,ECV,EC,THBCELL,WF,PXSECTION,VR,VRR,RML,RMM,ECM,ECN,R
 REAL(KIND=8),ALLOCATABLE :: VEC_I(:),VEC_J(:),VALUES(:),ARRAY_TEMP(:,:)
 REAL(KIND=8) :: MFANG(8),MFV1,MFV2,MFR1,MFR2,MFDSTAR,MFCtheta,MFbeta
 REAL(KIND=8) :: MFF(2),MFcoll(2)
-INTEGER      :: ISAME, NMFCALL
+INTEGER      :: ISAME, NMFCALL, viblevel(2)
 !
 !--A,B,C working variables
 !--J,K,KK,MK,KA,KAA,MKK,JR,KR,JS,KV,IA working integers
@@ -8752,12 +8934,16 @@ IF (NRE > 0) THEN
               ! Macheret-Fridman-MC mode
               !
               !---get energy of each one particle
+              ! here I assume that if the molecule doesn't have vibrational energy
+              ! IPVIB will be 0
               IF (IVDC == 1)THEN
                 MFV1 = ECV1; MFR1 = ECR1
                 MFV2 = ECV2; MFR2 = ECR2
+                viblevel(1) = IPVIB(1,L); viblevel(2) = IPVIB(1,M)
               ELSE
                 MFV1 = ECV2; MFR1 = ECR2
                 MFV2 = ECV1; MFR2 = ECR1
+                viblevel(1) = IPVIB(1,M); viblevel(2) = IPVIB(1,L)
               END IF
               MFDSTAR = REA(2,K) - MFR1 + 2.0d0*MFR1**1.5d0/(3.0d0 * dsqrt(3.0d0*2.0d0*REA(2,K)))
               !
@@ -8794,14 +8980,27 @@ IF (NRE > 0) THEN
                 WRITE (*,"(A,I3,'+',I3)") "There are more than 2 MF-diss for ",LS,MS
                 STOP
               END IF
+              ! MFANG:
+              !  1. gamma_1
+              !  2. gamma_2
+              !  3. gamma_
+              !  4. phi_0
+              !  5. phi_1
+              !  6. beta_1
+              !  7. beta_2
+              !  8. delta
               IF (NMFCALL == 1) THEN
                 !-- first time use MF model, generate angles
-                DO II = 1,4
+                DO II = 1,3
                   CALL ZGF(MFANG(II),IDT)
                   MFANG(II) = MFANG(II)*PI
                 END DO
+                CALL ZGF(MFANG(4),IDT)
+                CALL MF_SAMPLE_PHASE(IREA(1,K),MFANG(4),viblevel(1))
                 IF (NMFANG(K) .ge. 8) THEN !collider is diatom
-                  DO II=5,8
+                  CALL ZGF(MFANG(5),IDT)
+                  CALL MF_SAMPLE_PHASE(IREA(2,K),MFANG(5),viblevel(2))
+                  DO II=6,8
                     CALL ZGF(MFANG(II),IDT)
                     MFANG(II) = MFANG(II)*PI
                   END DO
@@ -9193,6 +9392,7 @@ USE CALC
 USE OUTPUT
 USE GEOM
 USE OMP_LIB
+USE MFDSMC,only:IMF,IMFS,NMFETR,NMFERR,NMFEVR,NMFVTR
 !
 IMPLICIT NONE
 !
@@ -9321,7 +9521,7 @@ IF (IKA > 0) THEN
     !$omp atomic
     NPVIB(1,IKA,3,KV,K)=NPVIB(1,IKA,3,KV,K)+1
     !$omp critical
-    IF (IREAC == 2 .and. NPM == 3 .and. IMF == 1 .and. KV == 1 .and. IMFS == 1) THEN
+    IF (IREAC == 2 .and. NPM == 3 .and. IMF .ne. 0 .and. KV == 1 .and. IMFS == 1) THEN
       IETDX = FLOOR(ECT/BOLTZ/FTMP0/0.01D0)+1;
       IETDX=MIN(IETDX,1000)
       NMFETR(IETDX,IKA) = NMFETR(IETDX,IKA) + 1.0d0
@@ -9470,6 +9670,7 @@ USE GAS
 USE GEOM
 USE CALC
 USE OUTPUT
+USE MFDSMC, only: nonVHS
 !
 IMPLICIT NONE
 !
@@ -9856,6 +10057,8 @@ USE GEOM
 USE GAS
 USE OUTPUT
 USE OMP_LIB
+USE MFDSMC,only: NMFET0,NMFER0,NMFEV0,NMFVT0,NMFEV,NMFET,NMFER,NMFVT, &
+  IMF, IMFS, IMFpair, nonVHS
 !
 IMPLICIT NONE
 !
@@ -10170,19 +10373,21 @@ DO N=1,NCCELLS
 !--Calculate the total scattering (VHS) cross-section
             CVR=VR*SPM(2,LS,MS)*((2.D00*BOLTZ*SPM(5,LS,MS)/(SPM(1,LS,MS)*VRR))**(SPM(3,LS,MS)-0.5D00))*SPM(6,LS,MS)
             SXSECTION=CVR*1d20/VR !in Angstrons^2
-
-!--Calculate the reaction cross-sections
-          !  RXSECTION=0.d0
-          !  IF (MNRE>0) THEN
-           !   CALL CHECK_RXSECTION(RXSECTION,N,L,LM,M,LS,LMS,MS,VRR,SXSECTION,IDT)
-           ! END IF
-!
             ECT=0.5D00*SPM(1,LS,MS)*VRR         !collision translational energy in J
             ET=ECT/EVOLT                        !convert to eV
-            ECC=(ECT+EVIB)/EVOLT                !available collision energy in eV
-            EL=DMIN1(ECC,ED)                    !in eV
 
-           ! get rotational energy, ECR1 is always the one with lower sp number
+!--Calculate the reaction cross-sections
+            RXSECTION=0.d0
+            IF (MNRE>0 .and. IMF .ne.  0 .and. QCTMODEL == 2) THEN
+              ! precalculate Reaction cross section before collision occur
+              ! This is for the case when QCTMODEL is used
+              ! Reaction cross sections might become larger than others
+              CALL CHECK_RXSECTION(RXSECTION,N,L,LM,M,LS,LMS,MS,VRR,SXSECTION,IDT)
+            END IF
+!
+
+! get rotational energy and vibrational energy, ECR1 is always the one with lower sp number
+! 1 is always the one with lower sp number  or the one with higher Ev
             ECR = 0.0d0; IVPS = 0
             IF (LS < MS ) THEN
               IF (ISPV(LS) > 0) THEN
@@ -10209,8 +10414,26 @@ DO N=1,NCCELLS
                 END IF
               END IF
             END IF
-            ! 1 is always the one with lower sp number
-            ! or the one with higher Ev
+            ! Sample rotational, translational and vibrational energy
+            IF ((IREAC .eq. 2) .and. (IMF .ne. 0) .and. (MNRE <= 2) .and. (IMFS == 1)) THEN
+              IETDX = FLOOR(ECT/BOLTZ/FTMP0/0.010D0)+1
+              IETDX = MIN(IETDX,1000)
+              NMFET0(IETDX,IMFpair(LS,MS)) = NMFET0(IETDX,IMFpair(LS,MS)) + 1.0D0
+              ! KK=1 the one with lower smaller sp number
+              DO KK = 1,2
+                K = KK
+                ! for same specie, X(:,2,:) is always zero
+                ! rotational energy
+                IERDX(KK) = FLOOR(ECR(KK)/BOLTZ/FTMP0/0.01D00)+1
+                IERDX(KK) = MIN(IERDX(KK),1000)
+                NMFER0(IERDX(KK),K,IMFpair(LS,MS)) = NMFER0(IERDX(KK),K,IMFpair(LS,MS)) + 1.0D0
+                ! vibrational energy
+                IEVDX(KK) = IVPS(KK)
+                IF (IEVDX(KK) > 100)    IEVDX(KK) = 100
+                NMFEV0(IEVDX(KK),K,IMFpair(LS,MS)) = NMFEV0(IEVDX(KK),K,IMFpair(LS,MS)) + 1.0d0
+                NMFVT0(IEVDX(KK),IETDX,K,IMFpair(LS,MS)) = NMFVT0(IEVDX(KK),IETDX,K,IMFpair(LS,MS))+1.0D0
+              END DO
+            END IF
 
 !
 !--Calculate the VT (ME-QCT) cross-sections (only for O2+O and N2+O collisions)
@@ -10220,7 +10443,12 @@ DO N=1,NCCELLS
             ! J is only larger than 0 for the above two pairs
 
             ! Calcuate pre-collision vibrational energy
+            ! IVP is the vibrational level of the molecule which is more
+            ! likely to be dissociated
+            ! For J>0, predefined QCT model *MIGHT* be used later
+            ! For J<0, QCT model will never be used
             IVP = -1
+            EVIB = 0.0d0
             IF (LS == J) THEN
               IVP=IPVIB(1,L);
             ELSE IF  (MS == J) THEN
@@ -10243,11 +10471,14 @@ DO N=1,NCCELLS
             IF (IVP > 0)THEN
               CALL VIB_ENERGY(EVIB,IVP,1,ABS(J))
             END IF
+            ! the following values are used in ME-QCT-VT model
+            ECC=(ECT+EVIB)/EVOLT                !available collision energy in eV
 
             ! Han: add nonVHS cross section model for N2+O
+            ! This model has dependency on vibrational level
             IF (nonVHS == 1) THEN
               IF ((LS == 1 .and. MS == 4) .or. (LS ==4 .and. MS == 1)) THEN
-                EVIBEV = EVIB/EVOLT
+                EVIBEV = EVIB/EVOLT  ! convert to eV
                 IF (EVIBEV >= 6.9d0  ) EVIBEV = 6.9d0  ! extrapolate
                 SXSECTION = DLOG(ET) - (CTOT(8) + EVIBEV*(CTOT(7) + EVIBEV*CTOT(6)))
                 SXSECTION = (CTOT(3)+CTOT(4)*EVIBEV*EVIBEV)*DTANH(CTOT(5)*SXSECTION) + CTOT(2)*EVIBEV
@@ -10258,28 +10489,6 @@ DO N=1,NCCELLS
 
 
 
-            ! Sample rotational, translational and vibrational energy
-            ! of colliding pairs that are selected to check collision
-            IF ((IREAC .eq. 2) .and. (IMF == 1) .and. (MNRE <= 2) .and. (IMFS == 1)) THEN
-              IETDX = FLOOR(ECT/BOLTZ/FTMP0/0.010D0)+1
-              IETDX = MIN(IETDX,1000)
-              NMFET0(IETDX,IMFpair(LS,MS)) = NMFET0(IETDX,IMFpair(LS,MS)) + 1.0D0
-              ! KK=1 the one with lower smaller sp number
-              DO KK = 1,2
-                K = KK
-                ! for same specie, X(:,2,:) is always zero
-                ! rotational energy
-                IERDX(KK) = FLOOR(ECR(KK)/BOLTZ/FTMP0/0.01D00)+1
-                IERDX(KK) = MIN(IERDX(KK),1000)
-                NMFER0(IERDX(KK),K,IMFpair(LS,MS)) = NMFER0(IERDX(KK),K,IMFpair(LS,MS)) + 1.0D0
-                ! vibrational energy
-                IEVDX(KK) = IVPS(KK)
-                IF (IEVDX(KK) > 100)    IEVDX(KK) = 100
-                NMFEV0(IEVDX(KK),K,IMFpair(LS,MS)) = NMFEV0(IEVDX(KK),K,IMFpair(LS,MS)) + 1.0d0
-                NMFVT0(IEVDX(KK),IETDX,K,IMFpair(LS,MS)) = NMFVT0(IEVDX(KK),IETDX,K,IMFpair(LS,MS))+1.0D0
-              END DO
-            END IF
-!
             ! QCT VT cross sections
             VTXSECTION=0.d0
             IF (QCTMODEL==2.AND.GASCODE==8.AND.J>0) THEN
@@ -10320,6 +10529,7 @@ DO N=1,NCCELLS
               C=C1+C2*ECC
 !
               SUMF=0.d0
+              EL=DMIN1(ECC,ED)                    !in eV
 !
               IF(J==1) THEN !N2+O collisions
                 AB=ECT+EVIB
@@ -10360,7 +10570,9 @@ DO N=1,NCCELLS
 !
 !--Define the total cross-section
             TXSECTION=DMAX1(SXSECTION,SUM(VTXSECTION(:)))      !trick
-            !TXSECTION=DMAX1(SXSECTION,SUM(RXSECTION(:)))
+            IF (MNRE>0 .and. IMF .ne.  0 .and. QCTMODEL == 2) THEN
+              TXSECTION=DMAX1(TXSECTION,SUM(RXSECTION(:)))
+            END IF
             !TXSECTION=DMAX1(TXSECTION,SUM(VTXSECTION(:)))     !total cross-section in Angstrons^2
 
             IF (TXSECTION*VRI/1.d20 > CCELL(4,N)) THEN
@@ -10398,7 +10610,7 @@ DO N=1,NCCELLS
               !--Sample internal states and energy
               !-------------------------------------------------
               ! sample t,r,v energy for particles that collide
-              IF ((IREAC .eq. 2) .and. (IMF == 1) .and. (MNRE <= 2) .and. (IMFS == 1)) THEN
+              IF ((IREAC .eq. 2) .and. (IMF .ne. 0) .and. (MNRE <= 2) .and. (IMFS == 1)) THEN
                 NMFET(IETDX,IMFpair(LS,MS)) = NMFET(IETDX,IMFpair(LS,MS)) + 1.0D0
                 ! KK=1 the one with lower smaller sp number
                 DO KK = 1,2
@@ -12520,3 +12732,122 @@ subroutine timestamp ( )
   return
 end
 
+! subroutine to search index ii and ij in x meets
+!       x(ii) < x0 < x(ij)
+! if x0 equals to some value in x, ii=ij=index of the element
+      subroutine binary_search(ii,ij,x0,x,lx,rx,ierror)
+        implicit none
+        integer :: ii, ij
+        integer,intent(in) ::  rx,lx
+        double precision,intent(in) :: x0,x(lx:rx)
+        logical :: ierror
+        integer :: L,R,M
+
+        ierror = .false.
+        L = lx
+        R = rx
+        M = (L+R)/2
+
+        if ( (x0 .lt. x(L)) .or. (x0 .gt. x(R)))then
+          write(6,*) 'No correct phase is found'
+          ierror = .true.
+          return
+        elseif (x0 .eq. x(L)) then
+          ii = L
+          ij = L
+          return
+        elseif (x0 .eq. x(R)) then
+          ii = R
+          ij = R
+          return
+        endif
+
+        do while ( (x(L) .le. x0) .and. (x(R) .ge. x0) .and. (R-L)>1 )
+          if (x0 .eq. x(M)) then
+            ii = M
+            ij = M
+            R = M
+            L =M
+            exit
+          elseif (x0 .gt. x(M))then
+            L = M
+            M = (L+R)/2
+          elseif (x0 .le. x(M)) then
+            R = M
+            M = (L+R)/2
+          endif
+        enddo
+        if ( x(R) .eq. x0) then
+          ii = R
+          ij = R
+        elseif ( x(L) .eq. x0) then
+          ii = L
+          ij = L
+        else
+          ii = L
+          ij = R
+        end if
+
+      end subroutine binary_search
+
+! the following one is very similar to the previous one
+! the difference is that, this one also handles list like the folowing
+! x=      [0,0,0,2,5,5,5,8]
+! index = [0,1,2,3,4,5,6,7]
+! x0=1 -> ii=2, ij=3
+! x0=5 -> ii=ij=4
+! noted that x0 must be larger than 0
+      subroutine binary_search_int(ii,ij,x0,x,lx,rx,ierror)
+        implicit none
+        integer :: ii, ij
+        integer,intent(in) ::  rx,lx
+        integer,intent(in) :: x0,x(lx:rx)
+        logical :: ierror
+        integer :: L,R,M
+
+        ierror = .false.
+        L = lx
+        R = rx
+        M = (L+R)/2
+
+        if ( (x0 .lt. x(L)) .or. (x0 .gt. x(R)))then
+          write(6,*) 'No correct phase is found'
+          ierror = .true.
+          return
+        elseif (x0 .eq. x(L)) then
+          ii = L
+          ij = L
+          return
+        elseif (x0 .eq. x(R)) then
+          ii = R
+          ij = R
+          return
+        endif
+
+        do while ( (x(L) .le. x0) .and. (x(R) .ge. x0) .and. (R-L)>1 )
+          if (x0 .eq. x(M)) then
+            ii = M
+            ij = M
+            R = M
+            L =M
+            exit
+          elseif (x0 .gt. x(M))then
+            L = M
+            M = (L+R)/2
+          elseif (x0 .le. x(M)) then
+            R = M
+            M = (L+R)/2
+          endif
+        enddo
+        if ( x(R) .eq. x0) then
+          ii = R
+          ij = R
+        elseif ( x(L) .eq. x0) then
+          ii = L
+          ij = L
+        else
+          ii = L
+          ij = R
+        end if
+
+      end subroutine binary_search_int
