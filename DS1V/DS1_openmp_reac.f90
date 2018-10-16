@@ -460,7 +460,7 @@ END MODULE CALC
 MODULE MFDSMC
 !
 !--declares of the variables used in MF-DSMC model
-INTEGER :: IMF,IMFS, nonVHS,NMFpair=0
+INTEGER :: IMF,IMFS, nonVHS,NMFpair=0,IMFdia
 INTEGER, ALLOCATABLE :: NMFANG(:),IMFpair(:,:)
 REAL(8),ALLOCATABLE,DIMENSION(:,:)   :: MFRMASS(:,:),NMFET0,NMFET,NMFETR
 REAL(8),ALLOCATABLE,DIMENSION(:,:,:) :: NMFER0, NMFEV0, NMFER, NMFEV
@@ -533,6 +533,7 @@ contains
     end if
   end subroutine MF_CLEAN
 
+
   subroutine MF_SAMPLE_PHASE(LS, R, Vlevel)
     use CALC, only : PI
     implicit none
@@ -572,6 +573,156 @@ contains
       end if
     end if
   end subroutine MF_SAMPLE_PHASE
+
+  subroutine MF_CALC_COLL(K,NMFCALL,MFcoll,IDT)
+    use gas,only : IREA,SP
+    implicit none
+    real(8) :: MFcoll(2),AA
+    integer,intent(in) :: K, NMFCALL
+    integer :: II,IDT
+
+    IF (NMFCALL == 1) THEN
+      DO II=1,2
+        IF (IREA(II,K) == 1 .or. IREA(II,K) == 3) THEN
+                  ! homo-nuclear molecule like N2 or O2
+                  ! MFcoll is the mass of atom
+          MFcoll(II) = SP(5,IREA(II,K))/2.0
+        ELSE IF (IREA(II,K) == 2 .or. IREA(II,K) == 4) THEN
+          MFcoll(II) = SP(5,IREA(II,K))
+        ELSE IF (IREA(II,K) == 5) THEN  !randomly select one
+                  ! NO dissocation reaction
+          CALL ZGF(AA,IDT)
+          IF (AA <0.5d0) THEN
+            MFcoll(II) = 2.325d-26 ! N atom
+          ELSE
+            MFcoll(II) = 2.656d-26
+          END IF
+        ELSE
+          STOP "CHECK_RXSECTION: MFcoll is not found"
+        END IF
+      END DO
+    ELSE
+      ! at this point MFcoll should already be calculated
+      AA = MFcoll(1)
+      MFcoll(1) = MFcoll(2)
+      MFcoll(2) = AA
+    END IF
+  end subroutine MF_CALC_COLL
+
+  subroutine MF_SAMPLE_ANGLE(K,NMFCALL,MFANG,MFCtheta,viblevel,IDT)
+    use calc, only:PI
+    use gas, only : IREA
+    implicit none
+    integer :: II, IDT
+    integer,intent(in) :: K,viblevel(2), NMFCALL
+    real(8) :: MFANG(8),MFCtheta,AA
+    ! K --- index of reaction
+    ! nmfcall -- the time that mf model is called
+    ! mfang -- angles sampled for MF model
+    ! mfctheta -- cos(theta)
+    ! viblevel -- the vibrational quantum number of the colliding particles
+
+    ! MFANG:
+    !  1. gamma_1
+    !  2. gamma_2
+    !  3. theta
+    !  4. phi_0
+    !  5. phi_1
+    !  6. beta_1
+    !  7. beta_2
+    !  8. delta
+
+    IF (NMFCALL == 1) THEN
+      !-- first time call MF model, generate angles
+      DO II = 1,3
+        CALL ZGF(MFANG(II),IDT)
+        MFANG(II) = MFANG(II)*PI
+      END DO
+      CALL ZGF(MFANG(4),IDT)
+      CALL MF_SAMPLE_PHASE(IREA(1,K),MFANG(4),viblevel(1))
+      IF (NMFANG(K) .ge. 8) THEN !collider is diatom
+        CALL ZGF(MFANG(5),IDT)
+        CALL MF_SAMPLE_PHASE(IREA(2,K),MFANG(5),viblevel(2))
+        DO II=6,8
+          CALL ZGF(MFANG(II),IDT)
+          MFANG(II) = MFANG(II)*PI
+        END DO
+        MFANG(3) = MFANG(3)*2.0d0    ! For atom-diatom, no symmetry
+        MFANG(6) = MFANG(6)-PI*0.5d0 ! beta1 [-pi/2, pi/2]
+        MFANG(7) = MFANG(7)*2.0d0    ! beta2 [0,2*pi]
+        MFANG(8) = MFANG(8)*2.0d0    ! delta [0,2*pi]
+      END IF
+      MFCtheta = DCOS(MFANG(3))
+    ELSE IF(NMFCALL == 2) THEN
+      !--this is the second call
+      AA=MFANG(4); MFANG(4)=MFANG(5); MFANG(5)=AA !switch phi
+      ! we don't change other angles
+      MFCtheta = DCOS(MFANG(6))*DCOS(MFANG(7))
+    ELSE
+      STOP
+    END IF
+  end subroutine MF_SAMPLE_ANGLE
+
+  subroutine MF_EVAL_F(K,NMFCALL,MFV1,MFV2,MFR1,MFR2,MFcoll, MFANG, MFCtheta,MFF,IDT)
+    ! calculate the threshold function
+    use calc, only:PI
+    USE GAS, ONLY : IREA, REA,ISPV
+    implicit none
+    integer,intent(in) :: K, NMFCALL
+    real(8),intent(in) :: MFV1,MFV2,MFR1,MFR2,MFcoll(2),MFANG(8),MFCtheta
+    real(8),intent(out) :: MFF
+    integer :: IDT
+    real(8) :: MFDSTAR, AA, BB, CC, DD, MFbeta
+    ! K:
+    !     number of the reaction
+    ! MFV1, MFR1
+    !     vibrational/rotational energy of the molecule to be dissociated AB
+    ! MFV2, MFR2
+    !     vibrational/rotational energy, vibrational level of the colliding partner CD
+    ! MFcoll(1), MFcoll(2)
+    !     mass of atom B, mass of atom C
+    ! MFANG, MFCtheta
+    !     MF angles sampled for AB dissociation
+    ! NMFCALL
+    !     =1 : the MFANG is sampled for AB + CD -> A + B + CD
+    !     =2 : the MFANG is sampled for AB + CD -> AB + C + D
+    MFDSTAR = REA(2,K) - MFR1 + 2.0d0*MFR1**1.5d0/(3.0d0 * dsqrt(3.0d0*2.0d0*REA(2,K)))
+    AA = MFDSTAR - MFV1*DSIN(MFANG(4))**2
+    IF (AA .LE. 0.0D0 )THEN
+      MFF = 0.0D0
+    ELSE
+      AA = (DSQRT(AA)+DSQRT(MFV1)*DCOS(MFANG(4)))/MFCtheta
+      AA = AA*(MFcoll(1)/MFcoll(2)+1.0d0)
+
+      BB =-2.0d0*MFRMASS(2,K)/MFcoll(1)*DSQRT(MFV1)*DCOS(MFANG(4))
+      ! MFRMASS(2,K) the mass of the molecule to be dissociated
+      BB = BB*MFCtheta
+
+      CC = 0.0d0
+      IF (ISPV(IREA(2,K)) == 1) THEN
+        IF (NMFCALL == 1) THEN
+          CC = DCOS(MFANG(8))*DCOS(MFANG(7))*DSIN(MFANG(6))+DSIN(MFANG(8))*DSIN(MFANG(7))
+          ! cos(delta) * cos(beta_2) * cos(beta_1) + sin(delta)*sin(beta_2)
+          DD = DCOS(MFANG(5))*DCOS(MFANG(6))*DCOS(MFANG(7))
+          ! cos(phi_1) * cos(beta_1) * cos(beta_2)
+          CC = DSQRT(MFR2)*CC
+          DD = DSQRT(MFV2)*DD
+          CC = CC-DD
+        ELSE
+          CALL ZGF(MFbeta,IDT)
+          MFbeta = PI*(MFbeta-0.5d0) ! sample beta angle
+          CC = DSQRT(MFR2)*DCOS(MFbeta)*DSIN(MFANG(3))
+          DD = DSQRT(MFV2)*DCOS(MFANG(5))*DCOS(MFANG(3))
+          CC = -CC-DD
+        END IF
+        CC = -2.0d0*CC*DSQRT(MFRMASS(2,K)*MFRMASS(3,K))/MFcoll(2)
+      END IF
+
+      MFF = (AA+BB+CC)**2
+      MFF = MFF*MFRMASS(1,K)/MFRMASS(2,K)/(DCOS(MFANG(1))*DCOS(MFANG(2)))**2
+      MFF = MFF / 4.d0
+    END IF
+  end subroutine MF_EVAL_F
 
 !
 !--IMF only applied when QCTMODEL = 1, 0 for TCE, 1 for MFDSMC, 2 for MFDSMC-AHO
@@ -758,7 +909,7 @@ USE GAS
 USE CALC
 USE OUTPUT
 USE OMP_LIB
-USE MFDSMC,only : IMF, IMFS, nonVHS, MF_CLEAN
+USE MFDSMC,only : IMF, IMFS, nonVHS, MF_CLEAN, IMFdia
 !
 IMPLICIT NONE
 !
@@ -801,7 +952,9 @@ IREAC=2      !0 reaction on and rate sampling off (standard case)
 !             1 reaction on and rate sampling on (samples only NSPDF cell, requires ISF>0)
 !             2 reaction off and rate sampling on (called by run_ireac_ds1v.sh, samples only NSPDF cell, requires ISF=0 & NSEED>= 0)
 QCTMODEL=1   !0 for LB+SHO vibrational levels, 1 for TCE+LB+AHO, 2 MEQCT+AHO (for O2+O and N2+O)
-IMF = 1      !use MF model
+IMF = 1      ! 0: do not use MF model, 1: use MF+SHO 2: use MF+AHO
+IMFdia = 0   ! 0: for collision of same molecules, dissociate the one with higher vibrational energy
+             ! 1: for collision of same molecules, dissociate the one gives lower threshold energy
 IMFS = 1     ! 0 for not sampling 1 for sampling
 nonVHS = 0   !1 use nonVHS model for N2+O, 0 use VHS model everywhere
 !
@@ -6102,7 +6255,7 @@ USE GAS
 USE CALC
 USE GEOM
 USE OUTPUT
-USE MFDSMC, only : IMF,IMFS,MFRMASS, NMFANG,NMFpair, IMFpair,MF_SET_AHO
+USE MFDSMC, only : IMF,IMFS,MFRMASS, NMFANG,NMFpair, IMFpair,MF_SET_AHO, IMFdia
 !
 IMPLICIT NONE
 !
@@ -6132,7 +6285,7 @@ END IF
 IF (MNRE > 0) THEN
   REA=0.; IREA=0; NREA=0; JREA=0; NRSP=0; IRCD=0 ; REAC=0.; EVREM = 0.d0
   IF ( IMF .ne. 0) THEN
-     MFRMASS=-100.d0; NMFANG = 4;
+     MFRMASS=-100.d0; NMFANG = 0;
   END IF
 !
   OPEN(10, FILE="ChemicalReaction.txt")
@@ -6234,7 +6387,12 @@ IF (IMF .ne. 0) THEN
   OPEN(10, FILE="ChemicalReaction.txt", ACCESS="APPEND")
   WRITE(10,*)
   WRITE(10,*)
-  WRITE(10,*) "Macheret-Fridman model parameter:"
+  IF (IMF == 1) THEN
+    WRITE(10,'(A,1X,I2)') 'Macheret-Fridman model: MF-SHO  Dia:',IMFdia
+  ELSE
+    WRITE(10,'(A,1X,I2)') 'Macheret-Fridman model: MF-AHO  Dia:',IMFdia
+  END IF
+  WRITE(10,'(A)') "Macheret-Fridman model parameter:"
 END IF
 
 DO K=1,MNRE
@@ -6285,43 +6443,45 @@ DO K=1,MNRE
       ! LS is always the one to be dissociated
       ! MFRAMSS(1): reduced mass of whole system
       IF ((LS .gt. 5) .or. (MS .gt. 5)) THEN
-        WRITE(*,*) "MF model: unsupported specie", LS, MS
-        STOP
-      END IF
-      !
+        WRITE(10, "(A, I3, A, I3,A)") "Reaction: ",LS, ' + ',MS, ' is not supported by MF model'
+        WRITE(10, "(I3,' + ',I3,' -> ',I3,' + ',I3,' + ',I3)") LE(K),ME(K),KP(K),LP(K),MP(K)
+        WRITE(10,*)
+        MFRMASS(:,K) = 0.0d0
+        NMFANG(K) = 0
+      ELSE
       !----- calculated reduced mass
       ! reduced mass of A+B
-      MFRMASS(1,K) = SP(5,LS)*SP(5,MS)/(SP(5,LS)+SP(5,MS))
-      DO II = 1,2
-        IF (ISPV(IREA(II,K)) == 0) THEN
+        MFRMASS(1,K) = SP(5,LS)*SP(5,MS)/(SP(5,LS)+SP(5,MS))
+        DO II = 1,2
+          IF (ISPV(IREA(II,K)) == 0) THEN
           ! single atom
-          MFRMASS(II+1,K) = SP(5,IREA(II,K))
-        ELSE IF (IREA(II,K) == 5) THEN
+            MFRMASS(II+1,K) = SP(5,IREA(II,K))
+          ELSE IF (IREA(II,K) == 5) THEN
           ! NO molecule
-          MFRMASS(II+1,K) = SP(5,2)*SP(5,4)/(SP(5,2)+SP(5,4))
-        ELSE IF (IREA(II,K) == 3 .or. IREA(II,K) == 1) THEN
+            MFRMASS(II+1,K) = SP(5,2)*SP(5,4)/(SP(5,2)+SP(5,4))
+          ELSE IF (IREA(II,K) == 3 .or. IREA(II,K) == 1) THEN
           ! nitogen, oxygen and other homonuclear molecule
           ! reduced mass should be 1/4 of the mass of molecule
-          MFRMASS(II+1,K) = SP(5,IREA(II,K))/4.0d0
-        ELSE
-          WRITE(*,*) "Not supported MFRMASS", IREA(II,K)
-          STOP
-        END IF
-      END DO
-      WRITE(10, "(A, I3, A, I3)") "Reaction: ",LS, ' + ',MS
-      WRITE(10, "(A, 3(G10.3, 1X))") "Reduced mass (kg): ", MFRMASS(1,K), MFRMASS(2,K),MFRMASS(3,K)
+            MFRMASS(II+1,K) = SP(5,IREA(II,K))/4.0d0
+          ELSE
+            WRITE(*,*) "Not supported MFRMASS", IREA(II,K)
+            STOP
+          END IF
+        END DO
+        WRITE(10, "(A, I3, A, I3)") "Reaction: ",LS, ' + ',MS
+        WRITE(10, "(A, 3(G10.3, 1X))") "Reduced mass (kg): ", MFRMASS(1,K), MFRMASS(2,K),MFRMASS(3,K)
       !
       !----- determine reaction type
-      NMFANG(K) = 4 ! default: homo-atom
-      IF (ISPV(MS) == 1) NMFANG(K) = 8  !default: homo-homo
-      IF (LS == 5) NMFANG(K) = NMFANG(K)+1 !hetero-homo or hetero-atom: 5,9
-      IF (MS == 5) NMFANG(K) = NMFANG(K)+2
+        NMFANG(K) = 4 ! default: homo-atom
+        IF (ISPV(MS) == 1) NMFANG(K) = 8  !default: homo-homo
+        IF (LS == 5) NMFANG(K) = NMFANG(K)+1 !hetero-homo or hetero-atom: 5,9
+        IF (MS == 5) NMFANG(K) = NMFANG(K)+2
       ! ----- homo   hetero   !dissociated molecule
       !atom    4       5
       !homo    8       9
       !hetero  10     11
       !
-      !----- prepare IMFpair
+      END IF
     END IF
   END IF
 !
@@ -8689,7 +8849,7 @@ END SUBROUTINE DISSOCIATION
 !
 !************************************************************************************
 !
-SUBROUTINE CHECK_RXSECTION(RXSECTION,N,L,LM,M,LS,LMS,MS,VRR,SXSECTION,IDT)
+SUBROUTINE CHECK_RXSECTION(RXSECTION,N,L,LM,M,LS,LMS,MS,VRR,SXSECTION,IVDC,IDT)
 !
 !
 USE MOLECS
@@ -8698,13 +8858,14 @@ USE CALC
 USE OUTPUT
 USE GEOM
 USE OMP_LIB
-USE MFDSMC,only:IMF,NMFANG,MFRMASS, MF_SAMPLE_PHASE
+USE MFDSMC,only : IMF, IMFdia, NMFANG,MFRMASS,&
+  MF_SAMPLE_PHASE,MF_CALC_COLL,MF_SAMPLE_ANGLE,MF_EVAL_F
 !
 IMPLICIT NONE
 !
 !
 INTEGER :: J,K,L,LM,M,N,LS,LMS,MS,IKA,NRE,KK,KS,MK,KA,KAA,MKK,JR,KR,JS,KV,IA,ISTE(MNRE),&
-           IDT,NS,NPM,I,IVDC,KM,IV,IS,IVAR(MNRE),II,JJ,NSP,nstep,MTYPE,IVIB,JROT,IMAX,JMAX
+           IDT,NS,NPM,I,IVDC(MNRE),KM,IV,IS,IVAR(MNRE),II,JJ,NSP,nstep,MTYPE,IVIB,JROT,IMAX,JMAX
 REAL(8),EXTERNAL :: GAM
 REAL(KIND=8) :: A,B,ECT,ECR,ECV,EC,THBCELL,WF,PXSECTION,VR,VRR,RML,RMM,ECM,ECN,RANF,&
                 VDOF1(MMVM),VDOF2(MMVM),EV1(MMVM),EV2(MMVM),EV,ECV1,ECV2,ECV3,SVDOF1,SVDOF2,SVDOF3,ECR1,ECR2,ECR3,AL,&
@@ -8714,7 +8875,8 @@ REAL(KIND=8) :: A,B,ECT,ECR,ECV,EC,THBCELL,WF,PXSECTION,VR,VRR,RML,RMM,ECM,ECN,R
 REAL(KIND=8),ALLOCATABLE :: VEC_I(:),VEC_J(:),VALUES(:),ARRAY_TEMP(:,:)
 REAL(KIND=8) :: MFANG(8),MFV1,MFV2,MFR1,MFR2,MFDSTAR,MFCtheta,MFbeta
 REAL(KIND=8) :: MFF(2),MFcoll(2)
-INTEGER      :: ISAME, NMFCALL, viblevel(2)
+INTEGER      :: NMFCALL, viblevel(2), IINPM
+LOGICAL      :: ISAME
 !
 !--A,B,C working variables
 !--J,K,KK,MK,KA,KAA,MKK,JR,KR,JS,KV,IA working integers
@@ -8739,11 +8901,12 @@ INTEGER      :: ISAME, NMFCALL, viblevel(2)
 !--MFANG angles sampled by MF-MC model
 !--MFF threshold function maximum 4 kinds of configuration
 !
-ISAME = 0             !check if two species are the same
 NMFCALL = 0           !count of MFmodel using
 NS=ICCELL(3,N)        !sampling cell
 TEMP=VAR(10,NS)       !sampling cell vibrational temperature
 NRE=NRSP(LS,MS)       !number of reaction involving species LS and MS
+ISAME = .false.             !check if two species are the same
+IF (LS == MS) ISAME = .true.
 !SXSECTION=CVR*1d20/VR !scattering (VHS) cross-section in Angstrons^2
 !
 IF (NRE > 0) THEN
@@ -8787,7 +8950,6 @@ IF (NRE > 0) THEN
   ATDOF=(ISPR(1,LS)+ISPR(1,MS)+SVDOF1+SVDOF2+(4.d0-2.d0*AL))*0.5d0 !average number of dofs
   AIDOF=(ISPR(1,LS)+ISPR(1,MS)+SVDOF1+SVDOF2)*0.5d0                !average number of internal dofs
 !
-  IF (LS == MS) ISAME = 1
   DO J=1,NRE
     K=IRCD(J,LS,MS)
     NPM=NREA(1,K)+NREA(2,K)  !number of post-reaction species
@@ -8799,14 +8961,20 @@ IF (NRE > 0) THEN
     IF ((EC >= REA(2,K)).AND.(EC+REA(5,K) > 0)) THEN !2nd condition prevents a negative post-reaction total energy
 !
 !--check if molecules follow the order given by IREA
-      IF (ISAME == 1) THEN
+      IVDC(K) = 1
+      IF (ISAME) THEN
         IF (ISPV(LS) > 0)THEN
-          IF (ECV1 >= ECV2) IVDC=1     !choose the higher energy molecule for dissociation
-          IF (ECV2 >  ECV1) IVDC=2
+         ! choose the molecule with higher dissociation energy
+         ! some model like MFDSMC may change this
+          IF (ECV1 .ge. ECV2) THEN
+            IVDC(K) = 1
+          ELSE
+            IVDC(K) = 2
+          END IF
         END IF
       ELSE
-        IF (LS == IREA(1,K)) IVDC=1  !corrected order
-        IF (MS == IREA(1,K)) IVDC=2  !inverted order
+        IF (LS == IREA(1,K)) IVDC(K) = 1  !corrected order
+        IF (MS == IREA(1,K)) IVDC(K) = 2  !inverted order
       END IF
 !
 !--check reaction model
@@ -8818,7 +8986,7 @@ IF (NRE > 0) THEN
 !     MTYPE=0 !to enforce the use of TCE model for all collisions
 !
 !--------------------------------------------------------------------------------
-      IF (MTYPE == 0) THEN !use TCE model
+      IF (MTYPE == 0) THEN !use TCE/MFDSMC/VDC model
 !
 !--possible recombination reaction
         IF (NPM == 1) THEN
@@ -8891,7 +9059,7 @@ IF (NRE > 0) THEN
 !--possible dissociation reaction
         IF (NPM == 3) THEN
           IF(REA(1,K) < 0.) THEN
-            IF (IMF == 0)THEN
+            IF (IMF == 0 .or. (IMF .ne. 0 .and. NMFANG(K) == 0))THEN
               !TCE model (same as in exchange reactions)
               CC=ATDOF
               DD=AIDOF+1.5d0+REA(4,K)
@@ -8900,8 +9068,8 @@ IF (NRE > 0) THEN
               AA=X+ATDOF-1.d0
               BB=ATDOF-1.d0
               !--testing nonequilibrium reaction rate corrections
-              IF (IVDC == 1) KS=LS
-              IF (IVDC == 2) KS=MS
+              IF (IVDC(K) == 1) KS=LS
+              IF (IVDC(K) == 2) KS=MS
               !
               !--Kuznetsov (KSS)
               !E=(1.d0-DEXP(-SPVM(1,1,KS)/VAR(10,NS)))/(1.d0-DEXP(-SPVM(1,1,KS)/VAR(8,NS)))
@@ -8936,7 +9104,7 @@ IF (NRE > 0) THEN
               !---get energy of each one particle
               ! here I assume that if the molecule doesn't have vibrational energy
               ! IPVIB will be 0
-              IF (IVDC == 1)THEN
+              IF (IVDC(K) == 1)THEN
                 MFV1 = ECV1; MFR1 = ECR1
                 MFV2 = ECV2; MFR2 = ECR2
                 viblevel(1) = IPVIB(1,L); viblevel(2) = IPVIB(1,M)
@@ -8945,41 +9113,19 @@ IF (NRE > 0) THEN
                 MFV2 = ECV1; MFR2 = ECR1
                 viblevel(1) = IPVIB(1,M); viblevel(2) = IPVIB(1,L)
               END IF
-              MFDSTAR = REA(2,K) - MFR1 + 2.0d0*MFR1**1.5d0/(3.0d0 * dsqrt(3.0d0*2.0d0*REA(2,K)))
               !
-              !---set mass of mb (MFcol(1)) and mc (MFcol(2))
-              MFcoll = -1.0d0
-              DO II=1,2
-                IF (IREA(II,K) == 1 .or. IREA(II,K) == 3) THEN
-                  ! homo-nuclear molecule like N2 or O2
-                  ! MFcoll is the mass of atom
-                  MFcoll(II) = SP(5,IREA(II,K))/2.0
-                ELSE IF (IREA(II,K) == 2 .or. IREA(II,K) == 4) THEN
-                  MFcoll(II) = SP(5,IREA(II,K))
-                ELSE IF (IREA(II,K) == 5) THEN  !randomly select one
-                  ! NO dissocation reaction
-                  CALL ZGF(AA,IDT)
-                  IF (AA <0.5d0) THEN
-                    MFcoll(II) = 2.325d-26 ! N atom
-                    ! MFcoll(2) = 2.656d-26 ! O atom
-                  ELSE
-                    ! MFcoll(2) = 2.325d-26
-                    MFcoll(II) = 2.656d-26
-                  END IF
-                ELSE
-                  STOP "CHECK_RXSECTION: MFcoll is not found"
-                END IF
-              END DO
-              !
-              !---generate configureation angle or transfer
-              !
-              ! atom-diatom: gamma1, gamma2, theta, phi
-              ! diatom-diatom: gamma1, gamma2, theta, phi0, phi1, beta1, beta2, delta, beta
               NMFCALL = NMFCALL + 1
               IF (NMFCALL > 2) THEN
                 WRITE (*,"(A,I3,'+',I3)") "There are more than 2 MF-diss for ",LS,MS
                 STOP
               END IF
+              !---set mass of mb (MFcol(1)) and mc (MFcol(2))
+              CALL MF_CALC_COLL(K,NMFCALL,MFcoll,IDT)
+              !
+              !---generate geometries of collision
+              !
+              ! atom-diatom: gamma1, gamma2, theta, phi
+              ! diatom-diatom: gamma1, gamma2, theta, phi0, phi1, beta1, beta2, delta, beta
               ! MFANG:
               !  1. gamma_1
               !  2. gamma_2
@@ -8989,92 +9135,53 @@ IF (NRE > 0) THEN
               !  6. beta_1
               !  7. beta_2
               !  8. delta
-              IF (NMFCALL == 1) THEN
-                !-- first time use MF model, generate angles
-                DO II = 1,3
-                  CALL ZGF(MFANG(II),IDT)
-                  MFANG(II) = MFANG(II)*PI
-                END DO
-                CALL ZGF(MFANG(4),IDT)
-                CALL MF_SAMPLE_PHASE(IREA(1,K),MFANG(4),viblevel(1))
-                IF (NMFANG(K) .ge. 8) THEN !collider is diatom
-                  CALL ZGF(MFANG(5),IDT)
-                  CALL MF_SAMPLE_PHASE(IREA(2,K),MFANG(5),viblevel(2))
-                  DO II=6,8
-                    CALL ZGF(MFANG(II),IDT)
-                    MFANG(II) = MFANG(II)*PI
-                  END DO
-                  MFANG(3) = MFANG(3)*2.0d0    ! For atom-diatom, no symmetry
-                  MFANG(6) = MFANG(6)-PI*0.5d0 ! beta1 [-pi/2, pi/2]
-                  MFANG(7) = MFANG(7)*2.0d0    ! beta2 [0,2*pi]
-                  MFANG(8) = MFANG(8)*2.0d0    ! delta [0,2*pi]
-                END IF
-                MFCtheta = DCOS(MFANG(3))
-              ELSE IF(NMFCALL == 2) THEN
-                !--this is the second call
-                AA=MFANG(4); MFANG(4)=MFANG(5); MFANG(5)=AA !switch phi
-                ! we don't change other angles
-                MFCtheta = DCOS(MFANG(6))*DCOS(MFANG(7))
-              ELSE
-                WRITE(*,*) "Check reaction between ",LS," and ",MS
-                WRITE(*,*) " there are more than 2 dissociation reaction"
-                STOP
-              END IF
-
-              ! log angles for binning
-              !IF (IREAC == 2)THEN
-                !DO II = 1,NMFANG(K)
-                  !JJ = FLOOR(MFANG(II)*180.0d0)+1
-                  !JJ = MIN(JJ,180)
-                  !!              NCANGLE(II,JJ) = NCANGLE(II,JJ)+1.d0
-                !END DO
-              !END IF
-
-              AA = MFDSTAR - MFV1*DSIN(MFANG(4))**2
-              IF (AA .LE. 0.0D0 )THEN
-                MFF(NMFCALL) = 0.0D0
-              ELSE
-                AA = (DSQRT(AA)+DSQRT(MFV1)*DCOS(MFANG(4)))/MFCtheta
-                AA = AA*(MFcoll(1)/MFcoll(2)+1.0d0)
-
-                BB =-2.0d0*MFRMASS(2,K)/MFcoll(1)*DSQRT(MFV1)*DCOS(MFANG(4))
-                BB = BB*MFCtheta
-
-                CC = 0.0d0
-                IF (ISPV(IREA(2,K)) == 1) THEN
-                  IF (NMFCALL == 1) THEN
-                    CC = DCOS(MFANG(8))*DCOS(MFANG(7))*DSIN(MFANG(6))+DSIN(MFANG(8))*DSIN(MFANG(7))
-                    DD = DCOS(MFANG(5))*DCOS(MFANG(6))*DCOS(MFANG(7))
-                    CC = DSQRT(MFR2)*CC
-                    DD = DSQRT(MFV2)*DD
-                    CC = CC-DD
-                  ELSE
-                    CALL ZGF(MFbeta,IDT)
-                    MFbeta = PI*(MFbeta-0.5d0)
-                    CC = DSQRT(MFR2)*DCOS(MFbeta)*DSIN(MFANG(3))
-                    DD = DSQRT(MFV2)*DCOS(MFANG(5))*DCOS(MFANG(3))
-                    CC = -CC-DD
-                  END IF
-                  CC = -2.0d0*CC*DSQRT(MFRMASS(2,K)*MFRMASS(3,K))/MFcoll(2)
-                END IF
-
-                MFF(NMFCALL) = (AA+BB+CC)**2
-                MFF(NMFCALL) = MFF(NMFCALL)*MFRMASS(1,K)/MFRMASS(2,K)/(DCOS(MFANG(1))*DCOS(MFANG(2)))**2
-                MFF(NMFCALL) = MFF(NMFCALL) / 4.d0
-              END IF
-
+              CALL MF_SAMPLE_ANGLE(K,NMFCALL,MFANG,MFCtheta,viblevel,IDT)
+                ! log angles for binning
+                !IF (IREAC == 2)THEN
+                  !DO II = 1,NMFANG(K)
+                    !JJ = FLOOR(MFANG(II)*180.0d0)+1
+                    !JJ = MIN(JJ,180)
+                    !!              NCANGLE(II,JJ) = NCANGLE(II,JJ)+1.d0
+                  !END DO
+                !END IF
+              CALL MF_EVAL_F(K,NMFCALL,MFV1,MFV2,MFR1,MFR2,MFcoll,MFANG,MFCtheta,MFF(NMFCALL),IDT)
               STER(J) = 0.0d0
               IF (ECT >= MFF(NMFCALL)) STER(J) = 1.0D0
-              IF ((NMFCALL == 2) .and. (STER(J) == 1.0d0) )THEN
-                IF (MFF(2) < MFF(1))THEN
-                  DO II=1,J-1
-                    STER(II) =0.0d0 ! set previous dissociation to 0
-                    RXSECTION(II) = 0.0d0
-                  END DO
-                ELSE
-                  STER(J) = 0.0d0
+
+              IF (ISAME .and. IMFdia == 1) THEN
+                ! check the possibility of dissociate the molecule with lower vibrational energy
+                NMFCALL = NMFCALL + 1
+                ! exchange of viblevel
+                ! this is actually not needed, but we have it here to keep consistency
+                II = viblevel(1)
+                viblevel(1) = viblevel(2)
+                viblevel(2) = II
+                ! exchange MFcoll
+                CALL MF_CALC_COLL(K,NMFCALL,MFcoll,IDT)
+                ! exchange some angles
+                CALL MF_SAMPLE_ANGLE(K,NMFCALL,MFANG,MFCtheta,viblevel,IDT)
+                ! exchange internal energy
+                CALL MF_EVAL_F(K,NMFCALL,MFV2,MFV1,MFR2,MFR1,MFcoll,MFANG,MFCtheta,MFF(NMFCALL),IDT)
+
+                IF (MFF(2) < MFF(1) .and. MFF(2) <= ECT) THEN
+                  STER(J) = 1.0d00
+                  IVDC(K) = 3-IVDC(K)
+                  ! the configuration IVDC(K) is prefered
                 END IF
-              END IF
+              ELSE
+                IF ((NMFCALL == 2) .and. (STER(J) > 0.9d0) )THEN
+                  IF (MFF(2) < MFF(1))THEN
+                    DO II=1,J-1
+                      IINPM = NREA(1,IRCD(II,LS,MS))+NREA(2,IRCD(II,LS,MS))
+                      IF (IINPM == 3 .and. NMFANG(II) > 0) then
+                        STER(II) =0.0d0 ! set previous dissociation to 0
+                        RXSECTION(II) = 0.0d0
+                      END IF
+                    END DO
+                  ELSE
+                    STER(J) = 0.0d0
+                  END IF
+                END IF
               !ELSE  ! MF probability version
                 !STER(J)=0.0D0
                 !IF (MFV1 .LE. 1.0D-5) MFV1 = 0.5d0*BOLTZ*SPVM(1,1,IREA(1,K))
@@ -9097,12 +9204,13 @@ IF (NRE > 0) THEN
                 !IF ( DABS(MFV1-MFDSTAR) < 1.0D0 ) STER(J) = 1.0D0
                 !IF (STER(J) > 0.999D0)  STER(J) = 1.0D0
               !END IF
+              END IF
             END IF
             RXSECTION(J)=STER(J)*SXSECTION  !in Angstrons^2
           ELSE
             !VDC model
-            IF (IVDC == 1) AVDOF=SVDOF1*0.5d0    !internal dofs contributing to vibrational favoring
-            IF (IVDC == 2) AVDOF=SVDOF2*0.5d0
+            IF (IVDC(K) == 1) AVDOF=SVDOF1*0.5d0    !internal dofs contributing to vibrational favoring
+            IF (IVDC(K) == 2) AVDOF=SVDOF2*0.5d0
             ANDOF=ATDOF-AVDOF                    !internal dofs not contributing to vibrational favoring
             XI=ANDOF-1.d0
             PSI=REA(4,K)+ATDOF+0.5d0-(4.d0-2.d0*AL)*0.5d0
@@ -9116,7 +9224,7 @@ IF (NRE > 0) THEN
             EE=1.d0
             EV=0.d0
             IF (MMVM > 0) THEN
-              IF (IVDC == 1) THEN
+              IF (IVDC(K) == 1) THEN
                 DO KV=1,ISPV(LS)
                   AA=(TEMP/SPVM(1,KV,LS))**(VDOF1(KV)*0.5d0)
                   SEV=0.d0
@@ -9140,7 +9248,7 @@ IF (NRE > 0) THEN
                   CV=CV*AA*SEV(1)/SEV(2)
                   BB=BB*SPVM(1,KV,MS)**(VDOF2(KV)*0.5d0)
                   EE=EE*(EV2(KV)/BOLTZ)**PHI
-                  END DO
+                END DO
                 EV=ECV2
               END IF
             END IF
@@ -9157,7 +9265,11 @@ IF (NRE > 0) THEN
           IF (MTYPE==1) THEN
             ! data only for N2+O=>NO+N reaction
 !
-            IVIB=IPVIB(1,L)+IPVIB(1,M)
+            IF (IVDC(K) == 1) THEN
+              IVIB = IPVIB(1,L)
+            ELSE
+              IVIB = IPVIB(1,M)
+            END IF
             IF (IVIB < 0) IVIB=0
             IF (IVIB > 50) IVIB=50
 !
@@ -9241,7 +9353,11 @@ IF (NRE > 0) THEN
           IF (MTYPE==1) THEN
             ! data only for N2+O=>2N+O reaction
 !
-            IVIB=IPVIB(1,L)+IPVIB(1,M)
+            IF (IVDC(K) == 1) THEN
+              IVIB = IPVIB(1,L)
+            ELSE
+              IVIB = IPVIB(1,M)
+            END IF
             IF (IVIB < 0) IVIB=0
             IF (IVIB > 55) IVIB=55
 !
@@ -9324,7 +9440,11 @@ IF (NRE > 0) THEN
           IF (MTYPE==3) THEN
             ! data only for O2+O=>3O reaction
 !
-            IVIB=IPVIB(1,L)+IPVIB(1,M)
+            IF (IVDC(K) == 1) THEN
+              IVIB = IPVIB(1,L)
+            ELSE
+              IVIB = IPVIB(1,M)
+            END IF
             IF (IVIB < 0) IVIB=0
             IF (IVIB > 40) IVIB=40
 !
@@ -9398,7 +9518,7 @@ IMPLICIT NONE
 !
 !
 INTEGER :: J,K,L,LM,M,N,LS,LMS,MS,IKA,NRE,KK,KS,MK,KA,KAA,MKK,JR,KR,JS,KV,IA,ISTE(MNRE),&
-           IDT,NS,NPM,I,IVDC,KM,IV,IS,IVAR(MNRE),NSP,nstep
+           IDT,NS,NPM,I,IVDC(MNRE),KM,IV,IS,IVAR(MNRE),NSP,nstep
 REAL(8) :: CC,DD
 REAL(8),EXTERNAL :: GAM
 REAL(KIND=8) :: A,B,ECT,ECR,ECV,EC,STERT,THBCELL,WF,PSTERT,VR,VRR,RML,RMM,ECM,ECN,RANF,&
@@ -9465,13 +9585,17 @@ END IF
 EC=ECT+ECR+ECV
 !
 !--check if the molecules follow the order given by IREA
-IF (LS /= MS) THEN
-  IF (LS == IREA(1,IKA)) IVDC=1  !corrected order
-  IF (MS == IREA(1,IKA)) IVDC=2  !inverted order
-ELSE
-  IF (ECV1 >= ECV2) IVDC=1  !choose the high energy molecule for dissociation
-  IF (ECV2 >  ECV1) IVDC=2
-END IF
+! IF (LS /= MS) THEN
+  ! IF (LS == IREA(1,IKA)) IVDC=1  !corrected order
+  ! IF (MS == IREA(1,IKA)) IVDC=2  !inverted order
+! ELSE
+  ! IF (ECV1 >= ECV2) IVDC=1  !choose the high energy molecule for dissociation
+  ! IF (ECV2 >  ECV1) IVDC=2
+! END IF
+!-- Han changed this on Oct 15th 2018
+! IVDC(IKA) = 1: LS = IREA(1,IKA), MS = IREA(2,IKA)
+! IVDC(IKA) = 2: LS = IREA(2,IKA), MS = IREA(1,IKA)
+! For dissociation reaction, IVDC(IKA) tell which molecule is the one to be dissociated
 !
 !
 IF (IKA > 0) THEN
@@ -9480,7 +9604,7 @@ IF (IKA > 0) THEN
 !--sample pre-reaction vibrational levels
   DO KV=1,MMVM
     I=0; J=0; K=0
-    IF (IVDC == 1) THEN
+    IF (IVDC(IKA) == 1) THEN
       SELECT CASE(NPM)
         CASE(1) !recombination
           I=IPVIB(KV,L)
@@ -9521,12 +9645,13 @@ IF (IKA > 0) THEN
     !$omp atomic
     NPVIB(1,IKA,3,KV,K)=NPVIB(1,IKA,3,KV,K)+1
     !$omp critical
-    IF (IREAC == 2 .and. NPM == 3 .and. IMF .ne. 0 .and. KV == 1 .and. IMFS == 1) THEN
+    IF (IREAC > 0 .and. NPM == 3 .and. IMF .ne. 0 .and. KV == 1 .and. IMFS == 1) THEN
       IETDX = FLOOR(ECT/BOLTZ/FTMP0/0.01D0)+1;
       IETDX=MIN(IETDX,1000)
       NMFETR(IETDX,IKA) = NMFETR(IETDX,IKA) + 1.0d0
 
-      IF (IVDC == 1) THEN
+      ! IREDX(1) is the one dissociated
+      IF (IVDC(IKA) == 1) THEN
         IERDX(1) = FLOOR(ECR1/BOLTZ/FTMP0/0.01D0)+1
         IERDX(2) = FLOOR(ECR2/BOLTZ/FTMP0/0.01D0)+1
       ELSE
@@ -9545,8 +9670,9 @@ IF (IKA > 0) THEN
       NMFVTR(I,IETDX,1,IKA) = NMFVTR(I,IETDX,1,IKA) + 1.0d0
       NMFVTR(J,IETDX,2,IKA) = NMFVTR(J,IETDX,2,IKA) + 1.0d0
     ENDIF
+
     IF (NPM == 3 .and. KV == 1 .and. NPM ==3) THEN
-      IF (IVDC == 1) THEN
+      IF (IVDC(K) == 1) THEN
         EVREM(IKA) = EVREM(IKA) + ECV1  ! EVREM in Joule
       ELSE
         EVREM(IKA) = EVREM(IKA) + ECV2
@@ -9587,7 +9713,7 @@ IF (IKA > 0) THEN
           END DO
       END IF
       EP=EP+ECT2+ECR2+ECV2   !add third body Etra, Erot, and Evib
-      IVDC=1  !update order of the molecules
+      IVDC(IKA)=1  !update order of the molecules
     END IF
 !
     IF (NPM == 2) THEN
@@ -9596,7 +9722,7 @@ IF (IKA > 0) THEN
       IPSP(M)=JREA(2,IKA,1)
       LS=IPSP(L)
       MS=IPSP(M)
-      IVDC=1  !update order of the molecules
+      IVDC(IKA)=1  !update order of the molecules
     END IF
 !
     IF (NPM == 3) THEN
@@ -9606,7 +9732,7 @@ IF (IKA > 0) THEN
       NM=NM+1
       LM=NM                    !new born molecule
 !$omp end critical
-      IF (IVDC == 1) THEN
+      IF (IVDC(IKA) == 1) THEN
         IPSP(L)=JREA(1,IKA,1)  !update species
         IPSP(LM)=JREA(1,IKA,2)
         LS=IPSP(L)
@@ -9640,7 +9766,7 @@ IF (IKA > 0) THEN
       RML=SPM(1,LS,MS)/SP(5,MS)
       RMM=SPM(1,LS,MS)/SP(5,LS)
     ELSE
-      IF (IVDC == 1) THEN
+      IF (IVDC(IKA) == 1) THEN
         RML=SPM(1,IREA(1,IKA),MS)/SP(5,MS)
         RMM=SPM(1,IREA(1,IKA),MS)/SP(5,IREA(1,IKA))
       ELSE
@@ -10064,7 +10190,7 @@ IMPLICIT NONE
 !
 INTEGER :: N,NS,NN,M,MM,L,LL,K,KK,KT,J,I,II,III,NSP,MAXLEV,IV,IVP,NSEL,KV,LS,MS,KS,JS,IKA,LZ,KL,IS,IREC,&
            NLOOP,IA,IDISS,IE,IEX,JJ,NPRI,LIMLEV,KVV,KW,ISP1,ISP2,ISP3,INIL,INIM,JI,LV,IVM,NMC,NVM,LSI,&
-           JX,MOLA,KR,JKV,NSC,KKV,NUMEXR,IAX,NSTEP,ISWITCH,NPM,LM,LMS,IVDC,ISHUF(3),IT,IDT=0
+           JX,MOLA,KR,JKV,NSC,KKV,NUMEXR,IAX,NSTEP,ISWITCH,NPM,LM,LMS,IVDC(MNRE),ISHUF(3),IT,IDT=0,IVDC0
 REAL(KIND=8) :: A,AA,AAA,AB,B,BB,BBB,ASEL,DTC,SEP,VRI,VR,VRR,ECT,EVIB,ECC,ZV,COLT,ERM,C,OC,SD,D,CVR,PROB,&
                 RML,RMM,ECTOT,ETI,EREC,ET2,XMIN,XMAX,WFC,CENI,CENF,VRRT,TCOLT,EA,DEN,SVDOF(3,3),RANF,DT(ITMAX),& !--isebasti: included RANF,DT
                 RXSECTION(MNRE),SXSECTION,TXSECTION,&
@@ -10104,6 +10230,7 @@ logical :: IREACSP
 !--WFC weighting factor in the cell
 !--IEX is the reaction that occurs (1 if only one is possible)
 !--EA activation energy
+!--IVDC order of the two colliding particles
 !
 NUMEXR=0
 IF (nonVHS == 1) THEN
@@ -10122,7 +10249,7 @@ END IF
 !$omp private(idt) & !always =0 outside parallel regions
 !$omp private(n,ns,dtc,nn,wfc,aaa,c,xmin,xmax,asel,nsel,i,ie,kl,npri,iii,k,l,lm,m,ranf,ll) &
 !$omp private(sep,j,mm,a,kk,vrc,vrr,vri,vr,cvr,ect,nsp,kv,evib,ecc,maxlev,colt,b,zv,ii,iv,ivp,prob,svdof) &
-!$omp private(erm,vcm,vrcp,oc,sd,d,ls,lms,ms,ivdc,ishuf,rml,rmm,iswitch,idiss,ks,js,limlev,lz,iex,irec) &
+!$omp private(erm,vcm,vrcp,oc,sd,d,ls,lms,ms,ivdc,ivdc0,ishuf,rml,rmm,iswitch,idiss,ks,js,limlev,lz,iex,irec) &
 !$omp private(tcolt,kt,aa,bb,kvv,ji,lsi,ivm,nmc,nvm,ectot,psf,jj,ea,den,iax,jx,ika,npm,nstep,it,dt) &
 !$omp private(SXSECTION,RXSECTION,VTXSECTION,TXSECTION) &
 !$omp private(QNU,A1,A2,B1,B2,C1,C2,E,F,EL,ED,ET,EROT,EV,SIGMA_REF,EV_POST,SUMF,EF,S) &
@@ -10375,14 +10502,21 @@ DO N=1,NCCELLS
             SXSECTION=CVR*1d20/VR !in Angstrons^2
             ECT=0.5D00*SPM(1,LS,MS)*VRR         !collision translational energy in J
             ET=ECT/EVOLT                        !convert to eV
+            ! for a chemical reaction K
+            ! IVDC(K) = 1:  LS = IREA(1,K), MS = IREA(2,K)
+            ! IVDC(K) = 2:  LS = IREA(2,K), MS = IREA(1,K)
+            ! For the case IREA(1,K) = IREA(2,K)
+            ! IVDC(K) = 1:  Molecule L is the one to be dissociated
+            ! IVDC(K) = 2:  Molecule M is the one to be dissociated
 
 !--Calculate the reaction cross-sections
+            IVDC=0                 !to track the order of reacting species
             RXSECTION=0.d0
             IF (MNRE>0 .and. IMF .ne.  0 .and. QCTMODEL == 2) THEN
               ! precalculate Reaction cross section before collision occur
               ! This is for the case when QCTMODEL is used
               ! Reaction cross sections might become larger than others
-              CALL CHECK_RXSECTION(RXSECTION,N,L,LM,M,LS,LMS,MS,VRR,SXSECTION,IDT)
+              CALL CHECK_RXSECTION(RXSECTION,N,L,LM,M,LS,LMS,MS,VRR,SXSECTION,IVDC,IDT)
             END IF
 !
 
@@ -10601,10 +10735,6 @@ DO N=1,NCCELLS
               IF(NN == NSPDF) PCOLLS=PCOLLS+WFC
               SEP=DABS(PX(L)-PX(M))
               CLSEP(NN)=CLSEP(NN)+SEP
-              IKA=0                  !becomes >0 if reaction occurs
-              JX=2                   !standard number of post reaction species
-              IVDC=0                 !to track the order of reacting species
-              LMS=1                  !initialize
 
               !
               !--Sample internal states and energy
@@ -10626,9 +10756,14 @@ DO N=1,NCCELLS
 !
 !--Check chemical reaction
 !-------------------------------------------------
+              IKA=0                  !becomes >0 if reaction occurs
+              JX=2                   !standard number of post reaction species
+              LMS=1                  !initialize
               IF (MNRE>0) THEN
-                RXSECTION = 0.0d0
-                CALL CHECK_RXSECTION(RXSECTION,N,L,LM,M,LS,LMS,MS,VRR,SXSECTION,IDT)
+                IF (QCTMODEL .ne. 2) THEN
+                  RXSECTION = 0.0d0
+                  CALL CHECK_RXSECTION(RXSECTION,N,L,LM,M,LS,LMS,MS,VRR,SXSECTION,IVDC,IDT)
+                END IF
                 SUMF=SUM(RXSECTION(:)) !total reaction cross-section in Angstron^2
 
                 PROB=SUMF/TXSECTION
@@ -10666,8 +10801,13 @@ DO N=1,NCCELLS
                 IF (IREAC == 2) THEN
                   IKA=0
                   JX=2
-                  IVDC=0
+                  IVDC = 0
+                  IVDC0 = 0
+                ELSE
+                  IVDC0 = IVDC(IKA)
                 END IF
+              ELSE
+                IVDC0 = 0
               END IF
 !
               ECT=(0.5D00*SPM(1,LS,MS)*VRR)-ELACK
@@ -10692,6 +10832,12 @@ DO N=1,NCCELLS
               IF ((LS==3.AND.MS==4).OR.(LS==4.AND.MS==3)) J=3 !O2-O collision
 !
               IF (IREAC<=1.AND.QCTMODEL==2.AND.IKA==0.AND.GASCODE==8.AND.J>0) THEN
+                ! The following code is run under the condition that
+                !  1. Reaction can happend (IREA <=1)
+                !  2. QCTMODEL is on
+                !  3. Reaction doesn't occur (IKA = 0)
+                !  4. GASCODE == 8
+                !  5. the species is either N2-O or O2-O
               !--Vibrational relaxation based on ME-QCT model
 !
                 SUMF=SUM(VTXSECTION(:))      !total VT cross-section (SIGMA_ME-QCT-VT,T)
@@ -10748,7 +10894,7 @@ DO N=1,NCCELLS
                 END IF
 !
                 DO NSP=IAX,KK,IVM
-                      IF (IVDC < 2) THEN
+                      IF (IVDC0 < 2) THEN
                         IF (NSP == 1) THEN
                           K=L ; KS=LS ; JS=MS
                         ELSE IF (NSP == 2) THEN
@@ -10884,7 +11030,7 @@ DO N=1,NCCELLS
 !-------------------------------------------------
               IF (IKA /= 0) THEN
                     DO KV=1,MMVM
-                      IF (IVDC == 1) THEN
+                      IF (IVDC0 == 1) THEN
                         SELECT CASE(JX)
                         CASE(2) !recombination and exchange
                           I=IPVIB(KV,L)
@@ -10919,7 +11065,7 @@ DO N=1,NCCELLS
 !--Check RT energy redistribution (LB model)
 !-------------------------------------------------
               DO NSP=IAX,KK,IVM
-                    IF  (IVDC < 2) THEN
+                    IF  (IVDC0 < 2) THEN
                       IF (NSP == 1) THEN
                         K=L ; KS=LS ; JS=MS
                       ELSE IF (NSP == 2) THEN
@@ -10991,7 +11137,7 @@ DO N=1,NCCELLS
               PV(1:3,L)=VCM(1:3)+RMM*VRCP(1:3)
               PV(1:3,M)=VCM(1:3)-RML*VRCP(1:3)
               IF (JX == 3) THEN
-                IF (IVDC == 1) THEN
+                IF (IVDC0 == 1) THEN
                   PV(1:3,LM)=PV(1:3,L)
                   IPCP(LM)=L
                 ELSE
