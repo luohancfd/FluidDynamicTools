@@ -66,3 +66,7 @@ while ~feof(fid)
 end
 nspecie = i;
 fclose(fid);
+
+fid=fopen('thermo.json','w');
+fprintf(fid,jsonencode(data));
+fclose(fid);

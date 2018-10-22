@@ -1,0 +1,4093 @@
+[
+  {
+    "i": "O2",
+    "j": "N",
+    "model": "GuptaYos2",
+    "reference": "Cubley, S.J. and Mason, E.A., \"Atom-Molecule and Molecule-Molecule Potentials and Transport Collison Integrals for High-Temperature Air Species,\" Physics of Fluids, Vol. 18, No. 9, Sep. 1975, pp. 1109-1111.",
+    "Pi_Omega_11": [-0.0011453028,0.01265414,-0.22435218,77.201588],
+    "Pi_Omega_22": [-0.0010608832,0.011782595,-0.21246301,84.561598],
+    "Bij": [0.00014943783,-0.0020389247,0.018536165,1.0476552]
+  },
+  {
+    "i": "NO",
+    "j": "N",
+    "model": "GuptaYos2",
+    "reference": "Cubley, S.J. and Mason, E.A., \"Atom-Molecule and Molecule-Molecule Potentials and Transport Collison Integrals for High-Temperature Air Species,\" Physics of Fluids, Vol. 18, No. 9, Sep. 1975, pp. 1109-1111.",
+    "Pi_Omega_11": [-0.0015770918,0.019578381,-0.27873624,99.547944],
+    "Pi_Omega_22": [-0.0014719259,0.018446968,-0.26460411,109.11124],
+    "Bij": [0.00021014557,-0.0030420763,0.025736958,1.0359598]
+  },
+  {
+    "i": "NO",
+    "j": "O",
+    "model": "GuptaYos2",
+    "reference": "Cubley, S.J. and Mason, E.A., \"Atom-Molecule and Molecule-Molecule Potentials and Transport Collison Integrals for High-Temperature Air Species,\" Physics of Fluids, Vol. 18, No. 9, Sep. 1975, pp. 1109-1111.",
+    "Pi_Omega_11": [-0.0010885815,0.011883688,-0.21844909,75.51256],
+    "Pi_Omega_22": [-0.0010066279,0.011029264,-0.20671266,82.644384],
+    "Bij": [0.00014145458,-0.0019249271,0.017785767,1.0482162]
+  },
+  {
+    "i": "Ar",
+    "j": "N",
+    "model": "GuptaYos2",
+    "reference": "Cubley, S.J. and Mason, E.A., \"Atom-Molecule and Molecule-Molecule Potentials and Transport Collison Integrals for High-Temperature Air Species,\" Physics of Fluids, Vol. 18, No. 9, Sep. 1975, pp. 1109-1111.",
+    "Pi_Omega_11": [-0.0015770918,0.019984531,-0.28213247,96.45411],
+    "Pi_Omega_22": [-0.0014719259,0.018826034,-0.26780376,105.59112],
+    "Bij": [0.00021014557,-0.0030961952,0.026263889,1.0336502]
+  },
+  {
+    "i": "C2H",
+    "j": "C",
+    "model": "GuptaYos2",
+    "reference": "Park, C., Jaffe, R.L., and Partridge, H., \"Chemical-Kinetic Parameters of Hyperbolic Earth Entry,\" Journal of Thermophysics and Heat Transfer, Vol. 15, No. 1, Jan. 2001 pp. 76-90.",
+    "Pi_Omega_11": [0.0057617984,-0.15877048,1.0396576,6.0598452],
+    "Pi_Omega_22": [0.0,0.0,-0.39863137,496.47126]
+  },
+  {
+    "i": "C2H",
+    "j": "O",
+    "model": "GuptaYos2",
+    "reference": "Park, C., Jaffe, R.L., and Partridge, H., \"Chemical-Kinetic Parameters of Hyperbolic Earth Entry,\" Journal of Thermophysics and Heat Transfer, Vol. 15, No. 1, Jan. 2001 pp. 76-90.",
+    "Pi_Omega_11": [0.0057617984,-0.15192401,0.91659645,10.417506],
+    "Pi_Omega_22": [-0.011523597,0.31411773,-3.2302884,2285267.8]
+  },
+  {
+    "i": "C2H",
+    "j": "N",
+    "model": "GuptaYos2",
+    "reference": "Park, C., Jaffe, R.L., and Partridge, H., \"Chemical-Kinetic Parameters of Hyperbolic Earth Entry,\" Journal of Thermophysics and Heat Transfer, Vol. 15, No. 1, Jan. 2001 pp. 76-90.",
+    "Pi_Omega_11": [0.0057617984,-0.15192401,0.91659645,10.908468],
+    "Pi_Omega_22": [0.0,0.0,-0.39863137,519.86923]
+  },
+  {
+    "i": "C2H",
+    "j": "H",
+    "model": "GuptaYos2",
+    "reference": "Park, C., Jaffe, R.L., and Partridge, H., \"Chemical-Kinetic Parameters of Hyperbolic Earth Entry,\" Journal of Thermophysics and Heat Transfer, Vol. 15, No. 1, Jan. 2001 pp. 76-90.",
+    "Pi_Omega_11": [0.0,0.0,-0.39863137,359.66163],
+    "Pi_Omega_22": [0.0057617984,-0.14850078,0.87167551,10.954333]
+  },
+  {
+    "i": "C2H",
+    "j": "Ar",
+    "model": "GuptaYos2",
+    "reference": "Park, C., Jaffe, R.L., and Partridge, H., \"Chemical-Kinetic Parameters of Hyperbolic Earth Entry,\" Journal of Thermophysics and Heat Transfer, Vol. 15, No. 1, Jan. 2001 pp. 76-90.",
+    "Pi_Omega_11": [0.0,-0.010269705,-0.13099144,131.76381],
+    "Pi_Omega_22": [0.0057617984,-0.17588666,1.463578,0.9405968]
+  },
+  {
+    "i": "C2H",
+    "j": "CO",
+    "model": "GuptaYos2",
+    "reference": "Park, C., Jaffe, R.L., and Partridge, H., \"Chemical-Kinetic Parameters of Hyperbolic Earth Entry,\" Journal of Thermophysics and Heat Transfer, Vol. 15, No. 1, Jan. 2001 pp. 76-90.",
+    "Pi_Omega_11": [0.0057617984,-0.15192401,0.91659645,12.524597],
+    "Pi_Omega_22": [-0.0057617984,0.15877048,-1.8369203,42591.87]
+  },
+  {
+    "i": "C2H",
+    "j": "C2",
+    "model": "GuptaYos2",
+    "reference": "Park, C., Jaffe, R.L., and Partridge, H., \"Chemical-Kinetic Parameters of Hyperbolic Earth Entry,\" Journal of Thermophysics and Heat Transfer, Vol. 15, No. 1, Jan. 2001 pp. 76-90.",
+    "Pi_Omega_11": [0.0057617984,-0.15877048,1.0396576,7.628893],
+    "Pi_Omega_22": [0.0,0.0,-0.39863137,625.02029]
+  },
+  {
+    "i": "C2H",
+    "j": "N2",
+    "model": "GuptaYos2",
+    "reference": "Park, C., Jaffe, R.L., and Partridge, H., \"Chemical-Kinetic Parameters of Hyperbolic Earth Entry,\" Journal of Thermophysics and Heat Transfer, Vol. 15, No. 1, Jan. 2001 pp. 76-90.",
+    "Pi_Omega_11": [-0.0057617984,0.14850078,-1.6689383,19597.572],
+    "Pi_Omega_22": [0.0,0.0,-0.39863137,596.88974]
+  },
+  {
+    "i": "C2H",
+    "j": "CN",
+    "model": "GuptaYos2",
+    "reference": "Park, C., Jaffe, R.L., and Partridge, H., \"Chemical-Kinetic Parameters of Hyperbolic Earth Entry,\" Journal of Thermophysics and Heat Transfer, Vol. 15, No. 1, Jan. 2001 pp. 76-90.",
+    "Pi_Omega_11": [0.0057617984,-0.15877048,1.0396576,7.4552383],
+    "Pi_Omega_22": [0.0,0.0,-0.39863137,610.79309]
+  },
+  {
+    "i": "C2H",
+    "j": "NO",
+    "model": "GuptaYos2",
+    "reference": "Park, C., Jaffe, R.L., and Partridge, H., \"Chemical-Kinetic Parameters of Hyperbolic Earth Entry,\" Journal of Thermophysics and Heat Transfer, Vol. 15, No. 1, Jan. 2001 pp. 76-90.",
+    "Pi_Omega_11": [-0.0057617984,0.16219372,-1.9150606,56338.69],
+    "Pi_Omega_22": [0.0,0.0,-0.39863137,570.02528]
+  },
+  {
+    "i": "C2H",
+    "j": "O2",
+    "model": "GuptaYos2",
+    "reference": "Park, C., Jaffe, R.L., and Partridge, H., \"Chemical-Kinetic Parameters of Hyperbolic Earth Entry,\" Journal of Thermophysics and Heat Transfer, Vol. 15, No. 1, Jan. 2001 pp. 76-90.",
+    "Pi_Omega_11": [-0.0057617984,0.16219372,-1.9150606,55056.265],
+    "Pi_Omega_22": [0.0,0.0,-0.39863137,557.04992]
+  },
+  {
+    "i": "C2H",
+    "j": "H2",
+    "model": "GuptaYos2",
+    "reference": "Park, C., Jaffe, R.L., and Partridge, H., \"Chemical-Kinetic Parameters of Hyperbolic Earth Entry,\" Journal of Thermophysics and Heat Transfer, Vol. 15, No. 1, Jan. 2001 pp. 76-90.",
+    "Pi_Omega_11": [0.0057617984,-0.15192401,0.91659645,9.2846119],
+    "Pi_Omega_22": [-0.0057617984,0.15192401,-1.7138592,18366.418]
+  },
+  {
+    "i": "C2H",
+    "j": "C3",
+    "model": "GuptaYos2",
+    "reference": "Park, C., Jaffe, R.L., and Partridge, H., \"Chemical-Kinetic Parameters of Hyperbolic Earth Entry,\" Journal of Thermophysics and Heat Transfer, Vol. 15, No. 1, Jan. 2001 pp. 76-90.",
+    "Pi_Omega_11": [-0.0057617984,0.16561696,-1.9932008,89595.62],
+    "Pi_Omega_22": [-5.597094e-12,0.010269706,-0.59983274,1558.3908]
+  },
+  {
+    "i": "e",
+    "j": "H",
+    "model": "GuptaYos2",
+    "reference": "",
+    "Pi_Omega_11": [-0.0061836535,0.068161951,-0.20102248,44.680125],
+    "Pi_Omega_22": [-0.0019042678,-0.032831212,0.50538179,9.0996339]
+  },
+  {
+    "i": "e",
+    "j": "C2",
+    "model": "GuptaYos2",
+    "reference": "Park, C., Jaffe, R.L., and Partridge, H., \"Chemical-Kinetic Parameters of Hyperbolic Earth Entry,\" Journal of Thermophysics and Heat Transfer, Vol. 15, No. 1, Jan. 2001 pp. 76-90.",
+    "Pi_Omega_11": [-0.22471014,5.3430866,-41.564511,5.115249e+46],
+    "Pi_Omega_22": [-0.22471014,5.3430866,-41.564511,5.115249e+46]
+  },
+  {
+    "i": "e",
+    "j": "H2",
+    "model": "GuptaYos2",
+    "reference": "",
+    "Pi_Omega_11": [-0.022727811,0.46423149,-2.9032618,2714.1518],
+    "Pi_Omega_22": [-0.01953354,0.38933904,-2.2966521,372.12566]
+  },
+  {
+    "i": "e",
+    "j": "C3",
+    "model": "GuptaYos2",
+    "reference": "Park, C., Jaffe, R.L., and Partridge, H., \"Chemical-Kinetic Parameters of Hyperbolic Earth Entry,\" Journal of Thermophysics and Heat Transfer, Vol. 15, No. 1, Jan. 2001 pp. 76-90.",
+    "Pi_Omega_11": [-0.22471014,5.3430866,-41.564511,5.115249e+46],
+    "Pi_Omega_22": [-0.22471014,5.3430866,-41.564511,5.115249e+46]
+  },
+  {
+    "i": "e",
+    "j": "C2H",
+    "model": "GuptaYos2",
+    "reference": "Park, C., Jaffe, R.L., and Partridge, H., \"Chemical-Kinetic Parameters of Hyperbolic Earth Entry,\" Journal of Thermophysics and Heat Transfer, Vol. 15, No. 1, Jan. 2001 pp. 76-90.",
+    "Pi_Omega_11": [-0.22471014,5.3430866,-41.564511,5.115249e+46],
+    "Pi_Omega_22": [-0.22471014,5.3430866,-41.564511,5.115249e+46]
+  },
+  {
+    "i": "e",
+    "j": "HCN",
+    "model": "GuptaYos2",
+    "reference": "Park, C., Jaffe, R.L., and Partridge, H., \"Chemical-Kinetic Parameters of Hyperbolic Earth Entry,\" Journal of Thermophysics and Heat Transfer, Vol. 15, No. 1, Jan. 2001 pp. 76-90.",
+    "Pi_Omega_11": [-0.22471014,5.3430866,-41.564511,5.115249e+46],
+    "Pi_Omega_22": [-0.22471014,5.3430866,-41.564511,5.115249e+46]
+  },
+  {
+    "i": "C",
+    "j": "C",
+    "model": "GuptaYos2",
+    "reference": "Stallcop, J.R., Partridge, H., Pradhan, A., and Levin, E., \"Potential Energies and Collision Integrals for Interactions of Carbon and Nitrogen Atoms,\" Journal of Thermophysics and Heat Transfer, Vol. 14, No. 4, Oct. 2000, pp. 480-488",
+    "Pi_Omega_11": [-0.015553378,0.33609231,-2.6829275,55227.444],
+    "Pi_Omega_22": [-0.010759359,0.23514931,-1.9828256,12173.852],
+    "Bij": [0.0,0.015258105,-0.19494112,2.1383076]
+  },
+  {
+    "i": "C",
+    "j": "N",
+    "model": "GuptaYos2",
+    "reference": "Stallcop, J.R., Partridge, H., Pradhan, A., and Levin, E., \"Potential Energies and Collision Integrals for Interactions of Carbon and Nitrogen Atoms,\" Journal of Thermophysics and Heat Transfer, Vol. 14, No. 4, Oct. 2000, pp. 480-488",
+    "Pi_Omega_11": [-0.018991825,0.4279806,-3.4146558,250873.81],
+    "Pi_Omega_22": [-0.012751774,0.292085,-2.4429179,28926.907],
+    "Bij": [-0.0030974691,0.094397525,-0.85479941,12.395854]
+  },
+  {
+    "i": "N2",
+    "j": "H",
+    "model": "GuptaYos2",
+    "reference": "Stallcop, J.R., Partridge, H., Walch, S.P., and Levin, E., \"H-N2 Interaction Energies, Transport Cross Sections, and Collision Integrals,\" Journal of Chemical Physics, Vol. 97, No. 5, Sep. 1992, pp. 3431-3436.",
+    "Pi_Omega_11": [-0.014651106,0.2564864,-1.7228508,1682.4018],
+    "Pi_Omega_22": [-0.021801672,0.41330475,-2.8171289,23053.189],
+    "Bij": [-0.014935011,0.33216304,-2.3845674,306.96637]
+  },
+  {
+    "i": "N",
+    "j": "H",
+    "model": "GuptaYos2",
+    "reference": "Stallcop, J.R., Bauschlicher, C.W., Partridge, H., Langhoff, S.R., and Levin, E., \"Theoretical Study of Hydrogen and Nitrogen Interactions: N-H Transport Cross Sections and Collision Integrals,\" Journal of Chemical Physics, Vol. 97, No. 8, Oct. 1992, pp. 5578-5585.",
+    "Pi_Omega_11": [-0.019513441,0.40069891,-2.9671529,50821.036],
+    "Pi_Omega_22": [-0.014439196,0.30642791,-2.4009807,18197.332],
+    "Bij": [-0.0052308602,0.13471207,-1.0651122,15.941187]
+  },
+  {
+    "i": "N",
+    "j": "N+",
+    "model": "GuptaYos2",
+    "reference": "Stallcop, J.R., Partridge, H., and Levin, E., \"Resonance Charge Transfer, Transport Cross Sections, and Collision Integrals for N+(3P)-N(4S0) and O+(4S0)-O(3P) Interactions,\" Journal of Chemical Physics, Vol. 95, No. 9, 1991, pp. 6429-6439.",
+    "Pi_Omega_11": [-0.004007898,0.10327487,-0.99473323,2817.829],
+    "Pi_Omega_22": [-0.014271306,0.30401993,-2.4573879,53694.705],
+    "Bij": [0.0,0.0,0.0,1.1]
+  },
+  {
+    "i": "O",
+    "j": "O+",
+    "model": "GuptaYos2",
+    "reference": "Stallcop, J.R., Partridge, H., and Levin, E., \"Resonance Charge Transfer, Transport Cross Sections, and Collision Integrals for N+(3P)-N(4S0) and O+(4S0)-O(3P) Interactions,\" Journal of Chemical Physics, Vol. 95, No. 9, 1991, pp. 6429-6439.",
+    "Pi_Omega_11": [-0.0038347988,0.099930498,-0.96288891,1966.9897],
+    "Pi_Omega_22": [-0.016032919,0.37114396,-3.2050078,580993.14],
+    "Bij": [0.0,0.0,0.0,1.1]
+  },
+  {
+    "i": "Ar",
+    "j": "He",
+    "model": "GuptaYos2",
+    "reference": "Partridge, H., Stallcop, J.R., and Levin, E., \"Potential Energy Curves and Transport Properties for the Interaction of He with Other Ground State Atoms,\" Journal of Chemical Physics, Vol. 115, No. 14, Oct. 2001, pp. 6471-6488.",
+    "Pi_Omega_11": [-0.0021487484,0.031966412,-0.33999513,79.690129],
+    "Pi_Omega_22": [-0.0015777703,0.019870276,-0.2352354,66.236055]
+  },
+  {
+    "i": "C",
+    "j": "He",
+    "model": "GuptaYos2",
+    "reference": "Partridge, H., Stallcop, J.R., and Levin, E., \"Potential Energy Curves and Transport Properties for the Interaction of He with Other Ground State Atoms,\" Journal of Chemical Physics, Vol. 115, No. 14, Oct. 2001, pp. 6471-6488.",
+    "Pi_Omega_11": [-0.0040416913,0.06358949,-0.54648004,120.9251],
+    "Pi_Omega_22": [-0.0036010939,0.055029202,-0.46680331,107.92646]
+  },
+  {
+    "i": "N",
+    "j": "He",
+    "model": "GuptaYos2",
+    "reference": "Partridge, H., Stallcop, J.R., and Levin, E., \"Potential Energy Curves and Transport Properties for the Interaction of He with Other Ground State Atoms,\" Journal of Chemical Physics, Vol. 115, No. 14, Oct. 2001, pp. 6471-6488.",
+    "Pi_Omega_11": [-0.0030946588,0.047102763,-0.43657045,85.468183],
+    "Pi_Omega_22": [-0.0020718945,0.025954591,-0.27000129,62.479831]
+  },
+  {
+    "i": "O",
+    "j": "He",
+    "model": "GuptaYos2",
+    "reference": "Partridge, H., Stallcop, J.R., and Levin, E., \"Potential Energy Curves and Transport Properties for the Interaction of He with Other Ground State Atoms,\" Journal of Chemical Physics, Vol. 115, No. 14, Oct. 2001, pp. 6471-6488.",
+    "Pi_Omega_11": [-0.0022820362,0.031219423,-0.3309639,61.860989],
+    "Pi_Omega_22": [-0.0025259371,0.036980262,-0.35373834,70.095197]
+  },
+  {
+    "i": "N2",
+    "j": "N",
+    "model": "GuptaYos2",
+    "reference": "Stallcop, J.R., Partridge, H., and Levin, E., \"Effective Potential Energies and Transport Cross Sections for Atom-Molecule Interactions of Nitrogen and Oxygen,\" Physical Review A, Vol. 64, 2001.",
+    "Pi_Omega_11": [-0.010796249,0.22656509,-1.7910602,4045.5218],
+    "Pi_Omega_22": [-0.0083493693,0.17808911,-1.4466155,1932.421],
+    "Bij": [0.0053184194,-0.10409558,0.69029329,0.23792891]
+  },
+  {
+    "i": "O2",
+    "j": "O",
+    "model": "GuptaYos2",
+    "reference": "Stallcop, J.R., Partridge, H., and Levin, E., \"Effective Potential Energies and Transport Cross Sections for Atom-Molecule Interactions of Nitrogen and Oxygen,\" Physical Review A, Vol. 64, 2001.",
+    "Pi_Omega_11": [-0.0048405803,0.10297688,-0.96876576,616.29812],
+    "Pi_Omega_22": [-0.0037969686,0.076789981,-0.73056809,339.58171],
+    "Bij": [0.0,0.0023451298,-0.018538309,1.1548051]
+  },
+  {
+    "i": "H2",
+    "j": "N",
+    "model": "GuptaYos2",
+    "reference": "Stallcop, J.R., Partridge, H., and Levin, E., \"Effective Potential Energies and Transport Cross Sections for Atom-Molecule Interactions of Nitrogen and Oxygen,\" Physical Review A, Vol. 64, 2001.",
+    "Pi_Omega_11": [-0.007623035,0.13939532,-1.08207,462.9028],
+    "Pi_Omega_22": [-0.0073452767,0.13569399,-1.037844,438.64595],
+    "Bij": [0.0,0.0067327585,-0.062887227,1.2942995]
+  },
+  {
+    "i": "O2",
+    "j": "H",
+    "model": "GuptaYos2",
+    "reference": "Stallcop, J.R., Partridge, H., and Levin, E., \"Effective Potential Energies and Transport Cross Sections for Atom-Molecule Interactions of Nitrogen and Oxygen,\" Physical Review A, Vol. 64, 2001.",
+    "Pi_Omega_11": [-0.012051881,0.23824849,-1.8082249,2720.6031],
+    "Pi_Omega_22": [-0.0079920863,0.14804958,-1.1220491,549.38336],
+    "Bij": [-0.0052987381,0.12964618,-0.99775888,13.362166]
+  },
+  {
+    "i": "N2",
+    "j": "N2",
+    "model": "GuptaYos2",
+    "reference": "Stallcop, J.R., Partridge, H., and Levin, E., \"Effective Potential Energies and Transport Cross Sections for Interactions of Hydrogen and Nitrogen,\" Physical Review A, Vol. 62, 2000.",
+    "Pi_Omega_11": [-0.0060614558,0.12689102,-1.0616948,809.55466],
+    "Pi_Omega_22": [-0.007630399,0.16878089,-1.4004234,2142.7708],
+    "Bij": [0.0,0.0,0.0,1.1]
+  },
+  {
+    "i": "N2",
+    "j": "H2",
+    "model": "GuptaYos2",
+    "reference": "Stallcop, J.R., Partridge, H., and Levin, E., \"Effective Potential Energies and Transport Cross Sections for Interactions of Hydrogen and Nitrogen,\" Physical Review A, Vol. 62, 2000.",
+    "Pi_Omega_11": [-0.0039962226,0.071943551,-0.63461723,216.01318],
+    "Pi_Omega_22": [-0.0038736554,0.069983522,-0.60006819,208.14693],
+    "Bij": [-0.006877887,0.14606503,-0.98604443,9.4086922]
+  },
+  {
+    "i": "H2",
+    "j": "H",
+    "model": "GuptaYos2",
+    "reference": "Stallcop, J.R., Partridge, H., and Levin, E., \"H-H2 Collision Integrals and Transport Coefficients,\" Chemical Physics Letters, Vol. 254, May 1996, pp. 25-31",
+    "Pi_Omega_11": [-0.0014690179,-0.027899596,0.22671485,14.992484],
+    "Pi_Omega_22": [-0.0033134538,0.0086838213,0.026548855,24.012001],
+    "Bij": [-0.0038990989,0.083101905,-0.53685645,3.4311273]
+  },
+  {
+    "i": "H",
+    "j": "H",
+    "model": "GuptaYos2",
+    "reference": "Stallcop, J.R., Levin, E., and Partridge, H., \"Transport Properties of Hydrogen,\" Journal of Thermophysics, Vol. 12, No. 4, Oct. 1998, pp. 514-519.",
+    "Pi_Omega_11": [-0.018752564,0.35928536,-2.5129324,11526.095],
+    "Pi_Omega_22": [-0.019856332,0.41271519,-3.0978864,75852.342],
+    "Bij": [-0.0089240158,0.2144461,-1.6236926,58.63398]
+  },
+  {
+    "i": "H2",
+    "j": "H2",
+    "model": "GuptaYos2",
+    "reference": "Stallcop, J.R., Levin, E., and Partridge, H., \"Transport Properties of Hydrogen,\" Journal of Thermophysics, Vol. 12, No. 4, Oct. 1998, pp. 514-519.",
+    "Pi_Omega_11": [-0.005616202,0.097726725,-0.79470349,218.44126],
+    "Pi_Omega_22": [-0.0054563886,0.095985804,-0.76696813,221.15914],
+    "Bij": [0.0014460298,-0.02919896,0.21834422,0.64303192]
+  },
+  {
+    "i": "N",
+    "j": "O+",
+    "model": "GuptaYos2",
+    "reference": "Partridge, H., Stallcop, J.R., and Levin, E., \"Transport Cross Sections and Collision Integrals for N(4S0)-O+(4S0) and N+(3P)-O(3P) Interactions,\" Chemical Physics Letters, Vol. 184, No. 5, Oct. 1991, pp. 505-512.",
+    "Pi_Omega_11": [-0.024288224,0.56305072,-4.6849679,27303024.0],
+    "Pi_Omega_22": [-0.021681211,0.52300453,-4.5118623,23467766.0],
+    "Bij": [-0.010098367,0.24863914,-1.9854014,210.03987]
+  },
+  {
+    "i": "O",
+    "j": "N+",
+    "model": "GuptaYos2",
+    "reference": "Partridge, H., Stallcop, J.R., and Levin, E., \"Transport Cross Sections and Collision Integrals for N(4S0)-O+(4S0) and N+(3P)-O(3P) Interactions,\" Chemical Physics Letters, Vol. 184, No. 5, Oct. 1991, pp. 505-512.",
+    "Pi_Omega_11": [-0.015767256,0.3540583,-3.0686783,463367.79],
+    "Pi_Omega_22": [-0.017907392,0.41207892,-3.534361,1498767.8],
+    "Bij": [-0.011131776,0.26583508,-2.0620798,224.02684]
+  },
+  {
+    "i": "O",
+    "j": "O",
+    "model": "GuptaYos2",
+    "reference": "Levin, E., Partridge, H., and Stallcop, J.R., \"Collision Integrals and High Temperature Transport Properties for N-N, O-O, and N-O,\" Journal of Thermophysics, Vol. 4, No. 4, Oct. 1990, pp. 469-477.",
+    "Pi_Omega_11": [-0.0064040535,0.14629949,-1.3892121,2090.3441],
+    "Pi_Omega_22": [-0.0042451096,0.096820337,-0.99770795,833.20644],
+    "Bij": [0.00018546102,0.0033127237,-0.077302959,1.5994284]
+  },
+  {
+    "i": "N",
+    "j": "N",
+    "model": "GuptaYos2",
+    "reference": "Levin, E., Partridge, H., and Stallcop, J.R., \"Collision Integrals and High Temperature Transport Properties for N-N, O-O, and N-O,\" Journal of Thermophysics, Vol. 4, No. 4, Oct. 1990, pp. 469-477.",
+    "Pi_Omega_11": [-0.0096083779,0.20938971,-1.7386904,3358.7983],
+    "Pi_Omega_22": [-0.0077439615,0.17129007,-1.4809088,2128.4951],
+    "Bij": [-0.0041587373,0.10634845,-0.8639341,10.801721]
+  },
+  {
+    "i": "N",
+    "j": "O",
+    "model": "GuptaYos2",
+    "reference": "Levin, E., Partridge, H., and Stallcop, J.R., \"Collision Integrals and High Temperature Transport Properties for N-N, O-O, and N-O,\" Journal of Thermophysics, Vol. 4, No. 4, Oct. 1990, pp. 469-477.",
+    "Pi_Omega_11": [-0.0078147689,0.16792705,-1.4308628,1662.8859],
+    "Pi_Omega_22": [-0.0050478143,0.10236186,-0.90058935,444.72565],
+    "Bij": [0.0,0.0087704652,-0.11466103,1.6579034]
+  },
+  {
+    "i": "H2",
+    "j": "He",
+    "model": "GuptaYos2",
+    "reference": "Stallcop, J.R., private communication, January 2002 - April 2004. Computed using the standard methodology on the full Q.M. potential energy surface for each interaction. Fits are determined using all provided data greater than 250K.",
+    "Pi_Omega_11": [-0.0034855903,0.051006743,-0.45995383,83.945287],
+    "Pi_Omega_22": [-0.0034583977,0.052447042,-0.46173542,94.052969],
+    "Bij": [-0.0030370893,0.070844429,-0.51799788,3.8511754]
+  },
+  {
+    "i": "He",
+    "j": "He",
+    "model": "GuptaYos2",
+    "reference": "Stallcop, J.R., private communication, January 2002 - April 2004. Computed using the standard methodology on the full Q.M. potential energy surface for each interaction. Fits are determined using all provided data greater than 250K.",
+    "Pi_Omega_11": [-0.0035846796,0.056813502,-0.51429465,72.907066],
+    "Pi_Omega_22": [-0.0052458012,0.096576053,-0.80290029,164.92944],
+    "Bij": [0.006074027,-0.13560891,1.0171042,0.090227017]
+  },
+  {
+    "i": "He",
+    "j": "H",
+    "model": "GuptaYos2",
+    "reference": "Stallcop, J.R., private communication, January 2002 - April 2004. Computed using the standard methodology on the full Q.M. potential energy surface for each interaction. Fits are determined using all provided data greater than 250K.",
+    "Pi_Omega_11": [-0.0068181683,0.10647812,-0.80752743,166.13195],
+    "Pi_Omega_22": [-0.0076683625,0.12797043,-0.95327839,265.64987],
+    "Bij": [-0.0019479196,0.048376175,-0.35296309,2.5951662]
+  },
+  {
+    "i": "Ar",
+    "j": "CO2",
+    "model": "GuptaYos2",
+    "reference": "Stallcop, J.R., private communication, January 2002 - April 2004. Computed using the standard methodology on the full Q.M. potential energy surface for each interaction. Fits are determined using all provided data greater than 250K.",
+    "Pi_Omega_11": [-0.0097957827,0.232631,-2.0298835,15443.247],
+    "Pi_Omega_22": [-0.01089945,0.26086469,-2.2439041,28240.24]
+  },
+  {
+    "i": "N2",
+    "j": "O2",
+    "model": "GuptaYos2",
+    "reference": "Murphy, A.B. and Arundell, C.J., \"Transport Coefficients of Argon, Nitrogen, Oxygen, Argon-Nitrogen and Argon-Oxygen Plasmas,\" Plasma Chemistry and Plasma Processing, Vol. 14, No. 4, pp. 451-490, 1994.",
+    "Pi_Omega_11": [-0.0037959091,0.095708295,-1.0070611,893.92313],
+    "Pi_Omega_22": [-0.0080457321,0.19228905,-1.7102854,5221.3857],
+    "Bij": [-0.0050814745,0.11808274,-0.89645218,10.323709]
+  },
+  {
+    "i": "N2",
+    "j": "O",
+    "model": "GuptaYos2",
+    "reference": "Murphy, A.B. and Arundell, C.J., \"Transport Coefficients of Argon, Nitrogen, Oxygen, Argon-Nitrogen and Argon-Oxygen Plasmas,\" Plasma Chemistry and Plasma Processing, Vol. 14, No. 4, pp. 451-490, 1994.",
+    "Pi_Omega_11": [-0.0027244269,0.069587171,-0.79538667,406.7373],
+    "Pi_Omega_22": [-0.0083110691,0.19617877,-1.7205427,4081.2829],
+    "Bij": [-0.003607281,0.082549714,-0.61762199,5.0638655]
+  },
+  {
+    "i": "Ar",
+    "j": "Ar",
+    "model": "GuptaYos2",
+    "reference": "Murphy, A.B. and Arundell, C.J., \"Transport Coefficients of Argon, Nitrogen, Oxygen, Argon-Nitrogen and Argon-Oxygen Plasmas,\" Plasma Chemistry and Plasma Processing, Vol. 14, No. 4, pp. 451-490, 1994.",
+    "Pi_Omega_11": [-0.0029756925,0.06979174,-0.7606494,497.36971],
+    "Pi_Omega_22": [-0.007676186,0.17692092,-1.5395972,3431.0891],
+    "Bij": [-0.0064838787,0.1497197,-1.1260499,17.714259]
+  },
+  {
+    "i": "Ar",
+    "j": "N2",
+    "model": "GuptaYos2",
+    "reference": "Murphy, A.B. and Arundell, C.J., \"Transport Coefficients of Argon, Nitrogen, Oxygen, Argon-Nitrogen and Argon-Oxygen Plasmas,\" Plasma Chemistry and Plasma Processing, Vol. 14, No. 4, pp. 451-490, 1994.",
+    "Pi_Omega_11": [-0.004868552,0.10958901,-1.0092649,750.18205],
+    "Pi_Omega_22": [-0.0099230814,0.22774775,-1.8909156,6898.5346],
+    "Bij": [-0.0065160791,0.1530884,-1.1652467,19.726904]
+  },
+  {
+    "i": "Ar",
+    "j": "O",
+    "model": "GuptaYos2",
+    "reference": "Murphy, A.B. and Arundell, C.J., \"Transport Coefficients of Argon, Nitrogen, Oxygen, Argon-Nitrogen and Argon-Oxygen Plasmas,\" Plasma Chemistry and Plasma Processing, Vol. 14, No. 4, pp. 451-490, 1994.",
+    "Pi_Omega_11": [-0.0011385465,0.013109567,-0.22729955,89.114706],
+    "Pi_Omega_22": [-0.0010470926,0.01204288,-0.21412749,97.209954],
+    "Bij": [0.00015203484,-0.0022480572,0.020783644,1.0387892]
+  },
+  {
+    "i": "Ar",
+    "j": "O2",
+    "model": "GuptaYos2",
+    "reference": "Murphy, A.B. and Arundell, C.J., \"Transport Coefficients of Argon, Nitrogen, Oxygen, Argon-Nitrogen and Argon-Oxygen Plasmas,\" Plasma Chemistry and Plasma Processing, Vol. 14, No. 4, pp. 451-490, 1994.",
+    "Pi_Omega_11": [-0.0019610109,0.043730851,-0.53914228,263.89965],
+    "Pi_Omega_22": [-0.0056764025,0.1258723,-1.1092629,1024.9629],
+    "Bij": [-0.0048333253,0.10954514,-0.8038955,7.5732553]
+  },
+  {
+    "i": "N",
+    "j": "CO",
+    "model": "GuptaYos2",
+    "reference": "Murphy, A.B. and Arundell, C.J., \"Transport Coefficients of Argon, Nitrogen, Oxygen, Argon-Nitrogen and Argon-Oxygen Plasmas,\" Plasma Chemistry and Plasma Processing, Vol. 14, No. 4, pp. 451-490, 1994.",
+    "Pi_Omega_11": [-0.0027632296,0.06261667,-0.6582768,300.69243],
+    "Pi_Omega_22": [-0.0063639708,0.1443124,-1.2492127,1325.4854],
+    "Bij": [0.0,0.001618377,-0.017055923,1.1530783]
+  },
+  {
+    "i": "N",
+    "j": "CO2",
+    "model": "GuptaYos2",
+    "reference": "Murphy, A.B. and Arundell, C.J., \"Transport Coefficients of Argon, Nitrogen, Oxygen, Argon-Nitrogen and Argon-Oxygen Plasmas,\" Plasma Chemistry and Plasma Processing, Vol. 14, No. 4, pp. 451-490, 1994.",
+    "Pi_Omega_11": [-0.0055961731,0.13846378,-1.3194196,2168.3202],
+    "Pi_Omega_22": [-0.0065005673,0.1598238,-1.4683418,3281.942],
+    "Bij": [-0.0020751884,0.052628467,-0.4307836,3.4707741]
+  },
+  {
+    "i": "N2O",
+    "j": "N2O",
+    "model": "GuptaYos2",
+    "reference": "Murphy, A.B. and Arundell, C.J., \"Transport Coefficients of Argon, Nitrogen, Oxygen, Argon-Nitrogen and Argon-Oxygen Plasmas,\" Plasma Chemistry and Plasma Processing, Vol. 14, No. 4, pp. 451-490, 1994.",
+    "Pi_Omega_11": [-0.0079855842,0.21132176,-2.0081211,25068.063],
+    "Pi_Omega_22": [-0.0091722775,0.24004813,-2.2271336,46976.198],
+    "Bij": [-0.0027168575,0.070761906,-0.60700252,6.0713662]
+  },
+  {
+    "i": "NO2",
+    "j": "NO2",
+    "model": "GuptaYos2",
+    "reference": "Murphy, A.B. and Arundell, C.J., \"Transport Coefficients of Argon, Nitrogen, Oxygen, Argon-Nitrogen and Argon-Oxygen Plasmas,\" Plasma Chemistry and Plasma Processing, Vol. 14, No. 4, pp. 451-490, 1994.",
+    "Pi_Omega_11": [-0.0076381747,0.20181891,-1.921881,18084.894],
+    "Pi_Omega_22": [-0.0087378539,0.22828001,-2.121557,32119.46],
+    "Bij": [-0.0025389705,0.066029063,-0.56537799,5.3802027]
+  },
+  {
+    "i": "CO2",
+    "j": "CO2",
+    "model": "GuptaYos2",
+    "reference": "Bzowski, J., Kestin, J., Mason, E.A., and Uribe, F.J., \"Equilibrium and Transport Properties of Gases Mixtures at Low Density: Eleven Polyatomic Gases ad Five Noble Gases,\" Journal of Phys. and Chem. Ref. Data, Vol. 19, No. 5, pp. 1179-1231, 1990.",
+    "Pi_Omega_11": [-0.0099663228,0.25169053,-2.2743951,41218.45],
+    "Pi_Omega_22": [-0.0131736,0.33381799,-2.9631754,308074.19],
+    "Bij": [0.0,0.0,0.0,1.15]
+  },
+  {
+    "i": "CO2",
+    "j": "C",
+    "model": "GuptaYos2",
+    "reference": "Magin, T., Degrez, G., and Sokolova, I., AIAA Paper No. 2002-2226, May 2002",
+    "Pi_Omega_11": [-0.00082006933,0.008073504,-0.18580992,88.090085],
+    "Pi_Omega_22": [-0.00075545407,0.0074306172,-0.17595594,96.26538],
+    "Bij": [0.00010055488,-0.0012761016,0.012958944,1.0545672]
+  },
+  {
+    "i": "CO2",
+    "j": "N",
+    "model": "GuptaYos2",
+    "reference": "Riabov, V., \"Approximate Calculation of Transport Coefficients of Earth and Mars Atmospheric Dissociating Gases,\" Journal of Thermophysics and Heat Transfer, Vol. 10, No. 2, 1996, pp. 209-216.",
+    "Pi_Omega_11": [-0.0010885815,0.011771214,-0.21763441,101.90126],
+    "Pi_Omega_22": [-0.0010066279,0.010925258,-0.20595654,111.57035],
+    "Bij": [0.00014145458,-0.0019103118,0.01765368,1.048856]
+  },
+  {
+    "i": "CO2",
+    "j": "O",
+    "model": "GuptaYos2",
+    "reference": "Magin, T., Degrez, G., and Sokolova, I., AIAA Paper No. 2002-2226, May 2002",
+    "Pi_Omega_11": [-0.00060009773,0.0049259799,-0.15733544,76.423379],
+    "Pi_Omega_22": [-0.00055030515,0.0044672805,-0.14917344,83.369484],
+    "Bij": [7.5831197e-05,-0.00095785952,0.01069475,1.0541875]
+  },
+  {
+    "i": "CO2",
+    "j": "CN",
+    "model": "GuptaYos2",
+    "reference": "Riabov, V., \"Approximate Calculation of Transport Coefficients of Earth and Mars Atmospheric Dissociating Gases,\" Journal of Thermophysics and Heat Transfer, Vol. 10, No. 2, 1996, pp. 209-216.",
+    "Pi_Omega_11": [-0.00069907097,0.0062928224,-0.17012644,103.89437],
+    "Pi_Omega_22": [-0.00064154797,0.0057312367,-0.16103195,113.41119],
+    "Bij": [8.5564974e-05,-0.0010613798,0.011401939,1.0555204]
+  },
+  {
+    "i": "CO2",
+    "j": "C2",
+    "model": "GuptaYos2",
+    "reference": "Riabov, V., \"Approximate Calculation of Transport Coefficients of Earth and Mars Atmospheric Dissociating Gases,\" Journal of Thermophysics and Heat Transfer, Vol. 10, No. 2, 1996, pp. 209-216.",
+    "Pi_Omega_11": [-0.00057773351,0.0045506403,-0.1542325,97.413984],
+    "Pi_Omega_22": [-0.00052941403,0.0041134212,-0.14624233,106.26453],
+    "Bij": [6.9131552e-05,-0.0008089627,0.0094779474,1.0572219]
+  },
+  {
+    "i": "N2",
+    "j": "CN",
+    "model": "GuptaYos2",
+    "reference": "Riabov, V., \"Approximate Calculation of Transport Coefficients of Earth and Mars Atmospheric Dissociating Gases,\" Journal of Thermophysics and Heat Transfer, Vol. 10, No. 2, 1996, pp. 209-216.",
+    "Pi_Omega_11": [-0.0016667971,0.020955863,-0.28854067,136.35857],
+    "Pi_Omega_22": [-0.001558481,0.019796748,-0.27418425,149.55304],
+    "Bij": [0.00022226984,-0.0032295018,0.026952307,1.0344081]
+  },
+  {
+    "i": "CN",
+    "j": "N",
+    "model": "GuptaYos2",
+    "reference": "Riabov, V., \"Approximate Calculation of Transport Coefficients of Earth and Mars Atmospheric Dissociating Gases,\" Journal of Thermophysics and Heat Transfer, Vol. 10, No. 2, 1996, pp. 209-216.",
+    "Pi_Omega_11": [-0.0023840149,0.033110613,-0.3794128,142.22929],
+    "Pi_Omega_22": [-0.0022607894,0.03187909,-0.364171,156.72972],
+    "Bij": [0.00031622852,-0.0048122614,0.038065039,1.014605]
+  },
+  {
+    "i": "CN",
+    "j": "C",
+    "model": "GuptaYos2",
+    "reference": "Riabov, V., \"Approximate Calculation of Transport Coefficients of Earth and Mars Atmospheric Dissociating Gases,\" Journal of Thermophysics and Heat Transfer, Vol. 10, No. 2, 1996, pp. 209-216.",
+    "Pi_Omega_11": [-0.0016667971,0.020672082,-0.28617822,102.98471],
+    "Pi_Omega_22": [-0.001558481,0.019531409,-0.27195232,113.04147],
+    "Bij": [0.00022226984,-0.0031916592,0.026587896,1.0359808]
+  },
+  {
+    "i": "CN",
+    "j": "CN",
+    "model": "GuptaYos2",
+    "reference": "Riabov, V., \"Approximate Calculation of Transport Coefficients of Earth and Mars Atmospheric Dissociating Gases,\" Journal of Thermophysics and Heat Transfer, Vol. 10, No. 2, 1996, pp. 209-216.",
+    "Pi_Omega_11": [-0.0013800378,0.016130086,-0.25170432,119.66839],
+    "Pi_Omega_22": [-0.0012837681,0.015125628,-0.23864976,131.2323],
+    "Bij": [0.00018242987,-0.0025468178,0.022093345,1.0430386]
+  },
+  {
+    "i": "CN",
+    "j": "C2",
+    "model": "GuptaYos2",
+    "reference": "Riabov, V., \"Approximate Calculation of Transport Coefficients of Earth and Mars Atmospheric Dissociating Gases,\" Journal of Thermophysics and Heat Transfer, Vol. 10, No. 2, 1996, pp. 209-216.",
+    "Pi_Omega_11": [-0.0012420708,0.014802252,-0.24216734,113.02183],
+    "Pi_Omega_22": [-0.0011518869,0.013806344,-0.22923412,123.51412],
+    "Bij": [0.00016334426,-0.0023509923,0.021063488,1.0411122]
+  },
+  {
+    "i": "C2",
+    "j": "C",
+    "model": "GuptaYos2",
+    "reference": "Riabov, V., \"Approximate Calculation of Transport Coefficients of Earth and Mars Atmospheric Dissociating Gases,\" Journal of Thermophysics and Heat Transfer, Vol. 10, No. 2, 1996, pp. 209-216.",
+    "Pi_Omega_11": [-0.0014943397,0.018767595,-0.27335279,97.22134],
+    "Pi_Omega_22": [-0.001392569,0.017640416,-0.25927762,106.36132],
+    "Bij": [0.00019868378,-0.0029238259,0.025147878,1.0348886]
+  },
+  {
+    "i": "C2",
+    "j": "N",
+    "model": "GuptaYos2",
+    "reference": "Riabov, V., \"Approximate Calculation of Transport Coefficients of Earth and Mars Atmospheric Dissociating Gases,\" Journal of Thermophysics and Heat Transfer, Vol. 10, No. 2, 1996, pp. 209-216.",
+    "Pi_Omega_11": [-0.0019164811,0.024720474,-0.3169604,117.09903],
+    "Pi_Omega_22": [-0.0018006979,0.023519536,-0.3021389,128.71696],
+    "Bij": [0.00025610909,-0.0037449281,0.030492221,1.0293601]
+  },
+  {
+    "i": "N2",
+    "j": "C2",
+    "model": "GuptaYos2",
+    "reference": "Riabov, V., \"Approximate Calculation of Transport Coefficients of Earth and Mars Atmospheric Dissociating Gases,\" Journal of Thermophysics and Heat Transfer, Vol. 10, No. 2, 1996, pp. 209-216.",
+    "Pi_Omega_11": [-0.0013800378,0.016234164,-0.25251792,119.51422],
+    "Pi_Omega_22": [-0.0012837681,0.015222446,-0.23941267,131.02014],
+    "Bij": [0.00018242987,-0.0025605761,0.02222174,1.0424577]
+  },
+  {
+    "i": "C2",
+    "j": "C2",
+    "model": "GuptaYos2",
+    "reference": "Riabov, V., \"Approximate Calculation of Transport Coefficients of Earth and Mars Atmospheric Dissociating Gases,\" Journal of Thermophysics and Heat Transfer, Vol. 10, No. 2, 1996, pp. 209-216.",
+    "Pi_Omega_11": [-0.0010367572,0.011436733,-0.21481665,102.14812],
+    "Pi_Omega_22": [-0.00095874737,0.01061695,-0.20338035,111.68478],
+    "Bij": [0.00013371828,-0.0018433051,0.017311238,1.0474593]
+  },
+  {
+    "i": "NO",
+    "j": "C",
+    "model": "GuptaYos2",
+    "reference": "Riabov, V., \"Approximate Calculation of Transport Coefficients of Earth and Mars Atmospheric Dissociating Gases,\" Journal of Thermophysics and Heat Transfer, Vol. 10, No. 2, 1996, pp. 209-216.",
+    "Pi_Omega_11": [-0.0013800378,0.016116999,-0.25160239,89.377635],
+    "Pi_Omega_22": [-0.0012837681,0.015113455,-0.23855417,98.0185],
+    "Bij": [0.00018242987,-0.0025450878,0.02207725,1.0431114]
+  },
+  {
+    "i": "CO",
+    "j": "C",
+    "model": "GuptaYos2",
+    "reference": "Magin, T., Degrez, G., and Sokolova, I., AIAA Paper No. 2002-2226, May 2002",
+    "Pi_Omega_11": [-0.0013093193,0.015968467,-0.25104707,86.243651],
+    "Pi_Omega_22": [-0.001214799,0.014899867,-0.23753715,94.190315],
+    "Bij": [0.00017420198,-0.0025498641,0.02248437,1.0384059]
+  },
+  {
+    "i": "CO",
+    "j": "O",
+    "model": "GuptaYos2",
+    "reference": "Magin, T., Degrez, G., and Sokolova, I., AIAA Paper No. 2002-2226, May 2002",
+    "Pi_Omega_11": [-0.0009219568,0.0093627999,-0.19755831,69.170978],
+    "Pi_Omega_22": [-0.00084742308,0.0085762396,-0.18648005,75.580503],
+    "Bij": [0.00012490027,-0.0017155111,0.016320853,1.0485898]
+  },
+  {
+    "i": "O2",
+    "j": "C",
+    "model": "GuptaYos2",
+    "reference": "Magin, T., Degrez, G., and Sokolova, I., AIAA Paper No. 2002-2226, May 2002",
+    "Pi_Omega_11": [-0.0010879416,0.011997429,-0.21927912,77.021435],
+    "Pi_Omega_22": [-0.0010061962,0.011139684,-0.20753461,84.271593],
+    "Bij": [0.00014993702,-0.0021507909,0.019630958,1.0427872]
+  },
+  {
+    "i": "C2",
+    "j": "O2",
+    "model": "GuptaYos2",
+    "reference": "Riabov, V., \"Approximate Calculation of Transport Coefficients of Earth and Mars Atmospheric Dissociating Gases,\" Journal of Thermophysics and Heat Transfer, Vol. 10, No. 2, 1996, pp. 209-216.",
+    "Pi_Omega_11": [-0.00078457276,0.0077679226,-0.18296024,85.900422],
+    "Pi_Omega_22": [-0.00072153749,0.0071210101,-0.17311453,93.741962],
+    "Bij": [9.8301467e-05,-0.0012958324,0.013236522,1.052169]
+  },
+  {
+    "i": "O2",
+    "j": "CN",
+    "model": "GuptaYos2",
+    "reference": "Riabov, V., \"Approximate Calculation of Transport Coefficients of Earth and Mars Atmospheric Dissociating Gases,\" Journal of Thermophysics and Heat Transfer, Vol. 10, No. 2, 1996, pp. 209-216.",
+    "Pi_Omega_11": [-0.00091937884,0.0097188603,-0.1999633,91.942225],
+    "Pi_Omega_22": [-0.00084782438,0.0089693146,-0.18919242,100.43201],
+    "Bij": [0.00011679512,-0.0015776201,0.015324246,1.050027]
+  },
+  {
+    "i": "CN",
+    "j": "O",
+    "model": "GuptaYos2",
+    "reference": "Riabov, V., \"Approximate Calculation of Transport Coefficients of Earth and Mars Atmospheric Dissociating Gases,\" Journal of Thermophysics and Heat Transfer, Vol. 10, No. 2, 1996, pp. 209-216.",
+    "Pi_Omega_11": [-0.0013085635,0.015756118,-0.24933188,85.540523],
+    "Pi_Omega_22": [-0.0012155307,0.014736728,-0.23620238,93.551338],
+    "Bij": [0.00017206539,-0.0024758956,0.021874797,1.040482]
+  },
+  {
+    "i": "CN",
+    "j": "NO",
+    "model": "GuptaYos2",
+    "reference": "Riabov, V., \"Approximate Calculation of Transport Coefficients of Earth and Mars Atmospheric Dissociating Gases,\" Journal of Thermophysics and Heat Transfer, Vol. 10, No. 2, 1996, pp. 209-216.",
+    "Pi_Omega_11": [-0.0011453028,0.012499884,-0.22322288,105.30556],
+    "Pi_Omega_22": [-0.0010608832,0.011639708,-0.21141146,115.40624],
+    "Bij": [0.00014943783,-0.0020187975,0.018353992,1.0485232]
+  },
+  {
+    "i": "CN",
+    "j": "CO",
+    "model": "GuptaYos2",
+    "reference": "Riabov, V., \"Approximate Calculation of Transport Coefficients of Earth and Mars Atmospheric Dissociating Gases,\" Journal of Thermophysics and Heat Transfer, Vol. 10, No. 2, 1996, pp. 209-216.",
+    "Pi_Omega_11": [-0.0010367572,0.011359004,-0.21424697,98.871989],
+    "Pi_Omega_22": [-0.00095874737,0.01054507,-0.2028515,108.13364],
+    "Bij": [0.00013371828,-0.0018332799,0.017219357,1.0479113]
+  },
+  {
+    "i": "C2",
+    "j": "O",
+    "model": "GuptaYos2",
+    "reference": "Riabov, V., \"Approximate Calculation of Transport Coefficients of Earth and Mars Atmospheric Dissociating Gases,\" Journal of Thermophysics and Heat Transfer, Vol. 10, No. 2, 1996, pp. 209-216.",
+    "Pi_Omega_11": [-0.0010885815,0.012068841,-0.21980709,77.54846],
+    "Pi_Omega_22": [-0.0010066279,0.011200478,-0.20797299,84.815876],
+    "Bij": [0.00014145458,-0.0019489865,0.0180054,1.0471532]
+  },
+  {
+    "i": "C2",
+    "j": "NO",
+    "model": "GuptaYos2",
+    "reference": "Riabov, V., \"Approximate Calculation of Transport Coefficients of Earth and Mars Atmospheric Dissociating Gases,\" Journal of Thermophysics and Heat Transfer, Vol. 10, No. 2, 1996, pp. 209-216.",
+    "Pi_Omega_11": [-0.0023840149,0.033510187,-0.38313481,486.05758],
+    "Pi_Omega_22": [-0.0022607894,0.032258011,-0.36775424,535.15373],
+    "Bij": [0.00031622852,-0.004865263,0.038605708,1.0124344]
+  },
+  {
+    "i": "C2",
+    "j": "CO",
+    "model": "GuptaYos2",
+    "reference": "Riabov, V., \"Approximate Calculation of Transport Coefficients of Earth and Mars Atmospheric Dissociating Gases,\" Journal of Thermophysics and Heat Transfer, Vol. 10, No. 2, 1996, pp. 209-216.",
+    "Pi_Omega_11": [-0.00091937884,0.0098939917,-0.20120864,93.011777],
+    "Pi_Omega_22": [-0.00084782438,0.0091308157,-0.19034171,101.53056],
+    "Bij": [0.00011679512,-0.0015998683,0.015526005,1.0489991]
+  },
+  {
+    "i": "C3",
+    "j": "C",
+    "model": "GuptaYos2",
+    "reference": "Riabov, V., \"Approximate Calculation of Transport Coefficients of Earth and Mars Atmospheric Dissociating Gases,\" Journal of Thermophysics and Heat Transfer, Vol. 10, No. 2, 1996, pp. 209-216.",
+    "Pi_Omega_11": [-0.0010885815,0.012138801,-0.22032568,107.07401],
+    "Pi_Omega_22": [-0.0010066279,0.011265171,-0.20845426,117.07867],
+    "Bij": [0.00014145458,-0.0019580775,0.018089099,1.0467484]
+  },
+  {
+    "i": "C3",
+    "j": "O",
+    "model": "GuptaYos2",
+    "reference": "Riabov, V., \"Approximate Calculation of Transport Coefficients of Earth and Mars Atmospheric Dissociating Gases,\" Journal of Thermophysics and Heat Transfer, Vol. 10, No. 2, 1996, pp. 209-216.",
+    "Pi_Omega_11": [-0.00078457276,0.007693815,-0.18247342,89.809028],
+    "Pi_Omega_22": [-0.00072153749,0.0070528566,-0.17266826,98.037694],
+    "Bij": [9.8301467e-05,-0.0012865473,0.013155215,1.0526062]
+  },
+  {
+    "i": "C3",
+    "j": "N",
+    "model": "GuptaYos2",
+    "reference": "Riabov, V., \"Approximate Calculation of Transport Coefficients of Earth and Mars Atmospheric Dissociating Gases,\" Journal of Thermophysics and Heat Transfer, Vol. 10, No. 2, 1996, pp. 209-216.",
+    "Pi_Omega_11": [-0.0013800378,0.016219272,-0.25240119,254.8991],
+    "Pi_Omega_22": [-0.0012837681,0.015208593,-0.23930322,279.45202],
+    "Bij": [0.00018242987,-0.0025586075,0.022203326,1.042541]
+  },
+  {
+    "i": "C3",
+    "j": "O2",
+    "model": "GuptaYos2",
+    "reference": "Riabov, V., \"Approximate Calculation of Transport Coefficients of Earth and Mars Atmospheric Dissociating Gases,\" Journal of Thermophysics and Heat Transfer, Vol. 10, No. 2, 1996, pp. 209-216.",
+    "Pi_Omega_11": [-0.00057773351,0.0047895685,-0.15552008,99.922332],
+    "Pi_Omega_22": [-0.00052941403,0.0043323663,-0.14740661,108.87986],
+    "Bij": [6.9131552e-05,-0.00083755283,0.0097049257,1.055825]
+  },
+  {
+    "i": "C3",
+    "j": "N2",
+    "model": "GuptaYos2",
+    "reference": "Riabov, V., \"Approximate Calculation of Transport Coefficients of Earth and Mars Atmospheric Dissociating Gases,\" Journal of Thermophysics and Heat Transfer, Vol. 10, No. 2, 1996, pp. 209-216.",
+    "Pi_Omega_11": [-0.0010885815,0.011925937,-0.21875712,134.62474],
+    "Pi_Omega_22": [-0.0010066279,0.011068332,-0.20699854,147.31705],
+    "Bij": [0.00014145458,-0.001930417,0.017835643,1.0479747]
+  },
+  {
+    "i": "C3",
+    "j": "NO",
+    "model": "GuptaYos2",
+    "reference": "Riabov, V., \"Approximate Calculation of Transport Coefficients of Earth and Mars Atmospheric Dissociating Gases,\" Journal of Thermophysics and Heat Transfer, Vol. 10, No. 2, 1996, pp. 209-216.",
+    "Pi_Omega_11": [-0.0015770918,0.019827487,-0.280811,378.06772],
+    "Pi_Omega_22": [-0.0014719259,0.018679462,-0.26655885,414.07811],
+    "Bij": [0.00021014557,-0.0030752694,0.026059042,1.0345482]
+  },
+  {
+    "i": "C3",
+    "j": "CN",
+    "model": "GuptaYos2",
+    "reference": "Riabov, V., \"Approximate Calculation of Transport Coefficients of Earth and Mars Atmospheric Dissociating Gases,\" Journal of Thermophysics and Heat Transfer, Vol. 10, No. 2, 1996, pp. 209-216.",
+    "Pi_Omega_11": [-0.00091937884,0.0095030033,-0.19845896,123.7989],
+    "Pi_Omega_22": [-0.00084782438,0.0087702576,-0.18780409,135.3437],
+    "Bij": [0.00011679512,-0.0015501983,0.015079457,1.0512769]
+  },
+  {
+    "i": "C3",
+    "j": "CO",
+    "model": "GuptaYos2",
+    "reference": "Riabov, V., \"Approximate Calculation of Transport Coefficients of Earth and Mars Atmospheric Dissociating Gases,\" Journal of Thermophysics and Heat Transfer, Vol. 10, No. 2, 1996, pp. 209-216.",
+    "Pi_Omega_11": [-0.00066793542,0.0060811137,-0.16771123,105.77192],
+    "Pi_Omega_22": [-0.00061279088,0.0055326255,-0.15876024,115.32278],
+    "Bij": [8.1364191e-05,-0.0010262844,0.0111801,1.0545115]
+  },
+  {
+    "i": "C3",
+    "j": "C2",
+    "model": "GuptaYos2",
+    "reference": "Riabov, V., \"Approximate Calculation of Transport Coefficients of Earth and Mars Atmospheric Dissociating Gases,\" Journal of Thermophysics and Heat Transfer, Vol. 10, No. 2, 1996, pp. 209-216.",
+    "Pi_Omega_11": [-0.00078457276,0.0076905747,-0.18245224,115.51058],
+    "Pi_Omega_22": [-0.0007215375,0.0070498766,-0.17264885,126.09583],
+    "Bij": [9.8301468e-05,-0.0012861413,0.013151673,1.0526253]
+  },
+  {
+    "i": "C3",
+    "j": "C3",
+    "model": "GuptaYos2",
+    "reference": "Riabov, V., \"Approximate Calculation of Transport Coefficients of Earth and Mars Atmospheric Dissociating Gases,\" Journal of Thermophysics and Heat Transfer, Vol. 10, No. 2, 1996, pp. 209-216.",
+    "Pi_Omega_11": [-0.0013800378,0.016486256,-0.25451027,206.06114],
+    "Pi_Omega_22": [-0.0012837681,0.015456952,-0.24128075,225.71809],
+    "Bij": [0.00018242987,-0.0025939006,0.022535596,1.0410382]
+  },
+  {
+    "i": "CO2",
+    "j": "H",
+    "model": "GuptaYos2",
+    "reference": "Amaee, B. and Brown, W.B., \"Exponential-a:6 Potential Parameters From ab-initio Calculations for Atom-Molecule Interactions,\" Chemical Physics, V. 174, 1993, pp. 351-365.",
+    "Pi_Omega_11": [-0.0015770918,0.020290641,-0.28473824,86.772395],
+    "Pi_Omega_22": [-0.0014719259,0.019111731,-0.2702583,94.903782],
+    "Bij": [0.00021014557,-0.003136984,0.026667171,1.0318818]
+  },
+  {
+    "i": "Ar",
+    "j": "C",
+    "model": "GuptaYos2",
+    "reference": "Gupta Eqn. 44b: simple mixing rule between pure species collision integrals. Should have good accuracy when base pure species data is of high fidelity. This was spot checked using available Q.M. data from Stallcop et.al, with good results for atom-atom and atom-molecule interactions.",
+    "Pi_Omega_11": [-0.0098408391,0.21605207,-1.8179791,6595.2536],
+    "Pi_Omega_22": [-0.010084412,0.22680194,-1.9222753,9691.9872]
+  },
+  {
+    "i": "Ar",
+    "j": "H",
+    "model": "GuptaYos2",
+    "reference": "Gupta Eqn. 44b: simple mixing rule between pure species collision integrals. Should have good accuracy when base pure species data is of high fidelity. This was spot checked using available Q.M. data from Stallcop et.al, with good results for atom-atom and atom-molecule interactions.",
+    "Pi_Omega_11": [-0.0095543609,0.19120141,-1.5027689,1886.143],
+    "Pi_Omega_22": [-0.012779667,0.27695817,-2.2113337,13137.987]
+  },
+  {
+    "i": "Ar",
+    "j": "H2",
+    "model": "GuptaYos2",
+    "reference": "Gupta Eqn. 44b: simple mixing rule between pure species collision integrals. Should have good accuracy when base pure species data is of high fidelity. This was spot checked using available Q.M. data from Stallcop et.al, with good results for atom-atom and atom-molecule interactions.",
+    "Pi_Omega_11": [-0.0068420812,0.14435881,-1.2447857,1085.9503],
+    "Pi_Omega_22": [-0.0087580648,0.18813067,-1.5487984,2377.5651]
+  },
+  {
+    "i": "C",
+    "j": "O",
+    "model": "GuptaYos2",
+    "reference": "Gupta Eqn. 44b: simple mixing rule between pure species collision integrals. Should have good accuracy when base pure species data is of high fidelity. This was spot checked using available Q.M. data from Stallcop et.al, with good results for atom-atom and atom-molecule interactions.",
+    "Pi_Omega_11": [-0.01123414,0.24508879,-2.0503802,10833.278],
+    "Pi_Omega_22": [-0.010162909,0.22689348,-1.9479492,9882.6939]
+  },
+  {
+    "i": "C",
+    "j": "H",
+    "model": "GuptaYos2",
+    "reference": "Gupta Eqn. 44b: simple mixing rule between pure species collision integrals. Should have good accuracy when base pure species data is of high fidelity. This was spot checked using available Q.M. data from Stallcop et.al, with good results for atom-atom and atom-molecule interactions.",
+    "Pi_Omega_11": [-0.016283,0.32930259,-2.4689885,18905.218],
+    "Pi_Omega_22": [-0.013915651,0.29342049,-2.3208295,18321.589]
+  },
+  {
+    "i": "H2",
+    "j": "C",
+    "model": "GuptaYos2",
+    "reference": "Gupta Eqn. 44b: simple mixing rule between pure species collision integrals. Should have good accuracy when base pure species data is of high fidelity. This was spot checked using available Q.M. data from Stallcop et.al, with good results for atom-atom and atom-molecule interactions.",
+    "Pi_Omega_11": [-0.0093373672,0.18934781,-1.538803,2210.0842],
+    "Pi_Omega_22": [-0.0044787267,0.086260607,-0.80785908,442.63767]
+  },
+  {
+    "i": "N2",
+    "j": "C",
+    "model": "GuptaYos2",
+    "reference": "Gupta Eqn. 44b: simple mixing rule between pure species collision integrals. Should have good accuracy when base pure species data is of high fidelity. This was spot checked using available Q.M. data from Stallcop et.al, with good results for atom-atom and atom-molecule interactions.",
+    "Pi_Omega_11": [-0.0097249264,0.2072436,-1.6905719,4257.3341],
+    "Pi_Omega_22": [-0.0061945294,0.13650179,-1.2189467,1654.5183]
+  },
+  {
+    "i": "O",
+    "j": "H",
+    "model": "GuptaYos2",
+    "reference": "Gupta Eqn. 44b: simple mixing rule between pure species collision integrals. Should have good accuracy when base pure species data is of high fidelity. This was spot checked using available Q.M. data from Stallcop et.al, with good results for atom-atom and atom-molecule interactions.",
+    "Pi_Omega_11": [-0.011603888,0.2322856,-1.8090305,3545.3131],
+    "Pi_Omega_22": [-0.011264048,0.23885239,-1.9419861,6295.4071]
+  },
+  {
+    "i": "H2",
+    "j": "O",
+    "model": "GuptaYos2",
+    "reference": "Gupta Eqn. 44b: simple mixing rule between pure species collision integrals. Should have good accuracy when base pure species data is of high fidelity. This was spot checked using available Q.M. data from Stallcop et.al, with good results for atom-atom and atom-molecule interactions.",
+    "Pi_Omega_11": [-0.0044461578,0.088576207,-0.85750693,395.3106],
+    "Pi_Omega_22": [-0.0028711823,0.053457032,-0.57685354,210.89727]
+  },
+  {
+    "i": "O2",
+    "j": "H2",
+    "model": "GuptaYos2",
+    "reference": "Gupta Eqn. 44b: simple mixing rule between pure species collision integrals. Should have good accuracy when base pure species data is of high fidelity. This was spot checked using available Q.M. data from Stallcop et.al, with good results for atom-atom and atom-molecule interactions.",
+    "Pi_Omega_11": [-0.0073456585,0.15633027,-1.3380233,1428.9056],
+    "Pi_Omega_22": [-0.00811166,0.17520656,-1.4654362,2077.4615]
+  },
+  {
+    "i": "Ar",
+    "j": "H+",
+    "model": "GuptaYos2",
+    "reference": "Online database at www-cfadc.phy.ornl.gov/elastic Based on data and methodologies presented in:",
+    "Pi_Omega_11": [-0.044730875,1.0117936,-7.8955764,71004787000.0],
+    "Pi_Omega_22": [-0.073220383,1.7845346,-14.69588,1.8312756e+19],
+    "Bij": [-0.0515779,1.3047029,-10.806864,6720194000000.0]
+  },
+  {
+    "i": "C",
+    "j": "H+",
+    "model": "GuptaYos2",
+    "reference": "Online database at www-cfadc.phy.ornl.gov/elastic Based on data and methodologies presented in:",
+    "Pi_Omega_11": [0.030646276,-0.9557876,9.0004957,6.2379955e-11],
+    "Pi_Omega_22": [0.0031929754,-0.22426726,2.5891861,0.0077439103],
+    "Bij": [0.028283088,-0.8464515,8.3368207,2.446179e-12]
+  },
+  {
+    "i": "H",
+    "j": "H+",
+    "model": "GuptaYos2",
+    "reference": "",
+    "Pi_Omega_11": [-0.00099674851,0.022551453,-0.31907158,503.71106],
+    "Pi_Omega_22": [-0.023862899,0.47043617,-3.3129215,201662.82],
+    "Bij": [0.0,0.0,0.0,1.08]
+  },
+  {
+    "i": "H2",
+    "j": "H+",
+    "model": "GuptaYos2",
+    "reference": "",
+    "Pi_Omega_11": [-0.018005419,0.32249427,-2.1707307,10664.152],
+    "Pi_Omega_22": [-0.0083719716,0.1491222,-1.173231,1427.1885],
+    "Bij": [-0.037370655,0.92354849,-7.4508696,437285290.0]
+  },
+  {
+    "i": "He",
+    "j": "H+",
+    "model": "GuptaYos2",
+    "reference": "",
+    "Pi_Omega_11": [-0.020533726,0.39118521,-2.9146448,76040.744],
+    "Pi_Omega_22": [-0.027279326,0.55991768,-4.1839235,1259809.1],
+    "Bij": [0.0097016254,-0.31577616,3.2652828,2.6948076e-05]
+  },
+  {
+    "i": "He",
+    "j": "He+",
+    "model": "GuptaYos2",
+    "reference": "",
+    "Pi_Omega_11": [0.00082381701,-0.021935152,0.038887984,115.14528],
+    "Pi_Omega_22": [-0.0087709989,0.15039609,-1.0920804,752.76577],
+    "Bij": [-8.881571e-05,0.0075922187,-0.1090198,1.6363235]
+  },
+  {
+    "i": "HCN",
+    "j": "HCN",
+    "model": "GuptaYos2",
+    "reference": "B. Flori and L. Biolsi, \"Transport Properties Associated with Entry into the Atmosphere of Titan,\" in Thermophysics of Atmospheric Entry, Progress in Astronautics and Aeronautics, Vol. 82, ed. T.E. Horton, 1982, pp. 37-52.",
+    "Pi_Omega_11": [-0.0005022431,0.0036044682,-0.14450203,83.237704],
+    "Pi_Omega_22": [-0.00045953749,0.0032302324,-0.13714439,90.68607],
+    "Bij": [5.8707582e-05,-0.00066266239,0.0083297249,1.0575089]
+  },
+  {
+    "i": "N2",
+    "j": "HCN",
+    "model": "GuptaYos2",
+    "reference": "B. Flori and L. Biolsi, \"Transport Properties Associated with Entry into the Atmosphere of Titan,\" in Thermophysics of Atmospheric Entry, Progress in Astronautics and Aeronautics, Vol. 82, ed. T.E. Horton, 1982, pp. 37-52.",
+    "Pi_Omega_11": [-0.0011453028,0.012777599,-0.225266,108.92026],
+    "Pi_Omega_22": [-0.0010608832,0.011896953,-0.21331387,119.25308],
+    "Bij": [0.00014943783,-0.0020550335,0.018683269,1.0469549]
+  },
+  {
+    "i": "H2",
+    "j": "HCN",
+    "model": "GuptaYos2",
+    "reference": "B. Flori and L. Biolsi, \"Transport Properties Associated with Entry into the Atmosphere of Titan,\" in Thermophysics of Atmospheric Entry, Progress in Astronautics and Aeronautics, Vol. 82, ed. T.E. Horton, 1982, pp. 37-52.",
+    "Pi_Omega_11": [-0.0019164811,0.025181964,-0.32096592,87.571541],
+    "Pi_Omega_22": [-0.0018006979,0.023953146,-0.30594939,96.14471],
+    "Bij": [0.00025610909,-0.0038065994,0.031098359,1.0268189]
+  },
+  {
+    "i": "He",
+    "j": "H2+",
+    "model": "GuptaYos2",
+    "reference": "",
+    "Pi_Omega_11": [-0.0077283388,0.22959751,-2.4000734,54887.743],
+    "Pi_Omega_22": [-0.0055122761,0.18244458,-2.058914,26323.692],
+    "Bij": [0.0,0.0,0.0,1.201]
+  },
+  {
+    "i": "He+",
+    "j": "H2",
+    "model": "GuptaYos2",
+    "reference": "",
+    "Pi_Omega_11": [0.00029104745,0.015427032,-0.79229634,2863.9073],
+    "Pi_Omega_22": [-0.0011507898,0.039056479,-0.8735199,2808.7121]
+  },
+  {
+    "i": "H",
+    "j": "He+",
+    "model": "GuptaYos2",
+    "reference": "",
+    "Pi_Omega_11": [-0.017803036,0.28150467,-1.6442397,929.62632],
+    "Pi_Omega_22": [-0.016185762,0.28333276,-1.8639623,1945.9176],
+    "Bij": [0.00039437755,-0.0060697091,0.046454548,1.0008338]
+  },
+  {
+    "i": "H2",
+    "j": "H2+",
+    "model": "GuptaYos2",
+    "reference": "",
+    "Pi_Omega_11": [-0.0044414835,0.12397523,-1.3320931,6762.4011],
+    "Pi_Omega_22": [0.016593684,-0.30359502,1.2852543,36.46512],
+    "Bij": [0.0057464444,-0.14092838,1.0910345,0.084518181]
+  },
+  {
+    "i": "CH4",
+    "j": "C2",
+    "model": "GuptaYos2",
+    "reference": "Constructed from modified Lennard-Jones potentials as defined by:",
+    "Pi_Omega_11": [0.0055097,-0.1633865,1.1881561,3.6470711],
+    "Pi_Omega_22": [0.005419889,-0.16161014,1.1880824,3.8286905],
+    "Bij": [-0.0012721668,0.030687231,-0.24247081,2.0470078]
+  },
+  {
+    "i": "CH4",
+    "j": "H2",
+    "model": "GuptaYos2",
+    "reference": "Constructed from modified Lennard-Jones potentials as defined by:",
+    "Pi_Omega_11": [0.0058263906,-0.17233112,1.2706417,2.0494366],
+    "Pi_Omega_22": [0.005792294,-0.17192428,1.2815125,2.0944769],
+    "Bij": [-0.00088748613,0.020962265,-0.16186676,1.6451875]
+  },
+  {
+    "i": "CH4",
+    "j": "CH",
+    "model": "GuptaYos2",
+    "reference": "Constructed from modified Lennard-Jones potentials as defined by:",
+    "Pi_Omega_11": [0.005712668,-0.16889992,1.2374939,2.6923801],
+    "Pi_Omega_22": [0.0056474223,-0.16773353,1.2423379,2.7924836],
+    "Bij": [-0.0010850248,0.025919347,-0.20265631,1.8361117]
+  },
+  {
+    "i": "CH4",
+    "j": "NH",
+    "model": "GuptaYos2",
+    "reference": "Constructed from modified Lennard-Jones potentials as defined by:",
+    "Pi_Omega_11": [0.0059701129,-0.17533526,1.2904714,2.2857717],
+    "Pi_Omega_22": [0.0059222022,-0.17459081,1.2986686,2.3508994],
+    "Bij": [-0.00098242159,0.023370286,-0.18187322,1.7370235]
+  },
+  {
+    "i": "CH4",
+    "j": "CN",
+    "model": "GuptaYos2",
+    "reference": "Constructed from modified Lennard-Jones potentials as defined by:",
+    "Pi_Omega_11": [0.0058085924,-0.17082624,1.2492105,3.0342667],
+    "Pi_Omega_22": [0.0057288405,-0.16929973,1.2511549,3.169417],
+    "Bij": [-0.0011707839,0.028141881,-0.22150009,1.9344299]
+  },
+  {
+    "i": "CH4",
+    "j": "N",
+    "model": "GuptaYos2",
+    "reference": "Constructed from modified Lennard-Jones potentials as defined by:",
+    "Pi_Omega_11": [0.0060830797,-0.17766699,1.3054119,2.2293995],
+    "Pi_Omega_22": [0.006017834,-0.17649668,1.3102092,2.3120663],
+    "Bij": [-0.0010850248,0.025984458,-0.20369453,1.8435889]
+  },
+  {
+    "i": "CH4",
+    "j": "C",
+    "model": "GuptaYos2",
+    "reference": "Constructed from modified Lennard-Jones potentials as defined by:",
+    "Pi_Omega_11": [0.0086499523,-0.24151151,1.8286721,0.52240566],
+    "Pi_Omega_22": [0.0087581396,-0.24441505,1.8645944,0.50388258],
+    "Bij": [-0.00019928452,0.0042986986,-0.02923262,1.1638332]
+  },
+  {
+    "i": "CH4",
+    "j": "H",
+    "model": "GuptaYos2",
+    "reference": "Constructed from modified Lennard-Jones potentials as defined by:",
+    "Pi_Omega_11": [0.0079380468,-0.22352275,1.6800636,0.64794162],
+    "Pi_Omega_22": [0.0080328309,-0.22612966,1.713914,0.62713651],
+    "Bij": [-0.00031786189,0.00725847,-0.053394331,1.2411679]
+  },
+  {
+    "i": "CO2",
+    "j": "Ar",
+    "model": "GuptaYos2",
+    "reference": "Constructed from modified Lennard-Jones potentials as defined by:",
+    "Pi_Omega_11": [0.0012170956,-0.06692951,0.4705763,21.26283],
+    "Pi_Omega_22": [0.00076059364,-0.056614798,0.4051054,26.254261],
+    "Bij": [-0.0023923608,0.057049096,-0.44765916,3.4719015]
+  },
+  {
+    "i": "NH",
+    "j": "NH",
+    "model": "GuptaYos2",
+    "reference": "Constructed from modified Lennard-Jones potentials as defined by:",
+    "Pi_Omega_11": [0.0088050276,-0.24550026,1.8620881,0.40822942],
+    "Pi_Omega_22": [0.0089136611,-0.24840417,1.8979099,0.3941201],
+    "Bij": [-0.00018378861,0.0039044138,-0.025974821,1.1537393]
+  },
+  {
+    "i": "NH",
+    "j": "CH",
+    "model": "GuptaYos2",
+    "reference": "Constructed from modified Lennard-Jones potentials as defined by:",
+    "Pi_Omega_11": [0.0085829296,-0.23994036,1.8165389,0.47096325],
+    "Pi_Omega_22": [0.0086911169,-0.24284147,1.8524177,0.4543863],
+    "Bij": [-0.00019928453,0.0042942226,-0.029168287,1.1635788]
+  },
+  {
+    "i": "NH",
+    "j": "Ar",
+    "model": "GuptaYos2",
+    "reference": "Constructed from modified Lennard-Jones potentials as defined by:",
+    "Pi_Omega_11": [0.0076822034,-0.21693591,1.6246387,0.85418114],
+    "Pi_Omega_22": [0.0077636325,-0.21923116,1.6561433,0.83099075],
+    "Bij": [-0.00035960724,0.0083289255,-0.062343009,1.2717205]
+  },
+  {
+    "i": "NH",
+    "j": "C",
+    "model": "GuptaYos2",
+    "reference": "Constructed from modified Lennard-Jones potentials as defined by:",
+    "Pi_Omega_11": [0.015418962,-0.40444936,3.1159299,0.01542312],
+    "Pi_Omega_22": [0.015571336,-0.40827473,3.1577816,0.014774053],
+    "Bij": [0.0002849632,-0.0072131529,0.060288185,0.92745172]
+  },
+  {
+    "i": "NH",
+    "j": "N",
+    "model": "GuptaYos2",
+    "reference": "Constructed from modified Lennard-Jones potentials as defined by:",
+    "Pi_Omega_11": [0.0083264875,-0.23357024,1.7647329,0.53042417],
+    "Pi_Omega_22": [0.0084352393,-0.23649154,1.8008372,0.51124048],
+    "Bij": [-0.00024678928,0.005459638,-0.038537991,1.1925941]
+  },
+  {
+    "i": "NH",
+    "j": "H",
+    "model": "GuptaYos2",
+    "reference": "Constructed from modified Lennard-Jones potentials as defined by:",
+    "Pi_Omega_11": [0.015979988,-0.41908159,3.2417737,0.0088423191],
+    "Pi_Omega_22": [0.016132361,-0.42295037,3.2843559,0.0084363112],
+    "Bij": [0.0002849632,-0.0072943323,0.0616658,0.92209711]
+  },
+  {
+    "i": "NH",
+    "j": "H2",
+    "model": "GuptaYos2",
+    "reference": "Constructed from modified Lennard-Jones potentials as defined by:",
+    "Pi_Omega_11": [0.010264304,-0.2809324,2.1452562,0.16548341],
+    "Pi_Omega_22": [0.010386964,-0.28417421,2.1837179,0.15877681],
+    "Bij": [5.6418038e-05,-0.0018572874,0.019463091,1.0257214]
+  },
+  {
+    "i": "NH",
+    "j": "C2",
+    "model": "GuptaYos2",
+    "reference": "Constructed from modified Lennard-Jones potentials as defined by:",
+    "Pi_Omega_11": [0.0079947605,-0.22514414,1.6948464,0.77102043],
+    "Pi_Omega_22": [0.0080916915,-0.22779371,1.7289389,0.74629215],
+    "Bij": [-0.00031751168,0.0072183766,-0.052846736,1.2387655]
+  },
+  {
+    "i": "NH",
+    "j": "N2",
+    "model": "GuptaYos2",
+    "reference": "Constructed from modified Lennard-Jones potentials as defined by:",
+    "Pi_Omega_11": [0.0083264875,-0.23357024,1.7647329,0.6137049],
+    "Pi_Omega_22": [0.0084352393,-0.23649154,1.8008372,0.59150921],
+    "Bij": [-0.00024678928,0.005459638,-0.038537991,1.1925941]
+  },
+  {
+    "i": "NH",
+    "j": "CN",
+    "model": "GuptaYos2",
+    "reference": "Constructed from modified Lennard-Jones potentials as defined by:",
+    "Pi_Omega_11": [0.0081511926,-0.22912928,1.7279929,0.69118721],
+    "Pi_Omega_22": [0.0082526524,-0.23188144,1.7628279,0.66806035],
+    "Bij": [-0.00029389591,0.0066223909,-0.047936779,1.2225617]
+  },
+  {
+    "i": "CH",
+    "j": "CH",
+    "model": "GuptaYos2",
+    "reference": "Constructed from modified Lennard-Jones potentials as defined by:",
+    "Pi_Omega_11": [0.0083707158,-0.23460784,1.7727431,0.54075932],
+    "Pi_Omega_22": [0.0084794676,-0.23753066,1.8088745,0.52111436],
+    "Bij": [-0.00024678928,0.0054630789,-0.038588755,1.1928078]
+  },
+  {
+    "i": "CH",
+    "j": "Ar",
+    "model": "GuptaYos2",
+    "reference": "Constructed from modified Lennard-Jones potentials as defined by:",
+    "Pi_Omega_11": [0.0075365268,-0.21321761,1.5935586,0.94919105],
+    "Pi_Omega_22": [0.0076110651,-0.21535053,1.6238279,0.92596977],
+    "Bij": [-0.00035237371,0.0081787876,-0.061338581,1.2689664]
+  },
+  {
+    "i": "CH",
+    "j": "C",
+    "model": "GuptaYos2",
+    "reference": "Constructed from modified Lennard-Jones potentials as defined by:",
+    "Pi_Omega_11": [0.015564598,-0.408217,3.1481457,0.014376698],
+    "Pi_Omega_22": [0.015716971,-0.41205363,3.1901862,0.013757436],
+    "Bij": [0.0002849632,-0.0072342262,0.060644316,0.92607038]
+  },
+  {
+    "i": "CH",
+    "j": "N",
+    "model": "GuptaYos2",
+    "reference": "Constructed from modified Lennard-Jones potentials as defined by:",
+    "Pi_Omega_11": [0.0081517444,-0.22914225,1.7280932,0.59797626],
+    "Pi_Omega_22": [0.0082532042,-0.23189443,1.7629284,0.57796709],
+    "Bij": [-0.00029389591,0.0066224395,-0.04793751,1.2225649]
+  },
+  {
+    "i": "CH",
+    "j": "H",
+    "model": "GuptaYos2",
+    "reference": "Constructed from modified Lennard-Jones potentials as defined by:",
+    "Pi_Omega_11": [0.012921044,-0.34524478,2.6561422,0.041555704],
+    "Pi_Omega_22": [0.013058091,-0.34875329,2.6959548,0.039913989],
+    "Bij": [0.00027870415,-0.0071636699,0.060816788,0.92361043]
+  },
+  {
+    "i": "CH",
+    "j": "He",
+    "model": "GuptaYos2",
+    "reference": "Constructed from modified Lennard-Jones potentials as defined by:",
+    "Pi_Omega_11": [0.030315259,-0.7605925,5.9343188,6.9372582e-06],
+    "Pi_Omega_22": [0.030393848,-0.76244888,5.9588889,7.0225006e-06],
+    "Bij": [0.00013291449,-0.0032337854,0.025888715,1.0231228]
+  },
+  {
+    "i": "CH",
+    "j": "H2",
+    "model": "GuptaYos2",
+    "reference": "Constructed from modified Lennard-Jones potentials as defined by:",
+    "Pi_Omega_11": [0.0089766307,-0.24979246,1.8974358,0.32365542],
+    "Pi_Omega_22": [0.0090919368,-0.25285126,1.9344247,0.31164903],
+    "Bij": [-0.00021127076,0.0045583547,-0.031105934,1.1691564]
+  },
+  {
+    "i": "CH",
+    "j": "C2",
+    "model": "GuptaYos2",
+    "reference": "Constructed from modified Lennard-Jones potentials as defined by:",
+    "Pi_Omega_11": [0.0078459359,-0.22134432,1.663159,0.85703655],
+    "Pi_Omega_22": [0.00794072,-0.22394882,1.6969652,0.82975565],
+    "Bij": [-0.00031786189,0.0072503786,-0.05327122,1.2406064]
+  },
+  {
+    "i": "CH",
+    "j": "N2",
+    "model": "GuptaYos2",
+    "reference": "Constructed from modified Lennard-Jones potentials as defined by:",
+    "Pi_Omega_11": [0.0081517444,-0.22914225,1.7280932,0.69101704],
+    "Pi_Omega_22": [0.0082532042,-0.23189443,1.7629284,0.66789458],
+    "Bij": [-0.00029389591,0.0066224395,-0.04793751,1.2225649]
+  },
+  {
+    "i": "CH",
+    "j": "CN",
+    "model": "GuptaYos2",
+    "reference": "Constructed from modified Lennard-Jones potentials as defined by:",
+    "Pi_Omega_11": [0.0079941104,-0.22512882,1.6947279,0.77145894],
+    "Pi_Omega_22": [0.0080910415,-0.22777837,1.72882,0.74671818],
+    "Bij": [-0.00031751168,0.0072183174,-0.052845838,1.2387615]
+  },
+  {
+    "i": "CN",
+    "j": "H2",
+    "model": "GuptaYos2",
+    "reference": "Constructed from modified Lennard-Jones potentials as defined by:",
+    "Pi_Omega_11": [0.0085808507,-0.23989168,1.8161633,0.47153822],
+    "Pi_Omega_22": [0.008689038,-0.24279271,1.8520407,0.45494482],
+    "Bij": [-0.00019928453,0.0042940838,-0.029166293,1.1635709]
+  },
+  {
+    "i": "CN",
+    "j": "Ar",
+    "model": "GuptaYos2",
+    "reference": "Constructed from modified Lennard-Jones potentials as defined by:",
+    "Pi_Omega_11": [0.0061912079,-0.18245615,1.3615879,1.9483901],
+    "Pi_Omega_22": [0.0062214503,-0.18358812,1.384451,1.9341337],
+    "Bij": [-0.00067295746,0.015553747,-0.11722503,1.4586437]
+  },
+  {
+    "i": "CN",
+    "j": "H",
+    "model": "GuptaYos2",
+    "reference": "Constructed from modified Lennard-Jones potentials as defined by:",
+    "Pi_Omega_11": [0.013341642,-0.35566717,2.7412072,0.038816814],
+    "Pi_Omega_22": [0.013478689,-0.35919402,2.7813336,0.037216903],
+    "Bij": [0.00027870415,-0.0072009586,0.061457419,0.92109557]
+  },
+  {
+    "i": "C2",
+    "j": "Ar",
+    "model": "GuptaYos2",
+    "reference": "Constructed from modified Lennard-Jones potentials as defined by:",
+    "Pi_Omega_11": [0.0060365923,-0.17845342,1.3277267,2.1807046],
+    "Pi_Omega_22": [0.0060518585,-0.17923008,1.3478411,2.1791857],
+    "Bij": [-0.00072559936,0.01686044,-0.12785375,1.5004527]
+  },
+  {
+    "i": "C2",
+    "j": "H",
+    "model": "GuptaYos2",
+    "reference": "Constructed from modified Lennard-Jones potentials as defined by:",
+    "Pi_Omega_11": [0.013574702,-0.36149087,2.7890786,0.034828344],
+    "Pi_Omega_22": [0.01371175,-0.36502788,2.8293796,0.033359657],
+    "Bij": [0.00027870415,-0.007221621,0.061813836,0.91969366]
+  },
+  {
+    "i": "C2",
+    "j": "H2",
+    "model": "GuptaYos2",
+    "reference": "Constructed from modified Lennard-Jones potentials as defined by:",
+    "Pi_Omega_11": [0.0083690978,-0.23456986,1.7724497,0.54114892],
+    "Pi_Omega_22": [0.0084778496,-0.23749262,1.8085802,0.521493],
+    "Bij": [-0.00024678928,0.005462953,-0.038586897,1.1928]
+  },
+  {
+    "i": "CO",
+    "j": "H",
+    "model": "GuptaYos2",
+    "reference": "Constructed from modified Lennard-Jones potentials as defined by:",
+    "Pi_Omega_11": [0.01428961,-0.37957048,2.9392255,0.021848128],
+    "Pi_Omega_22": [0.014426657,-0.38313865,2.980065,0.020862549],
+    "Bij": [0.00027870415,-0.0072850022,0.062913506,0.91535616]
+  },
+  {
+    "i": "NO",
+    "j": "H",
+    "model": "GuptaYos2",
+    "reference": "Constructed from modified Lennard-Jones potentials as defined by:",
+    "Pi_Omega_11": [0.0089052136,-0.2478885,1.880774,0.34124179],
+    "Pi_Omega_22": [0.0090138472,-0.25079446,1.9166323,0.32937369],
+    "Bij": [-0.00018378861,0.0039078709,-0.026023806,1.1539274]
+  },
+  {
+    "i": "H2",
+    "j": "CO",
+    "model": "GuptaYos2",
+    "reference": "Constructed from modified Lennard-Jones potentials as defined by:",
+    "Pi_Omega_11": [0.0079145902,-0.22296756,1.675752,0.66524762],
+    "Pi_Omega_22": [0.0080093743,-0.22557385,1.7095912,0.64393392],
+    "Bij": [-0.00031786189,0.0072564094,-0.053362967,1.2410248]
+  },
+  {
+    "i": "H2",
+    "j": "NO",
+    "model": "GuptaYos2",
+    "reference": "Constructed from modified Lennard-Jones potentials as defined by:",
+    "Pi_Omega_11": [0.0061508238,-0.18152278,1.3545076,1.4462256],
+    "Pi_Omega_22": [0.0061810662,-0.18265455,1.3773658,1.4357152],
+    "Bij": [-0.00067295746,0.015549336,-0.11715708,1.4582703]
+  },
+  {
+    "i": "C3",
+    "j": "H2",
+    "model": "GuptaYos2",
+    "reference": "Constructed from modified Lennard-Jones potentials as defined by:",
+    "Pi_Omega_11": [0.0,-0.029358898,0.10336206,46.489554],
+    "Pi_Omega_22": [0.0,-0.028461221,0.10004385,50.219011],
+    "Bij": [0.0,0.0064966185,-0.10433437,1.645975]
+  },
+  {
+    "i": "C3",
+    "j": "H",
+    "model": "GuptaYos2",
+    "reference": "Constructed from modified Lennard-Jones potentials as defined by:",
+    "Pi_Omega_11": [0.0010089761,-0.061128093,0.41804482,15.833224],
+    "Pi_Omega_22": [0.00051754714,-0.049933496,0.34532818,19.925902],
+    "Bij": [-0.0025149648,0.060237163,-0.47484661,3.7461222]
+  },
+  {
+    "i": "C3",
+    "j": "Ar",
+    "model": "GuptaYos2",
+    "reference": "Constructed from modified Lennard-Jones potentials as defined by:",
+    "Pi_Omega_11": [0.0,-0.023098991,-0.003379867,94.969175],
+    "Pi_Omega_22": [0.0,-0.021447179,-0.01942879,107.82217],
+    "Bij": [0.0,0.0087939376,-0.14478425,1.9562966]
+  },
+  {
+    "i": "CN",
+    "j": "He",
+    "model": "GuptaYos2",
+    "reference": "Constructed from modified Lennard-Jones potentials as defined by:",
+    "Pi_Omega_11": [0.030680042,-0.77000115,6.0143066,6.5310939e-06],
+    "Pi_Omega_22": [0.030758631,-0.77186805,6.0390427,6.6040805e-06],
+    "Bij": [0.00013291449,-0.0032515685,0.026177947,1.0219357]
+  },
+  {
+    "i": "C2",
+    "j": "He",
+    "model": "GuptaYos2",
+    "reference": "Constructed from modified Lennard-Jones potentials as defined by:",
+    "Pi_Omega_11": [0.030882175,-0.77525669,6.0591973,5.8806085e-06],
+    "Pi_Omega_22": [0.030960764,-0.77712942,6.0840258,5.9426851e-06],
+    "Bij": [0.00013291449,-0.0032614224,0.026338899,1.0212727]
+  },
+  {
+    "i": "NH",
+    "j": "He",
+    "model": "GuptaYos2",
+    "reference": "Constructed from modified Lennard-Jones potentials as defined by:",
+    "Pi_Omega_11": [0.029557326,-0.74238709,5.7897989,9.9025932e-06],
+    "Pi_Omega_22": [0.029635915,-0.74423766,5.8142775,1.0030334e-05],
+    "Bij": [0.00013291449,-0.0032239563,0.02572953,1.023774]
+  },
+  {
+    "i": "HCN",
+    "j": "C2",
+    "model": "GuptaYos2",
+    "reference": "Constructed from modified Lennard-Jones potentials as defined by:",
+    "Pi_Omega_11": [8.0551258e-05,-0.026688182,0.040345582,98.902553],
+    "Pi_Omega_22": [0.0,-0.023387709,0.013824831,114.62972],
+    "Bij": [0.0,0.0080726022,-0.13216636,1.8542241]
+  },
+  {
+    "i": "HCN",
+    "j": "NH",
+    "model": "GuptaYos2",
+    "reference": "Constructed from modified Lennard-Jones potentials as defined by:",
+    "Pi_Omega_11": [0.0,-0.027517861,0.072132173,70.260779],
+    "Pi_Omega_22": [0.0,-0.026386555,0.06491492,77.042926],
+    "Bij": [0.0,0.0071600281,-0.11600196,1.7299003]
+  },
+  {
+    "i": "HCN",
+    "j": "CH",
+    "model": "GuptaYos2",
+    "reference": "Constructed from modified Lennard-Jones potentials as defined by:",
+    "Pi_Omega_11": [0.0,-0.026616838,0.05703501,76.381254],
+    "Pi_Omega_22": [0.0,-0.025375577,0.047989009,84.352706],
+    "Bij": [0.0,0.0074455029,-0.12095811,1.7664132]
+  },
+  {
+    "i": "HCN",
+    "j": "CH4",
+    "model": "GuptaYos2",
+    "reference": "Constructed from modified Lennard-Jones potentials as defined by:",
+    "Pi_Omega_11": [0.0,-0.018126761,-0.096696686,181.82747],
+    "Pi_Omega_22": [0.0,-0.015519791,-0.1288968,220.12248],
+    "Bij": [0.0,0.011861337,-0.19814982,2.4584957]
+  },
+  {
+    "i": "HCN",
+    "j": "CN",
+    "model": "GuptaYos2",
+    "reference": "Constructed from modified Lennard-Jones potentials as defined by:",
+    "Pi_Omega_11": [0.0001821819,-0.029848991,0.071975512,87.520194],
+    "Pi_Omega_22": [0.0,-0.024332609,0.029878837,105.10682],
+    "Bij": [0.0,0.007738562,-0.12636703,1.8094334]
+  },
+  {
+    "i": "HCN",
+    "j": "N",
+    "model": "GuptaYos2",
+    "reference": "Constructed from modified Lennard-Jones potentials as defined by:",
+    "Pi_Omega_11": [0.0,-0.025751651,0.042570381,79.698442],
+    "Pi_Omega_22": [0.0,-0.024401064,0.03171004,88.642931],
+    "Bij": [0.0,0.007738562,-0.12598637,1.8038268]
+  },
+  {
+    "i": "HCN",
+    "j": "C",
+    "model": "GuptaYos2",
+    "reference": "Constructed from modified Lennard-Jones potentials as defined by:",
+    "Pi_Omega_11": [0.00061858089,-0.053432534,0.37077746,23.696087],
+    "Pi_Omega_22": [0.00016207893,-0.043148492,0.30576786,29.216007],
+    "Bij": [-0.0023923608,0.056888371,-0.44510761,3.4373677]
+  },
+  {
+    "i": "HCN",
+    "j": "H",
+    "model": "GuptaYos2",
+    "reference": "Constructed from modified Lennard-Jones potentials as defined by:",
+    "Pi_Omega_11": [0.00048756343,-0.048214129,0.31249827,23.991872],
+    "Pi_Omega_22": [0.0,-0.037001462,0.23879592,30.32273],
+    "Bij": [0.0,0.0040080537,-0.062724258,1.3898982]
+  },
+  {
+    "i": "HCN",
+    "j": "Ar",
+    "model": "GuptaYos2",
+    "reference": "Constructed from modified Lennard-Jones potentials as defined by:",
+    "Pi_Omega_11": [0.00063893281,-0.037703001,0.10471584,82.434908],
+    "Pi_Omega_22": [0.0,-0.021335427,-0.022271555,123.10303],
+    "Bij": [0.0,0.0087939376,-0.14532269,1.9650033]
+  },
+  {
+    "i": "H2O",
+    "j": "H2O",
+    "model": "GuptaYos2",
+    "reference": "Constructed from modified Lennard-Jones potentials as defined by:",
+    "Pi_Omega_11": [0.0076539952,-0.16309561,0.64362299,57.526165],
+    "Pi_Omega_22": [0.0092385966,-0.1979164,0.89803451,34.03477],
+    "Bij": [-0.002385149,0.077508618,-0.8093487,16.879717]
+  },
+  {
+    "i": "H2O",
+    "j": "CO2",
+    "model": "GuptaYos2",
+    "reference": "Constructed from modified Lennard-Jones potentials as defined by:",
+    "Pi_Omega_11": [0.0,-0.007671598,-0.2832559,332.06525],
+    "Pi_Omega_22": [0.0,-0.0041258304,-0.33168788,429.63022],
+    "Bij": [0.0,0.015508186,-0.26236556,3.2551244]
+  },
+  {
+    "i": "H2O",
+    "j": "OH",
+    "model": "GuptaYos2",
+    "reference": "Constructed from modified Lennard-Jones potentials as defined by:",
+    "Pi_Omega_11": [0.00086500042,-0.041210212,0.11346851,54.264247],
+    "Pi_Omega_22": [0.0,-0.0193144,-0.058074223,91.158393],
+    "Bij": [0.0,0.0094774339,-0.1579053,2.0782045]
+  },
+  {
+    "i": "H2O",
+    "j": "N",
+    "model": "GuptaYos2",
+    "reference": "Constructed from modified Lennard-Jones potentials as defined by:",
+    "Pi_Omega_11": [0.00035854209,-0.030382887,0.041332499,65.337273],
+    "Pi_Omega_22": [0.0,-0.02035327,-0.039022397,87.223624],
+    "Bij": [0.0,0.0091153556,-0.15094095,2.0124427]
+  },
+  {
+    "i": "H2O",
+    "j": "C",
+    "model": "GuptaYos2",
+    "reference": "Constructed from modified Lennard-Jones potentials as defined by:",
+    "Pi_Omega_11": [0.0,-0.034521213,0.18797843,30.395872],
+    "Pi_Omega_22": [0.0,-0.03408769,0.19222949,31.916096],
+    "Bij": [0.0,0.0048351053,-0.076259652,1.4668087]
+  },
+  {
+    "i": "H2O",
+    "j": "H",
+    "model": "GuptaYos2",
+    "reference": "Constructed from modified Lennard-Jones potentials as defined by:",
+    "Pi_Omega_11": [0.0,-0.031289141,0.13521353,29.978192],
+    "Pi_Omega_22": [0.0,-0.03056477,0.13474643,32.03512],
+    "Bij": [0.0,0.005869611,-0.093667075,1.5749952]
+  },
+  {
+    "i": "H2O",
+    "j": "CO",
+    "model": "GuptaYos2",
+    "reference": "Constructed from modified Lennard-Jones potentials as defined by:",
+    "Pi_Omega_11": [0.0,-0.020050109,-0.060564308,107.08241],
+    "Pi_Omega_22": [0.0,-0.017818619,-0.086521032,126.47356],
+    "Bij": [0.0,0.010619942,-0.17704957,2.2495054]
+  },
+  {
+    "i": "H2O",
+    "j": "NO",
+    "model": "GuptaYos2",
+    "reference": "Constructed from modified Lennard-Jones potentials as defined by:",
+    "Pi_Omega_11": [0.0,-0.016643336,-0.12224178,135.03693],
+    "Pi_Omega_22": [0.0,-0.013917131,-0.15657266,164.93725],
+    "Bij": [0.0,0.01226696,-0.2055994,2.5415502]
+  },
+  {
+    "i": "H2O",
+    "j": "N2",
+    "model": "GuptaYos2",
+    "reference": "Constructed from modified Lennard-Jones potentials as defined by:",
+    "Pi_Omega_11": [0.00035854209,-0.030382887,0.041332499,77.050031],
+    "Pi_Omega_22": [0.0,-0.02035327,-0.039022397,102.85986],
+    "Bij": [0.0,0.0091153556,-0.15094095,2.0124427]
+  },
+  {
+    "i": "H2O",
+    "j": "O",
+    "model": "GuptaYos2",
+    "reference": "Constructed from modified Lennard-Jones potentials as defined by:",
+    "Pi_Omega_11": [0.0,-0.018235414,-0.094495443,102.00467],
+    "Pi_Omega_22": [0.0,-0.015628444,-0.12663708,123.44351],
+    "Bij": [0.0,0.011861337,-0.19788377,2.4530421]
+  },
+  {
+    "i": "H2O",
+    "j": "O2",
+    "model": "GuptaYos2",
+    "reference": "Constructed from modified Lennard-Jones potentials as defined by:",
+    "Pi_Omega_11": [0.0,-0.018235414,-0.094495443,117.84962],
+    "Pi_Omega_22": [0.0,-0.015628444,-0.12663708,142.61867],
+    "Bij": [0.0,0.011861337,-0.19788377,2.4530421]
+  },
+  {
+    "i": "CO2",
+    "j": "OH",
+    "model": "GuptaYos2",
+    "reference": "Constructed from modified Lennard-Jones potentials as defined by:",
+    "Pi_Omega_11": [0.0057076559,-0.1672777,1.2096735,3.1146185],
+    "Pi_Omega_22": [0.0055358002,-0.16344598,1.1928026,3.4138514],
+    "Bij": [-0.0014385664,0.035321295,-0.28431465,2.3138599]
+  },
+  {
+    "i": "OH",
+    "j": "OH",
+    "model": "GuptaYos2",
+    "reference": "Constructed from modified Lennard-Jones potentials as defined by:",
+    "Pi_Omega_11": [0.007506443,-0.21250028,1.5879585,0.7980582],
+    "Pi_Omega_22": [0.0075809814,-0.21463263,1.618217,0.77859396],
+    "Bij": [-0.00035237371,0.0081761101,-0.061297157,1.2687693]
+  },
+  {
+    "i": "OH",
+    "j": "N",
+    "model": "GuptaYos2",
+    "reference": "Constructed from modified Lennard-Jones potentials as defined by:",
+    "Pi_Omega_11": [0.007723344,-0.21817118,1.6363598,0.72533102],
+    "Pi_Omega_22": [0.007812527,-0.22064672,1.6692131,0.70362023],
+    "Bij": [-0.00036889634,0.0085185808,-0.063585881,1.2750494]
+  },
+  {
+    "i": "OH",
+    "j": "C",
+    "model": "GuptaYos2",
+    "reference": "Constructed from modified Lennard-Jones potentials as defined by:",
+    "Pi_Omega_11": [0.016011341,-0.41990875,3.2489459,0.010207607],
+    "Pi_Omega_22": [0.016163714,-0.42377995,3.2915692,0.0097367085],
+    "Bij": [0.0002849632,-0.007298869,0.061743243,0.92179522]
+  },
+  {
+    "i": "OH",
+    "j": "H",
+    "model": "GuptaYos2",
+    "reference": "Constructed from modified Lennard-Jones potentials as defined by:",
+    "Pi_Omega_11": [0.013634167,-0.36298229,2.8013772,0.026367859],
+    "Pi_Omega_22": [0.013771214,-0.36652189,2.8417227,0.025249524],
+    "Bij": [0.00027870415,-0.0072268929,0.061904938,0.91933501]
+  },
+  {
+    "i": "OH",
+    "j": "CO",
+    "model": "GuptaYos2",
+    "reference": "Constructed from modified Lennard-Jones potentials as defined by:",
+    "Pi_Omega_11": [0.0066046699,-0.19204263,1.4345371,1.3923258],
+    "Pi_Omega_22": [0.0066349124,-0.19317663,1.4574509,1.3814306],
+    "Bij": [-0.00067295746,0.015598907,-0.11792188,1.462485]
+  },
+  {
+    "i": "OH",
+    "j": "NO",
+    "model": "GuptaYos2",
+    "reference": "Constructed from modified Lennard-Jones potentials as defined by:",
+    "Pi_Omega_11": [0.0062794744,-0.18297653,1.3525815,1.7019458],
+    "Pi_Omega_22": [0.0062453778,-0.18256721,1.3634325,1.7388909],
+    "Bij": [-0.00088748613,0.021026883,-0.16288584,1.6516837]
+  },
+  {
+    "i": "OH",
+    "j": "N2",
+    "model": "GuptaYos2",
+    "reference": "Constructed from modified Lennard-Jones potentials as defined by:",
+    "Pi_Omega_11": [0.007723344,-0.21817118,1.6363598,0.84223815],
+    "Pi_Omega_22": [0.007812527,-0.22064672,1.6692131,0.81702806],
+    "Bij": [-0.00036889634,0.0085185808,-0.063585881,1.2750494]
+  },
+  {
+    "i": "OH",
+    "j": "O",
+    "model": "GuptaYos2",
+    "reference": "Constructed from modified Lennard-Jones potentials as defined by:",
+    "Pi_Omega_11": [0.0061146914,-0.17946622,1.3287047,1.5492783],
+    "Pi_Omega_22": [0.0061020221,-0.17957481,1.3436312,1.5672741],
+    "Bij": [-0.00087773667,0.020674057,-0.15916972,1.6319948]
+  },
+  {
+    "i": "OH",
+    "j": "O2",
+    "model": "GuptaYos2",
+    "reference": "Constructed from modified Lennard-Jones potentials as defined by:",
+    "Pi_Omega_11": [0.0061146914,-0.17946622,1.3287047,1.7647972],
+    "Pi_Omega_22": [0.0061020221,-0.17957481,1.3436312,1.7852964],
+    "Bij": [-0.00087773667,0.020674057,-0.15916972,1.6319948]
+  },
+  {
+    "i": "NO2",
+    "j": "H2O",
+    "model": "GuptaYos2",
+    "reference": "Constructed from modified Lennard-Jones potentials as defined by:",
+    "Pi_Omega_11": [0.0,-0.0055279083,-0.32040388,370.6126],
+    "Pi_Omega_22": [0.0,-0.0019284842,-0.36997594,482.05716],
+    "Bij": [0.0,0.015932097,-0.27045891,3.3796974]
+  },
+  {
+    "i": "NO2",
+    "j": "CO2",
+    "model": "GuptaYos2",
+    "reference": "Constructed from modified Lennard-Jones potentials as defined by:",
+    "Pi_Omega_11": [0.0,-0.025739435,0.042255946,98.869814],
+    "Pi_Omega_22": [0.0,-0.024388848,0.031383749,109.97113],
+    "Bij": [0.0,0.007738562,-0.1260543,1.8048248]
+  },
+  {
+    "i": "NO2",
+    "j": "OH",
+    "model": "GuptaYos2",
+    "reference": "Constructed from modified Lennard-Jones potentials as defined by:",
+    "Pi_Omega_11": [0.0013971845,-0.071942678,0.51591642,15.751493],
+    "Pi_Omega_22": [0.00098578974,-0.062738639,0.45940733,19.002633],
+    "Bij": [-0.0023012646,0.0546225,-0.42655416,3.269823]
+  },
+  {
+    "i": "NO2",
+    "j": "N",
+    "model": "GuptaYos2",
+    "reference": "Constructed from modified Lennard-Jones potentials as defined by:",
+    "Pi_Omega_11": [0.0053740007,-0.15921496,1.1460463,3.629323],
+    "Pi_Omega_22": [0.0052021449,-0.15539307,1.1293214,3.9767312],
+    "Bij": [-0.0014385664,0.035238988,-0.28296896,2.301377]
+  },
+  {
+    "i": "NO2",
+    "j": "C",
+    "model": "GuptaYos2",
+    "reference": "Constructed from modified Lennard-Jones potentials as defined by:",
+    "Pi_Omega_11": [0.0075602516,-0.21378364,1.5979799,1.0045952],
+    "Pi_Omega_22": [0.00763479,-0.215917,1.6282577,0.97995925],
+    "Bij": [-0.00035237371,0.0081808992,-0.061371259,1.2691219]
+  },
+  {
+    "i": "NO2",
+    "j": "H",
+    "model": "GuptaYos2",
+    "reference": "Constructed from modified Lennard-Jones potentials as defined by:",
+    "Pi_Omega_11": [0.0065505663,-0.1904058,1.4189082,1.3150063],
+    "Pi_Omega_22": [0.0065658325,-0.19118373,1.4390655,1.313359],
+    "Bij": [-0.00072559936,0.01692062,-0.12878767,1.5057851]
+  },
+  {
+    "i": "NO2",
+    "j": "CO",
+    "model": "GuptaYos2",
+    "reference": "Constructed from modified Lennard-Jones potentials as defined by:",
+    "Pi_Omega_11": [0.00064130173,-0.052796512,0.35617215,28.783737],
+    "Pi_Omega_22": [0.00014987279,-0.04162264,0.28376996,36.187022],
+    "Bij": [-0.0025149647,0.060131099,-0.47315451,3.7212434]
+  },
+  {
+    "i": "NO2",
+    "j": "NO",
+    "model": "GuptaYos2",
+    "reference": "Constructed from modified Lennard-Jones potentials as defined by:",
+    "Pi_Omega_11": [1.1881595e-05,-0.034751589,0.18913395,46.03602],
+    "Pi_Omega_22": [0.0,-0.0340498,0.19138419,48.569243],
+    "Bij": [0.0,0.0048351053,-0.07641849,1.4686491]
+  },
+  {
+    "i": "NO2",
+    "j": "N2",
+    "model": "GuptaYos2",
+    "reference": "Constructed from modified Lennard-Jones potentials as defined by:",
+    "Pi_Omega_11": [0.0053740007,-0.15921496,1.1460463,4.1613611],
+    "Pi_Omega_22": [0.0052021449,-0.15539307,1.1293214,4.5596974],
+    "Bij": [-0.0014385664,0.035238988,-0.28296896,2.301377]
+  },
+  {
+    "i": "NO2",
+    "j": "O",
+    "model": "GuptaYos2",
+    "reference": "Constructed from modified Lennard-Jones potentials as defined by:",
+    "Pi_Omega_11": [0.0012813414,-0.066062333,0.44381446,20.345519],
+    "Pi_Omega_22": [0.00073298385,-0.053429536,0.35921102,26.422927],
+    "Bij": [-0.0026798202,0.06460402,-0.51271369,4.1713409]
+  },
+  {
+    "i": "NO2",
+    "j": "O2",
+    "model": "GuptaYos2",
+    "reference": "Constructed from modified Lennard-Jones potentials as defined by:",
+    "Pi_Omega_11": [0.0012813414,-0.066062333,0.44381446,22.911519],
+    "Pi_Omega_22": [0.00073298385,-0.053429536,0.35921102,29.755417],
+    "Bij": [-0.0026798202,0.06460402,-0.51271369,4.1713409]
+  },
+  {
+    "i": "C3",
+    "j": "CO2",
+    "model": "GuptaYos2",
+    "reference": "Constructed from modified Lennard-Jones potentials as defined by:",
+    "Pi_Omega_11": [0.0,-0.014984881,-0.15363298,225.85473],
+    "Pi_Omega_22": [0.0,-0.011956212,-0.19292178,281.29259],
+    "Bij": [0.0,0.013373426,-0.22404069,2.7446547]
+  },
+  {
+    "i": "CO2",
+    "j": "H2",
+    "model": "GuptaYos2",
+    "reference": "Constructed from modified Lennard-Jones potentials as defined by:",
+    "Pi_Omega_11": [0.0054658552,-0.16234439,1.1800562,2.8966541],
+    "Pi_Omega_22": [0.0053760441,-0.16056868,1.179991,3.0409031],
+    "Bij": [-0.0012721668,0.030678044,-0.24232309,2.0458137]
+  },
+  {
+    "i": "CO2",
+    "j": "HCN",
+    "model": "GuptaYos2",
+    "reference": "Constructed from modified Lennard-Jones potentials as defined by:",
+    "Pi_Omega_11": [0.0,-0.014350013,-0.16527769,265.79143],
+    "Pi_Omega_22": [0.0,-0.011321344,-0.20475194,331.43141],
+    "Bij": [0.0,0.013373426,-0.22485953,2.7635793]
+  },
+  {
+    "i": "HCN",
+    "j": "CO",
+    "model": "GuptaYos2",
+    "reference": "Constructed from modified Lennard-Jones potentials as defined by:",
+    "Pi_Omega_11": [0.0004303394,-0.032919128,0.069135173,93.379717],
+    "Pi_Omega_22": [0.0,-0.021366998,-0.021467059,127.43206],
+    "Bij": [0.0,0.0087939376,-0.14517057,1.9625364]
+  },
+  {
+    "i": "HCN",
+    "j": "O2",
+    "model": "GuptaYos2",
+    "reference": "Constructed from modified Lennard-Jones potentials as defined by:",
+    "Pi_Omega_11": [0.00064825938,-0.036188359,0.075756473,93.080722],
+    "Pi_Omega_22": [0.0,-0.019327924,-0.057507466,142.1449],
+    "Bij": [0.0,0.0094774339,-0.15773177,2.0752041]
+  },
+  {
+    "i": "HCN",
+    "j": "NO",
+    "model": "GuptaYos2",
+    "reference": "Constructed from modified Lennard-Jones potentials as defined by:",
+    "Pi_Omega_11": [5.2667414e-05,-0.02219144,-0.034967288,127.25693],
+    "Pi_Omega_22": [0.0,-0.018871647,-0.067871574,152.35777],
+    "Bij": [0.0,0.010305354,-0.17119374,2.1909862]
+  },
+  {
+    "i": "HCN",
+    "j": "O",
+    "model": "GuptaYos2",
+    "reference": "Constructed from modified Lennard-Jones potentials as defined by:",
+    "Pi_Omega_11": [0.00064825938,-0.036188359,0.075756473,82.463746],
+    "Pi_Omega_22": [0.0,-0.019327924,-0.057507466,125.93156],
+    "Bij": [0.0,0.0094774339,-0.15773177,2.0752041]
+  },
+  {
+    "i": "C3",
+    "j": "HCN",
+    "model": "GuptaYos2",
+    "reference": "Constructed from modified Lennard-Jones potentials as defined by:",
+    "Pi_Omega_11": [0.0009616179,-0.015373044,-0.37921643,859.51303],
+    "Pi_Omega_22": [0.00035365859,0.0026816227,-0.5428782,1505.9303],
+    "Bij": [-0.0054378687,0.14677245,-1.3121865,53.202845]
+  },
+  {
+    "i": "NH3",
+    "j": "NH3",
+    "model": "GuptaYos2",
+    "reference": "Constructed from modified Lennard-Jones potentials as defined by:",
+    "Pi_Omega_11": [0.0,-0.011021545,-0.22427096,240.76488],
+    "Pi_Omega_22": [0.0,-0.0075465918,-0.27096583,308.85266],
+    "Bij": [0.0,0.015082308,-0.25288313,3.0992742]
+  },
+  {
+    "i": "NH3",
+    "j": "CO2",
+    "model": "GuptaYos2",
+    "reference": "Constructed from modified Lennard-Jones potentials as defined by:",
+    "Pi_Omega_11": [0.0,-0.02006004,-0.060086427,138.89191],
+    "Pi_Omega_22": [0.0,-0.017828549,-0.0860056,164.00752],
+    "Bij": [0.0,0.010619942,-0.17687086,2.2461586]
+  },
+  {
+    "i": "NH3",
+    "j": "CO",
+    "model": "GuptaYos2",
+    "reference": "Constructed from modified Lennard-Jones potentials as defined by:",
+    "Pi_Omega_11": [0.0,-0.029329299,0.10259528,59.415173],
+    "Pi_Omega_22": [0.0,-0.028431622,0.099252928,64.184416],
+    "Bij": [0.0,0.0064966185,-0.10450911,1.648288]
+  },
+  {
+    "i": "NH3",
+    "j": "O2",
+    "model": "GuptaYos2",
+    "reference": "Constructed from modified Lennard-Jones potentials as defined by:",
+    "Pi_Omega_11": [0.0,-0.026660302,0.058005874,67.753726],
+    "Pi_Omega_22": [0.0,-0.025419041,0.048986927,74.81741],
+    "Bij": [0.0,0.0074455029,-0.12079584,1.7640879]
+  },
+  {
+    "i": "NH3",
+    "j": "N2",
+    "model": "GuptaYos2",
+    "reference": "Constructed from modified Lennard-Jones potentials as defined by:",
+    "Pi_Omega_11": [0.0,-0.033402641,0.1697291,45.604106],
+    "Pi_Omega_22": [0.0,-0.032862779,0.17226319,48.188819],
+    "Bij": [0.0,0.0052069444,-0.082512292,1.5047525]
+  },
+  {
+    "i": "NH3",
+    "j": "NO",
+    "model": "GuptaYos2",
+    "reference": "Constructed from modified Lennard-Jones potentials as defined by:",
+    "Pi_Omega_11": [0.0,-0.025712984,0.041574366,73.883246],
+    "Pi_Omega_22": [0.0,-0.024362397,0.030676498,82.187522],
+    "Bij": [0.0,0.007738562,-0.12620139,1.8069895]
+  },
+  {
+    "i": "NH3",
+    "j": "O",
+    "model": "GuptaYos2",
+    "reference": "Constructed from modified Lennard-Jones potentials as defined by:",
+    "Pi_Omega_11": [0.0,-0.026660302,0.058005874,59.483196],
+    "Pi_Omega_22": [0.0,-0.025419041,0.048986927,65.684633],
+    "Bij": [0.0,0.0074455029,-0.12079584,1.7640879]
+  },
+  {
+    "i": "NH3",
+    "j": "N",
+    "model": "GuptaYos2",
+    "reference": "Constructed from modified Lennard-Jones potentials as defined by:",
+    "Pi_Omega_11": [0.0,-0.033402641,0.1697291,39.276645],
+    "Pi_Omega_22": [0.0,-0.032862779,0.17226319,41.502735],
+    "Bij": [0.0,0.0052069444,-0.082512292,1.5047525]
+  },
+  {
+    "i": "NH3",
+    "j": "C",
+    "model": "GuptaYos2",
+    "reference": "Constructed from modified Lennard-Jones potentials as defined by:",
+    "Pi_Omega_11": [0.0056503631,-0.16707169,1.2200632,2.4029468],
+    "Pi_Omega_22": [0.0055706112,-0.16554724,1.2220338,2.5100195],
+    "Bij": [-0.0011707839,0.028111652,-0.22101594,1.9307497]
+  },
+  {
+    "i": "NH3",
+    "j": "NH",
+    "model": "GuptaYos2",
+    "reference": "Constructed from modified Lennard-Jones potentials as defined by:",
+    "Pi_Omega_11": [0.00049615664,-0.046904168,0.28967696,27.632298],
+    "Pi_Omega_22": [0.0,-0.035379221,0.2127014,35.271672],
+    "Bij": [0.0,0.0044150079,-0.069566337,1.4292673]
+  },
+  {
+    "i": "NH3",
+    "j": "H2",
+    "model": "GuptaYos2",
+    "reference": "Constructed from modified Lennard-Jones potentials as defined by:",
+    "Pi_Omega_11": [0.00067762376,-0.052509157,0.34427608,19.785784],
+    "Pi_Omega_22": [0.00012926623,-0.039915236,0.2602688,25.644851],
+    "Bij": [-0.0026798202,0.064414033,-0.50966476,4.1212529]
+  },
+  {
+    "i": "NH3",
+    "j": "H",
+    "model": "GuptaYos2",
+    "reference": "Constructed from modified Lennard-Jones potentials as defined by:",
+    "Pi_Omega_11": [0.0058633051,-0.17153111,1.2487312,1.8606965],
+    "Pi_Omega_22": [0.0057473051,-0.16909949,1.2433229,1.97977],
+    "Bij": [-0.0013254037,0.032220743,-0.25666529,2.1355455]
+  },
+  {
+    "i": "NH3",
+    "j": "OH",
+    "model": "GuptaYos2",
+    "reference": "Constructed from modified Lennard-Jones potentials as defined by:",
+    "Pi_Omega_11": [0.0,-0.03129847,0.13539506,43.437614],
+    "Pi_Omega_22": [0.0,-0.030574099,0.13493065,46.418008],
+    "Bij": [0.0,0.005869611,-0.093645213,1.5747205]
+  },
+  {
+    "i": "NH3",
+    "j": "CH",
+    "model": "GuptaYos2",
+    "reference": "Constructed from modified Lennard-Jones potentials as defined by:",
+    "Pi_Omega_11": [3.8462517e-05,-0.035349428,0.19352655,36.778495],
+    "Pi_Omega_22": [0.0,-0.034047364,0.19132977,39.224155],
+    "Bij": [0.0,0.0048351053,-0.076428699,1.4687676]
+  },
+  {
+    "i": "NH3",
+    "j": "CN",
+    "model": "GuptaYos2",
+    "reference": "Constructed from modified Lennard-Jones potentials as defined by:",
+    "Pi_Omega_11": [0.0,-0.032405311,0.15349565,49.708583],
+    "Pi_Omega_22": [0.0,-0.031769089,0.15447371,52.833403],
+    "Bij": [0.0,0.0055705578,-0.088539854,1.5417527]
+  },
+  {
+    "i": "NH",
+    "j": "OH",
+    "model": "GuptaYos2",
+    "reference": "Constructed from modified Lennard-Jones potentials as defined by:",
+    "Pi_Omega_11": [0.0080606677,-0.22669856,1.7068858,0.59819709],
+    "Pi_Omega_22": [0.0081575988,-0.22934996,1.7410117,0.57888712],
+    "Bij": [-0.00031751168,0.0072243826,-0.052937801,1.2391787]
+  },
+  {
+    "i": "NH",
+    "j": "CO2",
+    "model": "GuptaYos2",
+    "reference": "Constructed from modified Lennard-Jones potentials as defined by:",
+    "Pi_Omega_11": [0.005517251,-0.16324082,1.1838122,3.3550519],
+    "Pi_Omega_22": [0.005401251,-0.16081589,1.1784973,3.5693874],
+    "Bij": [-0.0013254037,0.032144331,-0.25542838,2.1250635]
+  },
+  {
+    "i": "NH",
+    "j": "CO",
+    "model": "GuptaYos2",
+    "reference": "Constructed from modified Lennard-Jones potentials as defined by:",
+    "Pi_Omega_11": [0.0075821792,-0.21455791,1.606116,0.93330891],
+    "Pi_Omega_22": [0.0076636083,-0.21685105,1.6375809,0.90821754],
+    "Bij": [-0.00035960724,0.0083195949,-0.062199018,1.2710358]
+  },
+  {
+    "i": "NH",
+    "j": "O2",
+    "model": "GuptaYos2",
+    "reference": "Constructed from modified Lennard-Jones potentials as defined by:",
+    "Pi_Omega_11": [0.0061515136,-0.18153872,1.3546285,1.6639595],
+    "Pi_Omega_22": [0.006181756,-0.1826705,1.3774867,1.6518653],
+    "Bij": [-0.00067295746,0.015549411,-0.11715824,1.4582767]
+  },
+  {
+    "i": "NH",
+    "j": "NO",
+    "model": "GuptaYos2",
+    "reference": "Constructed from modified Lennard-Jones potentials as defined by:",
+    "Pi_Omega_11": [0.0063699824,-0.18619664,1.3867244,1.572376],
+    "Pi_Omega_22": [0.0063852486,-0.18697412,1.4068666,1.5707137],
+    "Bij": [-0.00072559936,0.016899476,-0.12845916,1.503905]
+  },
+  {
+    "i": "NH",
+    "j": "O",
+    "model": "GuptaYos2",
+    "reference": "Constructed from modified Lennard-Jones potentials as defined by:",
+    "Pi_Omega_11": [0.0061515136,-0.18153872,1.3546285,1.4655438],
+    "Pi_Omega_22": [0.006181756,-0.1826705,1.3774867,1.4548918],
+    "Bij": [-0.00067295746,0.015549411,-0.11715824,1.4582767]
+  },
+  {
+    "i": "CO2",
+    "j": "CH",
+    "model": "GuptaYos2",
+    "reference": "Constructed from modified Lennard-Jones potentials as defined by:",
+    "Pi_Omega_11": [0.0051795542,-0.15484842,1.1150058,4.1223873],
+    "Pi_Omega_22": [0.0050270234,-0.15152529,1.1024577,4.4688208],
+    "Bij": [-0.0013771408,0.033502283,-0.2670899,2.1957123]
+  },
+  {
+    "i": "CO2",
+    "j": "H",
+    "model": "GuptaYos2",
+    "reference": "Constructed from modified Lennard-Jones potentials as defined by:",
+    "Pi_Omega_11": [0.0064835702,-0.18922908,1.413084,1.3878471],
+    "Pi_Omega_22": [0.0065138127,-0.19036249,1.435983,1.3771937],
+    "Bij": [-0.00067295746,0.01558568,-0.11771757,1.4613565]
+  },
+  {
+    "i": "CH",
+    "j": "CO",
+    "model": "GuptaYos2",
+    "reference": "Constructed from modified Lennard-Jones potentials as defined by:",
+    "Pi_Omega_11": [0.0074337992,-0.21077002,1.5744647,1.0382866],
+    "Pi_Omega_22": [0.0075083376,-0.212901,1.604697,1.0131507],
+    "Bij": [-0.00035237371,0.0081696447,-0.061197186,1.2682941]
+  },
+  {
+    "i": "CH",
+    "j": "OH",
+    "model": "GuptaYos2",
+    "reference": "Constructed from modified Lennard-Jones potentials as defined by:",
+    "Pi_Omega_11": [0.007914382,-0.22296263,1.6757138,0.66531043],
+    "Pi_Omega_22": [0.0080091661,-0.22556892,1.7095528,0.64399514],
+    "Bij": [-0.00031786189,0.0072563912,-0.053362689,1.2410235]
+  },
+  {
+    "i": "CH",
+    "j": "NO",
+    "model": "GuptaYos2",
+    "reference": "Constructed from modified Lennard-Jones potentials as defined by:",
+    "Pi_Omega_11": [0.0061955665,-0.18174234,1.3494227,1.778333],
+    "Pi_Omega_22": [0.0061909459,-0.18204454,1.3658538,1.7928296],
+    "Bij": [-0.00077286244,0.018085358,-0.13820466,1.5437769]
+  },
+  {
+    "i": "CH",
+    "j": "O2",
+    "model": "GuptaYos2",
+    "reference": "Constructed from modified Lennard-Jones potentials as defined by:",
+    "Pi_Omega_11": [0.006607145,-0.19210019,1.4349763,1.3908275],
+    "Pi_Omega_22": [0.0066373874,-0.1932342,1.4578904,1.3799399],
+    "Bij": [-0.00067295746,0.015599177,-0.11792606,1.4625081]
+  },
+  {
+    "i": "CH",
+    "j": "O",
+    "model": "GuptaYos2",
+    "reference": "Constructed from modified Lennard-Jones potentials as defined by:",
+    "Pi_Omega_11": [0.006607145,-0.19210019,1.4349763,1.2263436],
+    "Pi_Omega_22": [0.0066373874,-0.1932342,1.4578904,1.2167436],
+    "Bij": [-0.00067295746,0.015599177,-0.11792606,1.4625081]
+  },
+  {
+    "i": "CN",
+    "j": "OH",
+    "model": "GuptaYos2",
+    "reference": "Constructed from modified Lennard-Jones potentials as defined by:",
+    "Pi_Omega_11": [0.0075792718,-0.21448887,1.6055788,0.93481696],
+    "Pi_Omega_22": [0.0076607009,-0.21678194,1.6370425,0.90969224],
+    "Bij": [-0.00035960724,0.0083193237,-0.062194836,1.2710159]
+  },
+  {
+    "i": "H2",
+    "j": "OH",
+    "model": "GuptaYos2",
+    "reference": "Constructed from modified Lennard-Jones potentials as defined by:",
+    "Pi_Omega_11": [0.0084291012,-0.23597945,1.7833451,0.41390751],
+    "Pi_Omega_22": [0.008537853,-0.23890428,1.8195124,0.39878243],
+    "Bij": [-0.00024678928,0.0054676212,-0.038655817,1.1930905]
+  },
+  {
+    "i": "Ne",
+    "j": "N",
+    "model": "GuptaYos2",
+    "reference": "Constructed from modified Lennard-Jones potentials as defined by:",
+    "Pi_Omega_11": [0.015367242,-0.40311653,3.1045648,0.013439742],
+    "Pi_Omega_22": [0.015519616,-0.4069379,3.1463495,0.012878858],
+    "Bij": [0.0002849632,-0.0072056691,0.060161961,0.92794081]
+  },
+  {
+    "i": "Ne",
+    "j": "O",
+    "model": "GuptaYos2",
+    "reference": "Constructed from modified Lennard-Jones potentials as defined by:",
+    "Pi_Omega_11": [0.013604769,-0.3622447,2.7952929,0.027281107],
+    "Pi_Omega_22": [0.013741817,-0.36578301,2.8356163,0.026127324],
+    "Bij": [0.00027870415,-0.0072242866,0.061859891,0.91951237]
+  },
+  {
+    "i": "C2H",
+    "j": "C2H",
+    "model": "GuptaYos2",
+    "reference": "Biolsi, L., \"Transport Properties Associated with Carbon-Phenolic Ablators,\" AIAA Paper 82-0861.",
+    "Pi_Omega_11": [-0.0037367356,0.090150614,-0.91089226,1006.7442],
+    "Pi_Omega_22": [-0.0048273305,0.11424753,-1.0643922,1458.0142]
+  },
+  {
+    "i": "C2H2",
+    "j": "C2H2",
+    "model": "GuptaYos2",
+    "reference": "Biolsi, L., \"Transport Properties Associated with Carbon-Phenolic Ablators,\" AIAA Paper 82-0861.",
+    "Pi_Omega_11": [-0.004407204,0.10911979,-1.0864386,1896.9269],
+    "Pi_Omega_22": [-0.0054882249,0.13360225,-1.2477059,2829.8402]
+  },
+  {
+    "i": "C3H",
+    "j": "C3H",
+    "model": "GuptaYos2",
+    "reference": "Biolsi, L., \"Transport Properties Associated with Carbon-Phenolic Ablators,\" AIAA Paper 82-0861.",
+    "Pi_Omega_11": [-0.0074061324,0.1951832,-1.8974544,33076.877],
+    "Pi_Omega_22": [-0.0086728315,0.22561444,-2.1170976,58546.594]
+  },
+  {
+    "i": "C4H",
+    "j": "C4H",
+    "model": "GuptaYos2",
+    "reference": "Biolsi, L., \"Transport Properties Associated with Carbon-Phenolic Ablators,\" AIAA Paper 82-0861.",
+    "Pi_Omega_11": [-0.011821703,0.31936193,-3.0536438,1600205.6],
+    "Pi_Omega_22": [-0.012386896,0.33206836,-3.1237291,1844828.7]
+  },
+  {
+    "i": "N2",
+    "j": "NO",
+    "model": "GuptaYos2",
+    "reference": "Bzowski, J., Kestin, J., Mason, E.A., and Uribe, F.J., \"Equilibrium and Transport Properties of Gases Mixtures at Low Density: Eleven Polyatomic Gases ad Five Noble Gases,\" Journal of Phys. and Chem. Ref. Data, Vol. 19, No. 5, pp. 1179-1231, 1990.",
+    "Pi_Omega_11": [-0.0019295666,0.027995735,-0.31588514,128.80734],
+    "Pi_Omega_22": [-0.0068237776,0.14360616,-1.192224,1243.3086],
+    "Bij": [-0.0016815224,0.039014653,-0.27308192,1.9855901]
+  },
+  {
+    "i": "O2",
+    "j": "O2",
+    "model": "GuptaYos2",
+    "reference": "Bzowski, J., Kestin, J., Mason, E.A., and Uribe, F.J., \"Equilibrium and Transport Properties of Gases Mixtures at Low Density: Eleven Polyatomic Gases ad Five Noble Gases,\" Journal of Phys. and Chem. Ref. Data, Vol. 19, No. 5, pp. 1179-1231, 1990.",
+    "Pi_Omega_11": [-0.0008068265,0.01660248,-0.31472774,141.16458],
+    "Pi_Omega_22": [-0.0062931612,0.14624645,-1.3006927,1806.6892],
+    "Bij": [0.0,0.0,0.0099493999,1.0323213]
+  },
+  {
+    "i": "O2",
+    "j": "NO",
+    "model": "GuptaYos2",
+    "reference": "Bzowski, J., Kestin, J., Mason, E.A., and Uribe, F.J., \"Equilibrium and Transport Properties of Gases Mixtures at Low Density: Eleven Polyatomic Gases ad Five Noble Gases,\" Journal of Phys. and Chem. Ref. Data, Vol. 19, No. 5, pp. 1179-1231, 1990.",
+    "Pi_Omega_11": [-0.00064433839,0.0085378581,-0.23225102,113.71608],
+    "Pi_Omega_22": [-0.0068508672,0.15524564,-1.3479583,2003.789],
+    "Bij": [-0.00045925143,0.0098132796,-0.053760747,1.1714061]
+  },
+  {
+    "i": "NO",
+    "j": "NO",
+    "model": "GuptaYos2",
+    "reference": "Bzowski, J., Kestin, J., Mason, E.A., and Uribe, F.J., \"Equilibrium and Transport Properties of Gases Mixtures at Low Density: Eleven Polyatomic Gases ad Five Noble Gases,\" Journal of Phys. and Chem. Ref. Data, Vol. 19, No. 5, pp. 1179-1231, 1990.",
+    "Pi_Omega_11": [0.0,-0.011056066,-0.05921625,72.542367],
+    "Pi_Omega_22": [-0.0074942466,0.16626193,-1.4107027,2309.7604],
+    "Bij": [-0.00090819747,0.019980448,-0.12514701,1.3726521]
+  },
+  {
+    "i": "CO",
+    "j": "CO",
+    "model": "GuptaYos2",
+    "reference": "Bzowski, J., Kestin, J., Mason, E.A., and Uribe, F.J., \"Equilibrium and Transport Properties of Gases Mixtures at Low Density: Eleven Polyatomic Gases ad Five Noble Gases,\" Journal of Phys. and Chem. Ref. Data, Vol. 19, No. 5, pp. 1179-1231, 1990.",
+    "Pi_Omega_11": [-0.003789445,0.064890939,-0.55019539,213.01859],
+    "Pi_Omega_22": [-0.0061963698,0.12272791,-0.9936425,715.72877],
+    "Bij": [-0.0021630615,0.050526902,-0.3582933,2.4270721]
+  },
+  {
+    "i": "CO",
+    "j": "N2",
+    "model": "GuptaYos2",
+    "reference": "Bzowski, J., Kestin, J., Mason, E.A., and Uribe, F.J., \"Equilibrium and Transport Properties of Gases Mixtures at Low Density: Eleven Polyatomic Gases ad Five Noble Gases,\" Journal of Phys. and Chem. Ref. Data, Vol. 19, No. 5, pp. 1179-1231, 1990.",
+    "Pi_Omega_11": [-0.003789445,0.064890939,-0.55019539,213.01859],
+    "Pi_Omega_22": [-0.0061963698,0.12272791,-0.9936425,715.72877],
+    "Bij": [-0.0021630615,0.050526902,-0.3582933,2.4270721]
+  },
+  {
+    "i": "CO",
+    "j": "O2",
+    "model": "GuptaYos2",
+    "reference": "Bzowski, J., Kestin, J., Mason, E.A., and Uribe, F.J., \"Equilibrium and Transport Properties of Gases Mixtures at Low Density: Eleven Polyatomic Gases ad Five Noble Gases,\" Journal of Phys. and Chem. Ref. Data, Vol. 19, No. 5, pp. 1179-1231, 1990.",
+    "Pi_Omega_11": [-0.001783143,0.028638342,-0.34131755,138.83381],
+    "Pi_Omega_22": [-0.0062259945,0.1334842,-1.135176,1091.6853],
+    "Bij": [-0.001189061,0.027551576,-0.18942013,1.6337697]
+  },
+  {
+    "i": "CO",
+    "j": "NO",
+    "model": "GuptaYos2",
+    "reference": "Bzowski, J., Kestin, J., Mason, E.A., and Uribe, F.J., \"Equilibrium and Transport Properties of Gases Mixtures at Low Density: Eleven Polyatomic Gases ad Five Noble Gases,\" Journal of Phys. and Chem. Ref. Data, Vol. 19, No. 5, pp. 1179-1231, 1990.",
+    "Pi_Omega_11": [-0.0019339415,0.02810071,-0.31668268,129.05857],
+    "Pi_Omega_22": [-0.0068239903,0.14361554,-1.1923181,1243.6482],
+    "Bij": [-0.0016821451,0.039030005,-0.27320792,1.9862628]
+  },
+  {
+    "i": "CO2",
+    "j": "CO",
+    "model": "GuptaYos2",
+    "reference": "Bzowski, J., Kestin, J., Mason, E.A., and Uribe, F.J., \"Equilibrium and Transport Properties of Gases Mixtures at Low Density: Eleven Polyatomic Gases ad Five Noble Gases,\" Journal of Phys. and Chem. Ref. Data, Vol. 19, No. 5, pp. 1179-1231, 1990.",
+    "Pi_Omega_11": [-0.005976697,0.13462256,-1.2027136,1595.958],
+    "Pi_Omega_22": [-0.010031038,0.23415415,-1.9927531,13790.102],
+    "Bij": [-0.0021363011,0.051106616,-0.38468797,2.7772618]
+  },
+  {
+    "i": "CO2",
+    "j": "NO",
+    "model": "GuptaYos2",
+    "reference": "Bzowski, J., Kestin, J., Mason, E.A., and Uribe, F.J., \"Equilibrium and Transport Properties of Gases Mixtures at Low Density: Eleven Polyatomic Gases ad Five Noble Gases,\" Journal of Phys. and Chem. Ref. Data, Vol. 19, No. 5, pp. 1179-1231, 1990.",
+    "Pi_Omega_11": [-0.005353075,0.12638888,-1.1855628,1665.0492],
+    "Pi_Omega_22": [-0.010417445,0.25063587,-2.1721567,23989.646],
+    "Bij": [-0.0014263383,0.033599318,-0.24879387,1.9827702]
+  },
+  {
+    "i": "CO2",
+    "j": "N2",
+    "model": "GuptaYos2",
+    "reference": "Bzowski, J., Kestin, J., Mason, E.A., and Uribe, F.J., \"Equilibrium and Transport Properties of Gases Mixtures at Low Density: Eleven Polyatomic Gases ad Five Noble Gases,\" Journal of Phys. and Chem. Ref. Data, Vol. 19, No. 5, pp. 1179-1231, 1990.",
+    "Pi_Omega_11": [-0.0059728963,0.13451771,-1.2017259,1590.6893],
+    "Pi_Omega_22": [-0.010015399,0.23375777,-1.9894373,13661.381],
+    "Bij": [-0.0021346366,0.051072545,-0.38446046,2.7758527]
+  },
+  {
+    "i": "CO2",
+    "j": "O2",
+    "model": "GuptaYos2",
+    "reference": "Bzowski, J., Kestin, J., Mason, E.A., and Uribe, F.J., \"Equilibrium and Transport Properties of Gases Mixtures at Low Density: Eleven Polyatomic Gases ad Five Noble Gases,\" Journal of Phys. and Chem. Ref. Data, Vol. 19, No. 5, pp. 1179-1231, 1990.",
+    "Pi_Omega_11": [-0.0052872232,0.12885512,-1.2240137,1847.4936],
+    "Pi_Omega_22": [-0.0094655767,0.2315772,-2.0428398,17423.159],
+    "Bij": [-0.00099302275,0.024343551,-0.18837796,1.7546936]
+  },
+  {
+    "i": "CH4",
+    "j": "Ar",
+    "model": "GuptaYos2",
+    "reference": "Bzowski, J., Kestin, J., Mason, E.A., and Uribe, F.J., \"Equilibrium and Transport Properties of Gases Mixtures at Low Density: Eleven Polyatomic Gases ad Five Noble Gases,\" Journal of Phys. and Chem. Ref. Data, Vol. 19, No. 5, pp. 1179-1231, 1990.",
+    "Pi_Omega_11": [-0.0053938857,0.12587727,-1.1614616,1354.0567],
+    "Pi_Omega_22": [-0.010197461,0.24136892,-2.0620867,15012.078],
+    "Bij": [-0.0016658184,0.038734413,-0.28655448,2.1745185]
+  },
+  {
+    "i": "CH4",
+    "j": "CH4",
+    "model": "GuptaYos2",
+    "reference": "Bzowski, J., Kestin, J., Mason, E.A., and Uribe, F.J., \"Equilibrium and Transport Properties of Gases Mixtures at Low Density: Eleven Polyatomic Gases ad Five Noble Gases,\" Journal of Phys. and Chem. Ref. Data, Vol. 19, No. 5, pp. 1179-1231, 1990.",
+    "Pi_Omega_11": [-0.0049407593,0.11907567,-1.1385545,1544.9208],
+    "Pi_Omega_22": [-0.01058544,0.25519659,-2.2031056,26203.393],
+    "Bij": [-0.0014409023,0.032220844,-0.23055814,1.8729992]
+  },
+  {
+    "i": "CH4",
+    "j": "CO",
+    "model": "GuptaYos2",
+    "reference": "Bzowski, J., Kestin, J., Mason, E.A., and Uribe, F.J., \"Equilibrium and Transport Properties of Gases Mixtures at Low Density: Eleven Polyatomic Gases ad Five Noble Gases,\" Journal of Phys. and Chem. Ref. Data, Vol. 19, No. 5, pp. 1179-1231, 1990.",
+    "Pi_Omega_11": [-0.0040211492,0.083565458,-0.77648814,477.87151],
+    "Pi_Omega_22": [-0.0095662402,0.21474527,-1.779203,6490.2851],
+    "Bij": [-0.0024347745,0.055581969,-0.39931206,2.7474415]
+  },
+  {
+    "i": "CH4",
+    "j": "CO2",
+    "model": "GuptaYos2",
+    "reference": "Bzowski, J., Kestin, J., Mason, E.A., and Uribe, F.J., \"Equilibrium and Transport Properties of Gases Mixtures at Low Density: Eleven Polyatomic Gases ad Five Noble Gases,\" Journal of Phys. and Chem. Ref. Data, Vol. 19, No. 5, pp. 1179-1231, 1990.",
+    "Pi_Omega_11": [-0.0085423646,0.20862625,-1.8655911,11276.847],
+    "Pi_Omega_22": [-0.012869102,0.31573806,-2.7294196,123619.4],
+    "Bij": [-0.0022053543,0.053169789,-0.41632691,3.1822239]
+  },
+  {
+    "i": "CH4",
+    "j": "He",
+    "model": "GuptaYos2",
+    "reference": "Bzowski, J., Kestin, J., Mason, E.A., and Uribe, F.J., \"Equilibrium and Transport Properties of Gases Mixtures at Low Density: Eleven Polyatomic Gases ad Five Noble Gases,\" Journal of Phys. and Chem. Ref. Data, Vol. 19, No. 5, pp. 1179-1231, 1990.",
+    "Pi_Omega_11": [-0.0015654003,0.029527326,-0.36797698,102.14174],
+    "Pi_Omega_22": [-0.00053700501,0.0023420292,-0.12705101,58.06908],
+    "Bij": [-0.0010752931,0.027463798,-0.22089301,1.9660319]
+  },
+  {
+    "i": "CH4",
+    "j": "N2",
+    "model": "GuptaYos2",
+    "reference": "Bzowski, J., Kestin, J., Mason, E.A., and Uribe, F.J., \"Equilibrium and Transport Properties of Gases Mixtures at Low Density: Eleven Polyatomic Gases ad Five Noble Gases,\" Journal of Phys. and Chem. Ref. Data, Vol. 19, No. 5, pp. 1179-1231, 1990.",
+    "Pi_Omega_11": [-0.0040270347,0.083693965,-0.77718421,477.90666],
+    "Pi_Omega_22": [-0.009523398,0.21371137,-1.770927,6345.9007],
+    "Bij": [-0.0024200631,0.055272048,-0.39718879,2.7344031]
+  },
+  {
+    "i": "CH4",
+    "j": "NO",
+    "model": "GuptaYos2",
+    "reference": "Bzowski, J., Kestin, J., Mason, E.A., and Uribe, F.J., \"Equilibrium and Transport Properties of Gases Mixtures at Low Density: Eleven Polyatomic Gases ad Five Noble Gases,\" Journal of Phys. and Chem. Ref. Data, Vol. 19, No. 5, pp. 1179-1231, 1990.",
+    "Pi_Omega_11": [-0.0029686211,0.065028364,-0.67740032,401.14998],
+    "Pi_Omega_22": [-0.010035786,0.23272902,-1.964138,11200.442],
+    "Bij": [-0.0018355277,0.040203635,-0.27643574,2.0101805]
+  },
+  {
+    "i": "CH4",
+    "j": "O2",
+    "model": "GuptaYos2",
+    "reference": "Bzowski, J., Kestin, J., Mason, E.A., and Uribe, F.J., \"Equilibrium and Transport Properties of Gases Mixtures at Low Density: Eleven Polyatomic Gases ad Five Noble Gases,\" Journal of Phys. and Chem. Ref. Data, Vol. 19, No. 5, pp. 1179-1231, 1990.",
+    "Pi_Omega_11": [-0.0029605021,0.069396958,-0.73380149,470.3231],
+    "Pi_Omega_22": [-0.009151606,0.21628643,-1.8619776,8878.8072],
+    "Bij": [-0.00096646438,0.021053698,-0.14217377,1.4845724]
+  },
+  {
+    "i": "CF4",
+    "j": "CF4",
+    "model": "GuptaYos2",
+    "reference": "Bzowski, J., Kestin, J., Mason, E.A., and Uribe, F.J., \"Equilibrium and Transport Properties of Gases Mixtures at Low Density: Eleven Polyatomic Gases ad Five Noble Gases,\" Journal of Phys. and Chem. Ref. Data, Vol. 19, No. 5, pp. 1179-1231, 1990.",
+    "Pi_Omega_11": [-0.019846587,0.43264363,-3.3141638,338725.65],
+    "Pi_Omega_22": [-0.018460325,0.42524114,-3.4085183,654215.67],
+    "Bij": [-0.026773351,0.52999802,-3.4702758,2017.5182]
+  },
+  {
+    "i": "Ar",
+    "j": "CO",
+    "model": "GuptaYos2",
+    "reference": "Bzowski, J., Kestin, J., Mason, E.A., and Uribe, F.J., \"Equilibrium and Transport Properties of Gases Mixtures at Low Density: Eleven Polyatomic Gases ad Five Noble Gases,\" Journal of Phys. and Chem. Ref. Data, Vol. 19, No. 5, pp. 1179-1231, 1990.",
+    "Pi_Omega_11": [-0.0042075818,0.084516479,-0.75869613,383.23381],
+    "Pi_Omega_22": [-0.0074201196,0.16205773,-1.3602892,1952.5808],
+    "Bij": [-0.0018768243,0.04428154,-0.32122803,2.28875]
+  },
+  {
+    "i": "Ar",
+    "j": "NO",
+    "model": "GuptaYos2",
+    "reference": "Bzowski, J., Kestin, J., Mason, E.A., and Uribe, F.J., \"Equilibrium and Transport Properties of Gases Mixtures at Low Density: Eleven Polyatomic Gases ad Five Noble Gases,\" Journal of Phys. and Chem. Ref. Data, Vol. 19, No. 5, pp. 1179-1231, 1990.",
+    "Pi_Omega_11": [-0.0029577813,0.062035299,-0.63453866,305.37691],
+    "Pi_Omega_22": [-0.0080150466,0.18323602,-1.5707037,3590.754],
+    "Bij": [-0.0011573173,0.026802885,-0.18769648,1.6508652]
+  },
+  {
+    "i": "N2",
+    "j": "He",
+    "model": "GuptaYos2",
+    "reference": "Bzowski, J., Kestin, J., Mason, E.A., and Uribe, F.J., \"Equilibrium and Transport Properties of Gases Mixtures at Low Density: Eleven Polyatomic Gases ad Five Noble Gases,\" Journal of Phys. and Chem. Ref. Data, Vol. 19, No. 5, pp. 1179-1231, 1990.",
+    "Pi_Omega_11": [0.0018494075,-0.068688681,0.48198822,9.7698044],
+    "Pi_Omega_22": [-0.00076728809,-0.0037068586,-0.040067244,42.211241],
+    "Bij": [0.0052955948,-0.12892497,1.054848,0.064303737]
+  },
+  {
+    "i": "O2",
+    "j": "He",
+    "model": "GuptaYos2",
+    "reference": "Bzowski, J., Kestin, J., Mason, E.A., and Uribe, F.J., \"Equilibrium and Transport Properties of Gases Mixtures at Low Density: Eleven Polyatomic Gases ad Five Noble Gases,\" Journal of Phys. and Chem. Ref. Data, Vol. 19, No. 5, pp. 1179-1231, 1990.",
+    "Pi_Omega_11": [-0.0015917699,0.029165466,-0.37095278,93.041854],
+    "Pi_Omega_22": [-0.00032785229,-0.004687332,-0.068806901,44.3328],
+    "Bij": [-0.00094238566,0.024992601,-0.20621924,1.9264963]
+  },
+  {
+    "i": "NO",
+    "j": "He",
+    "model": "GuptaYos2",
+    "reference": "Bzowski, J., Kestin, J., Mason, E.A., and Uribe, F.J., \"Equilibrium and Transport Properties of Gases Mixtures at Low Density: Eleven Polyatomic Gases ad Five Noble Gases,\" Journal of Phys. and Chem. Ref. Data, Vol. 19, No. 5, pp. 1179-1231, 1990.",
+    "Pi_Omega_11": [-0.00085289032,0.0065458255,-0.17278445,56.058993],
+    "Pi_Omega_22": [-0.00027206209,-0.0098654479,-0.016298511,39.490994],
+    "Bij": [0.00025108055,-0.0045557223,0.038192683,0.9932661]
+  },
+  {
+    "i": "CO",
+    "j": "He",
+    "model": "GuptaYos2",
+    "reference": "Bzowski, J., Kestin, J., Mason, E.A., and Uribe, F.J., \"Equilibrium and Transport Properties of Gases Mixtures at Low Density: Eleven Polyatomic Gases ad Five Noble Gases,\" Journal of Phys. and Chem. Ref. Data, Vol. 19, No. 5, pp. 1179-1231, 1990.",
+    "Pi_Omega_11": [0.0019063446,-0.070118464,0.49387891,9.4610346],
+    "Pi_Omega_22": [-0.00078081523,-0.0033797098,-0.042492443,42.423734],
+    "Bij": [0.0053464386,-0.1301514,1.0645904,0.062686724]
+  },
+  {
+    "i": "CO2",
+    "j": "He",
+    "model": "GuptaYos2",
+    "reference": "Bzowski, J., Kestin, J., Mason, E.A., and Uribe, F.J., \"Equilibrium and Transport Properties of Gases Mixtures at Low Density: Eleven Polyatomic Gases ad Five Noble Gases,\" Journal of Phys. and Chem. Ref. Data, Vol. 19, No. 5, pp. 1179-1231, 1990.",
+    "Pi_Omega_11": [-0.00079167337,0.0085191124,-0.17299288,60.847612],
+    "Pi_Omega_22": [-0.00096034282,0.012777169,-0.20236974,72.546037],
+    "Bij": [-0.00014538159,0.0030454107,-0.0090195199,1.0692456]
+  },
+  {
+    "i": "Ne",
+    "j": "Ne",
+    "model": "GuptaYos2",
+    "reference": "Bzowski, J., Kestin, J., Mason, E.A., and Uribe, F.J., \"Equilibrium and Transport Properties of Gases Mixtures at Low Density: Eleven Polyatomic Gases ad Five Noble Gases,\" Journal of Phys. and Chem. Ref. Data, Vol. 19, No. 5, pp. 1179-1231, 1990.",
+    "Pi_Omega_11": [-0.0010439174,0.011616756,-0.18773746,44.269072],
+    "Pi_Omega_22": [-0.0010235051,0.011235611,-0.17871992,47.474224],
+    "Bij": [-0.00051808356,0.011339265,-0.067356115,1.2243903]
+  },
+  {
+    "i": "Ne",
+    "j": "Ar",
+    "model": "GuptaYos2",
+    "reference": "Bzowski, J., Kestin, J., Mason, E.A., and Uribe, F.J., \"Equilibrium and Transport Properties of Gases Mixtures at Low Density: Eleven Polyatomic Gases ad Five Noble Gases,\" Journal of Phys. and Chem. Ref. Data, Vol. 19, No. 5, pp. 1179-1231, 1990.",
+    "Pi_Omega_11": [-0.0022127624,0.040890085,-0.42401197,113.19158],
+    "Pi_Omega_22": [-0.0024600468,0.046157636,-0.45235833,130.96612],
+    "Bij": [-0.00086626927,0.019936866,-0.13720569,1.4699952]
+  },
+  {
+    "i": "N2",
+    "j": "Ne",
+    "model": "GuptaYos2",
+    "reference": "Bzowski, J., Kestin, J., Mason, E.A., and Uribe, F.J., \"Equilibrium and Transport Properties of Gases Mixtures at Low Density: Eleven Polyatomic Gases ad Five Noble Gases,\" Journal of Phys. and Chem. Ref. Data, Vol. 19, No. 5, pp. 1179-1231, 1990.",
+    "Pi_Omega_11": [-0.0017544003,0.017978014,-0.17802291,56.215247],
+    "Pi_Omega_22": [-0.0015329356,0.015383951,-0.17278753,63.849718],
+    "Bij": [-0.0018834103,0.040568028,-0.2616632,1.8322754]
+  },
+  {
+    "i": "O2",
+    "j": "Ne",
+    "model": "GuptaYos2",
+    "reference": "Bzowski, J., Kestin, J., Mason, E.A., and Uribe, F.J., \"Equilibrium and Transport Properties of Gases Mixtures at Low Density: Eleven Polyatomic Gases ad Five Noble Gases,\" Journal of Phys. and Chem. Ref. Data, Vol. 19, No. 5, pp. 1179-1231, 1990.",
+    "Pi_Omega_11": [-0.00085259919,0.013136462,-0.24399683,77.302664],
+    "Pi_Omega_22": [-0.0020076679,0.036801216,-0.38765056,111.99013],
+    "Bij": [0.001572711,-0.036225249,0.2837206,0.52713786]
+  },
+  {
+    "i": "NO",
+    "j": "Ne",
+    "model": "GuptaYos2",
+    "reference": "Bzowski, J., Kestin, J., Mason, E.A., and Uribe, F.J., \"Equilibrium and Transport Properties of Gases Mixtures at Low Density: Eleven Polyatomic Gases ad Five Noble Gases,\" Journal of Phys. and Chem. Ref. Data, Vol. 19, No. 5, pp. 1179-1231, 1990.",
+    "Pi_Omega_11": [-0.00060018525,0.0023544537,-0.13756226,58.346841],
+    "Pi_Omega_22": [-0.0018110763,0.027590649,-0.2948911,87.76609],
+    "Bij": [0.0015596206,-0.037038051,0.30283362,0.48534397]
+  },
+  {
+    "i": "N2",
+    "j": "N2+",
+    "model": "GuptaYos2",
+    "reference": "A. V. Phelps, J. Phys. Chem. Ref. Data 20, 557 (1991)",
+    "Pi_Omega_11": [-0.0029123716,0.096850678,-1.141654,7925.2169],
+    "Pi_Omega_22": [-0.016447237,0.47759522,-4.7641986,291275420.0],
+    "Bij": [-0.0012210048,0.036981511,-0.37908637,3.8973353]
+  },
+  {
+    "i": "O2",
+    "j": "N2+",
+    "model": "GuptaYos2",
+    "reference": "Eugene Levin and Michael Wright, JTHT V14, N1, 2003 Tang-Toennies potential results.",
+    "Pi_Omega_11": [-0.0040893007,0.17795266,-2.3800543,519492.98],
+    "Pi_Omega_22": [-0.0049176811,0.19694738,-2.502554,682136.29],
+    "Bij": [0.0,0.019088241,-0.33995817,4.9746856]
+  },
+  {
+    "i": "NO",
+    "j": "N2+",
+    "model": "GuptaYos2",
+    "reference": "Eugene Levin and Michael Wright, JTHT V14, N1, 2003 Tang-Toennies potential results.",
+    "Pi_Omega_11": [-0.0092292933,0.29813226,-3.2899475,4914704.6],
+    "Pi_Omega_22": [-0.0040133981,0.17290664,-2.2855449,364293.2],
+    "Bij": [0.0,0.019088241,-0.33995817,4.9746856]
+  },
+  {
+    "i": "N2",
+    "j": "NO+",
+    "model": "GuptaYos2",
+    "reference": "Eugene Levin and Michael Wright, JTHT V14, N1, 2003 Tang-Toennies potential results.",
+    "Pi_Omega_11": [0.0,0.091205839,-1.8728231,244320.2],
+    "Pi_Omega_22": [0.0,0.085112236,-1.7460044,144989.69],
+    "Bij": [0.010212155,-0.22098401,1.4979723,0.052811923]
+  },
+  {
+    "i": "O",
+    "j": "NO+",
+    "model": "GuptaYos2",
+    "reference": "Eugene Levin and Michael Wright, JTHT V14, N1, 2003 Tang-Toennies potential results.",
+    "Pi_Omega_11": [-0.016409054,0.46352852,-4.5479735,74250671.0],
+    "Pi_Omega_22": [-0.015315132,0.43541627,-4.2864279,35125207.0],
+    "Bij": [0.0,0.018013899,-0.31925093,4.5058804]
+  },
+  {
+    "i": "N",
+    "j": "NO+",
+    "model": "GuptaYos2",
+    "reference": "Eugene Levin and Michael Wright, JTHT V14, N1, 2003 Tang-Toennies potential results.",
+    "Pi_Omega_11": [-0.019605234,0.55570872,-5.4285702,1357444600.0],
+    "Pi_Omega_22": [-0.021009546,0.58910426,-5.6681361,2448659400.0],
+    "Bij": [-0.0076062871,0.2088517,-1.9045484,351.72221]
+  },
+  {
+    "i": "N2",
+    "j": "O2+",
+    "model": "GuptaYos2",
+    "reference": "Eugene Levin and Michael Wright, JTHT V14, N1, 2003 Tang-Toennies potential results.",
+    "Pi_Omega_11": [0.012405624,-0.20452111,0.35478475,1077.8357],
+    "Pi_Omega_22": [0.022455421,-0.45106797,2.376342,4.7754696],
+    "Bij": [0.014257376,-0.3166131,2.2373118,0.008223887]
+  },
+  {
+    "i": "N2",
+    "j": "O+",
+    "model": "GuptaYos2",
+    "reference": "Eugene Levin and Michael Wright, JTHT V14, N1, 2003 Tang-Toennies potential results.",
+    "Pi_Omega_11": [0.010352091,-0.15733723,0.02932615,2100.3616],
+    "Pi_Omega_22": [0.018733,-0.36163781,1.6947101,25.244859],
+    "Bij": [0.014257376,-0.3166131,2.2373118,0.008223887]
+  },
+  {
+    "i": "NO",
+    "j": "O2+",
+    "model": "GuptaYos2",
+    "reference": "Eugene Levin and Michael Wright, JTHT V14, N1, 2003 Tang-Toennies potential results.",
+    "Pi_Omega_11": [0.013731123,-0.23920299,0.67093226,400.68731],
+    "Pi_Omega_22": [0.022679271,-0.4571092,2.4427275,3.6733514],
+    "Bij": [0.014257376,-0.3166131,2.2373118,0.008223887]
+  },
+  {
+    "i": "N",
+    "j": "O2+",
+    "model": "GuptaYos2",
+    "reference": "Eugene Levin and Michael Wright, JTHT V14, N1, 2003 Tang-Toennies potential results.",
+    "Pi_Omega_11": [0.0,0.083065769,-1.7501512,108467.99],
+    "Pi_Omega_22": [0.011205,-0.18182149,0.32624972,551.86183],
+    "Bij": [0.011458901,-0.25512681,1.8076168,0.020840987]
+  },
+  {
+    "i": "O",
+    "j": "O2+",
+    "model": "GuptaYos2",
+    "reference": "Eugene Levin and Michael Wright, JTHT V14, N1, 2003 Tang-Toennies potential results.",
+    "Pi_Omega_11": [-0.002941797,0.15129273,-2.2497964,293252.15],
+    "Pi_Omega_22": [0.0,0.083446262,-1.7191179,80539.928],
+    "Bij": [0.0,0.019088241,-0.33995817,4.9746856]
+  },
+  {
+    "i": "O2",
+    "j": "NO+",
+    "model": "GuptaYos2",
+    "reference": "Eugene Levin and Michael Wright, JTHT V14, N1, 2003 Tang-Toennies potential results.",
+    "Pi_Omega_11": [-0.0037822765,0.17967016,-2.5409098,1184043.5],
+    "Pi_Omega_22": [0.0,0.084737359,-1.7290488,124851.94],
+    "Bij": [0.0,0.019088241,-0.33995817,4.9746856]
+  },
+  {
+    "i": "O2",
+    "j": "N+",
+    "model": "GuptaYos2",
+    "reference": "Eugene Levin and Michael Wright, JTHT V14, N1, 2003 Tang-Toennies potential results.",
+    "Pi_Omega_11": [0.0,0.087745537,-1.8347158,198301.2],
+    "Pi_Omega_22": [0.0098019578,-0.14699425,0.039382459,1511.2165],
+    "Bij": [0.010212155,-0.22098401,1.4979723,0.052811923]
+  },
+  {
+    "i": "O2",
+    "j": "O+",
+    "model": "GuptaYos2",
+    "reference": "Eugene Levin and Michael Wright, JTHT V14, N1, 2003 Tang-Toennies potential results.",
+    "Pi_Omega_11": [0.0,0.093559978,-1.9842999,430974.9],
+    "Pi_Omega_22": [0.01420797,-0.24736726,0.74561859,325.19188],
+    "Bij": [0.010212155,-0.22098401,1.4979723,0.052811923]
+  },
+  {
+    "i": "NO",
+    "j": "N+",
+    "model": "GuptaYos2",
+    "reference": "Eugene Levin and Michael Wright, JTHT V14, N1, 2003 Tang-Toennies potential results.",
+    "Pi_Omega_11": [0.0,0.086531037,-1.8117931,186212.72],
+    "Pi_Omega_22": [0.011716366,-0.19289789,0.40269474,608.9159],
+    "Bij": [0.011458901,-0.25512681,1.8076168,0.020840987]
+  },
+  {
+    "i": "NO",
+    "j": "O+",
+    "model": "GuptaYos2",
+    "reference": "Eugene Levin and Michael Wright, JTHT V14, N1, 2003 Tang-Toennies potential results.",
+    "Pi_Omega_11": [0.0083856973,-0.10972656,-0.33896281,5200.469],
+    "Pi_Omega_22": [0.018015337,-0.34415293,1.5658151,33.303758],
+    "Bij": [0.015504122,-0.35075589,2.5469563,0.0032453642]
+  },
+  {
+    "i": "N",
+    "j": "N2+",
+    "model": "GuptaYos2",
+    "reference": "Eugene Levin and Michael Wright, JTHT V14, N1, 2003 Tang-Toennies potential results.",
+    "Pi_Omega_11": [-0.014501284,0.41085338,-4.0115094,15735451.0],
+    "Pi_Omega_22": [-0.012882395,0.37306469,-3.710676,7544498.1],
+    "Bij": [-0.010221728,0.25796653,-2.1579587,435.46781]
+  },
+  {
+    "i": "O",
+    "j": "N2+",
+    "model": "GuptaYos2",
+    "reference": "Eugene Levin and Michael Wright, JTHT V14, N1, 2003 Tang-Toennies potential results.",
+    "Pi_Omega_11": [-0.016923472,0.46067692,-4.3294966,25538927.0],
+    "Pi_Omega_22": [-0.017420606,0.4712695,-4.3841087,28275095.0],
+    "Bij": [-0.010221728,0.25796653,-2.1579587,435.46781]
+  },
+  {
+    "i": "N2",
+    "j": "N+",
+    "model": "GuptaYos2",
+    "reference": "Bourdon, A. and Vervisch, P., Phys. Plasmas, Vol. 4, No. 11, pp. 4144-4157, 1997",
+    "Pi_Omega_11": [-0.010687805,0.24479697,-2.3192863,106892.29],
+    "Pi_Omega_22": [-0.0070776069,0.17917938,-1.910241,46736.263],
+    "Bij": [0.0032953495,-0.055050729,0.28051098,0.82149036]
+  },
+  {
+    "i": "NO",
+    "j": "NO+",
+    "model": "GuptaYos2",
+    "reference": "omega11 & B* combined TT potential from (af) with charge exchange results, using mixing rule from Murphy:",
+    "Pi_Omega_11": [-0.0081158474,0.2147428,-2.014845,62986.385],
+    "Pi_Omega_22": [0.011055777,-0.16621846,0.14372166,1318.2061],
+    "Bij": [0.0,0.01971207,-0.34942299,5.1501315]
+  },
+  {
+    "i": "O2",
+    "j": "O2+",
+    "model": "GuptaYos2",
+    "reference": "omega11 & B* combined TT potential from (af) with charge exchange results, using mixing rule from Murphy:",
+    "Pi_Omega_11": [-0.0089520932,0.22749642,-2.0758341,67674.419],
+    "Pi_Omega_22": [0.028664463,-0.5808724,3.2564558,0.66890428],
+    "Bij": [0.0,0.01971207,-0.34942299,5.1501315]
+  },
+  {
+    "i": "H",
+    "j": "H2+",
+    "model": "GuptaYos2",
+    "reference": "P.S. Krstic and D.R. Schultz, Journal of Physics B, Vol. 36, pp. 385-398, 2003",
+    "Pi_Omega_11": [-0.064016537,1.5981213,-13.691279,2.9206827e+18],
+    "Pi_Omega_22": [-0.12244926,2.9659011,-24.045794,2.8303011e+29],
+    "Bij": [-0.0031561919,0.11527371,-1.2343622,76.721128]
+  },
+  {
+    "i": "He",
+    "j": "Ar+",
+    "model": "GuptaYos2",
+    "reference": "Unpuplished data using the same methodology as layed out in:",
+    "Pi_Omega_11": [-0.017076151,0.41911503,-3.683725,1063504.9],
+    "Pi_Omega_22": [-0.018204598,0.44849837,-3.9067336,2003501.2],
+    "Bij": [-0.00306696,0.084342207,-0.74534999,9.6946651]
+  },
+  {
+    "i": "He",
+    "j": "C+",
+    "model": "GuptaYos2",
+    "reference": "Unpuplished data using the same methodology as layed out in:",
+    "Pi_Omega_11": [-0.018455429,0.46656312,-4.28605,9152218.1],
+    "Pi_Omega_22": [-0.018502799,0.47111115,-4.3120238,10298665.0],
+    "Bij": [-0.0049877019,0.13626523,-1.1988754,36.33354]
+  },
+  {
+    "i": "He",
+    "j": "O+",
+    "model": "GuptaYos2",
+    "reference": "Unpuplished data using the same methodology as layed out in:",
+    "Pi_Omega_11": [-0.017905051,0.45946921,-4.2315204,7043172.3],
+    "Pi_Omega_22": [-0.019084861,0.48942167,-4.4489214,12635996.0],
+    "Bij": [-0.0056401356,0.14543107,-1.2275359,34.913272]
+  },
+  {
+    "i": "He",
+    "j": "Si+",
+    "model": "GuptaYos2",
+    "reference": "Unpuplished data using the same methodology as layed out in:",
+    "Pi_Omega_11": [-0.011958285,0.26880265,-2.2924614,20530.706],
+    "Pi_Omega_22": [-0.012509337,0.28223689,-2.3686123,25527.53],
+    "Bij": [-0.0030077962,0.076805235,-0.61971971,5.7357419]
+  },
+  {
+    "i": "He",
+    "j": "N+",
+    "model": "GuptaYos2",
+    "reference": "Unpuplished data using the same methodology as layed out in:",
+    "Pi_Omega_11": [0.0042543236,-0.062563276,-0.25009169,419.08197],
+    "Pi_Omega_22": [0.0066660767,-0.12445125,0.31258885,83.371308],
+    "Bij": [0.012313123,-0.27464006,2.0003465,0.010518]
+  },
+  {
+    "i": "Ar",
+    "j": "Ar+",
+    "model": "GuptaYos2",
+    "reference": "Michael Wright and Eugene Levin, JTHT Vol 19, No 1, 2005, pp 127-128 Tang-Toennies potential results.",
+    "Pi_Omega_11": [-0.0012742512,0.03557561,-0.43386092,728.13383],
+    "Pi_Omega_22": [0.0059457777,-0.059832016,-0.54418939,4974.4297],
+    "Bij": [0.00029499748,-0.0069591972,0.053211951,0.94022777]
+  },
+  {
+    "i": "Ar",
+    "j": "N2+",
+    "model": "GuptaYos2",
+    "reference": "Michael Wright and Eugene Levin, JTHT Vol 19, No 1, 2005, pp 127-128 Tang-Toennies potential results.",
+    "Pi_Omega_11": [-0.0065246602,0.2272963,-2.659094,740956.22],
+    "Pi_Omega_22": [-0.0025687329,0.13694452,-1.9761612,146316.07],
+    "Bij": [0.0,0.0,0.0,1.25]
+  },
+  {
+    "i": "Ar",
+    "j": "O2+",
+    "model": "GuptaYos2",
+    "reference": "Michael Wright and Eugene Levin, JTHT Vol 19, No 1, 2005, pp 127-128 Tang-Toennies potential results.",
+    "Pi_Omega_11": [0.014112728,-0.25050174,0.79433203,251.2141],
+    "Pi_Omega_22": [0.023330821,-0.47108238,2.5519545,2.6562616],
+    "Bij": [0.0,0.0,0.0,1.25]
+  },
+  {
+    "i": "Ar",
+    "j": "NO+",
+    "model": "GuptaYos2",
+    "reference": "Michael Wright and Eugene Levin, JTHT Vol 19, No 1, 2005, pp 127-128 Tang-Toennies potential results.",
+    "Pi_Omega_11": [0.0,0.080022197,-1.649139,83095.444],
+    "Pi_Omega_22": [0.006645906,-0.076580888,-0.42129309,3743.1904],
+    "Bij": [0.0,0.0,0.0,1.25]
+  },
+  {
+    "i": "Ar",
+    "j": "N+",
+    "model": "GuptaYos2",
+    "reference": "Michael Wright and Eugene Levin, JTHT Vol 19, No 1, 2005, pp 127-128 Tang-Toennies potential results.",
+    "Pi_Omega_11": [0.0,0.080883019,-1.6985617,107578.68],
+    "Pi_Omega_22": [0.012712454,-0.21727305,0.61517071,315.38575],
+    "Bij": [0.0,0.0079429858,-0.14934282,2.2120234]
+  },
+  {
+    "i": "Ar",
+    "j": "O+",
+    "model": "GuptaYos2",
+    "reference": "Michael Wright and Eugene Levin, JTHT Vol 19, No 1, 2005, pp 127-128 Tang-Toennies potential results.",
+    "Pi_Omega_11": [0.010060923,-0.15425405,0.068851093,1450.7559],
+    "Pi_Omega_22": [0.018839783,-0.36325998,1.7244763,20.653194],
+    "Bij": [0.014271947,-0.33531386,2.5411752,0.0024217598]
+  },
+  {
+    "i": "N2",
+    "j": "Ar+",
+    "model": "GuptaYos2",
+    "reference": "Michael Wright and Eugene Levin, JTHT Vol 19, No 1, 2005, pp 127-128 Tang-Toennies potential results.",
+    "Pi_Omega_11": [0.0,0.079922091,-1.6601574,92811.095],
+    "Pi_Omega_22": [0.008099734,-0.11087503,-0.16663904,2120.9271],
+    "Bij": [0.0,0.0,0.0,1.2]
+  },
+  {
+    "i": "O2",
+    "j": "Ar+",
+    "model": "GuptaYos2",
+    "reference": "Michael Wright and Eugene Levin, JTHT Vol 19, No 1, 2005, pp 127-128 Tang-Toennies potential results.",
+    "Pi_Omega_11": [-0.00099585995,0.10325403,-1.8313121,131721.46],
+    "Pi_Omega_22": [0.0058882205,-0.059929641,-0.54061701,4852.1093],
+    "Bij": [0.0,0.0,0.0,1.25]
+  },
+  {
+    "i": "NO",
+    "j": "Ar+",
+    "model": "GuptaYos2",
+    "reference": "Michael Wright and Eugene Levin, JTHT Vol 19, No 1, 2005, pp 127-128 Tang-Toennies potential results.",
+    "Pi_Omega_11": [0.0,0.079598476,-1.6466585,84981.692],
+    "Pi_Omega_22": [0.007838811,-0.10527281,-0.1980219,2171.4838],
+    "Bij": [0.0,0.0,-6.5919492e-17,1.2]
+  },
+  {
+    "i": "N",
+    "j": "Ar+",
+    "model": "GuptaYos2",
+    "reference": "Michael Wright and Eugene Levin, JTHT Vol 19, No 1, 2005, pp 127-128 Tang-Toennies potential results.",
+    "Pi_Omega_11": [-0.0087848033,0.28122173,-3.1039713,1942036.6],
+    "Pi_Omega_22": [-0.0053833212,0.20401021,-2.5195282,489134.69],
+    "Bij": [0.0,0.0,0.0,1.25]
+  },
+  {
+    "i": "O",
+    "j": "Ar+",
+    "model": "GuptaYos2",
+    "reference": "Michael Wright and Eugene Levin, JTHT Vol 19, No 1, 2005, pp 127-128 Tang-Toennies potential results.",
+    "Pi_Omega_11": [-0.013575748,0.38585039,-3.8290288,8158421.4],
+    "Pi_Omega_22": [-0.012595081,0.36729121,-3.7101041,6936052.4],
+    "Bij": [0.0,0.0,0.0,1.25]
+  },
+  {
+    "i": "e",
+    "j": "Ar",
+    "model": "GuptaYos2",
+    "reference": "Wright, M.J., Bose, D., Palmer, G.E., and Levin, E. AIAA Journal, Vol. 43, No. 12, 2005, pp. 2558-2564",
+    "Pi_Omega_11": [-0.047851622,1.2362181,-9.5460403,2667891000.0],
+    "Pi_Omega_22": [-0.12840719,3.1639659,-24.669342,3.4404032e+26],
+    "Bij": [0.0,0.0,0.0,0.01]
+  },
+  {
+    "i": "e",
+    "j": "N2",
+    "model": "GuptaYos2",
+    "reference": "Wright, M.J., Bose, D., Palmer, G.E., and Levin, E. AIAA Journal, Vol. 43, No. 12, 2005, pp. 2558-2564",
+    "Pi_Omega_11": [-0.010525124,0.1349895,0.12524805,0.15066506],
+    "Pi_Omega_22": [-0.0042254948,-0.052965163,1.9157708,0.00063263309],
+    "Bij": [-0.047455438,1.1632646,-9.1815194,11058639000.0]
+  },
+  {
+    "i": "e",
+    "j": "O2",
+    "model": "GuptaYos2",
+    "reference": "Wright, M.J., Bose, D., Palmer, G.E., and Levin, E. AIAA Journal, Vol. 43, No. 12, 2005, pp. 2558-2564",
+    "Pi_Omega_11": [0.023527001,-0.69632323,6.8035475,1.8335509e-09],
+    "Pi_Omega_22": [0.0096744867,-0.33759583,3.7952121,6.8468036e-06],
+    "Bij": [0.01185412,-0.38796995,4.1224164,6.3699648e-07]
+  },
+  {
+    "i": "e",
+    "j": "NO",
+    "model": "GuptaYos2",
+    "reference": "Wright, M.J., Bose, D., Palmer, G.E., and Levin, E. AIAA Journal, Vol. 43, No. 12, 2005, pp. 2558-2564",
+    "Pi_Omega_11": [0.10414818,-2.8369126,25.323135,7.7138358e-32],
+    "Pi_Omega_22": [0.0,0.054444485,-1.2854128,13857.556],
+    "Bij": [0.14099806,-3.8236826,34.31955,6.4193894e-45]
+  },
+  {
+    "i": "e",
+    "j": "N",
+    "model": "GuptaYos2",
+    "reference": "Wright, M.J., Bose, D., Palmer, G.E., and Levin, E. AIAA Journal, Vol. 43, No. 12, 2005, pp. 2558-2564",
+    "Pi_Omega_11": [0.0,0.16554247,-3.4986344,592680380.0],
+    "Pi_Omega_22": [-0.10903638,2.8678381,-25.29755,3.4838798e+33],
+    "Bij": [0.0,0.19140108,-3.3217884,1830157.4]
+  },
+  {
+    "i": "e",
+    "j": "O",
+    "model": "GuptaYos2",
+    "reference": "Wright, M.J., Bose, D., Palmer, G.E., and Levin, E. AIAA Journal, Vol. 43, No. 12, 2005, pp. 2558-2564",
+    "Pi_Omega_11": [0.0099865506,-0.27407431,2.6561032,0.00043080676],
+    "Pi_Omega_22": [-0.0179241,0.40402656,-2.6712374,414.47669],
+    "Bij": [0.0052886509,-0.16507955,1.6651726,0.0037610843]
+  },
+  {
+    "i": "C",
+    "j": "N+",
+    "model": "GuptaYos2",
+    "reference": "Wright, M.J., Hwang, H., and Schwenke, D. AIAA Journal, to be published 2006",
+    "Pi_Omega_11": [0.0060105335,-0.059961412,-0.61836568,7473.7576],
+    "Pi_Omega_22": [0.013980332,-0.25015796,0.8905726,155.25974],
+    "Bij": [0.0,0.0,0.0,1.2]
+  },
+  {
+    "i": "C",
+    "j": "O+",
+    "model": "GuptaYos2",
+    "reference": "Wright, M.J., Hwang, H., and Schwenke, D. AIAA Journal, to be published 2006",
+    "Pi_Omega_11": [0.011327522,-0.18629044,0.33187912,749.1711],
+    "Pi_Omega_22": [0.019482486,-0.3809587,1.878163,14.059517],
+    "Bij": [0.0,0.0,0.0,1.2]
+  },
+  {
+    "i": "C",
+    "j": "C+",
+    "model": "GuptaYos2",
+    "reference": "Wright, M.J., Hwang, H., and Schwenke, D. AIAA Journal, to be published 2006",
+    "Pi_Omega_11": [-0.0032555952,0.090719132,-0.95840904,3720.6547],
+    "Pi_Omega_22": [0.0,0.07184453,-1.5114947,53116.35],
+    "Bij": [0.0,0.0,0.0,1.2]
+  },
+  {
+    "i": "O2",
+    "j": "C+",
+    "model": "GuptaYos2",
+    "reference": "Wright, M.J., Hwang, H., and Schwenke, D. AIAA Journal, to be published 2006",
+    "Pi_Omega_11": [-0.0022289521,0.12615904,-1.9790036,180516.16],
+    "Pi_Omega_22": [0.0,0.072378187,-1.5357286,58058.599],
+    "Bij": [0.0,0.0,0.0,1.2]
+  },
+  {
+    "i": "CO",
+    "j": "N+",
+    "model": "GuptaYos2",
+    "reference": "Wright, M.J., Hwang, H., and Schwenke, D. AIAA Journal, to be published 2006",
+    "Pi_Omega_11": [0.0089739173,-0.13051924,-0.10895301,2555.7151],
+    "Pi_Omega_22": [0.018502251,-0.35933702,1.7211348,21.935507],
+    "Bij": [0.0,0.0,0.0,1.2]
+  },
+  {
+    "i": "CO",
+    "j": "O+",
+    "model": "GuptaYos2",
+    "reference": "Wright, M.J., Hwang, H., and Schwenke, D. AIAA Journal, to be published 2006",
+    "Pi_Omega_11": [0.014940274,-0.27345696,0.98158388,174.70794],
+    "Pi_Omega_22": [0.023962181,-0.4909224,2.7307876,1.8009885],
+    "Bij": [0.0,0.0,0.0,1.2]
+  },
+  {
+    "i": "CO",
+    "j": "C+",
+    "model": "GuptaYos2",
+    "reference": "Wright, M.J., Hwang, H., and Schwenke, D. AIAA Journal, to be published 2006",
+    "Pi_Omega_11": [0.0057556479,-0.057132687,-0.62219804,7822.3922],
+    "Pi_Omega_22": [0.013053425,-0.22977825,0.7382927,246.0413],
+    "Bij": [0.0,0.0,0.0,1.2]
+  },
+  {
+    "i": "CO",
+    "j": "CO+",
+    "model": "GuptaYos2",
+    "reference": "Wright, M.J., Hwang, H., and Schwenke, D. AIAA Journal, to be published 2006",
+    "Pi_Omega_11": [0.0023746714,-0.013637559,-0.3982284,1238.5085],
+    "Pi_Omega_22": [2.1561323e-05,-0.00037539987,-0.4979962,2046.3547],
+    "Bij": [0.0,0.0,0.0,1.2]
+  },
+  {
+    "i": "N",
+    "j": "C+",
+    "model": "GuptaYos2",
+    "reference": "Wright, M.J., Hwang, H., and Schwenke, D. AIAA Journal, to be published 2006",
+    "Pi_Omega_11": [-0.0074923162,0.25151818,-2.8950137,1214549.8],
+    "Pi_Omega_22": [-0.00333943,0.15600502,-2.1632985,207420.92],
+    "Bij": [0.0,0.0,0.0,1.2]
+  },
+  {
+    "i": "O",
+    "j": "C+",
+    "model": "GuptaYos2",
+    "reference": "Wright, M.J., Hwang, H., and Schwenke, D. AIAA Journal, to be published 2006",
+    "Pi_Omega_11": [-0.016602915,0.453917,-4.3468443,30226673.0],
+    "Pi_Omega_22": [-0.010999918,0.33130018,-3.4576164,3911960.2],
+    "Bij": [0.0,0.0,0.0,1.2]
+  },
+  {
+    "i": "CN",
+    "j": "CN+",
+    "model": "GuptaYos2",
+    "reference": "Wright, M.J., Hwang, H., and Schwenke, D. AIAA Journal, to be published 2006",
+    "Pi_Omega_11": [-0.0022431287,0.09284042,-1.2057707,9309.2563],
+    "Pi_Omega_22": [-1.9728558e-05,0.00040983097,-0.5028427,2092.9251],
+    "Bij": [0.0,0.0,0.0,1.2]
+  },
+  {
+    "i": "e",
+    "j": "C",
+    "model": "GuptaYos2",
+    "reference": "Wright, M.J., Hwang, H., and Schwenke, D. AIAA Journal, to be published 2006",
+    "Pi_Omega_11": [0.15798166,-4.0841241,34.597459,3.5643869e-41],
+    "Pi_Omega_22": [0.0,0.071303638,-1.5829364,76685.137],
+    "Bij": [0.33109681,-8.5121467,72.544339,1.2587771e-89]
+  },
+  {
+    "i": "e",
+    "j": "CO",
+    "model": "GuptaYos2",
+    "reference": "Wright, M.J., Hwang, H., and Schwenke, D. AIAA Journal, to be published 2006",
+    "Pi_Omega_11": [-0.059042563,1.254361,-8.3647713,377350470.0],
+    "Pi_Omega_22": [-0.064474526,1.3350506,-8.5316808,127030780.0],
+    "Bij": [-0.20380566,5.0883677,-41.706001,4.7033269e+48]
+  },
+  {
+    "i": "e",
+    "j": "CN",
+    "model": "GuptaYos2",
+    "reference": "Wright, M.J., Hwang, H., and Schwenke, D. AIAA Journal, to be published 2006",
+    "Pi_Omega_11": [-0.059042563,1.254361,-8.3647713,377350470.0],
+    "Pi_Omega_22": [-0.064474526,1.3350506,-8.5316808,127030780.0],
+    "Bij": [-0.20380566,5.0883677,-41.706001,4.7033269e+48]
+  },
+  {
+    "i": "e",
+    "j": "CO2",
+    "model": "GuptaYos2",
+    "reference": "Wright, M.J., Hwang, H., and Schwenke, D. AIAA Journal, to be published 2006",
+    "Pi_Omega_11": [0.067106422,-1.3775666,8.2135478,6.1554747e-05],
+    "Pi_Omega_22": [-0.0050918922,0.49653302,-7.6907687,689425250000000.0],
+    "Bij": [0.069377356,-1.7698827,14.63024,1.0206248e-17]
+  },
+  {
+    "i": "CO",
+    "j": "C",
+    "model": "GuptaYos2",
+    "reference": "Magin, T., Degrez, G., and Sokolova, I., AIAA Paper No. 2002-2226, May 2002",
+    "Pi_Omega_11": [-0.0013093193,0.015968467,-0.25104707,86.243651],
+    "Pi_Omega_22": [-0.001214799,0.014899867,-0.23753715,94.190315],
+    "Bij": [0.00017420198,-0.0025498641,0.02248437,1.0384059]
+  },
+  {
+    "i": "CO",
+    "j": "O",
+    "model": "GuptaYos2",
+    "reference": "Magin, T., Degrez, G., and Sokolova, I., AIAA Paper No. 2002-2226, May 2002",
+    "Pi_Omega_11": [-0.0009219568,0.0093627999,-0.19755831,69.170978],
+    "Pi_Omega_22": [-0.00084742308,0.0085762396,-0.18648005,75.580503],
+    "Bij": [0.00012490027,-0.0017155111,0.016320853,1.0485898]
+  },
+  {
+    "i": "O2",
+    "j": "C",
+    "model": "GuptaYos2",
+    "reference": "Magin, T., Degrez, G., and Sokolova, I., AIAA Paper No. 2002-2226, May 2002",
+    "Pi_Omega_11": [-0.0010879416,0.011997429,-0.21927912,77.021435],
+    "Pi_Omega_22": [-0.0010061962,0.011139684,-0.20753461,84.271593],
+    "Bij": [0.00014993702,-0.0021507909,0.019630958,1.0427872]
+  },
+  {
+    "i": "Cl2",
+    "j": "Cl2",
+    "model": "GuptaYos2",
+    "reference": "Chemkin datafiles for Rocket nozzle chemistry generated by ATK omega11 was backed out of binary diffusion coefficient data, A*=1.1 assumed",
+    "Pi_Omega_11": [-0.011099768,0.26126922,-2.2030629,19281.562],
+    "Pi_Omega_22": [-0.011099725,0.26126864,-2.2030615,21209.796]
+  },
+  {
+    "i": "Cl2",
+    "j": "HCl",
+    "model": "GuptaYos2",
+    "reference": "Chemkin datafiles for Rocket nozzle chemistry generated by ATK omega11 was backed out of binary diffusion coefficient data, A*=1.1 assumed",
+    "Pi_Omega_11": [-0.015459663,0.37483044,-3.1865891,326095.71],
+    "Pi_Omega_22": [-0.015458683,0.3748107,-3.1864605,358607.9]
+  },
+  {
+    "i": "Cl",
+    "j": "Cl2",
+    "model": "GuptaYos2",
+    "reference": "Chemkin datafiles for Rocket nozzle chemistry generated by ATK omega11 was backed out of binary diffusion coefficient data, A*=1.1 assumed",
+    "Pi_Omega_11": [-0.011432386,0.26896385,-2.2621969,22359.645],
+    "Pi_Omega_22": [-0.011433744,0.26899093,-2.2623728,24604.804]
+  },
+  {
+    "i": "Cl",
+    "j": "Cl",
+    "model": "GuptaYos2",
+    "reference": "Chemkin datafiles for Rocket nozzle chemistry generated by ATK omega11 was backed out of binary diffusion coefficient data, A*=1.1 assumed",
+    "Pi_Omega_11": [-0.011099768,0.26126922,-2.2030629,19281.562],
+    "Pi_Omega_22": [-0.011099725,0.26126864,-2.2030615,21209.796]
+  },
+  {
+    "i": "Cl",
+    "j": "HCl",
+    "model": "GuptaYos2",
+    "reference": "Chemkin datafiles for Rocket nozzle chemistry generated by ATK omega11 was backed out of binary diffusion coefficient data, A*=1.1 assumed",
+    "Pi_Omega_11": [-0.015480306,0.37461724,-3.1792892,316091.4],
+    "Pi_Omega_22": [-0.015480449,0.37462059,-3.1793155,347724.45]
+  },
+  {
+    "i": "CO2",
+    "j": "Cl2",
+    "model": "GuptaYos2",
+    "reference": "Chemkin datafiles for Rocket nozzle chemistry generated by ATK omega11 was backed out of binary diffusion coefficient data, A*=1.1 assumed",
+    "Pi_Omega_11": [-0.014015365,0.33586893,-2.8384088,127588.37],
+    "Pi_Omega_22": [-0.014014425,0.33584827,-2.8382598,140297.95]
+  },
+  {
+    "i": "CO2",
+    "j": "Cl",
+    "model": "GuptaYos2",
+    "reference": "Chemkin datafiles for Rocket nozzle chemistry generated by ATK omega11 was backed out of binary diffusion coefficient data, A*=1.1 assumed",
+    "Pi_Omega_11": [-0.013998791,0.33535941,-2.8334588,125716.95],
+    "Pi_Omega_22": [-0.013998772,0.33535846,-2.8334478,138283.82]
+  },
+  {
+    "i": "CO2",
+    "j": "HCl",
+    "model": "GuptaYos2",
+    "reference": "Chemkin datafiles for Rocket nozzle chemistry generated by ATK omega11 was backed out of binary diffusion coefficient data, A*=1.1 assumed",
+    "Pi_Omega_11": [-0.01698142,0.42277871,-3.669734,1734234.7],
+    "Pi_Omega_22": [-0.016980221,0.42275318,-3.6695563,1906887.4]
+  },
+  {
+    "i": "CO",
+    "j": "Cl2",
+    "model": "GuptaYos2",
+    "reference": "Chemkin datafiles for Rocket nozzle chemistry generated by ATK omega11 was backed out of binary diffusion coefficient data, A*=1.1 assumed",
+    "Pi_Omega_11": [-0.0099619624,0.23295923,-1.9681936,9902.2382],
+    "Pi_Omega_22": [-0.0099612846,0.23294459,-1.9680887,10889.75]
+  },
+  {
+    "i": "CO",
+    "j": "Cl",
+    "model": "GuptaYos2",
+    "reference": "Chemkin datafiles for Rocket nozzle chemistry generated by ATK omega11 was backed out of binary diffusion coefficient data, A*=1.1 assumed",
+    "Pi_Omega_11": [-0.0094618903,0.22154636,-1.8817357,8001.8099],
+    "Pi_Omega_22": [-0.0094614075,0.22153821,-1.8816934,8801.4267]
+  },
+  {
+    "i": "CO",
+    "j": "HCl",
+    "model": "GuptaYos2",
+    "reference": "Chemkin datafiles for Rocket nozzle chemistry generated by ATK omega11 was backed out of binary diffusion coefficient data, A*=1.1 assumed",
+    "Pi_Omega_11": [-0.014586262,0.35014381,-2.9578175,160798.32],
+    "Pi_Omega_22": [-0.014586489,0.35014886,-2.9578547,176894.49]
+  },
+  {
+    "i": "H2",
+    "j": "Cl2",
+    "model": "GuptaYos2",
+    "reference": "Chemkin datafiles for Rocket nozzle chemistry generated by ATK omega11 was backed out of binary diffusion coefficient data, A*=1.1 assumed",
+    "Pi_Omega_11": [-0.0051749544,0.12054213,-1.0868357,727.52223],
+    "Pi_Omega_22": [-0.005172612,0.12049251,-1.0864925,799.65371]
+  },
+  {
+    "i": "H2",
+    "j": "Cl",
+    "model": "GuptaYos2",
+    "reference": "Chemkin datafiles for Rocket nozzle chemistry generated by ATK omega11 was backed out of binary diffusion coefficient data, A*=1.1 assumed",
+    "Pi_Omega_11": [-0.0050824703,0.11846495,-1.0713638,701.66449],
+    "Pi_Omega_22": [-0.0050827194,0.11847267,-1.0714354,771.98973]
+  },
+  {
+    "i": "H2",
+    "j": "H2O",
+    "model": "GuptaYos2",
+    "reference": "Chemkin datafiles for Rocket nozzle chemistry generated by ATK omega11 was backed out of binary diffusion coefficient data, A*=1.1 assumed",
+    "Pi_Omega_11": [-0.015127346,0.36007957,-3.0114154,102723.37],
+    "Pi_Omega_22": [-0.015127393,0.36008079,-3.0114247,112998.33]
+  },
+  {
+    "i": "H2",
+    "j": "HCl",
+    "model": "GuptaYos2",
+    "reference": "Chemkin datafiles for Rocket nozzle chemistry generated by ATK omega11 was backed out of binary diffusion coefficient data, A*=1.1 assumed",
+    "Pi_Omega_11": [-0.012160876,0.28367262,-2.3571319,19553.721],
+    "Pi_Omega_22": [-0.012161082,0.28367761,-2.3571693,21511.003]
+  },
+  {
+    "i": "H2O",
+    "j": "Cl2",
+    "model": "GuptaYos2",
+    "reference": "Chemkin datafiles for Rocket nozzle chemistry generated by ATK omega11 was backed out of binary diffusion coefficient data, A*=1.1 assumed",
+    "Pi_Omega_11": [-0.015513338,0.38936985,-3.4155804,681054.82],
+    "Pi_Omega_22": [-0.015513725,0.38938037,-3.4156699,749340.58]
+  },
+  {
+    "i": "H2O",
+    "j": "Cl",
+    "model": "GuptaYos2",
+    "reference": "Chemkin datafiles for Rocket nozzle chemistry generated by ATK omega11 was backed out of binary diffusion coefficient data, A*=1.1 assumed",
+    "Pi_Omega_11": [-0.016365571,0.40651374,-3.5258681,856329.27],
+    "Pi_Omega_22": [-0.016366017,0.40652365,-3.5259406,942127.35]
+  },
+  {
+    "i": "H2O",
+    "j": "HCl",
+    "model": "GuptaYos2",
+    "reference": "Chemkin datafiles for Rocket nozzle chemistry generated by ATK omega11 was backed out of binary diffusion coefficient data, A*=1.1 assumed",
+    "Pi_Omega_11": [-0.0083799177,0.2580506,-2.7223549,310954.52],
+    "Pi_Omega_22": [-0.0083805573,0.25806395,-2.7224436,342114.04]
+  },
+  {
+    "i": "H",
+    "j": "Cl2",
+    "model": "GuptaYos2",
+    "reference": "Chemkin datafiles for Rocket nozzle chemistry generated by ATK omega11 was backed out of binary diffusion coefficient data, A*=1.1 assumed",
+    "Pi_Omega_11": [-0.015303961,0.36150199,-2.9983243,93447.208],
+    "Pi_Omega_22": [-0.015303389,0.3614901,-2.9982444,102773.8]
+  },
+  {
+    "i": "H",
+    "j": "Cl",
+    "model": "GuptaYos2",
+    "reference": "Chemkin datafiles for Rocket nozzle chemistry generated by ATK omega11 was backed out of binary diffusion coefficient data, A*=1.1 assumed",
+    "Pi_Omega_11": [-0.015042804,0.35533113,-2.9498307,82562.509],
+    "Pi_Omega_22": [-0.015040814,0.35528969,-2.9495515,90763.607]
+  },
+  {
+    "i": "HCl",
+    "j": "HCl",
+    "model": "GuptaYos2",
+    "reference": "Chemkin datafiles for Rocket nozzle chemistry generated by ATK omega11 was backed out of binary diffusion coefficient data, A*=1.1 assumed",
+    "Pi_Omega_11": [-0.015397148,0.39669532,-3.5654941,1620724.7],
+    "Pi_Omega_22": [-0.015396697,0.3966871,-3.5654489,1782670.2]
+  },
+  {
+    "i": "H",
+    "j": "HCl",
+    "model": "GuptaYos2",
+    "reference": "Chemkin datafiles for Rocket nozzle chemistry generated by ATK omega11 was backed out of binary diffusion coefficient data, A*=1.1 assumed",
+    "Pi_Omega_11": [-0.015319825,0.38136999,-3.3183649,335740.42],
+    "Pi_Omega_22": [-0.015320152,0.38137768,-3.3184237,369369.01]
+  },
+  {
+    "i": "N2",
+    "j": "Cl2",
+    "model": "GuptaYos2",
+    "reference": "Chemkin datafiles for Rocket nozzle chemistry generated by ATK omega11 was backed out of binary diffusion coefficient data, A*=1.1 assumed",
+    "Pi_Omega_11": [-0.0099320077,0.23224259,-1.9624735,9669.72],
+    "Pi_Omega_22": [-0.0099326769,0.23225878,-1.9626001,10640.093]
+  },
+  {
+    "i": "N2",
+    "j": "Cl",
+    "model": "GuptaYos2",
+    "reference": "Chemkin datafiles for Rocket nozzle chemistry generated by ATK omega11 was backed out of binary diffusion coefficient data, A*=1.1 assumed",
+    "Pi_Omega_11": [-0.009428967,0.22076386,-1.8755251,7804.7248],
+    "Pi_Omega_22": [-0.0094302547,0.22079004,-1.875699,8588.4411]
+  },
+  {
+    "i": "N2",
+    "j": "HCl",
+    "model": "GuptaYos2",
+    "reference": "Chemkin datafiles for Rocket nozzle chemistry generated by ATK omega11 was backed out of binary diffusion coefficient data, A*=1.1 assumed",
+    "Pi_Omega_11": [-0.014506236,0.34820966,-2.9421829,152796.06],
+    "Pi_Omega_22": [-0.014504978,0.34818402,-2.9420127,168013.89]
+  },
+  {
+    "i": "N",
+    "j": "Cl2",
+    "model": "GuptaYos2",
+    "reference": "Chemkin datafiles for Rocket nozzle chemistry generated by ATK omega11 was backed out of binary diffusion coefficient data, A*=1.1 assumed",
+    "Pi_Omega_11": [-0.0086986062,0.20212137,-1.7170056,4389.6289],
+    "Pi_Omega_22": [-0.0086972019,0.20209271,-1.7168149,4826.5914]
+  },
+  {
+    "i": "N",
+    "j": "Cl",
+    "model": "GuptaYos2",
+    "reference": "Chemkin datafiles for Rocket nozzle chemistry generated by ATK omega11 was backed out of binary diffusion coefficient data, A*=1.1 assumed",
+    "Pi_Omega_11": [-0.008134097,0.18935219,-1.6211796,3478.2715],
+    "Pi_Omega_22": [-0.0081342244,0.18935505,-1.6212007,3826.296]
+  },
+  {
+    "i": "N",
+    "j": "HCl",
+    "model": "GuptaYos2",
+    "reference": "Chemkin datafiles for Rocket nozzle chemistry generated by ATK omega11 was backed out of binary diffusion coefficient data, A*=1.1 assumed",
+    "Pi_Omega_11": [-0.013001365,0.30951231,-2.6103051,52238.112],
+    "Pi_Omega_22": [-0.013000823,0.30950192,-2.6102415,57454.721]
+  },
+  {
+    "i": "O2",
+    "j": "Cl2",
+    "model": "GuptaYos2",
+    "reference": "Chemkin datafiles for Rocket nozzle chemistry generated by ATK omega11 was backed out of binary diffusion coefficient data, A*=1.1 assumed",
+    "Pi_Omega_11": [-0.010096226,0.2370739,-2.0083029,10729.57],
+    "Pi_Omega_22": [-0.010095375,0.23705579,-2.0081769,11799.162]
+  },
+  {
+    "i": "O2",
+    "j": "Cl",
+    "model": "GuptaYos2",
+    "reference": "Chemkin datafiles for Rocket nozzle chemistry generated by ATK omega11 was backed out of binary diffusion coefficient data, A*=1.1 assumed",
+    "Pi_Omega_11": [-0.0097108231,0.22814058,-1.9395045,9032.6827],
+    "Pi_Omega_22": [-0.009710689,0.22813804,-1.9394889,9935.636]
+  },
+  {
+    "i": "O2",
+    "j": "HCl",
+    "model": "GuptaYos2",
+    "reference": "Chemkin datafiles for Rocket nozzle chemistry generated by ATK omega11 was backed out of binary diffusion coefficient data, A*=1.1 assumed",
+    "Pi_Omega_11": [-0.015150207,0.36415063,-3.0741683,211667.12],
+    "Pi_Omega_22": [-0.015150851,0.36416485,-3.0742687,232886.75]
+  },
+  {
+    "i": "O",
+    "j": "Cl2",
+    "model": "GuptaYos2",
+    "reference": "Chemkin datafiles for Rocket nozzle chemistry generated by ATK omega11 was backed out of binary diffusion coefficient data, A*=1.1 assumed",
+    "Pi_Omega_11": [-0.0094090624,0.2194177,-1.8573051,5471.8829],
+    "Pi_Omega_22": [-0.0094091834,0.21941903,-1.8573057,6018.9687]
+  },
+  {
+    "i": "O",
+    "j": "Cl",
+    "model": "GuptaYos2",
+    "reference": "Chemkin datafiles for Rocket nozzle chemistry generated by ATK omega11 was backed out of binary diffusion coefficient data, A*=1.1 assumed",
+    "Pi_Omega_11": [-0.0087311489,0.20389429,-1.7392612,4090.8945],
+    "Pi_Omega_22": [-0.0087308344,0.20388794,-1.7392197,4499.5829]
+  },
+  {
+    "i": "OH",
+    "j": "Cl2",
+    "model": "GuptaYos2",
+    "reference": "Chemkin datafiles for Rocket nozzle chemistry generated by ATK omega11 was backed out of binary diffusion coefficient data, A*=1.1 assumed",
+    "Pi_Omega_11": [-0.009353788,0.21815296,-1.8476953,5343.9268],
+    "Pi_Omega_22": [-0.0093538196,0.21815385,-1.8477034,5878.4626]
+  },
+  {
+    "i": "O",
+    "j": "HCl",
+    "model": "GuptaYos2",
+    "reference": "Chemkin datafiles for Rocket nozzle chemistry generated by ATK omega11 was backed out of binary diffusion coefficient data, A*=1.1 assumed",
+    "Pi_Omega_11": [-0.013835779,0.33006962,-2.7792608,70441.978],
+    "Pi_Omega_22": [-0.013836113,0.33007644,-2.7793068,77494.043]
+  },
+  {
+    "i": "OH",
+    "j": "Cl",
+    "model": "GuptaYos2",
+    "reference": "Chemkin datafiles for Rocket nozzle chemistry generated by ATK omega11 was backed out of binary diffusion coefficient data, A*=1.1 assumed",
+    "Pi_Omega_11": [-0.0086705416,0.20250753,-1.7287225,3986.068],
+    "Pi_Omega_22": [-0.008670149,0.20249804,-1.7286494,4383.8994]
+  },
+  {
+    "i": "OH",
+    "j": "HCl",
+    "model": "GuptaYos2",
+    "reference": "Chemkin datafiles for Rocket nozzle chemistry generated by ATK omega11 was backed out of binary diffusion coefficient data, A*=1.1 assumed",
+    "Pi_Omega_11": [-0.013786136,0.32886541,-2.7695576,68677.683],
+    "Pi_Omega_22": [-0.013786118,0.32886705,-2.7695827,75551.962]
+  },
+  {
+    "i": "e",
+    "j": "He",
+    "model": "GuptaYos2",
+    "reference": "",
+    "Pi_Omega_11": [-0.0082403939,0.16846353,-1.0623209,46.46287],
+    "Pi_Omega_22": [-0.013046476,0.27008126,-1.8106176,294.52021],
+    "Bij": [0.14099806,-3.8236826,34.31955,0.0]
+  },
+  {
+    "i": "e",
+    "j": "CH4",
+    "model": "GuptaYos2",
+    "reference": "e-He  --> taken from :\te-NO e-CH4 --> taken from :\te-NO e-CH3 --> taken from :\te-NO e-CH2 --> taken from :\te-NO e-CH  --> taken from :\te-NO e-C2  --> taken from :  e-NO e-C2H --> taken from :  e-NO e-HCN --> taken from :  e-NO e-C3  --> taken from :  e-NO e-NH  --> taken from :\te-NO",
+    "Pi_Omega_11": [0.10414818,-2.8369126,25.323135,7.7138358e-32],
+    "Pi_Omega_22": [0.0,0.054444485,-1.2854128,13857.556],
+    "Bij": [0.14099806,-3.8236826,34.31955,0.0]
+  },
+  {
+    "i": "e",
+    "j": "CH3",
+    "model": "GuptaYos2",
+    "reference": "e-He  --> taken from :\te-NO e-CH4 --> taken from :\te-NO e-CH3 --> taken from :\te-NO e-CH2 --> taken from :\te-NO e-CH  --> taken from :\te-NO e-C2  --> taken from :  e-NO e-C2H --> taken from :  e-NO e-HCN --> taken from :  e-NO e-C3  --> taken from :  e-NO e-NH  --> taken from :\te-NO",
+    "Pi_Omega_11": [0.10414818,-2.8369126,25.323135,7.7138358e-32],
+    "Pi_Omega_22": [0.0,0.054444485,-1.2854128,13857.556],
+    "Bij": [0.14099806,-3.8236826,34.31955,0.0]
+  },
+  {
+    "i": "e",
+    "j": "CH2",
+    "model": "GuptaYos2",
+    "reference": "e-He  --> taken from :\te-NO e-CH4 --> taken from :\te-NO e-CH3 --> taken from :\te-NO e-CH2 --> taken from :\te-NO e-CH  --> taken from :\te-NO e-C2  --> taken from :  e-NO e-C2H --> taken from :  e-NO e-HCN --> taken from :  e-NO e-C3  --> taken from :  e-NO e-NH  --> taken from :\te-NO",
+    "Pi_Omega_11": [0.10414818,-2.8369126,25.323135,7.7138358e-32],
+    "Pi_Omega_22": [0.0,0.054444485,-1.2854128,13857.556],
+    "Bij": [0.14099806,-3.8236826,34.31955,0.0]
+  },
+  {
+    "i": "e",
+    "j": "CH",
+    "model": "GuptaYos2",
+    "reference": "e-He  --> taken from :\te-NO e-CH4 --> taken from :\te-NO e-CH3 --> taken from :\te-NO e-CH2 --> taken from :\te-NO e-CH  --> taken from :\te-NO e-C2  --> taken from :  e-NO e-C2H --> taken from :  e-NO e-HCN --> taken from :  e-NO e-C3  --> taken from :  e-NO e-NH  --> taken from :\te-NO",
+    "Pi_Omega_11": [0.10414818,-2.8369126,25.323135,7.7138358e-32],
+    "Pi_Omega_22": [0.0,0.054444485,-1.2854128,13857.556],
+    "Bij": [0.14099806,-3.8236826,34.31955,0.0]
+  },
+  {
+    "i": "e",
+    "j": "NH",
+    "model": "GuptaYos2",
+    "reference": "e-He  --> taken from :\te-NO e-CH4 --> taken from :\te-NO e-CH3 --> taken from :\te-NO e-CH2 --> taken from :\te-NO e-CH  --> taken from :\te-NO e-C2  --> taken from :  e-NO e-C2H --> taken from :  e-NO e-HCN --> taken from :  e-NO e-C3  --> taken from :  e-NO e-NH  --> taken from :\te-NO",
+    "Pi_Omega_11": [0.10414818,-2.8369126,25.323135,7.7138358e-32],
+    "Pi_Omega_22": [0.0,0.054444485,-1.2854128,13857.556],
+    "Bij": [0.14099806,-3.8236826,34.31955,0.0]
+  },
+  {
+    "i": "CH3",
+    "j": "CH4",
+    "model": "GuptaYos2",
+    "reference": "The following binary interactions are required, but so unimportant that I am simply borrowing the values for other related reactions:",
+    "Pi_Omega_11": [-0.003747307,0.092492062,-0.94390994,966.79387],
+    "Pi_Omega_22": [-0.0087886974,0.21506514,-1.9085192,12869.015],
+    "Bij": [-0.00033534454,0.0076531318,-0.051066666,1.2167153]
+  },
+  {
+    "i": "CH3",
+    "j": "CH3",
+    "model": "GuptaYos2",
+    "reference": "The following binary interactions are required, but so unimportant that I am simply borrowing the values for other related reactions:",
+    "Pi_Omega_11": [-0.003747307,0.092492062,-0.94390994,966.79387],
+    "Pi_Omega_22": [-0.0087886974,0.21506514,-1.9085192,12869.015],
+    "Bij": [-0.00033534454,0.0076531318,-0.051066666,1.2167153]
+  },
+  {
+    "i": "CH3",
+    "j": "CH2",
+    "model": "GuptaYos2",
+    "reference": "The following binary interactions are required, but so unimportant that I am simply borrowing the values for other related reactions:",
+    "Pi_Omega_11": [-0.003747307,0.092492062,-0.94390994,966.79387],
+    "Pi_Omega_22": [-0.0087886974,0.21506514,-1.9085192,12869.015],
+    "Bij": [-0.00033534454,0.0076531318,-0.051066666,1.2167153]
+  },
+  {
+    "i": "CH3",
+    "j": "N2",
+    "model": "GuptaYos2",
+    "reference": "The following binary interactions are required, but so unimportant that I am simply borrowing the values for other related reactions:",
+    "Pi_Omega_11": [-0.0029489978,0.059673834,-0.60125959,312.82515],
+    "Pi_Omega_22": [-0.0075380741,0.16938367,-1.4456453,2894.7205],
+    "Bij": [-0.0012921828,0.030150198,-0.2132548,1.7558973]
+  },
+  {
+    "i": "CH3",
+    "j": "C2",
+    "model": "GuptaYos2",
+    "reference": "The following binary interactions are required, but so unimportant that I am simply borrowing the values for other related reactions:",
+    "Pi_Omega_11": [0.0055097,-0.1633865,1.1881561,3.6470711],
+    "Pi_Omega_22": [0.005419889,-0.16161014,1.1880824,3.8286905],
+    "Bij": [-0.0012721668,0.030687231,-0.24247081,2.0470078]
+  },
+  {
+    "i": "CH3",
+    "j": "H2",
+    "model": "GuptaYos2",
+    "reference": "The following binary interactions are required, but so unimportant that I am simply borrowing the values for other related reactions:",
+    "Pi_Omega_11": [0.0058263906,-0.17233112,1.2706417,2.0494366],
+    "Pi_Omega_22": [0.005792294,-0.17192428,1.2815125,2.0944769],
+    "Bij": [-0.00088748613,0.020962265,-0.16186676,1.6451875]
+  },
+  {
+    "i": "CH3",
+    "j": "CH",
+    "model": "GuptaYos2",
+    "reference": "The following binary interactions are required, but so unimportant that I am simply borrowing the values for other related reactions:",
+    "Pi_Omega_11": [0.005712668,-0.16889992,1.2374939,2.6923801],
+    "Pi_Omega_22": [0.0056474223,-0.16773353,1.2423379,2.7924836],
+    "Bij": [-0.0010850248,0.025919347,-0.20265631,1.8361117]
+  },
+  {
+    "i": "CH3",
+    "j": "NH",
+    "model": "GuptaYos2",
+    "reference": "The following binary interactions are required, but so unimportant that I am simply borrowing the values for other related reactions:",
+    "Pi_Omega_11": [0.0059701129,-0.17533526,1.2904714,2.2857717],
+    "Pi_Omega_22": [0.0059222022,-0.17459081,1.2986686,2.3508994],
+    "Bij": [-0.00098242159,0.023370286,-0.18187322,1.7370235]
+  },
+  {
+    "i": "CH3",
+    "j": "CN",
+    "model": "GuptaYos2",
+    "reference": "The following binary interactions are required, but so unimportant that I am simply borrowing the values for other related reactions:",
+    "Pi_Omega_11": [0.0058085924,-0.17082624,1.2492105,3.0342667],
+    "Pi_Omega_22": [0.0057288405,-0.16929973,1.2511549,3.169417],
+    "Bij": [-0.0011707839,0.028141881,-0.22150009,1.9344299]
+  },
+  {
+    "i": "CH3",
+    "j": "N",
+    "model": "GuptaYos2",
+    "reference": "The following binary interactions are required, but so unimportant that I am simply borrowing the values for other related reactions:",
+    "Pi_Omega_11": [0.0060830797,-0.17766699,1.3054119,2.2293995],
+    "Pi_Omega_22": [0.006017834,-0.17649668,1.3102092,2.3120663],
+    "Bij": [-0.0010850248,0.025984458,-0.20369453,1.8435889]
+  },
+  {
+    "i": "CH3",
+    "j": "C",
+    "model": "GuptaYos2",
+    "reference": "The following binary interactions are required, but so unimportant that I am simply borrowing the values for other related reactions:",
+    "Pi_Omega_11": [0.0086499523,-0.24151151,1.8286721,0.52240566],
+    "Pi_Omega_22": [0.0087581396,-0.24441505,1.8645944,0.50388258],
+    "Bij": [-0.00019928452,0.0042986986,-0.02923262,1.1638332]
+  },
+  {
+    "i": "CH3",
+    "j": "H",
+    "model": "GuptaYos2",
+    "reference": "The following binary interactions are required, but so unimportant that I am simply borrowing the values for other related reactions:",
+    "Pi_Omega_11": [0.0079380468,-0.22352275,1.6800636,0.64794162],
+    "Pi_Omega_22": [0.0080328309,-0.22612966,1.713914,0.62713651],
+    "Bij": [-0.00031786189,0.00725847,-0.053394331,1.2411679]
+  },
+  {
+    "i": "CH3",
+    "j": "He",
+    "model": "GuptaYos2",
+    "reference": "The following binary interactions are required, but so unimportant that I am simply borrowing the values for other related reactions:",
+    "Pi_Omega_11": [-0.0015654003,0.029527326,-0.36797698,102.14174],
+    "Pi_Omega_22": [-0.00053700501,0.0023420292,-0.12705101,58.06908],
+    "Bij": [-0.0010752931,0.027463798,-0.22089301,1.9660319]
+  },
+  {
+    "i": "CH3",
+    "j": "Ar",
+    "model": "GuptaYos2",
+    "reference": "The following binary interactions are required, but so unimportant that I am simply borrowing the values for other related reactions:",
+    "Pi_Omega_11": [-0.0042766915,0.10096642,-0.97888941,872.01177],
+    "Pi_Omega_22": [-0.0083933036,0.20107434,-1.7663196,7352.0251],
+    "Bij": [-0.00086715563,0.020959182,-0.15650324,1.5901603]
+  },
+  {
+    "i": "CH2",
+    "j": "CH4",
+    "model": "GuptaYos2",
+    "reference": "The following binary interactions are required, but so unimportant that I am simply borrowing the values for other related reactions:",
+    "Pi_Omega_11": [-0.003747307,0.092492062,-0.94390994,966.79387],
+    "Pi_Omega_22": [-0.0087886974,0.21506514,-1.9085192,12869.015],
+    "Bij": [-0.00033534454,0.0076531318,-0.051066666,1.2167153]
+  },
+  {
+    "i": "CH2",
+    "j": "CH2",
+    "model": "GuptaYos2",
+    "reference": "The following binary interactions are required, but so unimportant that I am simply borrowing the values for other related reactions:",
+    "Pi_Omega_11": [-0.003747307,0.092492062,-0.94390994,966.79387],
+    "Pi_Omega_22": [-0.0087886974,0.21506514,-1.9085192,12869.015],
+    "Bij": [-0.00033534454,0.0076531318,-0.051066666,1.2167153]
+  },
+  {
+    "i": "CH2",
+    "j": "N2",
+    "model": "GuptaYos2",
+    "reference": "The following binary interactions are required, but so unimportant that I am simply borrowing the values for other related reactions:",
+    "Pi_Omega_11": [-0.0029489978,0.059673834,-0.60125959,312.82515],
+    "Pi_Omega_22": [-0.0075380741,0.16938367,-1.4456453,2894.7205],
+    "Bij": [-0.0012921828,0.030150198,-0.2132548,1.7558973]
+  },
+  {
+    "i": "CH2",
+    "j": "C2",
+    "model": "GuptaYos2",
+    "reference": "The following binary interactions are required, but so unimportant that I am simply borrowing the values for other related reactions:",
+    "Pi_Omega_11": [0.0055097,-0.1633865,1.1881561,3.6470711],
+    "Pi_Omega_22": [0.005419889,-0.16161014,1.1880824,3.8286905],
+    "Bij": [-0.0012721668,0.030687231,-0.24247081,2.0470078]
+  },
+  {
+    "i": "CH2",
+    "j": "H2",
+    "model": "GuptaYos2",
+    "reference": "The following binary interactions are required, but so unimportant that I am simply borrowing the values for other related reactions:",
+    "Pi_Omega_11": [0.0058263906,-0.17233112,1.2706417,2.0494366],
+    "Pi_Omega_22": [0.005792294,-0.17192428,1.2815125,2.0944769],
+    "Bij": [-0.00088748613,0.020962265,-0.16186676,1.6451875]
+  },
+  {
+    "i": "CH2",
+    "j": "CH",
+    "model": "GuptaYos2",
+    "reference": "The following binary interactions are required, but so unimportant that I am simply borrowing the values for other related reactions:",
+    "Pi_Omega_11": [0.005712668,-0.16889992,1.2374939,2.6923801],
+    "Pi_Omega_22": [0.0056474223,-0.16773353,1.2423379,2.7924836],
+    "Bij": [-0.0010850248,0.025919347,-0.20265631,1.8361117]
+  },
+  {
+    "i": "CH2",
+    "j": "NH",
+    "model": "GuptaYos2",
+    "reference": "The following binary interactions are required, but so unimportant that I am simply borrowing the values for other related reactions:",
+    "Pi_Omega_11": [0.0059701129,-0.17533526,1.2904714,2.2857717],
+    "Pi_Omega_22": [0.0059222022,-0.17459081,1.2986686,2.3508994],
+    "Bij": [-0.00098242159,0.023370286,-0.18187322,1.7370235]
+  },
+  {
+    "i": "CH2",
+    "j": "CN",
+    "model": "GuptaYos2",
+    "reference": "The following binary interactions are required, but so unimportant that I am simply borrowing the values for other related reactions:",
+    "Pi_Omega_11": [0.0058085924,-0.17082624,1.2492105,3.0342667],
+    "Pi_Omega_22": [0.0057288405,-0.16929973,1.2511549,3.169417],
+    "Bij": [-0.0011707839,0.028141881,-0.22150009,1.9344299]
+  },
+  {
+    "i": "CH2",
+    "j": "N",
+    "model": "GuptaYos2",
+    "reference": "The following binary interactions are required, but so unimportant that I am simply borrowing the values for other related reactions:",
+    "Pi_Omega_11": [0.0060830797,-0.17766699,1.3054119,2.2293995],
+    "Pi_Omega_22": [0.006017834,-0.17649668,1.3102092,2.3120663],
+    "Bij": [-0.0010850248,0.025984458,-0.20369453,1.8435889]
+  },
+  {
+    "i": "CH2",
+    "j": "C",
+    "model": "GuptaYos2",
+    "reference": "The following binary interactions are required, but so unimportant that I am simply borrowing the values for other related reactions:",
+    "Pi_Omega_11": [0.0086499523,-0.24151151,1.8286721,0.52240566],
+    "Pi_Omega_22": [0.0087581396,-0.24441505,1.8645944,0.50388258],
+    "Bij": [-0.00019928452,0.0042986986,-0.02923262,1.1638332]
+  },
+  {
+    "i": "CH2",
+    "j": "H",
+    "model": "GuptaYos2",
+    "reference": "The following binary interactions are required, but so unimportant that I am simply borrowing the values for other related reactions:",
+    "Pi_Omega_11": [0.0079380468,-0.22352275,1.6800636,0.64794162],
+    "Pi_Omega_22": [0.0080328309,-0.22612966,1.713914,0.62713651],
+    "Bij": [-0.00031786189,0.00725847,-0.053394331,1.2411679]
+  },
+  {
+    "i": "CH2",
+    "j": "He",
+    "model": "GuptaYos2",
+    "reference": "The following binary interactions are required, but so unimportant that I am simply borrowing the values for other related reactions:",
+    "Pi_Omega_11": [-0.0015654003,0.029527326,-0.36797698,102.14174],
+    "Pi_Omega_22": [-0.00053700501,0.0023420292,-0.12705101,58.06908],
+    "Bij": [-0.0010752931,0.027463798,-0.22089301,1.9660319]
+  },
+  {
+    "i": "CH2",
+    "j": "Ar",
+    "model": "GuptaYos2",
+    "reference": "The following binary interactions are required, but so unimportant that I am simply borrowing the values for other related reactions:",
+    "Pi_Omega_11": [-0.0042766915,0.10096642,-0.97888941,872.01177],
+    "Pi_Omega_22": [-0.0083933036,0.20107434,-1.7663196,7352.0251],
+    "Bij": [-0.00086715563,0.020959182,-0.15650324,1.5901603]
+  },
+  {
+    "i": "HCN",
+    "j": "CH3",
+    "model": "GuptaYos2",
+    "reference": "The following binary interactions are required, but so unimportant that I am simply borrowing the values for other related reactions:",
+    "Pi_Omega_11": [0.0,-0.018126761,-0.096696686,181.82747],
+    "Pi_Omega_22": [0.0,-0.015519791,-0.1288968,220.12248],
+    "Bij": [0.0,0.011861337,-0.19814982,2.4584957]
+  },
+  {
+    "i": "HCN",
+    "j": "CH2",
+    "model": "GuptaYos2",
+    "reference": "The following binary interactions are required, but so unimportant that I am simply borrowing the values for other related reactions:",
+    "Pi_Omega_11": [0.0,-0.018126761,-0.096696686,181.82747],
+    "Pi_Omega_22": [0.0,-0.015519791,-0.1288968,220.12248],
+    "Bij": [0.0,0.011861337,-0.19814982,2.4584957]
+  },
+  {
+    "i": "NH2",
+    "j": "NH3",
+    "model": "GuptaYos2",
+    "reference": "The following binary interactions are required, but so unimportant that I am simply borrowing the values for other related reactions:",
+    "Pi_Omega_11": [0.0,-0.011021545,-0.22427096,240.76488],
+    "Pi_Omega_22": [0.0,-0.0075465918,-0.27096583,308.85266],
+    "Bij": [0.0,0.015082308,-0.25288313,3.0992742]
+  },
+  {
+    "i": "NH2",
+    "j": "NH2",
+    "model": "GuptaYos2",
+    "reference": "The following binary interactions are required, but so unimportant that I am simply borrowing the values for other related reactions:",
+    "Pi_Omega_11": [0.0,-0.011021545,-0.22427096,240.76488],
+    "Pi_Omega_22": [0.0,-0.0075465918,-0.27096583,308.85266],
+    "Bij": [0.0,0.015082308,-0.25288313,3.0992742]
+  },
+  {
+    "i": "NH2",
+    "j": "CO2",
+    "model": "GuptaYos2",
+    "reference": "The following binary interactions are required, but so unimportant that I am simply borrowing the values for other related reactions:",
+    "Pi_Omega_11": [0.0,-0.02006004,-0.060086427,138.89191],
+    "Pi_Omega_22": [0.0,-0.017828549,-0.0860056,164.00752],
+    "Bij": [0.0,0.010619942,-0.17687086,2.2461586]
+  },
+  {
+    "i": "NH2",
+    "j": "CO",
+    "model": "GuptaYos2",
+    "reference": "The following binary interactions are required, but so unimportant that I am simply borrowing the values for other related reactions:",
+    "Pi_Omega_11": [0.0,-0.029329299,0.10259528,59.415173],
+    "Pi_Omega_22": [0.0,-0.028431622,0.099252928,64.184416],
+    "Bij": [0.0,0.0064966185,-0.10450911,1.648288]
+  },
+  {
+    "i": "NH2",
+    "j": "O2",
+    "model": "GuptaYos2",
+    "reference": "The following binary interactions are required, but so unimportant that I am simply borrowing the values for other related reactions:",
+    "Pi_Omega_11": [0.0,-0.026660302,0.058005874,67.753726],
+    "Pi_Omega_22": [0.0,-0.025419041,0.048986927,74.81741],
+    "Bij": [0.0,0.0074455029,-0.12079584,1.7640879]
+  },
+  {
+    "i": "NH2",
+    "j": "N2",
+    "model": "GuptaYos2",
+    "reference": "The following binary interactions are required, but so unimportant that I am simply borrowing the values for other related reactions:",
+    "Pi_Omega_11": [0.0,-0.033402641,0.1697291,45.604106],
+    "Pi_Omega_22": [0.0,-0.032862779,0.17226319,48.188819],
+    "Bij": [0.0,0.0052069444,-0.082512292,1.5047525]
+  },
+  {
+    "i": "NH2",
+    "j": "NO",
+    "model": "GuptaYos2",
+    "reference": "The following binary interactions are required, but so unimportant that I am simply borrowing the values for other related reactions:",
+    "Pi_Omega_11": [0.0,-0.025712984,0.041574366,73.883246],
+    "Pi_Omega_22": [0.0,-0.024362397,0.030676498,82.187522],
+    "Bij": [0.0,0.007738562,-0.12620139,1.8069895]
+  },
+  {
+    "i": "NH2",
+    "j": "O",
+    "model": "GuptaYos2",
+    "reference": "The following binary interactions are required, but so unimportant that I am simply borrowing the values for other related reactions:",
+    "Pi_Omega_11": [0.0,-0.026660302,0.058005874,59.483196],
+    "Pi_Omega_22": [0.0,-0.025419041,0.048986927,65.684633],
+    "Bij": [0.0,0.0074455029,-0.12079584,1.7640879]
+  },
+  {
+    "i": "NH2",
+    "j": "N",
+    "model": "GuptaYos2",
+    "reference": "The following binary interactions are required, but so unimportant that I am simply borrowing the values for other related reactions:",
+    "Pi_Omega_11": [0.0,-0.033402641,0.1697291,39.276645],
+    "Pi_Omega_22": [0.0,-0.032862779,0.17226319,41.502735],
+    "Bij": [0.0,0.0052069444,-0.082512292,1.5047525]
+  },
+  {
+    "i": "NH2",
+    "j": "C",
+    "model": "GuptaYos2",
+    "reference": "The following binary interactions are required, but so unimportant that I am simply borrowing the values for other related reactions:",
+    "Pi_Omega_11": [0.0056503631,-0.16707169,1.2200632,2.4029468],
+    "Pi_Omega_22": [0.0055706112,-0.16554724,1.2220338,2.5100195],
+    "Bij": [-0.0011707839,0.028111652,-0.22101594,1.9307497]
+  },
+  {
+    "i": "NH2",
+    "j": "NH",
+    "model": "GuptaYos2",
+    "reference": "The following binary interactions are required, but so unimportant that I am simply borrowing the values for other related reactions:",
+    "Pi_Omega_11": [0.00049615664,-0.046904168,0.28967696,27.632298],
+    "Pi_Omega_22": [0.0,-0.035379221,0.2127014,35.271672],
+    "Bij": [0.0,0.0044150079,-0.069566337,1.4292673]
+  },
+  {
+    "i": "NH2",
+    "j": "H2",
+    "model": "GuptaYos2",
+    "reference": "The following binary interactions are required, but so unimportant that I am simply borrowing the values for other related reactions:",
+    "Pi_Omega_11": [0.00067762376,-0.052509157,0.34427608,19.785784],
+    "Pi_Omega_22": [0.00012926623,-0.039915236,0.2602688,25.644851],
+    "Bij": [-0.0026798202,0.064414033,-0.50966476,4.1212529]
+  },
+  {
+    "i": "NH2",
+    "j": "H",
+    "model": "GuptaYos2",
+    "reference": "The following binary interactions are required, but so unimportant that I am simply borrowing the values for other related reactions:",
+    "Pi_Omega_11": [0.0058633051,-0.17153111,1.2487312,1.8606965],
+    "Pi_Omega_22": [0.0057473051,-0.16909949,1.2433229,1.97977],
+    "Bij": [-0.0013254037,0.032220743,-0.25666529,2.1355455]
+  },
+  {
+    "i": "NH2",
+    "j": "OH",
+    "model": "GuptaYos2",
+    "reference": "The following binary interactions are required, but so unimportant that I am simply borrowing the values for other related reactions:",
+    "Pi_Omega_11": [0.0,-0.03129847,0.13539506,43.437614],
+    "Pi_Omega_22": [0.0,-0.030574099,0.13493065,46.418008],
+    "Bij": [0.0,0.005869611,-0.093645213,1.5747205]
+  },
+  {
+    "i": "NH2",
+    "j": "CH",
+    "model": "GuptaYos2",
+    "reference": "The following binary interactions are required, but so unimportant that I am simply borrowing the values for other related reactions:",
+    "Pi_Omega_11": [3.8462517e-05,-0.035349428,0.19352655,36.778495],
+    "Pi_Omega_22": [0.0,-0.034047364,0.19132977,39.224155],
+    "Bij": [0.0,0.0048351053,-0.076428699,1.4687676]
+  },
+  {
+    "i": "NH2",
+    "j": "CN",
+    "model": "GuptaYos2",
+    "reference": "The following binary interactions are required, but so unimportant that I am simply borrowing the values for other related reactions:",
+    "Pi_Omega_11": [0.0,-0.032405311,0.15349565,49.708583],
+    "Pi_Omega_22": [0.0,-0.031769089,0.15447371,52.833403],
+    "Bij": [0.0,0.0055705578,-0.088539854,1.5417527]
+  },
+  {
+    "i": "X+",
+    "j": "N",
+    "model": "GuptaYos2",
+    "reference": "Use polarizability expression for omega11 and Bij taken from: This should be valid at lower T, and in the ballpark at high T.",
+    "Pi_Omega_11": [0.0,0.0,-0.5,1420.6483],
+    "Pi_Omega_22": [0.0,0.0,-0.5,1562.7131],
+    "Bij": [0.0,0.0,0.0,1.25]
+  },
+  {
+    "i": "X+",
+    "j": "He",
+    "model": "GuptaYos2",
+    "reference": "Use polarizability expression for omega11 and Bij taken from: This should be valid at lower T, and in the ballpark at high T.",
+    "Pi_Omega_11": [0.0,0.0,-0.5,605.09601],
+    "Pi_Omega_22": [0.0,0.0,-0.5,1882.617],
+    "Bij": [0.0,0.0,0.0,1.25]
+  },
+  {
+    "i": "X+",
+    "j": "Ar",
+    "model": "GuptaYos2",
+    "reference": "Use polarizability expression for omega11 and Bij taken from: This should be valid at lower T, and in the ballpark at high T.",
+    "Pi_Omega_11": [0.0,0.0,-0.5,1711.47],
+    "Pi_Omega_22": [0.0,0.0,-0.5,1882.617],
+    "Bij": [0.0,0.0,0.0,1.25]
+  },
+  {
+    "i": "X+",
+    "j": "H",
+    "model": "GuptaYos2",
+    "reference": "Use polarizability expression for omega11 and Bij taken from: This should be valid at lower T, and in the ballpark at high T.",
+    "Pi_Omega_11": [0.0,0.0,-0.5,1091.4662],
+    "Pi_Omega_22": [0.0,0.0,-0.5,1200.6128],
+    "Bij": [0.0,0.0,0.0,1.25]
+  },
+  {
+    "i": "X+",
+    "j": "C",
+    "model": "GuptaYos2",
+    "reference": "Use polarizability expression for omega11 and Bij taken from: This should be valid at lower T, and in the ballpark at high T.",
+    "Pi_Omega_11": [0.0,0.0,-0.5,1636.7901],
+    "Pi_Omega_22": [0.0,0.0,-0.5,1800.4691],
+    "Bij": [0.0,0.0,0.0,1.25]
+  },
+  {
+    "i": "X+",
+    "j": "C2",
+    "model": "GuptaYos2",
+    "reference": "Use polarizability expression for omega11 and Bij taken from: This should be valid at lower T, and in the ballpark at high T.",
+    "Pi_Omega_11": [0.0,0.0,-0.5,1793.0137],
+    "Pi_Omega_22": [0.0,0.0,-0.5,1972.3151],
+    "Bij": [0.0,0.0,0.0,1.25]
+  },
+  {
+    "i": "X+",
+    "j": "C3",
+    "model": "GuptaYos2",
+    "reference": "Use polarizability expression for omega11 and Bij taken from: This should be valid at lower T, and in the ballpark at high T.",
+    "Pi_Omega_11": [0.0,0.0,-0.5,1793.0137],
+    "Pi_Omega_22": [0.0,0.0,-0.5,1972.3151],
+    "Bij": [0.0,0.0,0.0,1.25]
+  },
+  {
+    "i": "X+",
+    "j": "O",
+    "model": "GuptaYos2",
+    "reference": "Use polarizability expression for omega11 and Bij taken from: This should be valid at lower T, and in the ballpark at high T.",
+    "Pi_Omega_11": [0.0,0.0,-0.5,1172.7156],
+    "Pi_Omega_22": [0.0,0.0,-0.5,1289.9872],
+    "Bij": [0.0,0.0,0.0,1.25]
+  },
+  {
+    "i": "X+",
+    "j": "F",
+    "model": "GuptaYos2",
+    "reference": "Use polarizability expression for omega11 and Bij taken from: This should be valid at lower T, and in the ballpark at high T.",
+    "Pi_Omega_11": [0.0,0.0,-0.5,1035.1969],
+    "Pi_Omega_22": [0.0,0.0,-0.5,1138.7166],
+    "Bij": [0.0,0.0,0.0,1.25]
+  },
+  {
+    "i": "X+",
+    "j": "H2",
+    "model": "GuptaYos2",
+    "reference": "Use polarizability expression for omega11 and Bij taken from: This should be valid at lower T, and in the ballpark at high T.",
+    "Pi_Omega_11": [0.0,0.0,-0.5,1201.3043],
+    "Pi_Omega_22": [0.0,0.0,-0.5,1321.4348],
+    "Bij": [0.0,0.0,0.0,1.25]
+  },
+  {
+    "i": "X+",
+    "j": "N2",
+    "model": "GuptaYos2",
+    "reference": "Use polarizability expression for omega11 and Bij taken from: This should be valid at lower T, and in the ballpark at high T.",
+    "Pi_Omega_11": [0.0,0.0,-0.5,1772.9794],
+    "Pi_Omega_22": [0.0,0.0,-0.5,1950.2774],
+    "Bij": [0.0,0.0,0.0,1.25]
+  },
+  {
+    "i": "X+",
+    "j": "O2",
+    "model": "GuptaYos2",
+    "reference": "Use polarizability expression for omega11 and Bij taken from: This should be valid at lower T, and in the ballpark at high T.",
+    "Pi_Omega_11": [0.0,0.0,-0.5,1690.4695],
+    "Pi_Omega_22": [0.0,0.0,-0.5,1859.5165],
+    "Bij": [0.0,0.0,0.0,1.25]
+  },
+  {
+    "i": "X+",
+    "j": "CO",
+    "model": "GuptaYos2",
+    "reference": "Use polarizability expression for omega11 and Bij taken from: This should be valid at lower T, and in the ballpark at high T.",
+    "Pi_Omega_11": [0.0,0.0,-0.5,1866.2278],
+    "Pi_Omega_22": [0.0,0.0,-0.5,2052.8506],
+    "Bij": [0.0,0.0,0.0,1.25]
+  },
+  {
+    "i": "X+",
+    "j": "NO",
+    "model": "GuptaYos2",
+    "reference": "Use polarizability expression for omega11 and Bij taken from: This should be valid at lower T, and in the ballpark at high T.",
+    "Pi_Omega_11": [0.0,0.0,-0.5,1742.4961],
+    "Pi_Omega_22": [0.0,0.0,-0.5,1916.7457],
+    "Bij": [0.0,0.0,0.0,1.25]
+  },
+  {
+    "i": "X+",
+    "j": "H2O",
+    "model": "GuptaYos2",
+    "reference": "Use polarizability expression for omega11 and Bij taken from: This should be valid at lower T, and in the ballpark at high T.",
+    "Pi_Omega_11": [0.0,0.0,-0.5,1609.2791],
+    "Pi_Omega_22": [0.0,0.0,-0.5,1770.207],
+    "Bij": [0.0,0.0,0.0,1.25]
+  },
+  {
+    "i": "X+",
+    "j": "CO2",
+    "model": "GuptaYos2",
+    "reference": "Use polarizability expression for omega11 and Bij taken from: This should be valid at lower T, and in the ballpark at high T.",
+    "Pi_Omega_11": [0.0,0.0,-0.5,2150.7862],
+    "Pi_Omega_22": [0.0,0.0,-0.5,2365.8648],
+    "Bij": [0.0,0.0,0.0,1.25]
+  },
+  {
+    "i": "X+",
+    "j": "CH4",
+    "model": "GuptaYos2",
+    "reference": "Use polarizability expression for omega11 and Bij taken from: This should be valid at lower T, and in the ballpark at high T.",
+    "Pi_Omega_11": [0.0,0.0,-0.5,2138.2936],
+    "Pi_Omega_22": [0.0,0.0,-0.5,2352.123],
+    "Bij": [0.0,0.0,0.0,1.25]
+  },
+  {
+    "i": "X+",
+    "j": "CF4",
+    "model": "GuptaYos2",
+    "reference": "Use polarizability expression for omega11 and Bij taken from: This should be valid at lower T, and in the ballpark at high T.",
+    "Pi_Omega_11": [0.0,0.0,-0.5,2244.2535],
+    "Pi_Omega_22": [0.0,0.0,-0.5,2468.6789],
+    "Bij": [0.0,0.0,0.0,1.25]
+  },
+  {
+    "i": "X+",
+    "j": "OH",
+    "model": "GuptaYos2",
+    "reference": "Use polarizability expression for omega11 and Bij taken from: This should be valid at lower T, and in the ballpark at high T.",
+    "Pi_Omega_11": [0.0,0.0,-0.5,1793.0137],
+    "Pi_Omega_22": [0.0,0.0,-0.5,1972.3151],
+    "Bij": [0.0,0.0,0.0,1.25]
+  },
+  {
+    "i": "X+",
+    "j": "CH",
+    "model": "GuptaYos2",
+    "reference": "Use polarizability expression for omega11 and Bij taken from: This should be valid at lower T, and in the ballpark at high T.",
+    "Pi_Omega_11": [0.0,0.0,-0.5,1866.2278],
+    "Pi_Omega_22": [0.0,0.0,-0.5,2052.8506],
+    "Bij": [0.0,0.0,0.0,1.25]
+  },
+  {
+    "i": "X+",
+    "j": "NH",
+    "model": "GuptaYos2",
+    "reference": "Use polarizability expression for omega11 and Bij taken from: This should be valid at lower T, and in the ballpark at high T.",
+    "Pi_Omega_11": [0.0,0.0,-0.5,1842.1465],
+    "Pi_Omega_22": [0.0,0.0,-0.5,2026.3611],
+    "Bij": [0.0,0.0,0.0,1.25]
+  },
+  {
+    "i": "X+",
+    "j": "CN",
+    "model": "GuptaYos2",
+    "reference": "Use polarizability expression for omega11 and Bij taken from: This should be valid at lower T, and in the ballpark at high T.",
+    "Pi_Omega_11": [0.0,0.0,-0.5,1890.0024],
+    "Pi_Omega_22": [0.0,0.0,-0.5,2079.0026],
+    "Bij": [0.0,0.0,0.0,1.25]
+  },
+  {
+    "i": "X+",
+    "j": "C2H",
+    "model": "GuptaYos2",
+    "reference": "Use polarizability expression for omega11 and Bij taken from: This should be valid at lower T, and in the ballpark at high T.",
+    "Pi_Omega_11": [0.0,0.0,-0.5,2113.0869],
+    "Pi_Omega_22": [0.0,0.0,-0.5,2324.3956],
+    "Bij": [0.0,0.0,0.0,1.25]
+  },
+  {
+    "i": "X+",
+    "j": "NH3",
+    "model": "GuptaYos2",
+    "reference": "Use polarizability expression for omega11 and Bij taken from: This should be valid at lower T, and in the ballpark at high T.",
+    "Pi_Omega_11": [0.0,0.0,-0.5,2113.0869],
+    "Pi_Omega_22": [0.0,0.0,-0.5,2324.3956],
+    "Bij": [0.0,0.0,0.0,1.25]
+  },
+  {
+    "i": "X+",
+    "j": "NH2",
+    "model": "GuptaYos2",
+    "reference": "Use polarizability expression for omega11 and Bij taken from: This should be valid at lower T, and in the ballpark at high T.",
+    "Pi_Omega_11": [0.0,0.0,-0.5,2113.0869],
+    "Pi_Omega_22": [0.0,0.0,-0.5,2324.3956],
+    "Bij": [0.0,0.0,0.0,1.25]
+  },
+  {
+    "i": "X+",
+    "j": "HCN",
+    "model": "GuptaYos2",
+    "reference": "Use polarizability expression for omega11 and Bij taken from: This should be valid at lower T, and in the ballpark at high T.",
+    "Pi_Omega_11": [0.0,0.0,-0.5,2113.0869],
+    "Pi_Omega_22": [0.0,0.0,-0.5,2324.3956],
+    "Bij": [0.0,0.0,0.0,1.25]
+  },
+  {
+    "i": "X+",
+    "j": "CH3",
+    "model": "GuptaYos2",
+    "reference": "Use polarizability expression for omega11 and Bij taken from: This should be valid at lower T, and in the ballpark at high T.",
+    "Pi_Omega_11": [0.0,0.0,-0.5,2113.0869],
+    "Pi_Omega_22": [0.0,0.0,-0.5,2324.3956],
+    "Bij": [0.0,0.0,0.0,1.25]
+  },
+  {
+    "i": "X+",
+    "j": "CH2",
+    "model": "GuptaYos2",
+    "reference": "Use polarizability expression for omega11 and Bij taken from: This should be valid at lower T, and in the ballpark at high T.",
+    "Pi_Omega_11": [0.0,0.0,-0.5,2113.0869],
+    "Pi_Omega_22": [0.0,0.0,-0.5,2324.3956],
+    "Bij": [0.0,0.0,0.0,1.25]
+  }
+]
