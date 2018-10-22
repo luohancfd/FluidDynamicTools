@@ -1,0 +1,887 @@
+[
+  {
+    "i": "e_minus",
+    "j": "e_minus",
+    "reference": "NASA Reference Publication 1232 by Gupta,R.N., Yos,J.M. et al 1990",
+    "model": "GuptaYos",
+    "parameters": {
+      "T_low": 1000.0,
+      "T_high": 30000.0,
+      "Pi_Omega_11": [0.0,0.0,-2.0,23.8237],
+      "Pi_Omega_22": [0.0,0.0,-2.0,24.3061],
+      "D": [0.0,0.0,3.5,-24.8662]
+    }
+  },
+  {
+    "i": "N2",
+    "j": "e_minus",
+    "reference": "NASA Reference Publication 1232 by Gupta,R.N., Yos,J.M. et al 1990",
+    "model": "GuptaYos",
+    "parameters": {
+      "T_low": 1000.0,
+      "T_high": 30000.0,
+      "Pi_Omega_11": [0.1147,-2.8945,24.508,-67.3691],
+      "Pi_Omega_22": [0.1147,-2.8945,24.508,-67.3691],
+      "D": [-0.1147,2.8945,-23.0085,65.9815]
+    }
+  },
+  {
+    "i": "N2",
+    "j": "N2",
+    "reference": "NASA Reference Publication 1232 by Gupta,R.N., Yos,J.M. et al 1990",
+    "model": "GuptaYos",
+    "parameters": {
+      "T_low": 1000.0,
+      "T_high": 30000.0,
+      "Pi_Omega_11": [0.0,-0.0112,-0.1182,4.8464],
+      "Pi_Omega_22": [0.0,-0.0203,0.0683,4.09],
+      "D": [0.0,0.0112,1.6182,-11.3091]
+    }
+  },
+  {
+    "i": "N2",
+    "j": "N2_plus",
+    "reference": "NASA Reference Publication 1232 by Gupta,R.N., Yos,J.M. et al 1990",
+    "model": "GuptaYos",
+    "parameters": {
+      "T_low": 1000.0,
+      "T_high": 30000.0,
+      "Pi_Omega_11": [0.0,0.0,-0.4,6.8543],
+      "Pi_Omega_22": [0.0,0.0,-0.4,6.776],
+      "D": [0.0,0.0,1.9,-13.3173]
+    }
+  },
+  {
+    "i": "N2",
+    "j": "N",
+    "reference": "NASA Reference Publication 1232 by Gupta,R.N., Yos,J.M. et al 1990",
+    "model": "GuptaYos",
+    "parameters": {
+      "T_low": 1000.0,
+      "T_high": 30000.0,
+      "Pi_Omega_11": [0.0,-0.0194,0.0119,4.1055],
+      "Pi_Omega_22": [0.0,-0.019,0.0239,4.1782],
+      "D": [0.0,0.0195,1.488,-10.3654]
+    }
+  },
+  {
+    "i": "N2",
+    "j": "NO",
+    "reference": "NASA Reference Publication 1232 by Gupta,R.N., Yos,J.M. et al 1990",
+    "model": "GuptaYos",
+    "parameters": {
+      "T_low": 1000.0,
+      "T_high": 30000.0,
+      "Pi_Omega_11": [0.0,-0.0291,0.2324,3.2082],
+      "Pi_Omega_22": [0.0,-0.0385,0.4226,2.4507],
+      "D": [0.0,0.0291,1.2676,-9.6878]
+    }
+  },
+  {
+    "i": "N2",
+    "j": "NO_plus",
+    "reference": "NASA Reference Publication 1232 by Gupta,R.N., Yos,J.M. et al 1990",
+    "model": "GuptaYos",
+    "parameters": {
+      "T_low": 1000.0,
+      "T_high": 30000.0,
+      "Pi_Omega_11": [0.0,0.0,-0.4,6.8543],
+      "Pi_Omega_22": [0.0,0.0,-0.4,6.776],
+      "D": [0.0,0.0,1.9,-13.3343]
+    }
+  },
+  {
+    "i": "N2",
+    "j": "N_plus",
+    "reference": "NASA Reference Publication 1232 by Gupta,R.N., Yos,J.M. et al 1990",
+    "model": "GuptaYos",
+    "parameters": {
+      "T_low": 1000.0,
+      "T_high": 30000.0,
+      "Pi_Omega_11": [0.0,0.0,-0.4,6.8543],
+      "Pi_Omega_22": [0.0,0.0,-0.4,6.776],
+      "D": [0.0,0.0,1.9,-13.1144]
+    }
+  },
+  {
+    "i": "N2",
+    "j": "O2",
+    "reference": "NASA Reference Publication 1232 by Gupta,R.N., Yos,J.M. et al 1990",
+    "model": "GuptaYos",
+    "parameters": {
+      "T_low": 1000.0,
+      "T_high": 30000.0,
+      "Pi_Omega_11": [0.0,-0.0465,0.5729,1.6185],
+      "Pi_Omega_22": [0.0,-0.0558,0.759,0.8955],
+      "D": [0.0,0.0465,0.9271,-8.1137]
+    }
+  },
+  {
+    "i": "N2",
+    "j": "O2_plus",
+    "reference": "NASA Reference Publication 1232 by Gupta,R.N., Yos,J.M. et al 1990",
+    "model": "GuptaYos",
+    "parameters": {
+      "T_low": 1000.0,
+      "T_high": 30000.0,
+      "Pi_Omega_11": [0.0,0.0,-0.4,6.8543],
+      "Pi_Omega_22": [0.0,0.0,-0.4,6.776],
+      "D": [0.0,0.0,1.9,-13.3173]
+    }
+  },
+  {
+    "i": "N2",
+    "j": "O",
+    "reference": "NASA Reference Publication 1232 by Gupta,R.N., Yos,J.M. et al 1990",
+    "model": "GuptaYos",
+    "parameters": {
+      "T_low": 1000.0,
+      "T_high": 30000.0,
+      "Pi_Omega_11": [0.0,-0.0139,-0.0825,4.5785],
+      "Pi_Omega_22": [0.0,-0.0169,-0.0143,4.4195],
+      "D": [0.0,0.014,1.5824,-10.8819]
+    }
+  },
+  {
+    "i": "N2",
+    "j": "O_plus",
+    "reference": "NASA Reference Publication 1232 by Gupta,R.N., Yos,J.M. et al 1990",
+    "model": "GuptaYos",
+    "parameters": {
+      "T_low": 1000.0,
+      "T_high": 30000.0,
+      "Pi_Omega_11": [0.0,0.0,-0.4,6.8543],
+      "Pi_Omega_22": [0.0,0.0,-0.4,6.776],
+      "D": [0.0,0.0,1.9,-13.1578]
+    }
+  },
+  {
+    "i": "N2_plus",
+    "j": "e_minus",
+    "reference": "NASA Reference Publication 1232 by Gupta,R.N., Yos,J.M. et al 1990",
+    "model": "GuptaYos",
+    "parameters": {
+      "T_low": 1000.0,
+      "T_high": 30000.0,
+      "Pi_Omega_11": [0.0,0.0,-2.0,23.8237],
+      "Pi_Omega_22": [0.0,0.0,-2.0,24.3061],
+      "D": [0.0,0.0,3.5,-25.2128]
+    }
+  },
+  {
+    "i": "N2_plus",
+    "j": "N2_plus",
+    "reference": "NASA Reference Publication 1232 by Gupta,R.N., Yos,J.M. et al 1990",
+    "model": "GuptaYos",
+    "parameters": {
+      "T_low": 1000.0,
+      "T_high": 30000.0,
+      "Pi_Omega_11": [0.0,0.0,-2.0,23.8237],
+      "Pi_Omega_22": [0.0,0.0,-2.0,24.3602],
+      "D": [0.0,0.0,3.5,-30.2867]
+    }
+  },
+  {
+    "i": "N2_plus",
+    "j": "NO_plus",
+    "reference": "NASA Reference Publication 1232 by Gupta,R.N., Yos,J.M. et al 1990",
+    "model": "GuptaYos",
+    "parameters": {
+      "T_low": 1000.0,
+      "T_high": 30000.0,
+      "Pi_Omega_11": [0.0,0.0,-2.0,23.8237],
+      "Pi_Omega_22": [0.0,0.0,-2.0,24.3602],
+      "D": [0.0,0.0,3.5,-30.3036]
+    }
+  },
+  {
+    "i": "N2_plus",
+    "j": "N_plus",
+    "reference": "NASA Reference Publication 1232 by Gupta,R.N., Yos,J.M. et al 1990",
+    "model": "GuptaYos",
+    "parameters": {
+      "T_low": 1000.0,
+      "T_high": 30000.0,
+      "Pi_Omega_11": [0.0,0.0,-2.0,23.8237],
+      "Pi_Omega_22": [0.0,0.0,-2.0,24.3602],
+      "D": [0.0,0.0,3.5,-30.0839]
+    }
+  },
+  {
+    "i": "N2_plus",
+    "j": "O2_plus",
+    "reference": "NASA Reference Publication 1232 by Gupta,R.N., Yos,J.M. et al 1990",
+    "model": "GuptaYos",
+    "parameters": {
+      "T_low": 1000.0,
+      "T_high": 30000.0,
+      "Pi_Omega_11": [0.0,0.0,-2.0,23.8237],
+      "Pi_Omega_22": [0.0,0.0,-2.0,24.3602],
+      "D": [0.0,0.0,3.5,-30.2867]
+    }
+  },
+  {
+    "i": "N2_plus",
+    "j": "O_plus",
+    "reference": "NASA Reference Publication 1232 by Gupta,R.N., Yos,J.M. et al 1990",
+    "model": "GuptaYos",
+    "parameters": {
+      "T_low": 1000.0,
+      "T_high": 30000.0,
+      "Pi_Omega_11": [0.0,0.0,-2.0,23.8237],
+      "Pi_Omega_22": [0.0,0.0,-2.0,24.3602],
+      "D": [0.0,0.0,3.5,-30.1273]
+    }
+  },
+  {
+    "i": "N",
+    "j": "e_minus",
+    "reference": "NASA Reference Publication 1232 by Gupta,R.N., Yos,J.M. et al 1990",
+    "model": "GuptaYos",
+    "parameters": {
+      "T_low": 1000.0,
+      "T_high": 30000.0,
+      "Pi_Omega_11": [0.0,0.0,0.0,1.6094],
+      "Pi_Omega_22": [0.0,0.0,0.0,1.6094],
+      "D": [0.0,0.0,1.5,-2.9987]
+    }
+  },
+  {
+    "i": "N",
+    "j": "N2_plus",
+    "reference": "NASA Reference Publication 1232 by Gupta,R.N., Yos,J.M. et al 1990",
+    "model": "GuptaYos",
+    "parameters": {
+      "T_low": 1000.0,
+      "T_high": 30000.0,
+      "Pi_Omega_11": [0.0,0.0,-0.4,6.8543],
+      "Pi_Omega_22": [0.0,0.0,-0.4,6.776],
+      "D": [0.0,0.0,1.9,-13.1144]
+    }
+  },
+  {
+    "i": "N",
+    "j": "N",
+    "reference": "NASA Reference Publication 1232 by Gupta,R.N., Yos,J.M. et al 1990",
+    "model": "GuptaYos",
+    "parameters": {
+      "T_low": 1000.0,
+      "T_high": 30000.0,
+      "Pi_Omega_11": [0.0,-0.0033,-0.0572,5.0452],
+      "Pi_Omega_22": [0.0,-0.0118,-0.096,4.3252],
+      "D": [0.0,0.0033,1.5572,-11.1616]
+    }
+  },
+  {
+    "i": "N",
+    "j": "NO_plus",
+    "reference": "NASA Reference Publication 1232 by Gupta,R.N., Yos,J.M. et al 1990",
+    "model": "GuptaYos",
+    "parameters": {
+      "T_low": 1000.0,
+      "T_high": 30000.0,
+      "Pi_Omega_11": [0.0,0.0,-0.4,6.8543],
+      "Pi_Omega_22": [0.0,0.0,-0.4,6.776],
+      "D": [0.0,0.0,1.8999,-13.1254]
+    }
+  },
+  {
+    "i": "N",
+    "j": "N_plus",
+    "reference": "NASA Reference Publication 1232 by Gupta,R.N., Yos,J.M. et al 1990",
+    "model": "GuptaYos",
+    "parameters": {
+      "T_low": 1000.0,
+      "T_high": 30000.0,
+      "Pi_Omega_11": [0.0,-0.0033,-0.0572,5.0452],
+      "Pi_Omega_22": [0.0,0.0,-0.4146,6.9078],
+      "D": [0.0,0.0033,1.5572,-11.1616]
+    }
+  },
+  {
+    "i": "N",
+    "j": "O2_plus",
+    "reference": "NASA Reference Publication 1232 by Gupta,R.N., Yos,J.M. et al 1990",
+    "model": "GuptaYos",
+    "parameters": {
+      "T_low": 1000.0,
+      "T_high": 30000.0,
+      "Pi_Omega_11": [0.0,0.0,-0.4,6.8543],
+      "Pi_Omega_22": [0.0,0.0,-0.4,6.776],
+      "D": [0.0,0.0,1.9,-13.1144]
+    }
+  },
+  {
+    "i": "NO",
+    "j": "e_minus",
+    "reference": "NASA Reference Publication 1232 by Gupta,R.N., Yos,J.M. et al 1990",
+    "model": "GuptaYos",
+    "parameters": [
+      {
+        "T_low": 1000.0,
+        "T_high": 8000.0,
+        "Pi_Omega_11": [-0.2202,5.2265,-40.5659,104.7126],
+        "Pi_Omega_22": [-0.2202,5.2265,-40.5659,104.7126],
+        "D": [0.2202,-5.2261,42.063,-106.0937]
+      },
+      {
+        "T_low": 8000.0,
+        "T_high": 30000.0,
+        "Pi_Omega_11": [-0.2871,8.3757,-81.3787,265.6292],
+        "Pi_Omega_22": [-0.2871,8.3757,-81.3787,265.6292],
+        "D": [0.2871,-8.3759,82.8802,-267.0227]
+      }
+    ]
+  },
+  {
+    "i": "N",
+    "j": "O",
+    "reference": "NASA Reference Publication 1232 by Gupta,R.N., Yos,J.M. et al 1990",
+    "model": "GuptaYos",
+    "parameters": {
+      "T_low": 1000.0,
+      "T_high": 30000.0,
+      "Pi_Omega_11": [0.0,0.0048,-0.4195,5.7774],
+      "Pi_Omega_22": [0.0,0.0065,-0.4467,6.0426],
+      "D": [0.0,-0.0048,1.9195,-11.9261]
+    }
+  },
+  {
+    "i": "NO",
+    "j": "N2_plus",
+    "reference": "NASA Reference Publication 1232 by Gupta,R.N., Yos,J.M. et al 1990",
+    "model": "GuptaYos",
+    "parameters": {
+      "T_low": 1000.0,
+      "T_high": 30000.0,
+      "Pi_Omega_11": [0.0,0.0,-0.4,6.8543],
+      "Pi_Omega_22": [0.0,0.0,-0.4,6.776],
+      "D": [0.0,0.0,1.9,-13.3343]
+    }
+  },
+  {
+    "i": "NO",
+    "j": "N",
+    "reference": "NASA Reference Publication 1232 by Gupta,R.N., Yos,J.M. et al 1990",
+    "model": "GuptaYos",
+    "parameters": {
+      "T_low": 1000.0,
+      "T_high": 30000.0,
+      "Pi_Omega_11": [0.0,-0.0185,0.0118,4.059],
+      "Pi_Omega_22": [0.0,-0.0196,0.0478,4.0321],
+      "D": [0.0,0.0185,1.4882,-10.3301]
+    }
+  },
+  {
+    "i": "NO",
+    "j": "NO",
+    "reference": "NASA Reference Publication 1232 by Gupta,R.N., Yos,J.M. et al 1990",
+    "model": "GuptaYos",
+    "parameters": {
+      "T_low": 1000.0,
+      "T_high": 30000.0,
+      "Pi_Omega_11": [0.0,-0.0364,0.3825,2.4718],
+      "Pi_Omega_22": [0.0,-0.0453,0.5624,1.7669],
+      "D": [0.0,0.0364,1.1176,-8.9695]
+    }
+  },
+  {
+    "i": "NO",
+    "j": "NO_plus",
+    "reference": "NASA Reference Publication 1232 by Gupta,R.N., Yos,J.M. et al 1990",
+    "model": "GuptaYos",
+    "parameters": {
+      "T_low": 1000.0,
+      "T_high": 30000.0,
+      "Pi_Omega_11": [0.0,-0.0047,-0.0551,4.8737],
+      "Pi_Omega_22": [0.0,0.0,-0.4,6.776],
+      "D": [0.0,0.0047,1.5552,-11.3713]
+    }
+  },
+  {
+    "i": "NO",
+    "j": "N_plus",
+    "reference": "NASA Reference Publication 1232 by Gupta,R.N., Yos,J.M. et al 1990",
+    "model": "GuptaYos",
+    "parameters": {
+      "T_low": 1000.0,
+      "T_high": 30000.0,
+      "Pi_Omega_11": [0.0,0.0,-0.4,6.8543],
+      "Pi_Omega_22": [0.0,0.0,-0.4,6.776],
+      "D": [0.0,0.0,1.8999,-13.1254]
+    }
+  },
+  {
+    "i": "NO",
+    "j": "O2_plus",
+    "reference": "NASA Reference Publication 1232 by Gupta,R.N., Yos,J.M. et al 1990",
+    "model": "GuptaYos",
+    "parameters": {
+      "T_low": 1000.0,
+      "T_high": 30000.0,
+      "Pi_Omega_11": [0.0,0.0,-0.4,6.8543],
+      "Pi_Omega_22": [0.0,0.0,-0.4,6.776],
+      "D": [0.0,0.0,1.9,-13.3343]
+    }
+  },
+  {
+    "i": "NO",
+    "j": "O",
+    "reference": "NASA Reference Publication 1232 by Gupta,R.N., Yos,J.M. et al 1990",
+    "model": "GuptaYos",
+    "parameters": {
+      "T_low": 1000.0,
+      "T_high": 30000.0,
+      "Pi_Omega_11": [0.0,-0.0179,0.0152,3.9996],
+      "Pi_Omega_22": [0.0,-0.0203,0.073,3.8818],
+      "D": [0.0,0.0179,1.4848,-10.3155]
+    }
+  },
+  {
+    "i": "NO",
+    "j": "O_plus",
+    "reference": "NASA Reference Publication 1232 by Gupta,R.N., Yos,J.M. et al 1990",
+    "model": "GuptaYos",
+    "parameters": {
+      "T_low": 1000.0,
+      "T_high": 30000.0,
+      "Pi_Omega_11": [0.0,0.0,-0.4,6.8543],
+      "Pi_Omega_22": [0.0,0.0,-0.4,6.776],
+      "D": [0.0,0.0,1.9,-13.1701]
+    }
+  },
+  {
+    "i": "NO_plus",
+    "j": "e_minus",
+    "reference": "NASA Reference Publication 1232 by Gupta,R.N., Yos,J.M. et al 1990",
+    "model": "GuptaYos",
+    "parameters": {
+      "T_low": 1000.0,
+      "T_high": 30000.0,
+      "Pi_Omega_11": [0.0,0.0,-2.0,23.8237],
+      "Pi_Omega_22": [0.0,0.0,-2.0,24.3061],
+      "D": [0.0,0.0,3.5,-25.2128]
+    }
+  },
+  {
+    "i": "N",
+    "j": "O_plus",
+    "reference": "NASA Reference Publication 1232 by Gupta,R.N., Yos,J.M. et al 1990",
+    "model": "GuptaYos",
+    "parameters": {
+      "T_low": 1000.0,
+      "T_high": 30000.0,
+      "Pi_Omega_11": [0.0,0.0,-0.4,6.8543],
+      "Pi_Omega_22": [0.0,0.0,-0.4,6.776],
+      "D": [0.0,0.0,1.9,-13.0028]
+    }
+  },
+  {
+    "i": "NO_plus",
+    "j": "NO_plus",
+    "reference": "NASA Reference Publication 1232 by Gupta,R.N., Yos,J.M. et al 1990",
+    "model": "GuptaYos",
+    "parameters": {
+      "T_low": 1000.0,
+      "T_high": 30000.0,
+      "Pi_Omega_11": [0.0,0.0,-2.0,23.8237],
+      "Pi_Omega_22": [0.0,0.0,-2.0,24.3602],
+      "D": [0.0,0.0,3.5,-30.321]
+    }
+  },
+  {
+    "i": "NO_plus",
+    "j": "N_plus",
+    "reference": "NASA Reference Publication 1232 by Gupta,R.N., Yos,J.M. et al 1990",
+    "model": "GuptaYos",
+    "parameters": {
+      "T_low": 1000.0,
+      "T_high": 30000.0,
+      "Pi_Omega_11": [0.0,0.0,-2.0,23.8237],
+      "Pi_Omega_22": [0.0,0.0,-2.0,24.3602],
+      "D": [0.0,0.0,3.5,-30.0951]
+    }
+  },
+  {
+    "i": "NO_plus",
+    "j": "O_plus",
+    "reference": "NASA Reference Publication 1232 by Gupta,R.N., Yos,J.M. et al 1990",
+    "model": "GuptaYos",
+    "parameters": {
+      "T_low": 1000.0,
+      "T_high": 30000.0,
+      "Pi_Omega_11": [0.0,0.0,-2.0,23.8237],
+      "Pi_Omega_22": [0.0,0.0,-2.0,24.3602],
+      "D": [0.0,0.0,3.5,-30.1395]
+    }
+  },
+  {
+    "i": "N_plus",
+    "j": "e_minus",
+    "reference": "NASA Reference Publication 1232 by Gupta,R.N., Yos,J.M. et al 1990",
+    "model": "GuptaYos",
+    "parameters": {
+      "T_low": 1000.0,
+      "T_high": 30000.0,
+      "Pi_Omega_11": [0.0,0.0,-2.0,23.8237],
+      "Pi_Omega_22": [0.0,0.0,-2.0,24.3061],
+      "D": [0.0,0.0,3.5,-25.2128]
+    }
+  },
+  {
+    "i": "N_plus",
+    "j": "N_plus",
+    "reference": "NASA Reference Publication 1232 by Gupta,R.N., Yos,J.M. et al 1990",
+    "model": "GuptaYos",
+    "parameters": {
+      "T_low": 1000.0,
+      "T_high": 30000.0,
+      "Pi_Omega_11": [0.0,0.0,-2.0,23.8237],
+      "Pi_Omega_22": [0.0,0.0,-2.0,24.3602],
+      "D": [0.0,0.0,3.5,-29.9401]
+    }
+  },
+  {
+    "i": "N_plus",
+    "j": "O_plus",
+    "reference": "NASA Reference Publication 1232 by Gupta,R.N., Yos,J.M. et al 1990",
+    "model": "GuptaYos",
+    "parameters": {
+      "T_low": 1000.0,
+      "T_high": 30000.0,
+      "Pi_Omega_11": [0.0,0.0,-2.0,23.8237],
+      "Pi_Omega_22": [0.0,0.0,-2.0,24.3602],
+      "D": [0.0,0.0,3.5,-29.9722]
+    }
+  },
+  {
+    "i": "O2",
+    "j": "e_minus",
+    "reference": "NASA Reference Publication 1232 by Gupta,R.N., Yos,J.M. et al 1990",
+    "model": "GuptaYos",
+    "parameters": [
+      {
+        "T_low": 1000.0,
+        "T_high": 9000.0,
+        "Pi_Omega_11": [0.0241,-0.3467,1.3887,-0.011],
+        "Pi_Omega_22": [0.0241,-0.3467,1.3887,-0.011],
+        "D": [-0.0241,0.3464,0.1136,-1.3848]
+      },
+      {
+        "T_low": 9000.0,
+        "T_high": 30000.0,
+        "Pi_Omega_11": [0.0025,-0.0742,0.7235,-0.2116],
+        "Pi_Omega_22": [0.0025,-0.0742,0.7235,-0.2116],
+        "D": [-0.0029,0.0856,0.6655,-0.8205]
+      }
+    ]
+  },
+  {
+    "i": "O2",
+    "j": "N2_plus",
+    "reference": "NASA Reference Publication 1232 by Gupta,R.N., Yos,J.M. et al 1990",
+    "model": "GuptaYos",
+    "parameters": {
+      "T_low": 1000.0,
+      "T_high": 30000.0,
+      "Pi_Omega_11": [0.0,0.0,-0.4,6.8543],
+      "Pi_Omega_22": [0.0,0.0,-0.4,6.776],
+      "D": [0.0,0.0,1.9,-13.3173]
+    }
+  },
+  {
+    "i": "O2",
+    "j": "N",
+    "reference": "NASA Reference Publication 1232 by Gupta,R.N., Yos,J.M. et al 1990",
+    "model": "GuptaYos",
+    "parameters": {
+      "T_low": 1000.0,
+      "T_high": 30000.0,
+      "Pi_Omega_11": [0.0,-0.0179,0.0152,3.9996],
+      "Pi_Omega_22": [0.0,-0.0203,0.073,3.8818],
+      "D": [0.0,0.0179,1.4848,-10.281]
+    }
+  },
+  {
+    "i": "O2",
+    "j": "NO",
+    "reference": "NASA Reference Publication 1232 by Gupta,R.N., Yos,J.M. et al 1990",
+    "model": "GuptaYos",
+    "parameters": {
+      "T_low": 1000.0,
+      "T_high": 30000.0,
+      "Pi_Omega_11": [0.0,-0.0438,0.5352,1.7252],
+      "Pi_Omega_22": [0.0,-0.0522,0.7045,1.0738],
+      "D": [0.0,0.0438,0.9647,-8.238]
+    }
+  },
+  {
+    "i": "O2",
+    "j": "NO_plus",
+    "reference": "NASA Reference Publication 1232 by Gupta,R.N., Yos,J.M. et al 1990",
+    "model": "GuptaYos",
+    "parameters": {
+      "T_low": 1000.0,
+      "T_high": 30000.0,
+      "Pi_Omega_11": [0.0,0.0,-0.4,6.8543],
+      "Pi_Omega_22": [0.0,0.0,-0.4,6.776],
+      "D": [0.0,0.0,1.9001,-13.3677]
+    }
+  },
+  {
+    "i": "O2",
+    "j": "N_plus",
+    "reference": "NASA Reference Publication 1232 by Gupta,R.N., Yos,J.M. et al 1990",
+    "model": "GuptaYos",
+    "parameters": {
+      "T_low": 1000.0,
+      "T_high": 30000.0,
+      "Pi_Omega_11": [0.0,0.0,-0.4,6.8543],
+      "Pi_Omega_22": [0.0,0.0,-0.4,6.776],
+      "D": [0.0,0.0,1.9,-13.1357]
+    }
+  },
+  {
+    "i": "O2",
+    "j": "O2",
+    "reference": "NASA Reference Publication 1232 by Gupta,R.N., Yos,J.M. et al 1990",
+    "model": "GuptaYos",
+    "parameters": {
+      "T_low": 1000.0,
+      "T_high": 30000.0,
+      "Pi_Omega_11": [0.0,-0.041,0.4977,1.8302],
+      "Pi_Omega_22": [0.0,-0.0485,0.6475,1.2607],
+      "D": [0.0,0.041,1.0023,-8.3597]
+    }
+  },
+  {
+    "i": "O2",
+    "j": "O2_plus",
+    "reference": "NASA Reference Publication 1232 by Gupta,R.N., Yos,J.M. et al 1990",
+    "model": "GuptaYos",
+    "parameters": {
+      "T_low": 1000.0,
+      "T_high": 30000.0,
+      "Pi_Omega_11": [0.0,0.0,-0.4,6.8543],
+      "Pi_Omega_22": [0.0,0.0,-0.4,6.776],
+      "D": [0.0,0.0,1.9,-13.1144]
+    }
+  },
+  {
+    "i": "O2",
+    "j": "O",
+    "reference": "NASA Reference Publication 1232 by Gupta,R.N., Yos,J.M. et al 1990",
+    "model": "GuptaYos",
+    "parameters": {
+      "T_low": 1000.0,
+      "T_high": 30000.0,
+      "Pi_Omega_11": [0.0,-0.0226,0.13,3.3363],
+      "Pi_Omega_22": [0.0,-0.0247,0.1783,3.2517],
+      "D": [0.0,0.0226,1.37,-9.6631]
+    }
+  },
+  {
+    "i": "O2",
+    "j": "O_plus",
+    "reference": "NASA Reference Publication 1232 by Gupta,R.N., Yos,J.M. et al 1990",
+    "model": "GuptaYos",
+    "parameters": {
+      "T_low": 1000.0,
+      "T_high": 30000.0,
+      "Pi_Omega_11": [0.0,0.0,-0.4,6.8543],
+      "Pi_Omega_22": [0.0,0.0,-0.4,6.776],
+      "D": [0.0,0.0,1.9,-13.181]
+    }
+  },
+  {
+    "i": "O2_plus",
+    "j": "e_minus",
+    "reference": "NASA Reference Publication 1232 by Gupta,R.N., Yos,J.M. et al 1990",
+    "model": "GuptaYos",
+    "parameters": {
+      "T_low": 1000.0,
+      "T_high": 30000.0,
+      "Pi_Omega_11": [0.0,0.0,-2.0,23.8237],
+      "Pi_Omega_22": [0.0,0.0,-2.0,24.3061],
+      "D": [0.0,0.0,3.5,-25.2128]
+    }
+  },
+  {
+    "i": "O2_plus",
+    "j": "NO_plus",
+    "reference": "NASA Reference Publication 1232 by Gupta,R.N., Yos,J.M. et al 1990",
+    "model": "GuptaYos",
+    "parameters": {
+      "T_low": 1000.0,
+      "T_high": 30000.0,
+      "Pi_Omega_11": [0.0,0.0,-2.0,23.8237],
+      "Pi_Omega_22": [0.0,0.0,-2.0,24.3602],
+      "D": [0.0,0.0,3.5,-30.3036]
+    }
+  },
+  {
+    "i": "O2_plus",
+    "j": "N_plus",
+    "reference": "NASA Reference Publication 1232 by Gupta,R.N., Yos,J.M. et al 1990",
+    "model": "GuptaYos",
+    "parameters": {
+      "T_low": 1000.0,
+      "T_high": 30000.0,
+      "Pi_Omega_11": [0.0,0.0,-2.0,23.8237],
+      "Pi_Omega_22": [0.0,0.0,-2.0,24.3602],
+      "D": [0.0,0.0,3.5,-30.0839]
+    }
+  },
+  {
+    "i": "O2_plus",
+    "j": "O2_plus",
+    "reference": "NASA Reference Publication 1232 by Gupta,R.N., Yos,J.M. et al 1990",
+    "model": "GuptaYos",
+    "parameters": {
+      "T_low": 1000.0,
+      "T_high": 30000.0,
+      "Pi_Omega_11": [0.0,0.0,-2.0,23.8237],
+      "Pi_Omega_22": [0.0,0.0,-2.0,24.3602],
+      "D": [0.0,0.0,3.5,-30.2867]
+    }
+  },
+  {
+    "i": "O2_plus",
+    "j": "O_plus",
+    "reference": "NASA Reference Publication 1232 by Gupta,R.N., Yos,J.M. et al 1990",
+    "model": "GuptaYos",
+    "parameters": {
+      "T_low": 1000.0,
+      "T_high": 30000.0,
+      "Pi_Omega_11": [0.0,0.0,-2.0,23.8237],
+      "Pi_Omega_22": [0.0,0.0,-2.0,24.3602],
+      "D": [0.0,0.0,3.5,-30.1273]
+    }
+  },
+  {
+    "i": "O",
+    "j": "e_minus",
+    "reference": "NASA Reference Publication 1232 by Gupta,R.N., Yos,J.M. et al 1990",
+    "model": "GuptaYos",
+    "parameters": [
+      {
+        "T_low": 1000.0,
+        "T_high": 9000.0,
+        "Pi_Omega_11": [0.0164,-0.2431,1.1231,-1.5561],
+        "Pi_Omega_22": [0.0164,-0.2431,1.1231,-1.5561],
+        "D": [0.0581,-1.5975,15.4508,-40.737]
+      },
+      {
+        "T_low": 9000.0,
+        "T_high": 30000.0,
+        "Pi_Omega_11": [-0.2027,5.6428,-51.5646,155.6091],
+        "Pi_Omega_22": [-0.2027,5.6428,-51.5646,155.6091],
+        "D": [0.0581,-1.5975,15.4508,-40.737]
+      }
+    ]
+  },
+  {
+    "i": "O",
+    "j": "N2_plus",
+    "reference": "NASA Reference Publication 1232 by Gupta,R.N., Yos,J.M. et al 1990",
+    "model": "GuptaYos",
+    "parameters": {
+      "T_low": 1000.0,
+      "T_high": 30000.0,
+      "Pi_Omega_11": [0.0,0.0,-0.4,6.8543],
+      "Pi_Omega_22": [0.0,0.0,-0.4,6.776],
+      "D": [0.0,0.0,1.9,-13.1578]
+    }
+  },
+  {
+    "i": "O",
+    "j": "NO_plus",
+    "reference": "NASA Reference Publication 1232 by Gupta,R.N., Yos,J.M. et al 1990",
+    "model": "GuptaYos",
+    "parameters": {
+      "T_low": 1000.0,
+      "T_high": 30000.0,
+      "Pi_Omega_11": [0.0,0.0,-0.4,6.8543],
+      "Pi_Omega_22": [0.0,0.0,-0.4,6.776],
+      "D": [0.0,0.0,1.9,-13.1701]
+    }
+  },
+  {
+    "i": "O",
+    "j": "N_plus",
+    "reference": "NASA Reference Publication 1232 by Gupta,R.N., Yos,J.M. et al 1990",
+    "model": "GuptaYos",
+    "parameters": {
+      "T_low": 1000.0,
+      "T_high": 30000.0,
+      "Pi_Omega_11": [0.0,0.0,-0.4,6.8543],
+      "Pi_Omega_22": [0.0,0.0,-0.4,6.776],
+      "D": [0.0,0.0,1.9,-13.0028]
+    }
+  },
+  {
+    "i": "O",
+    "j": "O2_plus",
+    "reference": "NASA Reference Publication 1232 by Gupta,R.N., Yos,J.M. et al 1990",
+    "model": "GuptaYos",
+    "parameters": {
+      "T_low": 1000.0,
+      "T_high": 30000.0,
+      "Pi_Omega_11": [0.0,0.0,-0.4,6.8543],
+      "Pi_Omega_22": [0.0,0.0,-0.4,6.776],
+      "D": [0.0,0.0,1.9,-13.1578]
+    }
+  },
+  {
+    "i": "O",
+    "j": "O",
+    "reference": "NASA Reference Publication 1232 by Gupta,R.N., Yos,J.M. et al 1990",
+    "model": "GuptaYos",
+    "parameters": {
+      "T_low": 1000.0,
+      "T_high": 30000.0,
+      "Pi_Omega_11": [0.0,-0.0034,-0.0572,4.9901],
+      "Pi_Omega_22": [0.0,-0.0207,0.078,3.5658],
+      "D": [0.0,-0.0034,1.5572,-11.1729]
+    }
+  },
+  {
+    "i": "O",
+    "j": "O_plus",
+    "reference": "NASA Reference Publication 1232 by Gupta,R.N., Yos,J.M. et al 1990",
+    "model": "GuptaYos",
+    "parameters": {
+      "T_low": 1000.0,
+      "T_high": 30000.0,
+      "Pi_Omega_11": [0.0,-0.0034,-0.0572,4.9901],
+      "Pi_Omega_22": [0.0,0.0,-0.4235,6.7787],
+      "D": [0.0,0.0034,1.5572,-11.1729]
+    }
+  },
+  {
+    "i": "O_plus",
+    "j": "e_minus",
+    "reference": "NASA Reference Publication 1232 by Gupta,R.N., Yos,J.M. et al 1990",
+    "model": "GuptaYos",
+    "parameters": {
+      "T_low": 1000.0,
+      "T_high": 30000.0,
+      "Pi_Omega_11": [0.0,0.0,-2.0,23.8237],
+      "Pi_Omega_22": [0.0,0.0,-2.0,24.3061],
+      "D": [0.0,0.0,3.5,-25.2128]
+    }
+  },
+  {
+    "i": "O_plus",
+    "j": "O_plus",
+    "reference": "NASA Reference Publication 1232 by Gupta,R.N., Yos,J.M. et al 1990",
+    "model": "GuptaYos",
+    "parameters": {
+      "T_low": 1000.0,
+      "T_high": 30000.0,
+      "Pi_Omega_11": [0.0,0.0,-2.0,23.8237],
+      "Pi_Omega_22": [0.0,0.0,-2.0,24.3602],
+      "D": [0.0,0.0,3.5,-30.0066]
+    }
+  }
+]
