@@ -1,0 +1,1622 @@
+[
+  {
+    "i": "Ar",
+    "j": "Ar",
+    "reference": "Wright et al, AIAA Journal Vol. 43 No. 12 December 2005",
+    "model": "GuptaYos",
+    "parameters": [
+      {
+        "T_low": 300.0,
+        "T_high": 20000.0,
+        "Pi_Omega_11": [-0.0069,0.162,-1.4644,7.9675],
+        "Pi_Omega_22": [-0.0105,0.2416,-2.033,9.3732],
+        "D": [0.0069,-0.162,2.9644,-11.154]
+      }
+    ]
+  },
+  {
+    "i": "Ar",
+    "j": "Ar_plus",
+    "reference": "Levin et al, JTHT Vol. 18 No. 1 2004",
+    "model": "GuptaYos",
+    "parameters": [
+      {
+        "T_low": 300.0,
+        "T_high": 15000.0,
+        "Pi_Omega_11": [-0.0013,0.0351,-0.4305,6.582],
+        "Pi_Omega_22": [0.0161,-0.2934,1.2157,4.173],
+        "D": [0.0013,-0.0351,1.9305,-9.7685]
+      }
+    ]
+  },
+  {
+    "i": "Ar",
+    "j": "N2_plus",
+    "reference": "Levin et al, JTHT Vol. 18 No. 1 2004",
+    "model": "GuptaYos",
+    "parameters": [
+      {
+        "T_low": 300.0,
+        "T_high": 15000.0,
+        "Pi_Omega_11": [-0.0012,0.1054,-1.7382,11.2382],
+        "Pi_Omega_22": [0.0048,-0.0337,-0.686,8.7014],
+        "D": [0.0012,-0.1054,3.2382,-14.3281]
+      }
+    ]
+  },
+  {
+    "i": "Ar",
+    "j": "NO_plus",
+    "reference": "Levin et al, JTHT Vol. 18 No. 1 2004",
+    "model": "GuptaYos",
+    "parameters": [
+      {
+        "T_low": 300.0,
+        "T_high": 15000.0,
+        "Pi_Omega_11": [0.0086,-0.1171,-0.1661,7.6758],
+        "Pi_Omega_22": [0.0173,-0.3223,1.4289,3.6688],
+        "D": [-0.0086,0.1171,1.6661,-10.7856]
+      }
+    ]
+  },
+  {
+    "i": "Ar",
+    "j": "N_plus",
+    "reference": "Levin et al, JTHT Vol. 18 No. 1 2004",
+    "model": "GuptaYos",
+    "parameters": [
+      {
+        "T_low": 300.0,
+        "T_high": 15000.0,
+        "Pi_Omega_11": [0.0154,-0.2729,0.9693,4.9994],
+        "Pi_Omega_22": [0.024,-0.4771,2.568,0.9491],
+        "D": [-0.0154,0.2729,0.5307,-7.8581]
+      }
+    ]
+  },
+  {
+    "i": "Ar",
+    "j": "O2_plus",
+    "reference": "Levin et al, JTHT Vol. 18 No. 1 2004",
+    "model": "GuptaYos",
+    "parameters": [
+      {
+        "T_low": 300.0,
+        "T_high": 15000.0,
+        "Pi_Omega_11": [0.0248,-0.4955,2.6281,1.0327],
+        "Pi_Omega_22": [0.0342,-0.719,4.4121,-3.5908],
+        "D": [-0.0248,0.4955,-1.1281,-4.1607]
+      }
+    ]
+  },
+  {
+    "i": "Ar",
+    "j": "O_plus",
+    "reference": "Levin et al, JTHT Vol. 18 No. 1 2004",
+    "model": "GuptaYos",
+    "parameters": [
+      {
+        "T_low": 300.0,
+        "T_high": 15000.0,
+        "Pi_Omega_11": [0.0208,-0.4008,1.9166,2.7473],
+        "Pi_Omega_22": [0.0306,-0.6324,3.7444,-1.9347],
+        "D": [-0.0208,0.4008,-0.4166,-5.6544]
+      }
+    ]
+  },
+  {
+    "i": "C",
+    "j": "C",
+    "reference": "Wright et al, AIAA Journal Vol. 45 No. 1 January 2007",
+    "model": "GuptaYos",
+    "parameters": [
+      {
+        "T_low": 300.0,
+        "T_high": 20000.0,
+        "Pi_Omega_11": [-0.0138,0.295,-2.3618,10.0993],
+        "Pi_Omega_22": [-0.0088,0.1871,-1.6061,8.4436],
+        "D": [0.0138,-0.295,3.8618,-12.6848]
+      }
+    ]
+  },
+  {
+    "i": "C",
+    "j": "C_plus",
+    "reference": "Wright et al, AIAA Journal Vol. 45 No. 1 January 2007",
+    "model": "GuptaYos",
+    "parameters": [
+      {
+        "T_low": 300.0,
+        "T_high": 20000.0,
+        "Pi_Omega_11": [-0.0034,0.0935,-0.9798,8.2757],
+        "Pi_Omega_22": [0.0199,-0.3846,1.9157,2.4502],
+        "D": [0.0034,-0.0935,2.4798,-10.8612]
+      }
+    ]
+  },
+  {
+    "i": "CN",
+    "j": "C",
+    "reference": "Wright et al, AIAA Journal Vol. 45 No. 1 January 2007",
+    "model": "GuptaYos",
+    "parameters": [
+      {
+        "T_low": 500.0,
+        "T_high": 20000.0,
+        "Pi_Omega_11": [-0.0018,0.023,-0.3054,4.6861],
+        "Pi_Omega_22": [-0.0016,0.0204,-0.2779,4.7413],
+        "D": [0.0018,-0.023,1.8054,-7.4284]
+      }
+    ]
+  },
+  {
+    "i": "CN",
+    "j": "CN",
+    "reference": "Wright et al, AIAA Journal Vol. 45 No. 1 January 2007",
+    "model": "GuptaYos",
+    "parameters": [
+      {
+        "T_low": 500.0,
+        "T_high": 20000.0,
+        "Pi_Omega_11": [-0.001,0.0077,-0.182,4.5959],
+        "Pi_Omega_22": [-0.0014,0.0167,-0.2468,4.8874],
+        "D": [0.001,-0.0077,1.682,-7.568]
+      }
+    ]
+  },
+  {
+    "i": "CN",
+    "j": "CN_plus",
+    "reference": "Wright et al, AIAA Journal Vol. 45 No. 1 January 2007",
+    "model": "GuptaYos",
+    "parameters": [
+      {
+        "T_low": 300.0,
+        "T_high": 15000.0,
+        "Pi_Omega_11": [-0.0023,0.0947,-1.2198,9.174],
+        "Pi_Omega_22": [0.0,-0.0006,-0.4953,7.6279],
+        "D": [0.0023,-0.0947,2.7198,-12.146]
+      }
+    ]
+  },
+  {
+    "i": "C",
+    "j": "N",
+    "reference": "Wright et al, AIAA Journal Vol. 45 No. 1 January 2007",
+    "model": "GuptaYos",
+    "parameters": [
+      {
+        "T_low": 300.0,
+        "T_high": 20000.0,
+        "Pi_Omega_11": [-0.02,0.4516,-3.5978,12.8986],
+        "Pi_Omega_22": [-0.0126,0.2884,-2.4161,10.2112],
+        "D": [0.02,-0.4516,5.0978,-15.5212]
+      }
+    ]
+  },
+  {
+    "i": "CN",
+    "j": "N",
+    "reference": "Wright et al, AIAA Journal Vol. 45 No. 1 January 2007",
+    "model": "GuptaYos",
+    "parameters": [
+      {
+        "T_low": 500.0,
+        "T_high": 20000.0,
+        "Pi_Omega_11": [-0.0025,0.0345,-0.3876,4.9716],
+        "Pi_Omega_22": [-0.0021,0.0282,-0.3369,4.9878],
+        "D": [0.0025,-0.0345,1.8876,-7.7652]
+      }
+    ]
+  },
+  {
+    "i": "CN",
+    "j": "O",
+    "reference": "Wright et al, AIAA Journal Vol. 45 No. 1 January 2007",
+    "model": "GuptaYos",
+    "parameters": [
+      {
+        "T_low": 500.0,
+        "T_high": 20000.0,
+        "Pi_Omega_11": [-0.0022,0.0379,-0.4323,4.9477],
+        "Pi_Omega_22": [-0.0021,0.0375,-0.4239,5.0481],
+        "D": [0.0022,-0.0379,1.9323,-7.7835]
+      }
+    ]
+  },
+  {
+    "i": "C",
+    "j": "N_plus",
+    "reference": "Wright et al, AIAA Journal Vol. 45 No. 1 January 2007",
+    "model": "GuptaYos",
+    "parameters": [
+      {
+        "T_low": 300.0,
+        "T_high": 15000.0,
+        "Pi_Omega_11": [0.0155,-0.2769,1.0016,4.9569],
+        "Pi_Omega_22": [0.0247,-0.4956,2.7266,0.5483],
+        "D": [-0.0155,0.2769,0.4984,-7.5795]
+      }
+    ]
+  },
+  {
+    "i": "CO2",
+    "j": "C",
+    "reference": "Wright et al, AIAA Journal Vol. 45 No. 1 January 2007",
+    "model": "GuptaYos",
+    "parameters": [
+      {
+        "T_low": 500.0,
+        "T_high": 20000.0,
+        "Pi_Omega_11": [-0.0005,-0.0005,-0.1217,4.421],
+        "Pi_Omega_22": [-0.0013,0.021,-0.2868,4.9602],
+        "D": [0.0005,0.0005,1.6217,-7.2325]
+      }
+    ]
+  },
+  {
+    "i": "CO2",
+    "j": "CN",
+    "reference": "Wright et al, AIAA Journal Vol. 45 No. 1 January 2007",
+    "model": "GuptaYos",
+    "parameters": [
+      {
+        "T_low": 500.0,
+        "T_high": 20000.0,
+        "Pi_Omega_11": [-0.0008,0.0091,-0.1967,4.7231],
+        "Pi_Omega_22": [-0.0008,0.0102,-0.1988,4.8355],
+        "D": [0.0008,-0.0091,1.6967,-7.8095]
+      }
+    ]
+  },
+  {
+    "i": "CO2",
+    "j": "CO2",
+    "reference": "Wright et al, AIAA Journal Vol. 45 No. 1 January 2007",
+    "model": "GuptaYos",
+    "parameters": [
+      {
+        "T_low": 300.0,
+        "T_high": 20000.0,
+        "Pi_Omega_11": [-0.0115,0.2886,-2.558,11.3378],
+        "Pi_Omega_22": [-0.0148,0.3731,-3.2655,13.3972],
+        "D": [0.0115,-0.2886,4.058,-14.5727]
+      }
+    ]
+  },
+  {
+    "i": "CO2",
+    "j": "CO",
+    "reference": "Wright et al, AIAA Journal Vol. 45 No. 1 January 2007",
+    "model": "GuptaYos",
+    "parameters": [
+      {
+        "T_low": 300.0,
+        "T_high": 20000.0,
+        "Pi_Omega_11": [-0.0078,0.178,-1.5361,8.216],
+        "Pi_Omega_22": [-0.0119,0.277,-2.3226,10.3647],
+        "D": [0.0078,-0.178,3.0361,-11.3252]
+      }
+    ]
+  },
+  {
+    "i": "CO2",
+    "j": "N2",
+    "reference": "Wright et al, AIAA Journal Vol. 45 No. 1 January 2007",
+    "model": "GuptaYos",
+    "parameters": [
+      {
+        "T_low": 300.0,
+        "T_high": 20000.0,
+        "Pi_Omega_11": [-0.0077,0.1751,-1.5137,8.1593],
+        "Pi_Omega_22": [-0.0119,0.277,-2.3225,10.3644],
+        "D": [0.0077,-0.1751,3.0137,-11.2686]
+      }
+    ]
+  },
+  {
+    "i": "CO2",
+    "j": "N",
+    "reference": "Wright et al, AIAA Journal Vol. 45 No. 1 January 2007",
+    "model": "GuptaYos",
+    "parameters": [
+      {
+        "T_low": 300.0,
+        "T_high": 20000.0,
+        "Pi_Omega_11": [-0.0075,0.1839,-1.6674,8.5548],
+        "Pi_Omega_22": [-0.0085,0.2066,-1.8269,8.9958],
+        "D": [0.0075,-0.1839,3.1674,-11.4256]
+      }
+    ]
+  },
+  {
+    "i": "CO2",
+    "j": "NO",
+    "reference": "Wright et al, AIAA Journal Vol. 45 No. 1 January 2007",
+    "model": "GuptaYos",
+    "parameters": [
+      {
+        "T_low": 300.0,
+        "T_high": 20000.0,
+        "Pi_Omega_11": [-0.0072,0.1707,-1.5268,8.2808],
+        "Pi_Omega_22": [-0.0122,0.2923,-2.4941,10.9021],
+        "D": [0.0072,-0.1707,3.0268,-11.4108]
+      }
+    ]
+  },
+  {
+    "i": "CO2",
+    "j": "O2",
+    "reference": "Wright et al, AIAA Journal Vol. 45 No. 1 January 2007",
+    "model": "GuptaYos",
+    "parameters": [
+      {
+        "T_low": 300.0,
+        "T_high": 20000.0,
+        "Pi_Omega_11": [-0.0068,0.1637,-1.4935,8.205],
+        "Pi_Omega_22": [-0.011,0.2678,-2.3236,10.4795],
+        "D": [0.0068,-0.1637,2.9935,-11.3539]
+      }
+    ]
+  },
+  {
+    "i": "CO2",
+    "j": "O",
+    "reference": "Wright et al, AIAA Journal Vol. 45 No. 1 January 2007",
+    "model": "GuptaYos",
+    "parameters": [
+      {
+        "T_low": 500.0,
+        "T_high": 20000.0,
+        "Pi_Omega_11": [0.0002,-0.0134,-0.0206,3.9632],
+        "Pi_Omega_22": [-0.0009,0.012,-0.2145,4.5663],
+        "D": [-0.0002,0.0134,1.5206,-6.8836]
+      }
+    ]
+  },
+  {
+    "i": "CO",
+    "j": "C",
+    "reference": "Wright et al, AIAA Journal Vol. 45 No. 1 January 2007",
+    "model": "GuptaYos",
+    "parameters": [
+      {
+        "T_low": 500.0,
+        "T_high": 15000.0,
+        "Pi_Omega_11": [-0.0019,0.0294,-0.3675,4.9335],
+        "Pi_Omega_22": [-0.0022,0.0385,-0.4262,5.1878],
+        "D": [0.0019,-0.0294,1.8675,-7.6873]
+      }
+    ]
+  },
+  {
+    "i": "CO",
+    "j": "CN",
+    "reference": "Wright et al, AIAA Journal Vol. 45 No. 1 January 2007",
+    "model": "GuptaYos",
+    "parameters": [
+      {
+        "T_low": 500.0,
+        "T_high": 15000.0,
+        "Pi_Omega_11": [-0.002,0.0358,-0.4109,5.1165],
+        "Pi_Omega_22": [-0.0019,0.0334,-0.3889,5.1829],
+        "D": [0.002,-0.0358,1.9109,-8.1067]
+      }
+    ]
+  },
+  {
+    "i": "CO",
+    "j": "CO",
+    "reference": "Wright et al, AIAA Journal Vol. 45 No. 1 January 2007",
+    "model": "GuptaYos",
+    "parameters": [
+      {
+        "T_low": 300.0,
+        "T_high": 20000.0,
+        "Pi_Omega_11": [-0.0053,0.0993,-0.8126,6.0193],
+        "Pi_Omega_22": [-0.0081,0.1664,-1.3274,7.4106],
+        "D": [0.0053,-0.0993,2.3126,-9.0283]
+      }
+    ]
+  },
+  {
+    "i": "CO",
+    "j": "CO_plus",
+    "reference": "Wright et al, AIAA Journal Vol. 45 No. 1 January 2007",
+    "model": "GuptaYos",
+    "parameters": [
+      {
+        "T_low": 300.0,
+        "T_high": 15000.0,
+        "Pi_Omega_11": [-0.0025,0.0975,-1.2366,9.1939],
+        "Pi_Omega_22": [-0.0,0.0004,-0.5035,7.6373],
+        "D": [0.0025,-0.0975,2.7366,-12.2029]
+      }
+    ]
+  },
+  {
+    "i": "CO",
+    "j": "C_plus",
+    "reference": "Wright et al, AIAA Journal Vol. 45 No. 1 January 2007",
+    "model": "GuptaYos",
+    "parameters": [
+      {
+        "T_low": 300.0,
+        "T_high": 15000.0,
+        "Pi_Omega_11": [0.016,-0.29,1.1151,4.7191],
+        "Pi_Omega_22": [0.0245,-0.4896,2.6806,0.7518],
+        "D": [-0.016,0.29,0.3849,-7.4728]
+      }
+    ]
+  },
+  {
+    "i": "C",
+    "j": "O",
+    "reference": "Wright et al, AIAA Journal Vol. 45 No. 1 January 2007",
+    "model": "GuptaYos",
+    "parameters": [
+      {
+        "T_low": 300.0,
+        "T_high": 20000.0,
+        "Pi_Omega_11": [-0.0157,0.3309,-2.5544,10.1976],
+        "Pi_Omega_22": [-0.0125,0.2665,-2.1274,9.3579],
+        "D": [0.0157,-0.3309,4.0544,-12.8498]
+      }
+    ]
+  },
+  {
+    "i": "CO",
+    "j": "N",
+    "reference": "Wright et al, AIAA Journal Vol. 45 No. 1 January 2007",
+    "model": "GuptaYos",
+    "parameters": [
+      {
+        "T_low": 300.0,
+        "T_high": 20000.0,
+        "Pi_Omega_11": [-0.0135,0.286,-2.2551,9.5596],
+        "Pi_Omega_22": [-0.0152,0.3311,-2.5921,10.4547],
+        "D": [0.0135,-0.286,3.7551,-12.3658]
+      }
+    ]
+  },
+  {
+    "i": "CO",
+    "j": "NO",
+    "reference": "Wright et al, AIAA Journal Vol. 45 No. 1 January 2007",
+    "model": "GuptaYos",
+    "parameters": [
+      {
+        "T_low": 300.0,
+        "T_high": 20000.0,
+        "Pi_Omega_11": [-0.0035,0.064,-0.5929,5.5582],
+        "Pi_Omega_22": [-0.0087,0.1878,-1.5303,7.9747],
+        "D": [0.0035,-0.064,2.0929,-8.5841]
+      }
+    ]
+  },
+  {
+    "i": "CO",
+    "j": "N_plus",
+    "reference": "Wright et al, AIAA Journal Vol. 45 No. 1 January 2007",
+    "model": "GuptaYos",
+    "parameters": [
+      {
+        "T_low": 300.0,
+        "T_high": 15000.0,
+        "Pi_Omega_11": [0.0206,-0.3966,1.8813,2.9667],
+        "Pi_Omega_22": [0.0107,-0.1839,0.4317,6.1558],
+        "D": [-0.0206,0.3966,-0.3813,-5.773]
+      }
+    ]
+  },
+  {
+    "i": "CO",
+    "j": "O",
+    "reference": "Wright et al, AIAA Journal Vol. 45 No. 1 January 2007",
+    "model": "GuptaYos",
+    "parameters": [
+      {
+        "T_low": 500.0,
+        "T_high": 20000.0,
+        "Pi_Omega_11": [-0.0013,0.0152,-0.2515,4.4278],
+        "Pi_Omega_22": [-0.0018,0.029,-0.3565,4.8211],
+        "D": [0.0013,-0.0152,1.7515,-7.2774]
+      }
+    ]
+  },
+  {
+    "i": "CO",
+    "j": "O_plus",
+    "reference": "Wright et al, AIAA Journal Vol. 45 No. 1 January 2007",
+    "model": "GuptaYos",
+    "parameters": [
+      {
+        "T_low": 300.0,
+        "T_high": 15000.0,
+        "Pi_Omega_11": [0.0266,-0.538,2.9474,0.3775],
+        "Pi_Omega_22": [0.0347,-0.734,4.5423,-3.8336],
+        "D": [-0.0266,0.538,-1.4474,-3.2271]
+      }
+    ]
+  },
+  {
+    "i": "C",
+    "j": "O_plus",
+    "reference": "Wright et al, AIAA Journal Vol. 45 No. 1 January 2007",
+    "model": "GuptaYos",
+    "parameters": [
+      {
+        "T_low": 300.0,
+        "T_high": 15000.0,
+        "Pi_Omega_11": [0.0218,-0.4242,2.1049,2.2921],
+        "Pi_Omega_22": [0.0301,-0.6224,3.6811,-1.7653],
+        "D": [-0.0218,0.4242,-0.6049,-4.9442]
+      }
+    ]
+  },
+  {
+    "i": "e_minus",
+    "j": "Ar",
+    "reference": "Wright et al, AIAA Journal Vol. 43 No. 12 December 2005",
+    "model": "GuptaYos",
+    "parameters": [
+      {
+        "T_low": 1000.0,
+        "T_high": 20000.0,
+        "Pi_Omega_11": [-0.0175,0.4452,-2.7322,2.2933],
+        "Pi_Omega_22": [-0.1061,2.5811,-19.6302,46.6876],
+        "D": [0.0175,-0.4452,4.2322,-0.2285]
+      }
+    ]
+  },
+  {
+    "i": "e_minus",
+    "j": "C",
+    "reference": "Wright et al, AIAA Journal Vol. 45 No. 1 January 2007",
+    "model": "GuptaYos",
+    "parameters": [
+      {
+        "T_low": 2000.0,
+        "T_high": 15000.0,
+        "Pi_Omega_11": [0.1633,-4.2237,35.8166,-96.6659],
+        "Pi_Omega_22": [-0.0043,0.1762,-2.4311,13.5114],
+        "D": [-0.1633,4.2237,-34.3166,98.7308]
+      }
+    ]
+  },
+  {
+    "i": "e_minus",
+    "j": "CN",
+    "reference": "Wright et al, AIAA Journal Vol. 45 No. 1 January 2007",
+    "model": "GuptaYos",
+    "parameters": [
+      {
+        "T_low": 1000.0,
+        "T_high": 20000.0,
+        "Pi_Omega_11": [-0.0614,1.3077,-8.7566,20.6841],
+        "Pi_Omega_22": [-0.0634,1.2907,-8.0069,16.7883],
+        "D": [0.0614,-1.3077,10.2566,-18.6193]
+      }
+    ]
+  },
+  {
+    "i": "e_minus",
+    "j": "CO2",
+    "reference": "Wright et al, AIAA Journal Vol. 45 No. 1 January 2007",
+    "model": "GuptaYos",
+    "parameters": [
+      {
+        "T_low": 1000.0,
+        "T_high": 20000.0,
+        "Pi_Omega_11": [0.1041,-2.3155,16.0679,-31.4029],
+        "Pi_Omega_22": [0.058,-1.1115,5.8355,-3.3769],
+        "D": [-0.1041,2.3155,-14.5679,33.4678]
+      }
+    ]
+  },
+  {
+    "i": "e_minus",
+    "j": "CO",
+    "reference": "Wright et al, AIAA Journal Vol. 45 No. 1 January 2007",
+    "model": "GuptaYos",
+    "parameters": [
+      {
+        "T_low": 1000.0,
+        "T_high": 20000.0,
+        "Pi_Omega_11": [-0.0614,1.3077,-8.7566,20.6841],
+        "Pi_Omega_22": [-0.0634,1.2907,-8.0069,16.7883],
+        "D": [0.0614,-1.3077,10.2566,-18.6193]
+      }
+    ]
+  },
+  {
+    "i": "e_minus",
+    "j": "N2",
+    "reference": "Wright et al, AIAA Journal Vol. 43 No. 12 December 2005",
+    "model": "GuptaYos",
+    "parameters": [
+      {
+        "T_low": 500.0,
+        "T_high": 20000.0,
+        "Pi_Omega_11": [-0.029,0.5808,-3.4068,7.3027],
+        "Pi_Omega_22": [-0.0303,0.5681,-2.9363,5.0715],
+        "D": [0.029,-0.5808,4.9068,-5.2378]
+      }
+    ]
+  },
+  {
+    "i": "e_minus",
+    "j": "N",
+    "reference": "Wright et al, AIAA Journal Vol. 43 No. 12 December 2005",
+    "model": "GuptaYos",
+    "parameters": [
+      {
+        "T_low": 2000.0,
+        "T_high": 20000.0,
+        "Pi_Omega_11": [-0.0504,1.6206,-17.3729,63.9003],
+        "Pi_Omega_22": [-0.1644,4.4094,-39.5269,120.7704],
+        "D": [0.0504,-1.6206,18.8729,-61.8354]
+      }
+    ]
+  },
+  {
+    "i": "e_minus",
+    "j": "NO",
+    "reference": "Wright et al, AIAA Journal Vol. 43 No. 12 December 2005",
+    "model": "GuptaYos",
+    "parameters": [
+      {
+        "T_low": 2000.0,
+        "T_high": 20000.0,
+        "Pi_Omega_11": [0.1499,-4.0351,35.7469,-101.7406],
+        "Pi_Omega_22": [0.0636,-1.6182,13.327,-32.8453],
+        "D": [-0.1499,4.0351,-34.2469,103.8055]
+      }
+    ]
+  },
+  {
+    "i": "e_minus",
+    "j": "O2",
+    "reference": "Wright et al, AIAA Journal Vol. 43 No. 12 December 2005",
+    "model": "GuptaYos",
+    "parameters": [
+      {
+        "T_low": 1000.0,
+        "T_high": 20000.0,
+        "Pi_Omega_11": [0.0175,-0.544,5.5384,-16.6444],
+        "Pi_Omega_22": [0.0097,-0.3393,3.8181,-11.9787],
+        "D": [-0.0175,0.544,-4.0384,18.7092]
+      }
+    ]
+  },
+  {
+    "i": "e_minus",
+    "j": "O",
+    "reference": "Wright et al, AIAA Journal Vol. 43 No. 12 December 2005",
+    "model": "GuptaYos",
+    "parameters": [
+      {
+        "T_low": 1000.0,
+        "T_high": 20000.0,
+        "Pi_Omega_11": [0.0085,-0.2361,2.3343,-6.8487],
+        "Pi_Omega_22": [-0.0193,0.4372,-2.9464,6.7816],
+        "D": [-0.0085,0.2361,-0.8343,8.9136]
+      }
+    ]
+  },
+  {
+    "i": "N2",
+    "j": "Ar",
+    "reference": "Wright et al, AIAA Journal Vol. 43 No. 12 December 2005",
+    "model": "GuptaYos",
+    "parameters": [
+      {
+        "T_low": 300.0,
+        "T_high": 15000.0,
+        "Pi_Omega_11": [-0.0095,0.2152,-1.8021,8.5734],
+        "Pi_Omega_22": [-0.0118,0.2702,-2.2095,9.6233],
+        "D": [0.0095,-0.2152,3.3021,-11.6633]
+      }
+    ]
+  },
+  {
+    "i": "N2",
+    "j": "Ar_plus",
+    "reference": "Levin et al, JTHT Vol. 18 No. 1 2004",
+    "model": "GuptaYos",
+    "parameters": [
+      {
+        "T_low": 300.0,
+        "T_high": 15000.0,
+        "Pi_Omega_11": [0.0099,-0.148,0.0552,7.2129],
+        "Pi_Omega_22": [0.0191,-0.3622,1.7245,3.0026],
+        "D": [-0.0099,0.148,1.4448,-10.3028]
+      }
+    ]
+  },
+  {
+    "i": "N2",
+    "j": "C",
+    "reference": "Wright et al, AIAA Journal Vol. 45 No. 1 January 2007",
+    "model": "GuptaYos",
+    "parameters": [
+      {
+        "T_low": 300.0,
+        "T_high": 10000.0,
+        "Pi_Omega_11": [-0.0088,0.1866,-1.5466,8.0282],
+        "Pi_Omega_22": [-0.007,0.1537,-1.3458,7.7216],
+        "D": [0.0088,-0.1866,3.0466,-10.782]
+      }
+    ]
+  },
+  {
+    "i": "N2",
+    "j": "CN",
+    "reference": "Wright et al, AIAA Journal Vol. 45 No. 1 January 2007",
+    "model": "GuptaYos",
+    "parameters": [
+      {
+        "T_low": 500.0,
+        "T_high": 20000.0,
+        "Pi_Omega_11": [-0.0018,0.0247,-0.3215,5.0095],
+        "Pi_Omega_22": [-0.0018,0.026,-0.3262,5.1512],
+        "D": [0.0018,-0.0247,1.8215,-7.9997]
+      }
+    ]
+  },
+  {
+    "i": "N2",
+    "j": "CO",
+    "reference": "Wright et al, AIAA Journal Vol. 45 No. 1 January 2007",
+    "model": "GuptaYos",
+    "parameters": [
+      {
+        "T_low": 300.0,
+        "T_high": 20000.0,
+        "Pi_Omega_11": [-0.0077,0.1751,-1.5137,8.1593],
+        "Pi_Omega_22": [-0.008,0.1643,-1.3109,7.3683],
+        "D": [0.0077,-0.1751,3.0137,-11.1683]
+      }
+    ]
+  },
+  {
+    "i": "N2",
+    "j": "N2",
+    "reference": "Wright et al, AIAA Journal Vol. 43 No. 12 December 2005",
+    "model": "GuptaYos",
+    "parameters": [
+      {
+        "T_low": 300.0,
+        "T_high": 10000.0,
+        "Pi_Omega_11": [-0.0066,0.1392,-1.1559,6.9352],
+        "Pi_Omega_22": [-0.0087,0.1948,-1.6023,8.1845],
+        "D": [0.0066,-0.1392,2.6559,-9.9442]
+      }
+    ]
+  },
+  {
+    "i": "N2",
+    "j": "N",
+    "reference": "Wright et al, AIAA Journal Vol. 43 No. 12 December 2005",
+    "model": "GuptaYos",
+    "parameters": [
+      {
+        "T_low": 300.0,
+        "T_high": 10000.0,
+        "Pi_Omega_11": [-0.011,0.2312,-1.8251,8.3873],
+        "Pi_Omega_22": [-0.0084,0.1787,-1.4538,7.592],
+        "D": [0.011,-0.2312,3.3251,-11.1936]
+      }
+    ]
+  },
+  {
+    "i": "N2",
+    "j": "NO",
+    "reference": "Wright et al, AIAA Journal Vol. 43 No. 12 December 2005",
+    "model": "GuptaYos",
+    "parameters": [
+      {
+        "T_low": 300.0,
+        "T_high": 15000.0,
+        "Pi_Omega_11": [-0.0045,0.0857,-0.7475,5.9196],
+        "Pi_Omega_22": [-0.0103,0.2221,-1.7761,8.5553],
+        "D": [0.0045,-0.0857,2.2475,-8.9455]
+      }
+    ]
+  },
+  {
+    "i": "N2",
+    "j": "O2",
+    "reference": "Wright et al, AIAA Journal Vol. 43 No. 12 December 2005",
+    "model": "GuptaYos",
+    "parameters": [
+      {
+        "T_low": 300.0,
+        "T_high": 15000.0,
+        "Pi_Omega_11": [-0.0075,0.1811,-1.6451,8.3532],
+        "Pi_Omega_22": [-0.0077,0.1842,-1.6438,8.3784],
+        "D": [0.0075,-0.1811,3.1451,-11.3943]
+      }
+    ]
+  },
+  {
+    "i": "N2",
+    "j": "O",
+    "reference": "Wright et al, AIAA Journal Vol. 43 No. 12 December 2005",
+    "model": "GuptaYos",
+    "parameters": [
+      {
+        "T_low": 300.0,
+        "T_high": 15000.0,
+        "Pi_Omega_11": [-0.0131,0.3034,-2.5107,10.1209],
+        "Pi_Omega_22": [-0.0086,0.2029,-1.7711,8.4376],
+        "D": [0.0131,-0.3034,4.0107,-12.9705]
+      }
+    ]
+  },
+  {
+    "i": "N2_plus",
+    "j": "N2",
+    "reference": "Wright et al, JTHT Vol. 19 No. 1 2005",
+    "model": "GuptaYos",
+    "parameters": [
+      {
+        "T_low": 300.0,
+        "T_high": 12000.0,
+        "Pi_Omega_11": [0.0028,-0.038,-0.0878,6.2603],
+        "Pi_Omega_22": [0.0104,-0.1515,0.0999,7.0976],
+        "D": [-0.0028,0.038,1.5878,-9.2693]
+      }
+    ]
+  },
+  {
+    "i": "N2_plus",
+    "j": "N",
+    "reference": "Wright et al, JTHT Vol. 19 No. 1 2005",
+    "model": "GuptaYos",
+    "parameters": [
+      {
+        "T_low": 300.0,
+        "T_high": 12000.0,
+        "Pi_Omega_11": [-0.0113,0.3382,-3.4752,15.2709],
+        "Pi_Omega_22": [-0.0062,0.2213,-2.5838,13.0934],
+        "D": [0.0113,-0.3382,4.9752,-18.0772]
+      }
+    ]
+  },
+  {
+    "i": "N2_plus",
+    "j": "NO",
+    "reference": "Wright et al, JTHT Vol. 19 No. 1 2005",
+    "model": "GuptaYos",
+    "parameters": [
+      {
+        "T_low": 300.0,
+        "T_high": 12000.0,
+        "Pi_Omega_11": [-0.0003,0.0972,-1.7992,11.7823],
+        "Pi_Omega_22": [0.0081,-0.1013,-0.2548,7.8733],
+        "D": [0.0003,-0.0972,3.2992,-14.8082]
+      }
+    ]
+  },
+  {
+    "i": "N2_plus",
+    "j": "O2",
+    "reference": "Wright et al, JTHT Vol. 19 No. 1 2005",
+    "model": "GuptaYos",
+    "parameters": [
+      {
+        "T_low": 300.0,
+        "T_high": 12000.0,
+        "Pi_Omega_11": [0.0088,-0.114,-0.2169,7.9054],
+        "Pi_Omega_22": [0.0101,-0.1415,0.0087,7.3237],
+        "D": [-0.0088,0.114,1.7169,-10.9465]
+      }
+    ]
+  },
+  {
+    "i": "N2_plus",
+    "j": "O",
+    "reference": "Wright et al, JTHT Vol. 19 No. 1 2005",
+    "model": "GuptaYos",
+    "parameters": [
+      {
+        "T_low": 300.0,
+        "T_high": 12000.0,
+        "Pi_Omega_11": [-0.0145,0.4055,-3.9228,16.0719],
+        "Pi_Omega_22": [-0.014,0.393,-3.7995,15.7278],
+        "D": [0.0145,-0.4055,5.4228,-18.9215]
+      }
+    ]
+  },
+  {
+    "i": "N",
+    "j": "Ar",
+    "reference": "Wright et al, AIAA Journal Vol. 43 No. 12 December 2005",
+    "model": "GuptaYos",
+    "parameters": [
+      {
+        "T_low": 500.0,
+        "T_high": 15000.0,
+        "Pi_Omega_11": [-0.0011,0.01,-0.2153,4.4329],
+        "Pi_Omega_22": [-0.0011,0.012,-0.2241,4.5798],
+        "D": [0.0011,-0.01,1.7153,-7.2916]
+      }
+    ]
+  },
+  {
+    "i": "N",
+    "j": "Ar_plus",
+    "reference": "Levin et al, JTHT Vol. 18 No. 1 2004",
+    "model": "GuptaYos",
+    "parameters": [
+      {
+        "T_low": 300.0,
+        "T_high": 15000.0,
+        "Pi_Omega_11": [-0.0034,0.1563,-2.1616,12.1519],
+        "Pi_Omega_22": [0.0024,0.0256,-1.172,9.7703],
+        "D": [0.0034,-0.1563,3.6616,-15.0107]
+      }
+    ]
+  },
+  {
+    "i": "N",
+    "j": "C_plus",
+    "reference": "Wright et al, AIAA Journal Vol. 45 No. 1 January 2007",
+    "model": "GuptaYos",
+    "parameters": [
+      {
+        "T_low": 300.0,
+        "T_high": 15000.0,
+        "Pi_Omega_11": [-0.0012,0.1075,-1.8132,11.3501],
+        "Pi_Omega_22": [0.0052,-0.0405,-0.6866,8.6093],
+        "D": [0.0012,-0.1075,3.3132,-13.9726]
+      }
+    ]
+  },
+  {
+    "i": "N",
+    "j": "N",
+    "reference": "Wright et al, AIAA Journal Vol. 43 No. 12 December 2005",
+    "model": "GuptaYos",
+    "parameters": [
+      {
+        "T_low": 300.0,
+        "T_high": 20000.0,
+        "Pi_Omega_11": [-0.0101,0.2216,-1.8319,8.3527],
+        "Pi_Omega_22": [-0.0082,0.183,-1.5724,7.8962],
+        "D": [0.0101,-0.2216,3.3319,-11.0152]
+      }
+    ]
+  },
+  {
+    "i": "NO",
+    "j": "Ar",
+    "reference": "Wright et al, AIAA Journal Vol. 43 No. 12 December 2005",
+    "model": "GuptaYos",
+    "parameters": [
+      {
+        "T_low": 300.0,
+        "T_high": 15000.0,
+        "Pi_Omega_11": [-0.0055,0.1205,-1.0711,6.7943],
+        "Pi_Omega_22": [-0.0113,0.2567,-2.119,9.5318],
+        "D": [0.0055,-0.1205,2.5711,-9.9041]
+      }
+    ]
+  },
+  {
+    "i": "NO",
+    "j": "Ar_plus",
+    "reference": "Levin et al, JTHT Vol. 18 No. 1 2004",
+    "model": "GuptaYos",
+    "parameters": [
+      {
+        "T_low": 300.0,
+        "T_high": 15000.0,
+        "Pi_Omega_11": [0.0091,-0.1301,-0.0684,7.4625],
+        "Pi_Omega_22": [0.019,-0.3613,1.7292,2.936],
+        "D": [-0.0091,0.1301,1.5684,-10.5723]
+      }
+    ]
+  },
+  {
+    "i": "NO",
+    "j": "C",
+    "reference": "Wright et al, AIAA Journal Vol. 45 No. 1 January 2007",
+    "model": "GuptaYos",
+    "parameters": [
+      {
+        "T_low": 500.0,
+        "T_high": 20000.0,
+        "Pi_Omega_11": [-0.0009,0.0054,-0.1649,4.2622],
+        "Pi_Omega_22": [-0.0012,0.0124,-0.2185,4.5357],
+        "D": [0.0009,-0.0054,1.6649,-7.026]
+      }
+    ]
+  },
+  {
+    "i": "NO",
+    "j": "CN",
+    "reference": "Wright et al, AIAA Journal Vol. 45 No. 1 January 2007",
+    "model": "GuptaYos",
+    "parameters": [
+      {
+        "T_low": 500.0,
+        "T_high": 20000.0,
+        "Pi_Omega_11": [-0.0009,0.0078,-0.1872,4.5643],
+        "Pi_Omega_22": [-0.0009,0.0068,-0.1722,4.6445],
+        "D": [0.0009,-0.0078,1.6872,-7.5708]
+      }
+    ]
+  },
+  {
+    "i": "N",
+    "j": "O",
+    "reference": "Wright et al, AIAA Journal Vol. 43 No. 12 December 2005",
+    "model": "GuptaYos",
+    "parameters": [
+      {
+        "T_low": 300.0,
+        "T_high": 20000.0,
+        "Pi_Omega_11": [-0.0066,0.1406,-1.2215,6.891],
+        "Pi_Omega_22": [-0.004,0.0782,-0.7148,5.6299],
+        "D": [0.0066,-0.1406,2.7215,-9.5856]
+      }
+    ]
+  },
+  {
+    "i": "NO",
+    "j": "N",
+    "reference": "Wright et al, AIAA Journal Vol. 43 No. 12 December 2005",
+    "model": "GuptaYos",
+    "parameters": [
+      {
+        "T_low": 500.0,
+        "T_high": 15000.0,
+        "Pi_Omega_11": [-0.0025,0.0429,-0.4681,5.1069],
+        "Pi_Omega_22": [-0.0022,0.0357,-0.4076,5.0826],
+        "D": [0.0025,-0.0429,1.9681,-7.9244]
+      }
+    ]
+  },
+  {
+    "i": "NO",
+    "j": "NO",
+    "reference": "Wright et al, AIAA Journal Vol. 43 No. 12 December 2005",
+    "model": "GuptaYos",
+    "parameters": [
+      {
+        "T_low": 300.0,
+        "T_high": 15000.0,
+        "Pi_Omega_11": [-0.0034,0.0653,-0.6323,5.6987],
+        "Pi_Omega_22": [-0.011,0.2449,-1.9968,9.182],
+        "D": [0.0034,-0.0653,2.1323,-8.7421]
+      }
+    ]
+  },
+  {
+    "i": "NO",
+    "j": "O",
+    "reference": "Wright et al, AIAA Journal Vol. 43 No. 12 December 2005",
+    "model": "GuptaYos",
+    "parameters": [
+      {
+        "T_low": 500.0,
+        "T_high": 15000.0,
+        "Pi_Omega_11": [-0.002,0.0331,-0.3905,4.7846],
+        "Pi_Omega_22": [-0.0018,0.0301,-0.3634,4.8401],
+        "D": [0.002,-0.0331,1.8905,-7.6464]
+      }
+    ]
+  },
+  {
+    "i": "NO_plus",
+    "j": "N2",
+    "reference": "Wright et al, JTHT Vol. 19 No. 1 2005",
+    "model": "GuptaYos",
+    "parameters": [
+      {
+        "T_low": 300.0,
+        "T_high": 12000.0,
+        "Pi_Omega_11": [0.0196,-0.3499,1.3829,4.5267],
+        "Pi_Omega_22": [0.0239,-0.4552,2.2648,2.1225],
+        "D": [-0.0196,0.3499,0.1171,-7.5526]
+      }
+    ]
+  },
+  {
+    "i": "NO_plus",
+    "j": "N",
+    "reference": "Wright et al, JTHT Vol. 19 No. 1 2005",
+    "model": "GuptaYos",
+    "parameters": [
+      {
+        "T_low": 300.0,
+        "T_high": 12000.0,
+        "Pi_Omega_11": [-0.0029,0.1582,-2.3027,12.8839],
+        "Pi_Omega_22": [0.0069,-0.069,-0.5432,8.4469],
+        "D": [0.0029,-0.1582,3.8027,-15.7014]
+      }
+    ]
+  },
+  {
+    "i": "NO_plus",
+    "j": "NO",
+    "reference": "Wright et al, JTHT Vol. 19 No. 1 2005",
+    "model": "GuptaYos",
+    "parameters": [
+      {
+        "T_low": 300.0,
+        "T_high": 12000.0,
+        "Pi_Omega_11": [-0.0089,0.2316,-2.1415,11.3619],
+        "Pi_Omega_22": [0.0217,-0.4072,1.9346,2.821],
+        "D": [0.0089,-0.2316,3.6415,-14.4053]
+      }
+    ]
+  },
+  {
+    "i": "NO_plus",
+    "j": "O2",
+    "reference": "Wright et al, JTHT Vol. 19 No. 1 2005",
+    "model": "GuptaYos",
+    "parameters": [
+      {
+        "T_low": 300.0,
+        "T_high": 12000.0,
+        "Pi_Omega_11": [0.0117,-0.1685,0.028,7.7676],
+        "Pi_Omega_22": [0.019,-0.3433,1.4431,4.0252],
+        "D": [-0.0117,0.1685,1.472,-10.8268]
+      }
+    ]
+  },
+  {
+    "i": "NO_plus",
+    "j": "O",
+    "reference": "Wright et al, JTHT Vol. 19 No. 1 2005",
+    "model": "GuptaYos",
+    "parameters": [
+      {
+        "T_low": 300.0,
+        "T_high": 12000.0,
+        "Pi_Omega_11": [-0.0105,0.3306,-3.5646,15.7359],
+        "Pi_Omega_22": [-0.0061,0.2276,-2.7481,13.6412],
+        "D": [0.0105,-0.3306,5.0646,-18.5977]
+      }
+    ]
+  },
+  {
+    "i": "N_plus",
+    "j": "N2",
+    "reference": "Wright et al, JTHT Vol. 19 No. 1 2005",
+    "model": "GuptaYos",
+    "parameters": [
+      {
+        "T_low": 300.0,
+        "T_high": 12000.0,
+        "Pi_Omega_11": [0.0209,-0.391,1.7733,3.298],
+        "Pi_Omega_22": [0.0266,-0.5257,2.8441,0.5611],
+        "D": [-0.0209,0.391,-0.2733,-6.1043]
+      }
+    ]
+  },
+  {
+    "i": "N_plus",
+    "j": "N",
+    "reference": "Wright et al, JTHT Vol. 19 No. 1 2005",
+    "model": "GuptaYos",
+    "parameters": [
+      {
+        "T_low": 300.0,
+        "T_high": 12000.0,
+        "Pi_Omega_11": [-0.0082,0.2018,-1.7574,9.8923],
+        "Pi_Omega_22": [-0.0147,0.3254,-2.7107,11.7627],
+        "D": [0.0082,-0.2018,3.2574,-12.5547]
+      }
+    ]
+  },
+  {
+    "i": "N_plus",
+    "j": "NO",
+    "reference": "Wright et al, JTHT Vol. 19 No. 1 2005",
+    "model": "GuptaYos",
+    "parameters": [
+      {
+        "T_low": 300.0,
+        "T_high": 12000.0,
+        "Pi_Omega_11": [0.0205,-0.3773,1.6339,3.742],
+        "Pi_Omega_22": [0.03,-0.604,3.4355,-0.9269],
+        "D": [-0.0205,0.3773,-0.1339,-6.5594]
+      }
+    ]
+  },
+  {
+    "i": "N_plus",
+    "j": "O2",
+    "reference": "Wright et al, JTHT Vol. 19 No. 1 2005",
+    "model": "GuptaYos",
+    "parameters": [
+      {
+        "T_low": 300.0,
+        "T_high": 12000.0,
+        "Pi_Omega_11": [0.0199,-0.3613,1.4902,4.1244],
+        "Pi_Omega_22": [0.0286,-0.5693,3.1572,-0.2295],
+        "D": [-0.0199,0.3613,0.0098,-6.9519]
+      }
+    ]
+  },
+  {
+    "i": "N_plus",
+    "j": "O",
+    "reference": "Wright et al, JTHT Vol. 19 No. 1 2005",
+    "model": "GuptaYos",
+    "parameters": [
+      {
+        "T_low": 300.0,
+        "T_high": 12000.0,
+        "Pi_Omega_11": [-0.0387,0.8781,-7.02,22.8665],
+        "Pi_Omega_22": [-0.0368,0.8489,-6.8638,22.5901],
+        "D": [0.0387,-0.8781,8.52,-25.5611]
+      }
+    ]
+  },
+  {
+    "i": "O2",
+    "j": "Ar",
+    "reference": "Wright et al, AIAA Journal Vol. 43 No. 12 December 2005",
+    "model": "GuptaYos",
+    "parameters": [
+      {
+        "T_low": 300.0,
+        "T_high": 15000.0,
+        "Pi_Omega_11": [-0.0063,0.143,-1.2832,7.4047],
+        "Pi_Omega_22": [-0.0089,0.199,-1.6574,8.2803],
+        "D": [0.0063,-0.143,2.7832,-10.5327]
+      }
+    ]
+  },
+  {
+    "i": "O2",
+    "j": "Ar_plus",
+    "reference": "Levin et al, JTHT Vol. 18 No. 1 2004",
+    "model": "GuptaYos",
+    "parameters": [
+      {
+        "T_low": 300.0,
+        "T_high": 15000.0,
+        "Pi_Omega_11": [0.008,-0.104,-0.2728,7.9528],
+        "Pi_Omega_22": [0.0165,-0.3037,1.2944,3.966],
+        "D": [-0.008,0.104,1.7728,-11.0808]
+      }
+    ]
+  },
+  {
+    "i": "O2",
+    "j": "C",
+    "reference": "Wright et al, AIAA Journal Vol. 45 No. 1 January 2007",
+    "model": "GuptaYos",
+    "parameters": [
+      {
+        "T_low": 500.0,
+        "T_high": 20000.0,
+        "Pi_Omega_11": [-0.0008,0.0048,-0.1689,4.3108],
+        "Pi_Omega_22": [0.0002,-0.0159,-0.0031,4.0027],
+        "D": [0.0008,-0.0048,1.6689,-7.0835]
+      }
+    ]
+  },
+  {
+    "i": "O2",
+    "j": "CN",
+    "reference": "Wright et al, AIAA Journal Vol. 45 No. 1 January 2007",
+    "model": "GuptaYos",
+    "parameters": [
+      {
+        "T_low": 500.0,
+        "T_high": 20000.0,
+        "Pi_Omega_11": [-0.0017,0.0304,-0.372,4.9929],
+        "Pi_Omega_22": [-0.0015,0.0252,-0.3253,4.9855],
+        "D": [0.0017,-0.0304,1.872,-8.014]
+      }
+    ]
+  },
+  {
+    "i": "O2",
+    "j": "CO",
+    "reference": "Wright et al, AIAA Journal Vol. 45 No. 1 January 2007",
+    "model": "GuptaYos",
+    "parameters": [
+      {
+        "T_low": 300.0,
+        "T_high": 20000.0,
+        "Pi_Omega_11": [-0.0031,0.0602,-0.5824,5.5388],
+        "Pi_Omega_22": [-0.0079,0.1733,-1.4406,7.7641],
+        "D": [0.0031,-0.0602,2.0824,-8.5799]
+      }
+    ]
+  },
+  {
+    "i": "O2",
+    "j": "C_plus",
+    "reference": "Wright et al, AIAA Journal Vol. 45 No. 1 January 2007",
+    "model": "GuptaYos",
+    "parameters": [
+      {
+        "T_low": 300.0,
+        "T_high": 20000.0,
+        "Pi_Omega_11": [0.0065,-0.0774,-0.4276,8.2411],
+        "Pi_Omega_22": [0.0133,-0.2392,0.8487,5.0074],
+        "D": [-0.0065,0.0774,1.9276,-11.0139]
+      }
+    ]
+  },
+  {
+    "i": "O2",
+    "j": "N",
+    "reference": "Wright et al, AIAA Journal Vol. 43 No. 12 December 2005",
+    "model": "GuptaYos",
+    "parameters": [
+      {
+        "T_low": 500.0,
+        "T_high": 15000.0,
+        "Pi_Omega_11": [-0.0014,0.0188,-0.2741,4.4792],
+        "Pi_Omega_22": [-0.001,0.0104,-0.2036,4.4182],
+        "D": [0.0014,-0.0188,1.7741,-7.3067]
+      }
+    ]
+  },
+  {
+    "i": "O2",
+    "j": "NO",
+    "reference": "Wright et al, AIAA Journal Vol. 43 No. 12 December 2005",
+    "model": "GuptaYos",
+    "parameters": [
+      {
+        "T_low": 300.0,
+        "T_high": 15000.0,
+        "Pi_Omega_11": [-0.0028,0.0583,-0.6053,5.6543],
+        "Pi_Omega_22": [-0.0099,0.2246,-1.8646,8.8696],
+        "D": [0.0028,-0.0583,2.1053,-8.7135]
+      }
+    ]
+  },
+  {
+    "i": "O2",
+    "j": "O2",
+    "reference": "Wright et al, AIAA Journal Vol. 43 No. 12 December 2005",
+    "model": "GuptaYos",
+    "parameters": [
+      {
+        "T_low": 300.0,
+        "T_high": 15000.0,
+        "Pi_Omega_11": [-0.0023,0.0516,-0.5785,5.6041],
+        "Pi_Omega_22": [-0.0089,0.2066,-1.7522,8.6099],
+        "D": [0.0023,-0.0516,2.0785,-8.6796]
+      }
+    ]
+  },
+  {
+    "i": "O2",
+    "j": "O",
+    "reference": "Wright et al, AIAA Journal Vol. 43 No. 12 December 2005",
+    "model": "GuptaYos",
+    "parameters": [
+      {
+        "T_low": 300.0,
+        "T_high": 10000.0,
+        "Pi_Omega_11": [-0.0055,0.1174,-1.077,6.6923],
+        "Pi_Omega_22": [-0.0049,0.102,-0.9228,6.3111],
+        "D": [0.0055,-0.1174,2.577,-9.5651]
+      }
+    ]
+  },
+  {
+    "i": "O2_plus",
+    "j": "N2",
+    "reference": "Wright et al, JTHT Vol. 19 No. 1 2005",
+    "model": "GuptaYos",
+    "parameters": [
+      {
+        "T_low": 300.0,
+        "T_high": 12000.0,
+        "Pi_Omega_11": [0.0273,-0.5379,2.806,1.0689],
+        "Pi_Omega_22": [0.0399,-0.8424,5.2572,-5.3935],
+        "D": [-0.0273,0.5379,-1.306,-4.11]
+      }
+    ]
+  },
+  {
+    "i": "O2_plus",
+    "j": "N",
+    "reference": "Wright et al, JTHT Vol. 19 No. 1 2005",
+    "model": "GuptaYos",
+    "parameters": [
+      {
+        "T_low": 300.0,
+        "T_high": 12000.0,
+        "Pi_Omega_11": [0.0189,-0.3447,1.4247,3.8678],
+        "Pi_Omega_22": [0.0307,-0.6203,3.5599,-1.5081],
+        "D": [-0.0189,0.3447,0.0753,-6.6953]
+      }
+    ]
+  },
+  {
+    "i": "O2_plus",
+    "j": "NO",
+    "reference": "Wright et al, JTHT Vol. 19 No. 1 2005",
+    "model": "GuptaYos",
+    "parameters": [
+      {
+        "T_low": 300.0,
+        "T_high": 12000.0,
+        "Pi_Omega_11": [0.0291,-0.5849,3.2164,-0.155],
+        "Pi_Omega_22": [0.0398,-0.8408,5.2681,-5.5231],
+        "D": [-0.0291,0.5849,-1.7164,-2.9042]
+      }
+    ]
+  },
+  {
+    "i": "O2_plus",
+    "j": "O2",
+    "reference": "Wright et al, JTHT Vol. 19 No. 1 2005",
+    "model": "GuptaYos",
+    "parameters": [
+      {
+        "T_low": 300.0,
+        "T_high": 12000.0,
+        "Pi_Omega_11": [-0.0107,0.267,-2.371,11.8459],
+        "Pi_Omega_22": [0.041,-0.858,5.3038,-5.3605],
+        "D": [0.0107,-0.267,3.871,-14.9214]
+      }
+    ]
+  },
+  {
+    "i": "O2_plus",
+    "j": "O",
+    "reference": "Wright et al, JTHT Vol. 19 No. 1 2005",
+    "model": "GuptaYos",
+    "parameters": [
+      {
+        "T_low": 300.0,
+        "T_high": 12000.0,
+        "Pi_Omega_11": [0.0117,-0.1773,0.1752,6.7206],
+        "Pi_Omega_22": [0.0203,-0.3742,1.6683,3.0752],
+        "D": [-0.0117,0.1773,1.3248,-9.5934]
+      }
+    ]
+  },
+  {
+    "i": "O",
+    "j": "Ar",
+    "reference": "Wright et al, AIAA Journal Vol. 43 No. 12 December 2005",
+    "model": "GuptaYos",
+    "parameters": [
+      {
+        "T_low": 300.0,
+        "T_high": 20000.0,
+        "Pi_Omega_11": [-0.001,0.0091,-0.1985,4.4214],
+        "Pi_Omega_22": [-0.001,0.011,-0.206,4.5559],
+        "D": [0.001,-0.0091,1.6985,-7.3285]
+      }
+    ]
+  },
+  {
+    "i": "O",
+    "j": "Ar_plus",
+    "reference": "Levin et al, JTHT Vol. 18 No. 1 2004",
+    "model": "GuptaYos",
+    "parameters": [
+      {
+        "T_low": 300.0,
+        "T_high": 15000.0,
+        "Pi_Omega_11": [-0.0102,0.3076,-3.238,14.4538],
+        "Pi_Omega_22": [-0.0074,0.2487,-2.8135,13.5341],
+        "D": [0.0102,-0.3076,4.738,-17.3609]
+      }
+    ]
+  },
+  {
+    "i": "O",
+    "j": "C_plus",
+    "reference": "Wright et al, AIAA Journal Vol. 45 No. 1 January 2007",
+    "model": "GuptaYos",
+    "parameters": [
+      {
+        "T_low": 300.0,
+        "T_high": 15000.0,
+        "Pi_Omega_11": [-0.0134,0.3807,-3.7966,15.8709],
+        "Pi_Omega_22": [-0.0049,0.1911,-2.4021,12.5785],
+        "D": [0.0134,-0.3807,5.2966,-18.523]
+      }
+    ]
+  },
+  {
+    "i": "O",
+    "j": "O",
+    "reference": "Wright et al, AIAA Journal Vol. 43 No. 12 December 2005",
+    "model": "GuptaYos",
+    "parameters": [
+      {
+        "T_low": 300.0,
+        "T_high": 20000.0,
+        "Pi_Omega_11": [-0.0055,0.1245,-1.2233,7.2312],
+        "Pi_Omega_22": [-0.0032,0.0717,-0.8058,6.2443],
+        "D": [0.0055,-0.1245,2.7233,-9.9601]
+      }
+    ]
+  },
+  {
+    "i": "O_plus",
+    "j": "N2",
+    "reference": "Wright et al, JTHT Vol. 19 No. 1 2005",
+    "model": "GuptaYos",
+    "parameters": [
+      {
+        "T_low": 300.0,
+        "T_high": 12000.0,
+        "Pi_Omega_11": [0.0278,-0.549,2.9127,0.6885],
+        "Pi_Omega_22": [0.0367,-0.7643,4.6604,-3.9371],
+        "D": [-0.0278,0.549,-1.4127,-3.5381]
+      }
+    ]
+  },
+  {
+    "i": "O_plus",
+    "j": "N",
+    "reference": "Wright et al, JTHT Vol. 19 No. 1 2005",
+    "model": "GuptaYos",
+    "parameters": [
+      {
+        "T_low": 300.0,
+        "T_high": 12000.0,
+        "Pi_Omega_11": [-0.037,0.8655,-7.0557,23.2484],
+        "Pi_Omega_22": [-0.0256,0.6301,-5.4699,19.7467],
+        "D": [0.037,-0.8655,8.5557,-25.943]
+      }
+    ]
+  },
+  {
+    "i": "O_plus",
+    "j": "NO",
+    "reference": "Wright et al, JTHT Vol. 19 No. 1 2005",
+    "model": "GuptaYos",
+    "parameters": [
+      {
+        "T_low": 300.0,
+        "T_high": 12000.0,
+        "Pi_Omega_11": [0.0248,-0.4778,2.371,2.0123],
+        "Pi_Omega_22": [0.0371,-0.7721,4.722,-4.1268],
+        "D": [-0.0248,0.4778,-0.871,-4.8741]
+      }
+    ]
+  },
+  {
+    "i": "O_plus",
+    "j": "O2",
+    "reference": "Wright et al, JTHT Vol. 19 No. 1 2005",
+    "model": "GuptaYos",
+    "parameters": [
+      {
+        "T_low": 300.0,
+        "T_high": 12000.0,
+        "Pi_Omega_11": [0.0265,-0.5064,2.4792,2.0846],
+        "Pi_Omega_22": [0.0331,-0.672,3.8748,-1.7806],
+        "D": [-0.0265,0.5064,-0.9792,-4.9574]
+      }
+    ]
+  },
+  {
+    "i": "O_plus",
+    "j": "O",
+    "reference": "Wright et al, JTHT Vol. 19 No. 1 2005",
+    "model": "GuptaYos",
+    "parameters": [
+      {
+        "T_low": 300.0,
+        "T_high": 12000.0,
+        "Pi_Omega_11": [-0.008,0.1969,-1.7139,9.5036],
+        "Pi_Omega_22": [-0.0321,0.745,-6.069,20.5037],
+        "D": [0.008,-0.1969,3.2139,-12.2325]
+      }
+    ]
+  }
+]

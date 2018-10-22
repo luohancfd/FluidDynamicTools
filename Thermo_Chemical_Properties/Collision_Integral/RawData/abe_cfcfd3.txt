@@ -1,0 +1,4832 @@
+CI = {
+  i = C2,
+  j = C2,
+  reference = 'Park - Chemical kinetic parameters of hyperbolic Earth entry, 2001',
+  model = 'GuptaYos',
+  parameters = {
+    {
+      T_low = 2000.0,
+      T_high = 32000.0,
+      Pi_Omega_11 = {     -0.0058,       0.1485,      -1.6689,       9.9522, },
+      Pi_Omega_22 = {     -0.0058,       0.1588,      -1.8369,      10.7515, },
+      D           = {      0.0000,       0.0000,       0.0000,       0.0000, },
+    },
+  },
+}CI = {
+  i = C2,
+  j = C,
+  reference = 'Park - Chemical kinetic parameters of hyperbolic Earth entry, 2001',
+  model = 'GuptaYos',
+  parameters = {
+    {
+      T_low = 2000.0,
+      T_high = 32000.0,
+      Pi_Omega_11 = {      0.0058,      -0.1588,       1.0397,       1.8477, },
+      Pi_Omega_22 = {     -0.0058,       0.1588,      -1.8369,      10.5443, },
+      D           = {      0.0000,       0.0000,       0.0000,       0.0000, },
+    },
+  },
+}CI = {
+  i = 'C2',
+  j = 'CO2',
+  reference = 'Bruno et al ESA STR-256 September 2008',
+  model = 'Bruno curve fits',
+  parameters = {
+    beta = 7.81,
+    eps0 = 15.922,
+    re   = 4.064,
+  }
+}
+CI = {
+  i = C2,
+  j = CO,
+  reference = 'Park - Chemical kinetic parameters of hyperbolic Earth entry, 2001',
+  model = 'GuptaYos',
+  parameters = {
+    {
+      T_low = 2000.0,
+      T_high = 32000.0,
+      Pi_Omega_11 = {     -0.0058,       0.1485,      -1.6689,       9.9062, },
+      Pi_Omega_22 = {     -0.0058,       0.1588,      -1.8369,      10.7055, },
+      D           = {      0.0000,       0.0000,       0.0000,       0.0000, },
+    },
+  },
+}CI = {
+  i = 'C2',
+  j = 'CO_plus',
+  reference = 'Bruno et al ESA STR-256 September 2008',
+  model = 'Bruno curve fits',
+  parameters = {
+    beta = 8.14,
+    eps0 = 135.183,
+    re   = 3.334,
+  }
+}
+CI = {
+  i = 'C2H2',
+  j = 'C2H2',
+  reference = 'To be published',
+  model = 'GuptaYos',
+  parameters = {
+    {
+      T_low = 1000.0,
+      T_high = 20000.0,
+      Pi_Omega_11 = {  -0.0032,  0.0860,  -0.9244,  7.1200,  },
+      Pi_Omega_22 = {  -0.0035,  0.0915,  -0.9475,  7.2053,  },
+      D           = { 0.0,	 0.0,	 0.0,	 0.0 },
+    },
+  },
+}CI = {
+  i = 'C2H2',
+  j = 'C2H',
+  reference = 'To be published',
+  model = 'GuptaYos',
+  parameters = {
+    {
+      T_low = 1000.0,
+      T_high = 20000.0,
+      Pi_Omega_11 = {  -0.0190,  0.5125,  -4.7676,  18.5055,  },
+      Pi_Omega_22 = {  -0.0072,  0.2013,  -2.0166,  10.5212,  },
+      D           = { 0.0,	 0.0,	 0.0,	 0.0 },
+    },
+  },
+}CI = {
+  i = 'C2H2',
+  j = 'C2',
+  reference = 'To be published',
+  model = 'GuptaYos',
+  parameters = {
+    {
+      T_low = 1000.0,
+      T_high = 20000.0,
+      Pi_Omega_11 = {  -0.0016,  0.0405,  -0.5066,  5.7320,  },
+      Pi_Omega_22 = {  -0.0017,  0.0428,  -0.5042,  5.7614,  },
+      D           = { 0.0,	 0.0,	 0.0,	 0.0 },
+    },
+  },
+}CI = {
+  i = 'C2H2',
+  j = 'C3',
+  reference = 'To be published',
+  model = 'GuptaYos',
+  parameters = {
+    {
+      T_low = 1000.0,
+      T_high = 20000.0,
+      Pi_Omega_11 = {  -0.0155,  0.4151,  -3.8436,  15.5776,  },
+      Pi_Omega_22 = {  0.0009,  -0.0212,  0.0035,  4.4152,  },
+      D           = { 0.0,	 0.0,	 0.0,	 0.0 },
+    },
+  },
+}CI = {
+  i = 'C2H2',
+  j = 'C',
+  reference = 'To be published',
+  model = 'GuptaYos',
+  parameters = {
+    {
+      T_low = 1000.0,
+      T_high = 20000.0,
+      Pi_Omega_11 = {  -0.0013,  0.0326,  -0.4201,  5.2239,  },
+      Pi_Omega_22 = {  -0.0030,  0.0718,  -0.7128,  6.0429,  },
+      D           = { 0.0,	 0.0,	 0.0,	 0.0 },
+    },
+  },
+}CI = {
+  i = 'C2H2',
+  j = 'CN',
+  reference = 'To be published',
+  model = 'GuptaYos',
+  parameters = {
+    {
+      T_low = 1000.0,
+      T_high = 20000.0,
+      Pi_Omega_11 = {  -0.0158,  0.4335,  -4.1321,  16.8763,  },
+      Pi_Omega_22 = {  -0.0159,  0.4335,  -4.0867,  16.6851,  },
+      D           = { 0.0,	 0.0,	 0.0,	 0.0 },
+    },
+  },
+}CI = {
+  i = 'C2H2',
+  j = 'CO2',
+  reference = 'To be published',
+  model = 'GuptaYos',
+  parameters = {
+    {
+      T_low = 1000.0,
+      T_high = 20000.0,
+      Pi_Omega_11 = {  -0.0027,  0.0726,  -0.8026,  6.7152,  },
+      Pi_Omega_22 = {  -0.0037,  0.0960,  -0.9818,  7.2554,  },
+      D           = { 0.0,	 0.0,	 0.0,	 0.0 },
+    },
+  },
+}CI = {
+  i = 'C2H2',
+  j = 'CO',
+  reference = 'To be published',
+  model = 'GuptaYos',
+  parameters = {
+    {
+      T_low = 1000.0,
+      T_high = 20000.0,
+      Pi_Omega_11 = {  -0.0018,  0.0480,  -0.5743,  5.8907,  },
+      Pi_Omega_22 = {  -0.0021,  0.0529,  -0.5943,  5.9827,  },
+      D           = { 0.0,	 0.0,	 0.0,	 0.0 },
+    },
+  },
+}CI = {
+  i = 'C2H2',
+  j = 'CO',
+  reference = 'To be published',
+  model = 'GuptaYos',
+  parameters = {
+    {
+      T_low = 1000.0,
+      T_high = 20000.0,
+      Pi_Omega_11 = {  -0.0018,  0.0480,  -0.5743,  5.8907,  },
+      Pi_Omega_22 = {  -0.0021,  0.0529,  -0.5943,  5.9827,  },
+      D           = { 0.0,	 0.0,	 0.0,	 0.0 },
+    },
+  },
+}CI = {
+  i = 'C2H2',
+  j = 'C',
+  reference = 'To be published',
+  model = 'GuptaYos',
+  parameters = {
+    {
+      T_low = 1000.0,
+      T_high = 20000.0,
+      Pi_Omega_11 = {  -0.0013,  0.0326,  -0.4201,  5.2239,  },
+      Pi_Omega_22 = {  -0.0030,  0.0718,  -0.7128,  6.0429,  },
+      D           = { 0.0,	 0.0,	 0.0,	 0.0 },
+    },
+  },
+}CI = {
+  i = 'C2H2',
+  j = 'H2',
+  reference = 'To be published',
+  model = 'GuptaYos',
+  parameters = {
+    {
+      T_low = 1000.0,
+      T_high = 20000.0,
+      Pi_Omega_11 = {  -0.0013,  0.0343,  -0.4481,  5.2369,  },
+      Pi_Omega_22 = {  -0.0014,  0.0333,  -0.4166,  5.1836,  },
+      D           = { 0.0,	 0.0,	 0.0,	 0.0 },
+    },
+  },
+}CI = {
+  i = 'C2H2',
+  j = 'H',
+  reference = 'To be published',
+  model = 'GuptaYos',
+  parameters = {
+    {
+      T_low = 1000.0,
+      T_high = 20000.0,
+      Pi_Omega_11 = {  -0.0011,  0.0277,  -0.3842,  4.9612,  },
+      Pi_Omega_22 = {  -0.0019,  0.0454,  -0.5038,  5.3161,  },
+      D           = { 0.0,	 0.0,	 0.0,	 0.0 },
+    },
+  },
+}CI = {
+  i = 'C2H2',
+  j = 'N2',
+  reference = 'To be published',
+  model = 'GuptaYos',
+  parameters = {
+    {
+      T_low = 1000.0,
+      T_high = 20000.0,
+      Pi_Omega_11 = {  -0.0014,  0.0375,  -0.4791,  5.6124,  },
+      Pi_Omega_22 = {  -0.0016,  0.0386,  -0.4656,  5.6099,  },
+      D           = { 0.0,	 0.0,	 0.0,	 0.0 },
+    },
+  },
+}CI = {
+  i = 'C2H2',
+  j = 'N2',
+  reference = 'To be published',
+  model = 'GuptaYos',
+  parameters = {
+    {
+      T_low = 1000.0,
+      T_high = 20000.0,
+      Pi_Omega_11 = {  -0.0014,  0.0375,  -0.4791,  5.6124,  },
+      Pi_Omega_22 = {  -0.0016,  0.0386,  -0.4656,  5.6099,  },
+      D           = { 0.0,	 0.0,	 0.0,	 0.0 },
+    },
+  },
+}CI = {
+  i = 'C2H2',
+  j = 'N',
+  reference = 'To be published',
+  model = 'GuptaYos',
+  parameters = {
+    {
+      T_low = 1000.0,
+      T_high = 20000.0,
+      Pi_Omega_11 = {  -0.0014,  0.0375,  -0.4791,  5.4805,  },
+      Pi_Omega_22 = {  -0.0016,  0.0386,  -0.4656,  5.4779,  },
+      D           = { 0.0,	 0.0,	 0.0,	 0.0 },
+    },
+  },
+}CI = {
+  i = 'C2H2',
+  j = 'NO',
+  reference = 'To be published',
+  model = 'GuptaYos',
+  parameters = {
+    {
+      T_low = 1000.0,
+      T_high = 20000.0,
+      Pi_Omega_11 = {  -0.0021,  0.0563,  -0.6511,  6.0936,  },
+      Pi_Omega_22 = {  -0.0027,  0.0708,  -0.7541,  6.4206,  },
+      D           = { 0.0,	 0.0,	 0.0,	 0.0 },
+    },
+  },
+}CI = {
+  i = 'C2H2',
+  j = 'NO',
+  reference = 'To be published',
+  model = 'GuptaYos',
+  parameters = {
+    {
+      T_low = 1000.0,
+      T_high = 20000.0,
+      Pi_Omega_11 = {  -0.0021,  0.0563,  -0.6511,  6.0936,  },
+      Pi_Omega_22 = {  -0.0027,  0.0708,  -0.7541,  6.4206,  },
+      D           = { 0.0,	 0.0,	 0.0,	 0.0 },
+    },
+  },
+}CI = {
+  i = 'C2H2',
+  j = 'N',
+  reference = 'To be published',
+  model = 'GuptaYos',
+  parameters = {
+    {
+      T_low = 1000.0,
+      T_high = 20000.0,
+      Pi_Omega_11 = {  -0.0014,  0.0375,  -0.4791,  5.4805,  },
+      Pi_Omega_22 = {  -0.0016,  0.0386,  -0.4656,  5.4779,  },
+      D           = { 0.0,	 0.0,	 0.0,	 0.0 },
+    },
+  },
+}CI = {
+  i = 'C2H2',
+  j = 'O2',
+  reference = 'To be published',
+  model = 'GuptaYos',
+  parameters = {
+    {
+      T_low = 1000.0,
+      T_high = 20000.0,
+      Pi_Omega_11 = {  -0.0020,  0.0521,  -0.6108,  5.9506,  },
+      Pi_Omega_22 = {  -0.0024,  0.0621,  -0.6751,  6.1710,  },
+      D           = { 0.0,	 0.0,	 0.0,	 0.0 },
+    },
+  },
+}CI = {
+  i = 'C2H2',
+  j = 'O2',
+  reference = 'To be published',
+  model = 'GuptaYos',
+  parameters = {
+    {
+      T_low = 1000.0,
+      T_high = 20000.0,
+      Pi_Omega_11 = {  -0.0020,  0.0521,  -0.6108,  5.9506,  },
+      Pi_Omega_22 = {  -0.0024,  0.0621,  -0.6751,  6.1710,  },
+      D           = { 0.0,	 0.0,	 0.0,	 0.0 },
+    },
+  },
+}CI = {
+  i = 'C2H2',
+  j = 'O',
+  reference = 'To be published',
+  model = 'GuptaYos',
+  parameters = {
+    {
+      T_low = 1000.0,
+      T_high = 20000.0,
+      Pi_Omega_11 = {  -0.0020,  0.0521,  -0.6108,  5.8362,  },
+      Pi_Omega_22 = {  -0.0024,  0.0621,  -0.6751,  6.0566,  },
+      D           = { 0.0,	 0.0,	 0.0,	 0.0 },
+    },
+  },
+}CI = {
+  i = 'C2H2',
+  j = 'O',
+  reference = 'To be published',
+  model = 'GuptaYos',
+  parameters = {
+    {
+      T_low = 1000.0,
+      T_high = 20000.0,
+      Pi_Omega_11 = {  -0.0020,  0.0521,  -0.6108,  5.8362,  },
+      Pi_Omega_22 = {  -0.0024,  0.0621,  -0.6751,  6.0566,  },
+      D           = { 0.0,	 0.0,	 0.0,	 0.0 },
+    },
+  },
+}CI = {
+  i = C2H,
+  j = C2H,
+  reference = 'Park - Chemical kinetic parameters of hyperbolic Earth entry, 2001',
+  model = 'GuptaYos',
+  parameters = {
+    {
+      T_low = 2000.0,
+      T_high = 32000.0,
+      Pi_Omega_11 = {     -0.0058,       0.1656,      -1.9932,      11.4031, },
+      Pi_Omega_22 = {     -0.0115,       0.3244,      -3.4315,      15.7859, },
+      D           = {      0.0000,       0.0000,       0.0000,       0.0000, },
+    },
+  },
+}CI = {
+  i = C2H,
+  j = C2,
+  reference = 'Park - Chemical kinetic parameters of hyperbolic Earth entry, 2001',
+  model = 'GuptaYos',
+  parameters = {
+    {
+      T_low = 2000.0,
+      T_high = 32000.0,
+      Pi_Omega_11 = {      0.0058,      -0.1588,       1.0397,       2.0319, },
+      Pi_Omega_22 = {      0.0000,      -0.0000,      -0.3986,       6.4378, },
+      D           = {      0.0000,       0.0000,       0.0000,       0.0000, },
+    },
+  },
+}CI = {
+  i = C2H,
+  j = C3,
+  reference = 'Park - Chemical kinetic parameters of hyperbolic Earth entry, 2001',
+  model = 'GuptaYos',
+  parameters = {
+    {
+      T_low = 2000.0,
+      T_high = 32000.0,
+      Pi_Omega_11 = {     -0.0058,       0.1656,      -1.9932,      11.4031, },
+      Pi_Omega_22 = {     -0.0000,       0.0103,      -0.5998,       7.3514, },
+      D           = {      0.0000,       0.0000,       0.0000,       0.0000, },
+    },
+  },
+}CI = {
+  i = C2H,
+  j = C,
+  reference = 'Park - Chemical kinetic parameters of hyperbolic Earth entry, 2001',
+  model = 'GuptaYos',
+  parameters = {
+    {
+      T_low = 2000.0,
+      T_high = 32000.0,
+      Pi_Omega_11 = {      0.0058,      -0.1588,       1.0397,       1.8017, },
+      Pi_Omega_22 = {     -0.0000,       0.0000,      -0.3986,       6.2075, },
+      D           = {      0.0000,       0.0000,       0.0000,       0.0000, },
+    },
+  },
+}CI = {
+  i = C2H,
+  j = CN,
+  reference = 'Park - Chemical kinetic parameters of hyperbolic Earth entry, 2001',
+  model = 'GuptaYos',
+  parameters = {
+    {
+      T_low = 2000.0,
+      T_high = 32000.0,
+      Pi_Omega_11 = {      0.0058,      -0.1588,       1.0397,       2.0089, },
+      Pi_Omega_22 = {     -0.0000,       0.0000,      -0.3986,       6.4148, },
+      D           = {      0.0000,       0.0000,       0.0000,       0.0000, },
+    },
+  },
+}CI = {
+  i = C2H,
+  j = CO,
+  reference = 'Park - Chemical kinetic parameters of hyperbolic Earth entry, 2001',
+  model = 'GuptaYos',
+  parameters = {
+    {
+      T_low = 2000.0,
+      T_high = 32000.0,
+      Pi_Omega_11 = {      0.0058,      -0.1519,       0.9166,       2.5277, },
+      Pi_Omega_22 = {     -0.0058,       0.1588,      -1.8369,      10.6594, },
+      D           = {      0.0000,       0.0000,       0.0000,       0.0000, },
+    },
+  },
+}CI = {
+  i = C2H,
+  j = CO,
+  reference = 'Park - Chemical kinetic parameters of hyperbolic Earth entry, 2001',
+  model = 'GuptaYos',
+  parameters = {
+    {
+      T_low = 2000.0,
+      T_high = 32000.0,
+      Pi_Omega_11 = {      0.0058,      -0.1519,       0.9166,       2.5277, },
+      Pi_Omega_22 = {     -0.0058,       0.1588,      -1.8369,      10.6594, },
+      D           = {      0.0000,       0.0000,       0.0000,       0.0000, },
+    },
+  },
+}CI = {
+  i = C2H,
+  j = H2,
+  reference = 'Park - Chemical kinetic parameters of hyperbolic Earth entry, 2001',
+  model = 'GuptaYos',
+  parameters = {
+    {
+      T_low = 2000.0,
+      T_high = 32000.0,
+      Pi_Omega_11 = {      0.0058,      -0.1519,       0.9166,       2.2284, },
+      Pi_Omega_22 = {     -0.0058,       0.1519,      -1.7139,       9.8183, },
+      D           = {      0.0000,       0.0000,       0.0000,       0.0000, },
+    },
+  },
+}CI = {
+  i = C2H,
+  j = H,
+  reference = 'Park - Chemical kinetic parameters of hyperbolic Earth entry, 2001',
+  model = 'GuptaYos',
+  parameters = {
+    {
+      T_low = 2000.0,
+      T_high = 32000.0,
+      Pi_Omega_11 = {     -0.0000,       0.0000,      -0.3986,       5.8852, },
+      Pi_Omega_22 = {      0.0058,      -0.1485,       0.8717,       2.3937, },
+      D           = {      0.0000,       0.0000,       0.0000,       0.0000, },
+    },
+  },
+}CI = {
+  i = C2,
+  j = H,
+  reference = 'Park - Chemical kinetic parameters of hyperbolic Earth entry, 2001',
+  model = 'GuptaYos',
+  parameters = {
+    {
+      T_low = 2000.0,
+      T_high = 32000.0,
+      Pi_Omega_11 = {     -0.0058,       0.1485,      -1.6689,       9.5608, },
+      Pi_Omega_22 = {     -0.0058,       0.1519,      -1.7139,       9.8183, },
+      D           = {      0.0000,       0.0000,       0.0000,       0.0000, },
+    },
+  },
+}CI = {
+  i = C2H,
+  j = N2,
+  reference = 'Park - Chemical kinetic parameters of hyperbolic Earth entry, 2001',
+  model = 'GuptaYos',
+  parameters = {
+    {
+      T_low = 2000.0,
+      T_high = 32000.0,
+      Pi_Omega_11 = {     -0.0058,       0.1485,      -1.6689,       9.8832, },
+      Pi_Omega_22 = {     -0.0000,       0.0000,      -0.3986,       6.3917, },
+      D           = {      0.0000,       0.0000,       0.0000,       0.0000, },
+    },
+  },
+}CI = {
+  i = C2H,
+  j = N,
+  reference = 'Park - Chemical kinetic parameters of hyperbolic Earth entry, 2001',
+  model = 'GuptaYos',
+  parameters = {
+    {
+      T_low = 2000.0,
+      T_high = 32000.0,
+      Pi_Omega_11 = {      0.0058,      -0.1519,       0.9166,       2.3895, },
+      Pi_Omega_22 = {     -0.0000,       0.0000,      -0.3986,       6.2536, },
+      D           = {      0.0000,       0.0000,       0.0000,       0.0000, },
+    },
+  },
+}CI = {
+  i = C2H,
+  j = NO,
+  reference = 'Park - Chemical kinetic parameters of hyperbolic Earth entry, 2001',
+  model = 'GuptaYos',
+  parameters = {
+    {
+      T_low = 2000.0,
+      T_high = 32000.0,
+      Pi_Omega_11 = {     -0.0058,       0.1622,      -1.9151,      10.9391, },
+      Pi_Omega_22 = {      0.0000,      -0.0000,      -0.3986,       6.3457, },
+      D           = {      0.0000,       0.0000,       0.0000,       0.0000, },
+    },
+  },
+}CI = {
+  i = C2H,
+  j = O2,
+  reference = 'Park - Chemical kinetic parameters of hyperbolic Earth entry, 2001',
+  model = 'GuptaYos',
+  parameters = {
+    {
+      T_low = 2000.0,
+      T_high = 32000.0,
+      Pi_Omega_11 = {     -0.0058,       0.1622,      -1.9151,      10.9161, },
+      Pi_Omega_22 = {     -0.0000,       0.0000,      -0.3986,       6.3227, },
+      D           = {      0.0000,       0.0000,       0.0000,       0.0000, },
+    },
+  },
+}CI = {
+  i = C2H,
+  j = O2,
+  reference = 'Park - Chemical kinetic parameters of hyperbolic Earth entry, 2001',
+  model = 'GuptaYos',
+  parameters = {
+    {
+      T_low = 2000.0,
+      T_high = 32000.0,
+      Pi_Omega_11 = {     -0.0058,       0.1622,      -1.9151,      10.9161, },
+      Pi_Omega_22 = {     -0.0000,       0.0000,      -0.3986,       6.3227, },
+      D           = {      0.0000,       0.0000,       0.0000,       0.0000, },
+    },
+  },
+}CI = {
+  i = C2H,
+  j = O,
+  reference = 'Park - Chemical kinetic parameters of hyperbolic Earth entry, 2001',
+  model = 'GuptaYos',
+  parameters = {
+    {
+      T_low = 2000.0,
+      T_high = 32000.0,
+      Pi_Omega_11 = {      0.0058,      -0.1519,       0.9166,       2.3435, },
+      Pi_Omega_22 = {     -0.0115,       0.3141,      -3.2303,      14.6420, },
+      D           = {      0.0000,       0.0000,       0.0000,       0.0000, },
+    },
+  },
+}CI = {
+  i = C2,
+  j = N,
+  reference = 'Park - Chemical kinetic parameters of hyperbolic Earth entry, 2001',
+  model = 'GuptaYos',
+  parameters = {
+    {
+      T_low = 2000.0,
+      T_high = 32000.0,
+      Pi_Omega_11 = {      0.0058,      -0.1519,       0.9166,       2.4356, },
+      Pi_Omega_22 = {     -0.0000,       0.0000,      -0.3986,       6.2996, },
+      D           = {      0.0000,       0.0000,       0.0000,       0.0000, },
+    },
+  },
+}CI = {
+  i = 'C2',
+  j = 'O2_plus',
+  reference = 'Bruno et al ESA STR-256 September 2008',
+  model = 'Bruno curve fits',
+  parameters = {
+    beta = 8.21,
+    eps0 = 141.118,
+    re   = 3.270,
+  }
+}
+CI = {
+  i = C2,
+  j = O,
+  reference = 'Park - Chemical kinetic parameters of hyperbolic Earth entry, 2001',
+  model = 'GuptaYos',
+  parameters = {
+    {
+      T_low = 2000.0,
+      T_high = 32000.0,
+      Pi_Omega_11 = {     -0.0058,       0.1485,      -1.6689,       9.7450, },
+      Pi_Omega_22 = {     -0.0000,       0.0000,      -0.3986,       6.2536, },
+      D           = {      0.0000,       0.0000,       0.0000,       0.0000, },
+    },
+  },
+}CI = {
+  i = C3,
+  j = C2,
+  reference = 'Park - Chemical kinetic parameters of hyperbolic Earth entry, 2001',
+  model = 'GuptaYos',
+  parameters = {
+    {
+      T_low = 2000.0,
+      T_high = 32000.0,
+      Pi_Omega_11 = {      0.0058,      -0.1588,       1.0397,       2.0319, },
+      Pi_Omega_22 = {      0.0000,      -0.0000,      -0.3986,       6.4378, },
+      D           = {      0.0000,       0.0000,       0.0000,       0.0000, },
+    },
+  },
+}CI = {
+  i = C3,
+  j = C3,
+  reference = 'Park - Chemical kinetic parameters of hyperbolic Earth entry, 2001',
+  model = 'GuptaYos',
+  parameters = {
+    {
+      T_low = 2000.0,
+      T_high = 32000.0,
+      Pi_Omega_11 = {     -0.0058,       0.1656,      -1.9932,      11.4031, },
+      Pi_Omega_22 = {     -0.0000,       0.0103,      -0.5998,       7.3514, },
+      D           = {      0.0000,       0.0000,       0.0000,       0.0000, },
+    },
+  },
+}CI = {
+  i = C3,
+  j = C,
+  reference = 'Park - Chemical kinetic parameters of hyperbolic Earth entry, 2001',
+  model = 'GuptaYos',
+  parameters = {
+    {
+      T_low = 2000.0,
+      T_high = 32000.0,
+      Pi_Omega_11 = {      0.0058,      -0.1588,       1.0397,       1.8017, },
+      Pi_Omega_22 = {     -0.0000,       0.0000,      -0.3986,       6.2075, },
+      D           = {      0.0000,       0.0000,       0.0000,       0.0000, },
+    },
+  },
+}CI = {
+  i = C3,
+  j = CN,
+  reference = 'Park - Chemical kinetic parameters of hyperbolic Earth entry, 2001',
+  model = 'GuptaYos',
+  parameters = {
+    {
+      T_low = 2000.0,
+      T_high = 32000.0,
+      Pi_Omega_11 = {      0.0058,      -0.1588,       1.0397,       2.0089, },
+      Pi_Omega_22 = {     -0.0000,       0.0000,      -0.3986,       6.4148, },
+      D           = {      0.0000,       0.0000,       0.0000,       0.0000, },
+    },
+  },
+}CI = {
+  i = 'C3',
+  j = 'CO2',
+  reference = 'Bruno et al ESA STR-256 September 2008',
+  model = 'Bruno curve fits',
+  parameters = {
+    beta = 7.69,
+    eps0 = 19.805,
+    re   = 4.185,
+  }
+}
+CI = {
+  i = C3,
+  j = CO,
+  reference = 'Park - Chemical kinetic parameters of hyperbolic Earth entry, 2001',
+  model = 'GuptaYos',
+  parameters = {
+    {
+      T_low = 2000.0,
+      T_high = 32000.0,
+      Pi_Omega_11 = {      0.0058,      -0.1519,       0.9166,       2.5277, },
+      Pi_Omega_22 = {     -0.0058,       0.1588,      -1.8369,      10.6594, },
+      D           = {      0.0000,       0.0000,       0.0000,       0.0000, },
+    },
+  },
+}CI = {
+  i = C3,
+  j = H2,
+  reference = 'Park - Chemical kinetic parameters of hyperbolic Earth entry, 2001',
+  model = 'GuptaYos',
+  parameters = {
+    {
+      T_low = 2000.0,
+      T_high = 32000.0,
+      Pi_Omega_11 = {      0.0058,      -0.1519,       0.9166,       2.2284, },
+      Pi_Omega_22 = {     -0.0058,       0.1519,      -1.7139,       9.8183, },
+      D           = {      0.0000,       0.0000,       0.0000,       0.0000, },
+    },
+  },
+}CI = {
+  i = C3,
+  j = H,
+  reference = 'Park - Chemical kinetic parameters of hyperbolic Earth entry, 2001',
+  model = 'GuptaYos',
+  parameters = {
+    {
+      T_low = 2000.0,
+      T_high = 32000.0,
+      Pi_Omega_11 = {     -0.0000,       0.0000,      -0.3986,       5.8852, },
+      Pi_Omega_22 = {      0.0058,      -0.1485,       0.8717,       2.3937, },
+      D           = {      0.0000,       0.0000,       0.0000,       0.0000, },
+    },
+  },
+}CI = {
+  i = C3,
+  j = N2,
+  reference = 'Park - Chemical kinetic parameters of hyperbolic Earth entry, 2001',
+  model = 'GuptaYos',
+  parameters = {
+    {
+      T_low = 2000.0,
+      T_high = 32000.0,
+      Pi_Omega_11 = {     -0.0058,       0.1485,      -1.6689,       9.8832, },
+      Pi_Omega_22 = {     -0.0000,       0.0000,      -0.3986,       6.3917, },
+      D           = {      0.0000,       0.0000,       0.0000,       0.0000, },
+    },
+  },
+}CI = {
+  i = C3,
+  j = N,
+  reference = 'Park - Chemical kinetic parameters of hyperbolic Earth entry, 2001',
+  model = 'GuptaYos',
+  parameters = {
+    {
+      T_low = 2000.0,
+      T_high = 32000.0,
+      Pi_Omega_11 = {      0.0058,      -0.1519,       0.9166,       2.3895, },
+      Pi_Omega_22 = {     -0.0000,       0.0000,      -0.3986,       6.2536, },
+      D           = {      0.0000,       0.0000,       0.0000,       0.0000, },
+    },
+  },
+}CI = {
+  i = C3,
+  j = NO,
+  reference = 'Park - Chemical kinetic parameters of hyperbolic Earth entry, 2001',
+  model = 'GuptaYos',
+  parameters = {
+    {
+      T_low = 2000.0,
+      T_high = 32000.0,
+      Pi_Omega_11 = {     -0.0058,       0.1622,      -1.9151,      10.9391, },
+      Pi_Omega_22 = {      0.0058,      -0.1485,       0.8717,       2.7391, },
+      D           = {      0.0000,       0.0000,       0.0000,       0.0000, },
+    },
+  },
+}CI = {
+  i = C3,
+  j = O2,
+  reference = 'Park - Chemical kinetic parameters of hyperbolic Earth entry, 2001',
+  model = 'GuptaYos',
+  parameters = {
+    {
+      T_low = 2000.0,
+      T_high = 32000.0,
+      Pi_Omega_11 = {     -0.0058,       0.1622,      -1.9151,      10.9161, },
+      Pi_Omega_22 = {     -0.0000,       0.0000,      -0.3986,       6.3227, },
+      D           = {      0.0000,       0.0000,       0.0000,       0.0000, },
+    },
+  },
+}CI = {
+  i = C3,
+  j = O,
+  reference = 'Park - Chemical kinetic parameters of hyperbolic Earth entry, 2001',
+  model = 'GuptaYos',
+  parameters = {
+    {
+      T_low = 2000.0,
+      T_high = 32000.0,
+      Pi_Omega_11 = {      0.0058,      -0.1519,       0.9166,       2.3435, },
+      Pi_Omega_22 = {     -0.0115,       0.3141,      -3.2303,      14.6420, },
+      D           = {      0.0000,       0.0000,       0.0000,       0.0000, },
+    },
+  },
+}CI = {
+  i = C,
+  j = C,
+  reference = 'Park - Chemical kinetic parameters of hyperbolic Earth entry, 2001',
+  model = 'GuptaYos',
+  parameters = {
+    {
+      T_low = 2000.0,
+      T_high = 32000.0,
+      Pi_Omega_11 = {     -0.0058,       0.0732,      -0.3485,       4.0561, },
+      Pi_Omega_22 = {     -0.0346,       0.8499,      -7.2489,      24.3758, },
+      D           = {      0.0000,       0.0000,       0.0000,       0.0000, },
+    },
+  },
+}CI = {
+  i = 'C',
+  j = 'CO2',
+  reference = 'Bruno et al ESA STR-256 September 2008',
+  model = 'Bruno curve fits',
+  parameters = {
+    beta = 6.99,
+    eps0 = 12.058,
+    re   = 3.987,
+  }
+}
+CI = {
+  i = 'C',
+  j = 'CO_plus',
+  reference = 'Bruno et al ESA STR-256 September 2008',
+  model = 'Bruno curve fits',
+  parameters = {
+    beta = 7.08,
+    eps0 = 110.992,
+    re   = 3.252,
+  }
+}
+CI = {
+  i = 'CH',
+  j = 'C2H2',
+  reference = 'To be published',
+  model = 'GuptaYos',
+  parameters = {
+    {
+      T_low = 1000.0,
+      T_high = 20000.0,
+      Pi_Omega_11 = {  -0.0029,  0.0776,  -0.8453,  6.6457,  },
+      Pi_Omega_22 = {  -0.0035,  0.0904,  -0.9316,  6.9172,  },
+      D           = { 0.0,	 0.0,	 0.0,	 0.0 },
+    },
+  },
+}CI = {
+  i = 'CH',
+  j = 'C2H',
+  reference = 'To be published',
+  model = 'GuptaYos',
+  parameters = {
+    {
+      T_low = 1000.0,
+      T_high = 20000.0,
+      Pi_Omega_11 = {  -0.0100,  0.2742,  -2.6632,  12.0906,  },
+      Pi_Omega_22 = {  -0.0115,  0.3103,  -2.9471,  12.8990,  },
+      D           = { 0.0,	 0.0,	 0.0,	 0.0 },
+    },
+  },
+}CI = {
+  i = 'CH',
+  j = 'C2',
+  reference = 'To be published',
+  model = 'GuptaYos',
+  parameters = {
+    {
+      T_low = 1000.0,
+      T_high = 20000.0,
+      Pi_Omega_11 = {  -0.0020,  0.0522,  -0.6068,  5.7895,  },
+      Pi_Omega_22 = {  -0.0027,  0.0665,  -0.6935,  6.0375,  },
+      D           = { 0.0,	 0.0,	 0.0,	 0.0 },
+    },
+  },
+}CI = {
+  i = 'CH',
+  j = 'C3',
+  reference = 'To be published',
+  model = 'GuptaYos',
+  parameters = {
+    {
+      T_low = 1000.0,
+      T_high = 20000.0,
+      Pi_Omega_11 = {  -0.0049,  0.1331,  -1.3580,  8.0611,  },
+      Pi_Omega_22 = {  -0.0051,  0.1358,  -1.3538,  8.0565,  },
+      D           = { 0.0,	 0.0,	 0.0,	 0.0 },
+    },
+  },
+}CI = {
+  i = CH,
+  j = CH,
+  reference = 'EPFL, 2013 - Collision integrals calculator - Unpublished',
+  model = 'GuptaYos',
+  parameters = {
+    {
+      T_low = 300.0,
+      T_high = 16000.0,
+      Pi_Omega_11 = {      -0.00006,       0.00931,       -0.42811,       -40.18724, },
+      Pi_Omega_22 = {      0.00027,       0.00077,       -0.35799,       -40.21556, },
+      D           = {      0.00000,       0.00000,       0.00000,       0.00000, },
+    },
+  },
+}
+CI = {
+  i = 'CH',
+  j = 'C',
+  reference = 'To be published',
+  model = 'GuptaYos',
+  parameters = {
+    {
+      T_low = 1000.0,
+      T_high = 20000.0,
+      Pi_Omega_11 = {  -0.0087,  0.2128,  -1.8854,  8.9376,  },
+      Pi_Omega_22 = {  -0.0220,  0.5337,  -4.4301,  15.7179,  },
+      D           = { 0.0,	 0.0,	 0.0,	 0.0 },
+    },
+  },
+}CI = {
+  i = 'CH',
+  j = 'CO2',
+  reference = 'To be published',
+  model = 'GuptaYos',
+  parameters = {
+    {
+      T_low = 1000.0,
+      T_high = 20000.0,
+      Pi_Omega_11 = {  -0.0027,  0.0720,  -0.7941,  6.4522,  },
+      Pi_Omega_22 = {  -0.0030,  0.0789,  -0.8290,  6.5768,  },
+      D           = { 0.0,	 0.0,	 0.0,	 0.0 },
+    },
+  },
+}CI = {
+  i = 'CH',
+  j = 'CO',
+  reference = 'To be published',
+  model = 'GuptaYos',
+  parameters = {
+    {
+      T_low = 1000.0,
+      T_high = 20000.0,
+      Pi_Omega_11 = {  -0.0021,  0.0545,  -0.6319,  5.8257,  },
+      Pi_Omega_22 = {  -0.0024,  0.0594,  -0.6423,  5.8679,  },
+      D           = { 0.0,	 0.0,	 0.0,	 0.0 },
+    },
+  },
+}CI = {
+  i = 'CH',
+  j = 'C',
+  reference = 'To be published',
+  model = 'GuptaYos',
+  parameters = {
+    {
+      T_low = 1000.0,
+      T_high = 20000.0,
+      Pi_Omega_11 = {  -0.0087,  0.2128,  -1.8854,  8.9376,  },
+      Pi_Omega_22 = {  -0.0220,  0.5337,  -4.4301,  15.7179,  },
+      D           = { 0.0,	 0.0,	 0.0,	 0.0 },
+    },
+  },
+}CI = {
+  i = 'CH',
+  j = 'H2',
+  reference = 'To be published',
+  model = 'GuptaYos',
+  parameters = {
+    {
+      T_low = 1000.0,
+      T_high = 20000.0,
+      Pi_Omega_11 = {  -0.0030,  0.0761,  -0.8106,  6.0261,  },
+      Pi_Omega_22 = {  -0.0053,  0.1295,  -1.2100,  7.1011,  },
+      D           = { 0.0,	 0.0,	 0.0,	 0.0 },
+    },
+  },
+}CI = {
+  i = 'CH',
+  j = 'H',
+  reference = 'To be published',
+  model = 'GuptaYos',
+  parameters = {
+    {
+      T_low = 1000.0,
+      T_high = 20000.0,
+      Pi_Omega_11 = {  -0.0063,  0.1559,  -1.4457,  7.6234,  },
+      Pi_Omega_22 = {  -0.0152,  0.3693,  -3.1286,  12.1098,  },
+      D           = { 0.0,	 0.0,	 0.0,	 0.0 },
+    },
+  },
+}CI = {
+  i = 'CH',
+  j = 'N2',
+  reference = 'To be published',
+  model = 'GuptaYos',
+  parameters = {
+    {
+      T_low = 1000.0,
+      T_high = 20000.0,
+      Pi_Omega_11 = {  -0.0021,  0.0539,  -0.6188,  5.7788,  },
+      Pi_Omega_22 = {  -0.0032,  0.0791,  -0.7937,  6.2633,  },
+      D           = { 0.0,	 0.0,	 0.0,	 0.0 },
+    },
+  },
+}CI = {
+  i = 'CH',
+  j = 'N2',
+  reference = 'To be published',
+  model = 'GuptaYos',
+  parameters = {
+    {
+      T_low = 1000.0,
+      T_high = 20000.0,
+      Pi_Omega_11 = {  -0.0021,  0.0539,  -0.6188,  5.7788,  },
+      Pi_Omega_22 = {  -0.0032,  0.0791,  -0.7937,  6.2633,  },
+      D           = { 0.0,	 0.0,	 0.0,	 0.0 },
+    },
+  },
+}CI = {
+  i = 'CH',
+  j = 'N',
+  reference = 'To be published',
+  model = 'GuptaYos',
+  parameters = {
+    {
+      T_low = 1000.0,
+      T_high = 20000.0,
+      Pi_Omega_11 = {  -0.0024,  0.0619,  -0.6910,  5.8506,  },
+      Pi_Omega_22 = {  -0.0034,  0.0851,  -0.8483,  6.2819,  },
+      D           = { 0.0,	 0.0,	 0.0,	 0.0 },
+    },
+  },
+}CI = {
+  i = CH,
+  j = NO,
+  reference = 'EPFL, 2013 - Collision integrals calculator - Unpublished',
+  model = 'GuptaYos',
+  parameters = {
+    {
+      T_low = 300.0,
+      T_high = 16000.0,
+      Pi_Omega_11 = {      -0.00284,       0.07671,       -0.94806,       -38.89258, },
+      Pi_Omega_22 = {      0.00155,       -0.03243,       -0.04627,       -41.24202, },
+      D           = {      0.00000,       0.00000,       0.00000,       0.00000, },
+    },
+  },
+}
+CI = {
+  i = 'CH',
+  j = 'NO',
+  reference = 'To be published',
+  model = 'GuptaYos',
+  parameters = {
+    {
+      T_low = 1000.0,
+      T_high = 20000.0,
+      Pi_Omega_11 = {  -0.0023,  0.0609,  -0.6922,  5.9775,  },
+      Pi_Omega_22 = {  -0.0024,  0.0606,  -0.6624,  5.9129,  },
+      D           = { 0.0,	 0.0,	 0.0,	 0.0 },
+    },
+  },
+}CI = {
+  i = 'CH',
+  j = 'N',
+  reference = 'To be published',
+  model = 'GuptaYos',
+  parameters = {
+    {
+      T_low = 1000.0,
+      T_high = 20000.0,
+      Pi_Omega_11 = {  -0.0024,  0.0619,  -0.6910,  5.8506,  },
+      Pi_Omega_22 = {  -0.0034,  0.0851,  -0.8483,  6.2819,  },
+      D           = { 0.0,	 0.0,	 0.0,	 0.0 },
+    },
+  },
+}CI = {
+  i = 'CH',
+  j = 'O2',
+  reference = 'To be published',
+  model = 'GuptaYos',
+  parameters = {
+    {
+      T_low = 1000.0,
+      T_high = 20000.0,
+      Pi_Omega_11 = {  -0.0023,  0.0599,  -0.6824,  5.9307,  },
+      Pi_Omega_22 = {  -0.0024,  0.0603,  -0.6572,  5.8776,  },
+      D           = { 0.0,	 0.0,	 0.0,	 0.0 },
+    },
+  },
+}CI = {
+  i = 'CH',
+  j = 'O2',
+  reference = 'To be published',
+  model = 'GuptaYos',
+  parameters = {
+    {
+      T_low = 1000.0,
+      T_high = 20000.0,
+      Pi_Omega_11 = {  -0.0023,  0.0599,  -0.6824,  5.9307,  },
+      Pi_Omega_22 = {  -0.0024,  0.0603,  -0.6572,  5.8776,  },
+      D           = { 0.0,	 0.0,	 0.0,	 0.0 },
+    },
+  },
+}CI = {
+  i = 'CH',
+  j = 'O',
+  reference = 'To be published',
+  model = 'GuptaYos',
+  parameters = {
+    {
+      T_low = 1000.0,
+      T_high = 20000.0,
+      Pi_Omega_11 = {  -0.0025,  0.0661,  -0.7401,  5.9838,  },
+      Pi_Omega_22 = {  -0.0026,  0.0675,  -0.7228,  5.9493,  },
+      D           = { 0.0,	 0.0,	 0.0,	 0.0 },
+    },
+  },
+}CI = {
+  i = 'CH',
+  j = 'O',
+  reference = 'To be published',
+  model = 'GuptaYos',
+  parameters = {
+    {
+      T_low = 1000.0,
+      T_high = 20000.0,
+      Pi_Omega_11 = {  -0.0025,  0.0661,  -0.7401,  5.9838,  },
+      Pi_Omega_22 = {  -0.0026,  0.0675,  -0.7228,  5.9493,  },
+      D           = { 0.0,	 0.0,	 0.0,	 0.0 },
+    },
+  },
+}CI = {
+  i = CN,
+  j = C2,
+  reference = 'Park - Chemical kinetic parameters of hyperbolic Earth entry, 2001',
+  model = 'GuptaYos',
+  parameters = {
+    {
+      T_low = 2000.0,
+      T_high = 32000.0,
+      Pi_Omega_11 = {     -0.0000,       0.0000,      -0.3986,       6.3227, },
+      Pi_Omega_22 = {      0.0058,      -0.1622,       1.1178,       1.7522, },
+      D           = {      0.0000,       0.0000,       0.0000,       0.0000, },
+    },
+  },
+}CI = {
+  i = CN,
+  j = CH,
+  reference = 'EPFL, 2013 - Collision integrals calculator - Unpublished',
+  model = 'GuptaYos',
+  parameters = {
+    {
+      T_low = 300.0,
+      T_high = 16000.0,
+      Pi_Omega_11 = {      -0.00015,       0.01261,       -0.46652,       -39.88353, },
+      Pi_Omega_22 = {      0.00068,       -0.00766,       -0.31050,       -40.10514, },
+      D           = {      0.00000,       0.00000,       0.00000,       0.00000, },
+    },
+  },
+}
+CI = {
+  i = CN,
+  j = C,
+  reference = 'Park - Chemical kinetic parameters of hyperbolic Earth entry, 2001',
+  model = 'GuptaYos',
+  parameters = {
+    {
+      T_low = 2000.0,
+      T_high = 32000.0,
+      Pi_Omega_11 = {     -0.0058,       0.1485,      -1.6689,       9.7220, },
+      Pi_Omega_22 = {     -0.0058,       0.1519,      -1.7139,       9.9795, },
+      D           = {      0.0000,       0.0000,       0.0000,       0.0000, },
+    },
+  },
+}CI = {
+  i = CN,
+  j = CN,
+  reference = 'EPFL, 2013 - Collision integrals calculator - Unpublished',
+  model = 'GuptaYos',
+  parameters = {
+    {
+      T_low = 300.0,
+      T_high = 16000.0,
+      Pi_Omega_11 = {      -0.00036,       0.01883,       -0.53196,       -39.50080, },
+      Pi_Omega_22 = {      0.00113,       -0.01660,       -0.26359,       -39.97922, },
+      D           = {      0.00000,       0.00000,       0.00000,       0.00000, },
+    },
+  },
+}
+CI = {
+  i = 'CN',
+  j = 'CO2',
+  reference = 'Bruno et al ESA STR-256 September 2008',
+  model = 'Bruno curve fits',
+  parameters = {
+    beta = 7.85,
+    eps0 = 15.515,
+    re   = 4.029,
+  }
+}
+CI = {
+  i = 'CN',
+  j = 'CO_plus',
+  reference = 'Bruno et al ESA STR-256 September 2008',
+  model = 'Bruno curve fits',
+  parameters = {
+    beta = 8.20,
+    eps0 = 124.326,
+    re   = 3.297,
+  }
+}
+CI = {
+  i = CN,
+  j = H,
+  reference = 'Park - Chemical kinetic parameters of hyperbolic Earth entry, 2001',
+  model = 'GuptaYos',
+  parameters = {
+    {
+      T_low = 2000.0,
+      T_high = 32000.0,
+      Pi_Omega_11 = {     -0.0058,       0.1485,      -1.6689,       9.5378, },
+      Pi_Omega_22 = {      0.0058,      -0.1622,       1.1178,       1.3608, },
+      D           = {      0.0000,       0.0000,       0.0000,       0.0000, },
+    },
+  },
+}CI = {
+  i = CN,
+  j = N2,
+  reference = 'Park - Chemical kinetic parameters of hyperbolic Earth entry, 2001',
+  model = 'GuptaYos',
+  parameters = {
+    {
+      T_low = 2000.0,
+      T_high = 32000.0,
+      Pi_Omega_11 = {      0.0058,      -0.1519,       0.9166,       2.5507, },
+      Pi_Omega_22 = {     -0.0000,       0.0000,      -0.3986,       6.4148, },
+      D           = {      0.0000,       0.0000,       0.0000,       0.0000, },
+    },
+  },
+}CI = {
+  i = CN,
+  j = N,
+  reference = 'Park - Chemical kinetic parameters of hyperbolic Earth entry, 2001',
+  model = 'GuptaYos',
+  parameters = {
+    {
+      T_low = 2000.0,
+      T_high = 32000.0,
+      Pi_Omega_11 = {      0.0058,      -0.1588,       1.0397,       1.8708, },
+      Pi_Omega_22 = {     -0.0000,       0.0000,      -0.3986,       6.2766, },
+      D           = {      0.0000,       0.0000,       0.0000,       0.0000, },
+    },
+  },
+}CI = {
+  i = CN,
+  j = NO,
+  reference = 'EPFL, 2013 - Collision integrals calculator - Unpublished',
+  model = 'GuptaYos',
+  parameters = {
+    {
+      T_low = 300.0,
+      T_high = 16000.0,
+      Pi_Omega_11 = {      -0.00345,       0.09149,       -1.06712,       -38.42974, },
+      Pi_Omega_22 = {      0.00220,       -0.04862,       0.08533,       -41.44688, },
+      D           = {      0.00000,       0.00000,       0.00000,       0.00000, },
+    },
+  },
+}
+CI = {
+  i = CN,
+  j = O,
+  reference = 'Park - Chemical kinetic parameters of hyperbolic Earth entry, 2001',
+  model = 'GuptaYos',
+  parameters = {
+    {
+      T_low = 2000.0,
+      T_high = 32000.0,
+      Pi_Omega_11 = {     -0.0058,       0.1485,      -1.6689,       9.7220, },
+      Pi_Omega_22 = {      0.0058,      -0.1485,       0.8717,       2.6240, },
+      D           = {      0.0000,       0.0000,       0.0000,       0.0000, },
+    },
+  },
+}CI = {
+  i = 'CO2',
+  j = 'C2H',
+  reference = 'To be published',
+  model = 'GuptaYos',
+  parameters = {
+    {
+      T_low = 1000.0,
+      T_high = 20000.0,
+      Pi_Omega_11 = {  -0.0150,  0.4078,  -3.8422,  15.7519,  },
+      Pi_Omega_22 = {  -0.0071,  0.1968,  -1.9661,  10.3018,  },
+      D           = { 0.0,	 0.0,	 0.0,	 0.0 },
+    },
+  },
+}CI = {
+  i = 'CO2',
+  j = 'CO2',
+  reference = 'Wright et al, AIAA Journal Vol. 45 No. 1 January 2007',
+  model = 'GuptaYos',
+  parameters = {
+    {
+      T_low  =   300.0,
+      T_high = 20000.0,
+      Pi_Omega_11 = {  -0.0115,   0.2886,  -2.5580,  11.3378 },
+      Pi_Omega_22 = {  -0.0148,   0.3731,  -3.2655,  13.3972 },
+      D           = {   0.0115,  -0.2886,   4.0580, -14.5727 },
+    }
+  }
+}
+CI = {
+  i = 'C',
+  j = 'O2_plus',
+  reference = 'Bruno et al ESA STR-256 September 2008',
+  model = 'Bruno curve fits',
+  parameters = {
+    beta = 7.10,
+    eps0 = 116.394,
+    re   = 3.186,
+  }
+}
+CI = {
+  i = CO,
+  j = CH,
+  reference = 'EPFL, 2013 - Collision integral calculator - Unpublished',
+  model = 'GuptaYos',
+  parameters = {
+    {
+      T_low = 300.0,
+      T_high = 16000.0,
+      Pi_Omega_11 = {      -0.00123,       0.03662,       -0.62133,       -39.72448, },
+      Pi_Omega_22 = {      0.00080,       -0.01461,       -0.18739,       -40.82343, },
+      D           = {      0.00000,       0.00000,       0.00000,       0.00000, },
+    },
+  },
+}
+CI = {
+  i = CO,
+  j = C,
+  reference = 'Park - Chemical kinetic parameters of hyperbolic Earth entry, 2001',
+  model = 'GuptaYos',
+  parameters = {
+    {
+      T_low = 2000.0,
+      T_high = 32000.0,
+      Pi_Omega_11 = {      0.0058,      -0.1519,       0.9166,       2.3435, },
+      Pi_Omega_22 = {     -0.0000,       0.0000,      -0.3986,       6.2075, },
+      D           = {      0.0000,       0.0000,       0.0000,       0.0000, },
+    },
+  },
+}CI = {
+  i = CO,
+  j = CN,
+  reference = 'EPFL, 2013 - Collision integral calculator - Unpublished',
+  model = 'GuptaYos',
+  parameters = {
+    {
+      T_low = 300.0,
+      T_high = 16000.0,
+      Pi_Omega_11 = {      -0.00148,       0.04271,       -0.67035,       -39.44999, },
+      Pi_Omega_22 = {      0.00147,       -0.03125,       -0.05350,       -41.03241, },
+      D           = {      0.00000,       0.00000,       0.00000,       0.00000, },
+    },
+  },
+}
+CI = {
+  i = 'CO',
+  j = 'CO2',
+  reference = 'Bruno et al ESA STR-256 September 2008',
+  model = 'Bruno curve fits',
+  parameters = {
+    beta = 7.87,
+    eps0 = 15.418,
+    re   = 4.011,
+  }
+}
+CI = {
+  i = CO,
+  j = CO,
+  reference = 'EPFL, 2013 - Collision integral calculator - Unpublished',
+  model = 'GuptaYos',
+  parameters = {
+    {
+      T_low = 300.0,
+      T_high = 16000.0,
+      Pi_Omega_11 = {      -0.00405,       0.10707,       -1.19891,       -38.07127, },
+      Pi_Omega_22 = {      0.00033,       -0.00159,       -0.30179,       -40.41020, },
+      D           = {      0.00000,       0.00000,       0.00000,       0.00000, },
+    },
+  },
+}
+CI = {
+  i = CO,
+  j = CO,
+  reference = 'Park - Chemical kinetic parameters of hyperbolic Earth entry, 2001',
+  model = 'GuptaYos',
+  parameters = {
+    {
+      T_low = 2000.0,
+      T_high = 32000.0,
+      Pi_Omega_11 = {     -0.0058,       0.1485,      -1.6689,       9.8601, },
+      Pi_Omega_22 = {      0.0058,      -0.1485,       0.8717,       2.7621, },
+      D           = {      0.0000,       0.0000,       0.0000,       0.0000, },
+    },
+  },
+}CI = {
+  i = CO,
+  j = H,
+  reference = 'Park - Chemical kinetic parameters of hyperbolic Earth entry, 2001',
+  model = 'GuptaYos',
+  parameters = {
+    {
+      T_low = 2000.0,
+      T_high = 32000.0,
+      Pi_Omega_11 = {     -0.0058,       0.1622,      -1.9151,      10.5937, },
+      Pi_Omega_22 = {     -0.0000,       0.0000,      -0.3986,       6.0233, },
+      D           = {      0.0000,       0.0000,       0.0000,       0.0000, },
+    },
+  },
+}CI = {
+  i = CO,
+  j = N,
+  reference = 'Park - Chemical kinetic parameters of hyperbolic Earth entry, 2001',
+  model = 'GuptaYos',
+  parameters = {
+    {
+      T_low = 2000.0,
+      T_high = 32000.0,
+      Pi_Omega_11 = {     -0.0058,       0.1622,      -1.9151,      10.8240, },
+      Pi_Omega_22 = {     -0.0000,       0.0000,      -0.3986,       6.2536, },
+      D           = {      0.0000,       0.0000,       0.0000,       0.0000, },
+    },
+  },
+}CI = {
+  i = CO,
+  j = NO,
+  reference = 'EPFL, 2013 - Collision integral calculator - Unpublished',
+  model = 'GuptaYos',
+  parameters = {
+    {
+      T_low = 300.0,
+      T_high = 16000.0,
+      Pi_Omega_11 = {      -0.00686,       0.17665,       -1.76648,       -36.58115, },
+      Pi_Omega_22 = {      0.00035,       -0.00134,       -0.30918,       -40.41356, },
+      D           = {      0.00000,       0.00000,       0.00000,       0.00000, },
+    },
+  },
+}
+CI = {
+  i = CO,
+  j = O,
+  reference = 'Park - Chemical kinetic parameters of hyperbolic Earth entry, 2001',
+  model = 'GuptaYos',
+  parameters = {
+    {
+      T_low = 2000.0,
+      T_high = 32000.0,
+      Pi_Omega_11 = {      0.0058,      -0.1519,       0.9166,       2.3435, },
+      Pi_Omega_22 = {     -0.0000,       0.0000,      -0.3986,       6.2075, },
+      D           = {      0.0000,       0.0000,       0.0000,       0.0000, },
+    },
+  },
+}CI = {
+  i = 'CO_plus',
+  j = 'C3',
+  reference = 'Bruno et al ESA STR-256 September 2008',
+  model = 'Bruno curve fits',
+  parameters = {
+    beta = 7.98,
+    eps0 = 172.535,
+    re   = 3.453,
+  }
+}
+CI = {
+  i = 'CO_plus',
+  j = 'CO2',
+  reference = 'Bruno et al ESA STR-256 September 2008',
+  model = 'Bruno curve fits',
+  parameters = {
+    beta = 8.07,
+    eps0 = 152.086,
+    re   = 3.388,
+  }
+}
+CI = {
+  i = 'CO_plus',
+  j = 'CO_plus',
+  reference = 'Wright et al, AIAA Journal Vol. 43 No. 12 December 2005',
+  model = 'Stallcop curve fits',
+  parameters = {}
+}
+CI = {
+  i = 'CO_plus',
+  j = 'C_plus',
+  reference = 'Wright et al, AIAA Journal Vol. 43 No. 12 December 2005',
+  model = 'Stallcop curve fits',
+  parameters = {}
+}
+CI = {
+  i = 'CO_plus',
+  j = 'e_minus',
+  reference = 'Wright et al, AIAA Journal Vol. 43 No. 12 December 2005',
+  model = 'Stallcop curve fits',
+  parameters = {}
+}
+CI = {
+  i = 'CO_plus',
+  j = 'N2_plus',
+  reference = 'Wright et al, AIAA Journal Vol. 43 No. 12 December 2005',
+  model = 'Stallcop curve fits',
+  parameters = {}
+}
+CI = {
+  i = 'CO_plus',
+  j = 'NO',
+  reference = 'Bruno et al ESA STR-256 September 2008',
+  model = 'Bruno curve fits',
+  parameters = {
+    beta = 8.29,
+    eps0 = 108.506,
+    re   = 3.243,
+  }
+}
+CI = {
+  i = 'CO_plus',
+  j = 'NO_plus',
+  reference = 'Wright et al, AIAA Journal Vol. 43 No. 12 December 2005',
+  model = 'Stallcop curve fits',
+  parameters = {}
+}
+CI = {
+  i = 'CO_plus',
+  j = 'N_plus',
+  reference = 'Wright et al, AIAA Journal Vol. 43 No. 12 December 2005',
+  model = 'Stallcop curve fits',
+  parameters = {}
+}
+CI = {
+  i = 'CO_plus',
+  j = 'O2_plus',
+  reference = 'Wright et al, AIAA Journal Vol. 43 No. 12 December 2005',
+  model = 'Stallcop curve fits',
+  parameters = {}
+}
+CI = {
+  i = 'CO_plus',
+  j = 'O_plus',
+  reference = 'Wright et al, AIAA Journal Vol. 43 No. 12 December 2005',
+  model = 'Stallcop curve fits',
+  parameters = {}
+}
+CI = {
+  i = C_plus,
+  j = C2H,
+  reference = 'Park - Chemical kinetic parameters of hyperbolic Earth entry, 2001',
+  model = 'GuptaYos',
+  parameters = {
+    {
+      T_low = 2000.0,
+      T_high = 32000.0,
+      Pi_Omega_11 = {     -0.0058,       0.1485,      -1.6689,      10.4588, },
+      Pi_Omega_22 = {      0.0000,      -0.0000,      -0.3986,       6.7601, },
+      D           = {      0.0000,       0.0000,       0.0000,       0.0000, },
+    },
+  },
+}CI = {
+  i = C_plus,
+  j = C2,
+  reference = 'Park - Chemical kinetic parameters of hyperbolic Earth entry, 2001',
+  model = 'GuptaYos',
+  parameters = {
+    {
+      T_low = 2000.0,
+      T_high = 32000.0,
+      Pi_Omega_11 = {     -0.0058,       0.1485,      -1.6689,      10.0904, },
+      Pi_Omega_22 = {      0.0058,      -0.1622,       1.1178,       1.9134, },
+      D           = {      0.0000,       0.0000,       0.0000,       0.0000, },
+    },
+  },
+}CI = {
+  i = C_plus,
+  j = C3,
+  reference = 'Park - Chemical kinetic parameters of hyperbolic Earth entry, 2001',
+  model = 'GuptaYos',
+  parameters = {
+    {
+      T_low = 2000.0,
+      T_high = 32000.0,
+      Pi_Omega_11 = {     -0.0058,       0.1485,      -1.6689,      10.4588, },
+      Pi_Omega_22 = {      0.0000,      -0.0000,      -0.3986,       6.7601, },
+      D           = {      0.0000,       0.0000,       0.0000,       0.0000, },
+    },
+  },
+}CI = {
+  i = C_plus,
+  j = C,
+  reference = 'Park - Chemical kinetic parameters of hyperbolic Earth entry, 2001',
+  model = 'GuptaYos',
+  parameters = {
+    {
+      T_low = 2000.0,
+      T_high = 32000.0,
+      Pi_Omega_11 = {     -0.0058,       0.1485,      -1.6689,      10.4588, },
+      Pi_Omega_22 = {      0.0000,      -0.0000,      -0.3986,       6.7601, },
+      D           = {      0.0000,       0.0000,       0.0000,       0.0000, },
+    },
+  },
+}CI = {
+  i = C_plus,
+  j = CN,
+  reference = 'Park - Chemical kinetic parameters of hyperbolic Earth entry, 2001',
+  model = 'GuptaYos',
+  parameters = {
+    {
+      T_low = 2000.0,
+      T_high = 32000.0,
+      Pi_Omega_11 = {     -0.0058,       0.1485,      -1.6689,      10.4588, },
+      Pi_Omega_22 = {      0.0000,      -0.0000,      -0.3986,       6.7601, },
+      D           = {      0.0000,       0.0000,       0.0000,       0.0000, },
+    },
+  },
+}CI = {
+  i = 'C_plus',
+  j = 'CO2',
+  reference = 'Bruno et al ESA STR-256 September 2008',
+  model = 'Bruno curve fits',
+  parameters = {
+    beta = 7.53,
+    eps0 = 158.768,
+    re   = 3.322,
+  }
+}
+CI = {
+  i = C_plus,
+  j = CO,
+  reference = 'Park - Chemical kinetic parameters of hyperbolic Earth entry, 2001',
+  model = 'GuptaYos',
+  parameters = {
+    {
+      T_low = 2000.0,
+      T_high = 32000.0,
+      Pi_Omega_11 = {     -0.0058,       0.1485,      -1.6689,      10.4588, },
+      Pi_Omega_22 = {      0.0000,      -0.0000,      -0.3986,       6.7601, },
+      D           = {      0.0000,       0.0000,       0.0000,       0.0000, },
+    },
+  },
+}CI = {
+  i = C_plus,
+  j = C_plus,
+  reference = 'Park - Chemical kinetic parameters of hyperbolic Earth entry, 2001',
+  model = 'GuptaYos',
+  parameters = {
+    {
+      T_low = 2000.0,
+      T_high = 32000.0,
+      Pi_Omega_11 = {      0.0691,      -1.7820,      13.2505,     -17.7212, },
+      Pi_Omega_22 = {      0.0691,      -1.7820,      13.2505,     -17.7673, },
+      D           = {      0.0000,       0.0000,       0.0000,       0.0000, },
+    },
+  },
+}CI = {
+  i = C_plus,
+  j = H2,
+  reference = 'Park - Chemical kinetic parameters of hyperbolic Earth entry, 2001',
+  model = 'GuptaYos',
+  parameters = {
+    {
+      T_low = 2000.0,
+      T_high = 32000.0,
+      Pi_Omega_11 = {     -0.0058,       0.1485,      -1.6689,      10.4588, },
+      Pi_Omega_22 = {      0.0000,      -0.0000,      -0.3986,       6.7601, },
+      D           = {      0.0000,       0.0000,       0.0000,       0.0000, },
+    },
+  },
+}CI = {
+  i = C_plus,
+  j = H,
+  reference = 'Park - Chemical kinetic parameters of hyperbolic Earth entry, 2001',
+  model = 'GuptaYos',
+  parameters = {
+    {
+      T_low = 2000.0,
+      T_high = 32000.0,
+      Pi_Omega_11 = {     -0.0058,       0.1485,      -1.6689,      10.4588, },
+      Pi_Omega_22 = {      0.0000,      -0.0000,      -0.3986,       6.7601, },
+      D           = {      0.0000,       0.0000,       0.0000,       0.0000, },
+    },
+  },
+}CI = {
+  i = C_plus,
+  j = N2,
+  reference = 'Park - Chemical kinetic parameters of hyperbolic Earth entry, 2001',
+  model = 'GuptaYos',
+  parameters = {
+    {
+      T_low = 2000.0,
+      T_high = 32000.0,
+      Pi_Omega_11 = {     -0.0058,       0.1485,      -1.6689,      10.4588, },
+      Pi_Omega_22 = {      0.0000,      -0.0000,      -0.3986,       6.7601, },
+      D           = {      0.0000,       0.0000,       0.0000,       0.0000, },
+    },
+  },
+}CI = {
+  i = C_plus,
+  j = N,
+  reference = 'Park - Chemical kinetic parameters of hyperbolic Earth entry, 2001',
+  model = 'GuptaYos',
+  parameters = {
+    {
+      T_low = 2000.0,
+      T_high = 32000.0,
+      Pi_Omega_11 = {     -0.0058,       0.1485,      -1.6689,      10.4588, },
+      Pi_Omega_22 = {      0.0000,      -0.0000,      -0.3986,       6.7601, },
+      D           = {      0.0000,       0.0000,       0.0000,       0.0000, },
+    },
+  },
+}CI = {
+  i = C_plus,
+  j = NO,
+  reference = 'Park - Chemical kinetic parameters of hyperbolic Earth entry, 2001',
+  model = 'GuptaYos',
+  parameters = {
+    {
+      T_low = 2000.0,
+      T_high = 32000.0,
+      Pi_Omega_11 = {     -0.0058,       0.1485,      -1.6689,      10.4588, },
+      Pi_Omega_22 = {      0.0000,      -0.0000,      -0.3986,       6.7601, },
+      D           = {      0.0000,       0.0000,       0.0000,       0.0000, },
+    },
+  },
+}CI = {
+  i = C_plus,
+  j = O2,
+  reference = 'Park - Chemical kinetic parameters of hyperbolic Earth entry, 2001',
+  model = 'GuptaYos',
+  parameters = {
+    {
+      T_low = 2000.0,
+      T_high = 32000.0,
+      Pi_Omega_11 = {     -0.0058,       0.1485,      -1.6689,      10.4588, },
+      Pi_Omega_22 = {      0.0000,      -0.0000,      -0.3986,       6.7601, },
+      D           = {      0.0000,       0.0000,       0.0000,       0.0000, },
+    },
+  },
+}CI = {
+  i = C_plus,
+  j = O,
+  reference = 'Park - Chemical kinetic parameters of hyperbolic Earth entry, 2001',
+  model = 'GuptaYos',
+  parameters = {
+    {
+      T_low = 2000.0,
+      T_high = 32000.0,
+      Pi_Omega_11 = {     -0.0058,       0.1485,      -1.6689,      10.4588, },
+      Pi_Omega_22 = {      0.0000,      -0.0000,      -0.3986,       6.7601, },
+      D           = {      0.0000,       0.0000,       0.0000,       0.0000, },
+    },
+  },
+}CI = {
+  i = e_minus,
+  j = C2H,
+  reference = 'Park - Chemical kinetic parameters of hyperbolic Earth entry, 2001',
+  model = 'GuptaYos',
+  parameters = {
+    {
+      T_low = 2000.0,
+      T_high = 32000.0,
+      Pi_Omega_11 = {     -0.2247,       5.3431,     -41.5645,     107.5511, },
+      Pi_Omega_22 = {     -0.2247,       5.3431,     -41.5645,     107.5511, },
+      D           = {      0.0000,       0.0000,       0.0000,       0.0000, },
+    },
+  },
+}CI = {
+  i = e_minus,
+  j = C2,
+  reference = 'Park - Chemical kinetic parameters of hyperbolic Earth entry, 2001',
+  model = 'GuptaYos',
+  parameters = {
+    {
+      T_low = 2000.0,
+      T_high = 32000.0,
+      Pi_Omega_11 = {     -0.2247,       5.3431,     -41.5645,     107.5511, },
+      Pi_Omega_22 = {     -0.2247,       5.3431,     -41.5645,     107.5511, },
+      D           = {      0.0000,       0.0000,       0.0000,       0.0000, },
+    },
+  },
+}CI = {
+  i = e_minus,
+  j = C3,
+  reference = 'Park - Chemical kinetic parameters of hyperbolic Earth entry, 2001',
+  model = 'GuptaYos',
+  parameters = {
+    {
+      T_low = 2000.0,
+      T_high = 32000.0,
+      Pi_Omega_11 = {     -0.2247,       5.3431,     -41.5645,     107.5511, },
+      Pi_Omega_22 = {     -0.2247,       5.3431,     -41.5645,     107.5511, },
+      D           = {      0.0000,       0.0000,       0.0000,       0.0000, },
+    },
+  },
+}CI = {
+  i = e_minus,
+  j = C,
+  reference = 'Park - Chemical kinetic parameters of hyperbolic Earth entry, 2001',
+  model = 'GuptaYos',
+  parameters = {
+    {
+      T_low = 2000.0,
+      T_high = 32000.0,
+      Pi_Omega_11 = {      0.0691,      -1.9087,      17.4705,     -49.2875, },
+      Pi_Omega_22 = {      0.0519,      -1.3879,      12.2727,     -32.1404, },
+      D           = {      0.0000,       0.0000,       0.0000,       0.0000, },
+    },
+  },
+}CI = {
+  i = e_minus,
+  j = CN,
+  reference = 'Park - Chemical kinetic parameters of hyperbolic Earth entry, 2001',
+  model = 'GuptaYos',
+  parameters = {
+    {
+      T_low = 2000.0,
+      T_high = 32000.0,
+      Pi_Omega_11 = {     -0.2247,       5.3431,     -41.5645,     107.5511, },
+      Pi_Omega_22 = {     -0.2247,       5.3431,     -41.5645,     107.5511, },
+      D           = {      0.0000,       0.0000,       0.0000,       0.0000, },
+    },
+  },
+}CI = {
+  i = 'e_minus',
+  j = 'CO2',
+  reference = 'Wright et al, AIAA Journal Vol. 45 No. 1 January 2007',
+  model = 'GuptaYos',
+  parameters = {
+    {
+      T_low  =  1000.0,
+      T_high = 20000.0,
+      Pi_Omega_11 = {   0.1041,  -2.3155,  16.0679, -31.4029 },
+      Pi_Omega_22 = {   0.0580,  -1.1115,   5.8355,  -3.3769 },
+      D           = {  -0.1041,   2.3155, -14.5679,  33.4678 },
+    }
+  }
+}
+CI = {
+  i = e_minus,
+  j = CO,
+  reference = 'Park - Chemical kinetic parameters of hyperbolic Earth entry, 2001',
+  model = 'GuptaYos',
+  parameters = {
+    {
+      T_low = 2000.0,
+      T_high = 32000.0,
+      Pi_Omega_11 = {     -0.2247,       5.3431,     -41.5645,     107.5511, },
+      Pi_Omega_22 = {     -0.2247,       5.3431,     -41.5645,     107.5511, },
+      D           = {      0.0000,       0.0000,       0.0000,       0.0000, },
+    },
+  },
+}CI = {
+  i = e_minus,
+  j = C_plus,
+  reference = 'Park - Chemical kinetic parameters of hyperbolic Earth entry, 2001',
+  model = 'GuptaYos',
+  parameters = {
+    {
+      T_low = 2000.0,
+      T_high = 32000.0,
+      Pi_Omega_11 = {      0.0691,      -1.7820,      13.2505,     -17.7212, },
+      Pi_Omega_22 = {      0.0691,      -1.7820,      13.2505,     -17.7673, },
+      D           = {      0.0000,       0.0000,       0.0000,       0.0000, },
+    },
+  },
+}CI = {
+  i = 'e_minus',
+  j = 'e_minus',
+  reference = 'NASA Reference Publication 1232 by Gupta,R.N., Yos,J.M. et al 1990',
+  model = 'GuptaYos',
+  parameters = {
+    {
+      T_low  =  1000.0,
+      T_high = 30000.0,
+      Pi_Omega_11 = {   0.0000,    0.0000,   -2.0000,   23.8237, },
+      Pi_Omega_22 = {   0.0000,    0.0000,   -2.0000,   24.3061, },
+      D           = {   0.0000,    0.0000,    3.5000,  -24.8662, },
+    },
+  },
+}
+CI = {
+  i = e_minus,
+  j = H2,
+  reference = 'Park - Chemical kinetic parameters of hyperbolic Earth entry, 2001',
+  model = 'GuptaYos',
+  parameters = {
+    {
+      T_low = 2000.0,
+      T_high = 32000.0,
+      Pi_Omega_11 = {     -0.0288,       0.6706,      -5.0096,      14.5878, },
+      Pi_Omega_22 = {     -0.0288,       0.6706,      -5.0096,      14.5878, },
+      D           = {      0.0000,       0.0000,       0.0000,       0.0000, },
+    },
+  },
+}CI = {
+  i = e_minus,
+  j = H,
+  reference = 'Park - Chemical kinetic parameters of hyperbolic Earth entry, 2001',
+  model = 'GuptaYos',
+  parameters = {
+    {
+      T_low = 2000.0,
+      T_high = 32000.0,
+      Pi_Omega_11 = {      0.0346,      -0.8910,       7.3561,     -16.5523, },
+      Pi_Omega_22 = {      0.0058,      -0.0766,      -0.2378,       6.7239, },
+      D           = {      0.0000,       0.0000,       0.0000,       0.0000, },
+    },
+  },
+}CI = {
+  i = H2,
+  j = C2,
+  reference = 'Park - Chemical kinetic parameters of hyperbolic Earth entry, 2001',
+  model = 'GuptaYos',
+  parameters = {
+    {
+      T_low = 2000.0,
+      T_high = 32000.0,
+      Pi_Omega_11 = {     -0.0000,       0.0000,      -0.3986,       6.0233, },
+      Pi_Omega_22 = {     -0.0058,       0.1519,      -1.7139,       9.8874, },
+      D           = {      0.0000,       0.0000,       0.0000,       0.0000, },
+    },
+  },
+}CI = {
+  i = H2,
+  j = C,
+  reference = 'Park - Chemical kinetic parameters of hyperbolic Earth entry, 2001',
+  model = 'GuptaYos',
+  parameters = {
+    {
+      T_low = 2000.0,
+      T_high = 32000.0,
+      Pi_Omega_11 = {      0.0058,      -0.1588,       1.0397,       1.5023, },
+      Pi_Omega_22 = {     -0.0058,       0.1519,      -1.7139,       9.6571, },
+      D           = {      0.0000,       0.0000,       0.0000,       0.0000, },
+    },
+  },
+}CI = {
+  i = H2,
+  j = CN,
+  reference = 'Park - Chemical kinetic parameters of hyperbolic Earth entry, 2001',
+  model = 'GuptaYos',
+  parameters = {
+    {
+      T_low = 2000.0,
+      T_high = 32000.0,
+      Pi_Omega_11 = {      0.0000,      -0.0000,      -0.3986,       6.0003, },
+      Pi_Omega_22 = {      0.0058,      -0.1622,       1.1178,       1.4299, },
+      D           = {      0.0000,       0.0000,       0.0000,       0.0000, },
+    },
+  },
+}CI = {
+  i = 'H2',
+  j = 'CO2',
+  reference = 'To be published',
+  model = 'GuptaYos',
+  parameters = {
+    {
+      T_low = 1000.0,
+      T_high = 20000.0,
+      Pi_Omega_11 = {  -0.0012,  0.0300,  -0.4086,  5.0770,  },
+      Pi_Omega_22 = {  -0.0013,  0.0321,  -0.4027,  5.0939,  },
+      D           = { 0.0,	 0.0,	 0.0,	 0.0 },
+    },
+  },
+}CI = {
+  i = H2,
+  j = CO,
+  reference = 'Park - Chemical kinetic parameters of hyperbolic Earth entry, 2001',
+  model = 'GuptaYos',
+  parameters = {
+    {
+      T_low = 2000.0,
+      T_high = 32000.0,
+      Pi_Omega_11 = {      0.0058,      -0.1588,       1.0397,       1.6866, },
+      Pi_Omega_22 = {     -0.0000,       0.0000,      -0.3986,       6.0924, },
+      D           = {      0.0000,       0.0000,       0.0000,       0.0000, },
+    },
+  },
+}CI = {
+  i = H2,
+  j = CO,
+  reference = 'Park - Chemical kinetic parameters of hyperbolic Earth entry, 2001',
+  model = 'GuptaYos',
+  parameters = {
+    {
+      T_low = 2000.0,
+      T_high = 32000.0,
+      Pi_Omega_11 = {      0.0058,      -0.1588,       1.0397,       1.6866, },
+      Pi_Omega_22 = {     -0.0000,       0.0000,      -0.3986,       6.0924, },
+      D           = {      0.0000,       0.0000,       0.0000,       0.0000, },
+    },
+  },
+}CI = {
+  i = H2,
+  j = H2,
+  reference = 'Park - Chemical kinetic parameters of hyperbolic Earth entry, 2001',
+  model = 'GuptaYos',
+  parameters = {
+    {
+      T_low = 2000.0,
+      T_high = 32000.0,
+      Pi_Omega_11 = {     -0.0173,       0.4455,      -4.2428,      16.7179, },
+      Pi_Omega_22 = {     -0.0058,       0.0390,       0.3000,       0.7169, },
+      D           = {      0.0000,       0.0000,       0.0000,       0.0000, },
+    },
+  },
+}CI = {
+  i = H2,
+  j = H,
+  reference = 'Park - Chemical kinetic parameters of hyperbolic Earth entry, 2001',
+  model = 'GuptaYos',
+  parameters = {
+    {
+      T_low = 2000.0,
+      T_high = 32000.0,
+      Pi_Omega_11 = {      0.0230,      -0.6659,       5.7256,     -12.9833, },
+      Pi_Omega_22 = {      0.0173,      -0.5208,       4.5334,      -9.5183, },
+      D           = {      0.0000,       0.0000,       0.0000,       0.0000, },
+    },
+  },
+}CI = {
+  i = H2,
+  j = N2,
+  reference = 'Park - Chemical kinetic parameters of hyperbolic Earth entry, 2001',
+  model = 'GuptaYos',
+  parameters = {
+    {
+      T_low = 2000.0,
+      T_high = 32000.0,
+      Pi_Omega_11 = {      0.0000,      -0.0000,      -0.3986,       5.9773, },
+      Pi_Omega_22 = {      0.0000,      -0.0000,      -0.3986,       6.1154, },
+      D           = {      0.0000,       0.0000,       0.0000,       0.0000, },
+    },
+  },
+}CI = {
+  i = H2,
+  j = N,
+  reference = 'Park - Chemical kinetic parameters of hyperbolic Earth entry, 2001',
+  model = 'GuptaYos',
+  parameters = {
+    {
+      T_low = 2000.0,
+      T_high = 32000.0,
+      Pi_Omega_11 = {     -0.0058,       0.1622,      -1.9151,      10.5247, },
+      Pi_Omega_22 = {     -0.0000,       0.0000,      -0.3986,       5.9542, },
+      D           = {      0.0000,       0.0000,       0.0000,       0.0000, },
+    },
+  },
+}CI = {
+  i = H2,
+  j = NO,
+  reference = 'Park - Chemical kinetic parameters of hyperbolic Earth entry, 2001',
+  model = 'GuptaYos',
+  parameters = {
+    {
+      T_low = 2000.0,
+      T_high = 32000.0,
+      Pi_Omega_11 = {     -0.0058,       0.1622,      -1.9151,      10.6398, },
+      Pi_Omega_22 = {     -0.0000,       0.0000,      -0.3986,       6.0694, },
+      D           = {      0.0000,       0.0000,       0.0000,       0.0000, },
+    },
+  },
+}CI = {
+  i = H2,
+  j = O2,
+  reference = 'Park - Chemical kinetic parameters of hyperbolic Earth entry, 2001',
+  model = 'GuptaYos',
+  parameters = {
+    {
+      T_low = 2000.0,
+      T_high = 32000.0,
+      Pi_Omega_11 = {     -0.0000,       0.0000,      -0.3986,       5.9082, },
+      Pi_Omega_22 = {     -0.0058,       0.1519,      -1.7139,       9.7722, },
+      D           = {      0.0000,       0.0000,       0.0000,       0.0000, },
+    },
+  },
+}CI = {
+  i = H2,
+  j = O2,
+  reference = 'Park - Chemical kinetic parameters of hyperbolic Earth entry, 2001',
+  model = 'GuptaYos',
+  parameters = {
+    {
+      T_low = 2000.0,
+      T_high = 32000.0,
+      Pi_Omega_11 = {     -0.0000,       0.0000,      -0.3986,       5.9082, },
+      Pi_Omega_22 = {     -0.0058,       0.1519,      -1.7139,       9.7722, },
+      D           = {      0.0000,       0.0000,       0.0000,       0.0000, },
+    },
+  },
+}CI = {
+  i = H2,
+  j = O,
+  reference = 'Park - Chemical kinetic parameters of hyperbolic Earth entry, 2001',
+  model = 'GuptaYos',
+  parameters = {
+    {
+      T_low = 2000.0,
+      T_high = 32000.0,
+      Pi_Omega_11 = {      0.0000,      -0.0000,      -0.3986,       5.7700, },
+      Pi_Omega_22 = {      0.0058,      -0.1622,       1.1178,       1.1996, },
+      D           = {      0.0000,       0.0000,       0.0000,       0.0000, },
+    },
+  },
+}CI = {
+  i = H,
+  j = C,
+  reference = 'Park - Chemical kinetic parameters of hyperbolic Earth entry, 2001',
+  model = 'GuptaYos',
+  parameters = {
+    {
+      T_low = 2000.0,
+      T_high = 32000.0,
+      Pi_Omega_11 = {      0.0058,      -0.1519,       0.9166,       1.9751, },
+      Pi_Omega_22 = {      0.0058,      -0.1485,       0.8717,       2.2326, },
+      D           = {      0.0000,       0.0000,       0.0000,       0.0000, },
+    },
+  },
+}CI = {
+  i = HCN,
+  j = C2H2,
+  reference = 'EPFL, 2013 - Collision integrals calculator - Unpublished',
+  model = 'GuptaYos',
+  parameters = {
+    {
+      T_low = 300.0,
+      T_high = 16000.0,
+      Pi_Omega_11 = {      0.05323,       -1.26281,       9.54871,       -65.35955, },
+      Pi_Omega_22 = {      -0.00661,       0.21446,       -2.47579,       -33.00871, },
+      D           = {      0.00000,       0.00000,       0.00000,       0.00000, },
+    },
+  },
+}
+CI = {
+  i = HCN,
+  j = C2H,
+  reference = 'EPFL, 2013 - Collision integrals calculator - Unpublished',
+  model = 'GuptaYos',
+  parameters = {
+    {
+      T_low = 300.0,
+      T_high = 16000.0,
+      Pi_Omega_11 = {      0.20092,       -4.91883,       39.42070,       -145.99700, },
+      Pi_Omega_22 = {      0.13143,       -3.15313,       24.57821,       -104.63250, },
+      D           = {      0.00000,       0.00000,       0.00000,       0.00000, },
+    },
+  },
+}
+CI = {
+  i = HCN,
+  j = C2,
+  reference = 'EPFL, 2013 - Collision integrals calculator - Unpublished',
+  model = 'GuptaYos',
+  parameters = {
+    {
+      T_low = 300.0,
+      T_high = 16000.0,
+      Pi_Omega_11 = {      0.04579,       -1.08059,       8.07837,       -61.50938, },
+      Pi_Omega_22 = {      -0.01188,       0.34096,       -3.47367,       -30.48312, },
+      D           = {      0.00000,       0.00000,       0.00000,       0.00000, },
+    },
+  },
+}
+CI = {
+  i = HCN,
+  j = C3,
+  reference = 'EPFL, 2013 - Collision integrals calculator - Unpublished',
+  model = 'GuptaYos',
+  parameters = {
+    {
+      T_low = 300.0,
+      T_high = 16000.0,
+      Pi_Omega_11 = {      0.19988,       -4.89289,       39.20689,       -145.41501, },
+      Pi_Omega_22 = {      0.13035,       -3.12671,       24.36425,       -104.06179, },
+      D           = {      0.00000,       0.00000,       0.00000,       0.00000, },
+    },
+  },
+}
+CI = {
+  i = HCN,
+  j = CH,
+  reference = 'EPFL, 2013 - Collision integrals calculator - Unpublished',
+  model = 'GuptaYos',
+  parameters = {
+    {
+      T_low = 300.0,
+      T_high = 16000.0,
+      Pi_Omega_11 = {      -0.01553,       0.39777,       -3.65638,       -31.04537, },
+      Pi_Omega_22 = {      -0.02783,       0.68511,       -5.84959,       -25.44153, },
+      D           = {      0.00000,       0.00000,       0.00000,       0.00000, },
+    },
+  },
+}
+CI = {
+  i = HCN,
+  j = C,
+  reference = 'EPFL, 2013 - Collision integrals calculator - Unpublished',
+  model = 'GuptaYos',
+  parameters = {
+    {
+      T_low = 300.0,
+      T_high = 16000.0,
+      Pi_Omega_11 = {      -0.01484,       0.36691,       -3.40418,       -31.69798, },
+      Pi_Omega_22 = {      -0.00687,       0.16914,       -1.77392,       -36.03611, },
+      D           = {      0.00000,       0.00000,       0.00000,       0.00000, },
+    },
+  },
+}
+CI = {
+  i = HCN,
+  j = CN,
+  reference = 'EPFL, 2013 - Collision integrals calculator - Unpublished',
+  model = 'GuptaYos',
+  parameters = {
+    {
+      T_low = 300.0,
+      T_high = 16000.0,
+      Pi_Omega_11 = {      -0.01332,       0.34652,       -3.27339,       -31.79618, },
+      Pi_Omega_22 = {      -0.03012,       0.74380,       -6.35750,       -23.79692, },
+      D           = {      0.00000,       0.00000,       0.00000,       0.00000, },
+    },
+  },
+}
+CI = {
+  i = HCN,
+  j = CO2,
+  reference = 'EPFL, 2013 - Collision integrals calculator - Unpublished',
+  model = 'GuptaYos',
+  parameters = {
+    {
+      T_low = 300.0,
+      T_high = 16000.0,
+      Pi_Omega_11 = {      0.04584,       -1.08173,       8.08769,       -61.52697, },
+      Pi_Omega_22 = {      -0.01183,       0.33972,       -3.46391,       -30.50070, },
+      D           = {      0.00000,       0.00000,       0.00000,       0.00000, },
+    },
+  },
+}
+CI = {
+  i = HCN,
+  j = CO,
+  reference = 'EPFL, 2013 - Collision integrals calculator - Unpublished',
+  model = 'GuptaYos',
+  parameters = {
+    {
+      T_low = 300.0,
+      T_high = 16000.0,
+      Pi_Omega_11 = {      -0.00881,       0.23936,       -2.41562,       -34.22585, },
+      Pi_Omega_22 = {      -0.03640,       0.89963,       -7.59634,       -20.81342, },
+      D           = {      0.00000,       0.00000,       0.00000,       0.00000, },
+    },
+  },
+}
+CI = {
+  i = 'HCN',
+  j = 'CO',
+  reference = 'To be published',
+  model = 'GuptaYos',
+  parameters = {
+    {
+      T_low = 1000.0,
+      T_high = 20000.0,
+      Pi_Omega_11 = {  -0.0178,  0.5883,  -6.5836,  27.9249,  },
+      Pi_Omega_22 = {  0.0094,  -0.1266,  -0.3544,  9.9934,  },
+      D           = { 0.0,	 0.0,	 0.0,	 0.0 },
+    },
+  },
+}CI = {
+  i = 'HCN',
+  j = 'C',
+  reference = 'To be published',
+  model = 'GuptaYos',
+  parameters = {
+    {
+      T_low = 1000.0,
+      T_high = 20000.0,
+      Pi_Omega_11 = {  0.0090,  -0.1085,  -0.6234,  11.0677,  },
+      Pi_Omega_22 = {  0.0135,  -0.2151,  0.1912,  9.1491,  },
+      D           = { 0.0,	 0.0,	 0.0,	 0.0 },
+    },
+  },
+}CI = {
+  i = HCN,
+  j = H2,
+  reference = 'EPFL, 2013 - Collision integrals calculator - Unpublished',
+  model = 'GuptaYos',
+  parameters = {
+    {
+      T_low = 300.0,
+      T_high = 16000.0,
+      Pi_Omega_11 = {      -0.01889,       0.48238,       -4.34034,       -29.53124, },
+      Pi_Omega_22 = {      -0.03066,       0.76124,       -6.49628,       -23.99759, },
+      D           = {      0.00000,       0.00000,       0.00000,       0.00000, },
+    },
+  },
+}
+CI = {
+  i = HCN,
+  j = HCN,
+  reference = 'EPFL, 2013 - Collision integrals calculator - Unpublished',
+  model = 'GuptaYos',
+  parameters = {
+    {
+      T_low = 300.0,
+      T_high = 16000.0,
+      Pi_Omega_11 = {      0.20636,       -5.06486,       40.70632,       -149.49688, },
+      Pi_Omega_22 = {      0.13251,       -3.20414,       25.19588,       -106.59612, },
+      D           = {      0.00000,       0.00000,       0.00000,       0.00000, },
+    },
+  },
+}
+CI = {
+  i = HCN,
+  j = HCO,
+  reference = 'EPFL, 2013 - Collision integrals calculator - Unpublished',
+  model = 'GuptaYos',
+  parameters = {
+    {
+      T_low = 300.0,
+      T_high = 16000.0,
+      Pi_Omega_11 = {      0.18179,       -4.45143,       35.65703,       -135.87824, },
+      Pi_Omega_22 = {      0.10548,       -2.54036,       19.84461,       -92.55011, },
+      D           = {      0.00000,       0.00000,       0.00000,       0.00000, },
+    },
+  },
+}
+CI = {
+  i = HCN,
+  j = H,
+  reference = 'EPFL, 2013 - Collision integrals calculator - Unpublished',
+  model = 'GuptaYos',
+  parameters = {
+    {
+      T_low = 300.0,
+      T_high = 16000.0,
+      Pi_Omega_11 = {      -0.01759,       0.43602,       -3.97705,       -30.31607, },
+      Pi_Omega_22 = {      -0.01268,       0.31137,       -2.92233,       -33.17069, },
+      D           = {      0.00000,       0.00000,       0.00000,       0.00000, },
+    },
+  },
+}
+CI = {
+  i = HCN,
+  j = N2,
+  reference = 'EPFL, 2013 - Collision integrals calculator - Unpublished',
+  model = 'GuptaYos',
+  parameters = {
+    {
+      T_low = 300.0,
+      T_high = 16000.0,
+      Pi_Omega_11 = {      -0.01604,       0.41630,       -3.84219,       -30.45107, },
+      Pi_Omega_22 = {      -0.03571,       0.88756,       -7.54127,       -20.84650, },
+      D           = {      0.00000,       0.00000,       0.00000,       0.00000, },
+    },
+  },
+}
+CI = {
+  i = 'HCN',
+  j = 'N2',
+  reference = 'To be published',
+  model = 'GuptaYos',
+  parameters = {
+    {
+      T_low = 1000.0,
+      T_high = 20000.0,
+      Pi_Omega_11 = {  -0.0083,  0.3238,  -4.1163,  20.2470,  },
+      Pi_Omega_22 = {  0.0033,  0.0348,  -1.7529,  13.9940,  },
+      D           = { 0.0,	 0.0,	 0.0,	 0.0 },
+    },
+  },
+}CI = {
+  i = HCN,
+  j = N,
+  reference = 'EPFL, 2013 - Collision integrals calculator - Unpublished',
+  model = 'GuptaYos',
+  parameters = {
+    {
+      T_low = 300.0,
+      T_high = 16000.0,
+      Pi_Omega_11 = {      -0.01603,       0.40830,       -3.85408,       -30.09698, },
+      Pi_Omega_22 = {      -0.03566,       0.87889,       -7.54838,       -20.50354, },
+      D           = {      0.00000,       0.00000,       0.00000,       0.00000, },
+    },
+  },
+}
+CI = {
+  i = HCN,
+  j = NO,
+  reference = 'EPFL, 2013 - Collision integrals calculator - Unpublished',
+  model = 'GuptaYos',
+  parameters = {
+    {
+      T_low = 300.0,
+      T_high = 16000.0,
+      Pi_Omega_11 = {      0.00279,       -0.03883,       -0.22493,       -39.92195, },
+      Pi_Omega_22 = {      -0.03542,       0.88549,       -7.57254,       -20.64671, },
+      D           = {      0.00000,       0.00000,       0.00000,       0.00000, },
+    },
+  },
+}
+CI = {
+  i = 'HCN',
+  j = 'NO',
+  reference = 'To be published',
+  model = 'GuptaYos',
+  parameters = {
+    {
+      T_low = 1000.0,
+      T_high = 20000.0,
+      Pi_Omega_11 = {  -0.0156,  0.5337,  -6.1574,  26.8672,  },
+      Pi_Omega_22 = {  0.0151,  -0.2712,  0.8473,  6.7303,  },
+      D           = { 0.0,	 0.0,	 0.0,	 0.0 },
+    },
+  },
+}CI = {
+  i = 'HCN',
+  j = 'N',
+  reference = 'To be published',
+  model = 'GuptaYos',
+  parameters = {
+    {
+      T_low = 1000.0,
+      T_high = 20000.0,
+      Pi_Omega_11 = {  0.0034,  0.0317,  -1.7695,  14.1408,  },
+      Pi_Omega_22 = {  0.0178,  -0.3293,  1.2093,  6.1575,  },
+      D           = { 0.0,	 0.0,	 0.0,	 0.0 },
+    },
+  },
+}CI = {
+  i = HCN,
+  j = O2,
+  reference = 'EPFL, 2013 - Collision integrals calculator - Unpublished',
+  model = 'GuptaYos',
+  parameters = {
+    {
+      T_low = 300.0,
+      T_high = 16000.0,
+      Pi_Omega_11 = {      -0.00128,       0.06397,       -1.08321,       -37.57762, },
+      Pi_Omega_22 = {      -0.03768,       0.94771,       -8.13880,       -18.97030, },
+      D           = {      0.00000,       0.00000,       0.00000,       0.00000, },
+    },
+  },
+}
+CI = {
+  i = 'HCN',
+  j = 'O2',
+  reference = 'To be published',
+  model = 'GuptaYos',
+  parameters = {
+    {
+      T_low = 1000.0,
+      T_high = 20000.0,
+      Pi_Omega_11 = {  -0.0153,  0.5292,  -6.1589,  27.0064,  },
+      Pi_Omega_22 = {  0.0202,  -0.4041,  2.0062,  3.3790,  },
+      D           = { 0.0,	 0.0,	 0.0,	 0.0 },
+    },
+  },
+}CI = {
+  i = HCN,
+  j = O,
+  reference = 'EPFL, 2013 - Collision integrals calculator - Unpublished',
+  model = 'GuptaYos',
+  parameters = {
+    {
+      T_low = 300.0,
+      T_high = 16000.0,
+      Pi_Omega_11 = {      -0.00124,       0.05541,       -1.09124,       -37.21398, },
+      Pi_Omega_22 = {      -0.03762,       0.93878,       -8.14397,       -18.61379, },
+      D           = {      0.00000,       0.00000,       0.00000,       0.00000, },
+    },
+  },
+}
+CI = {
+  i = 'HCN',
+  j = 'O',
+  reference = 'To be published',
+  model = 'GuptaYos',
+  parameters = {
+    {
+      T_low = 1000.0,
+      T_high = 20000.0,
+      Pi_Omega_11 = {  -0.0026,  0.2025,  -3.4242,  19.5044,  },
+      Pi_Omega_22 = {  0.0351,  -0.7855,  5.1689,  -5.1874,  },
+      D           = { 0.0,	 0.0,	 0.0,	 0.0 },
+    },
+  },
+}CI = {
+  i = 'H',
+  j = 'CO2',
+  reference = 'To be published',
+  model = 'GuptaYos',
+  parameters = {
+    {
+      T_low = 1000.0,
+      T_high = 20000.0,
+      Pi_Omega_11 = {  -0.0013,  0.0325,  -0.4189,  5.0030,  },
+      Pi_Omega_22 = {  -0.0029,  0.0685,  -0.6864,  5.7549,  },
+      D           = { 0.0,	 0.0,	 0.0,	 0.0 },
+    },
+  },
+}CI = {
+  i = HCO,
+  j = C2H2,
+  reference = 'EPFL, 2013 - Collision integral calculator - Unpublished',
+  model = 'GuptaYos',
+  parameters = {
+    {
+      T_low = 300.0,
+      T_high = 16000.0,
+      Pi_Omega_11 = {      0.04040,       -0.94884,       7.01646,       -58.65879, },
+      Pi_Omega_22 = {      -0.01556,       0.42916,       -4.16669,       -28.66501, },
+      D           = {      0.00000,       0.00000,       0.00000,       0.00000, },
+    },
+  },
+}
+CI = {
+  i = HCO,
+  j = C2H,
+  reference = 'EPFL, 2013 - Collision integral calculator - Unpublished',
+  model = 'GuptaYos',
+  parameters = {
+    {
+      T_low = 300.0,
+      T_high = 16000.0,
+      Pi_Omega_11 = {      0.17777,       -4.34127,       34.65965,       -133.06156, },
+      Pi_Omega_22 = {      0.10680,       -2.54834,       19.68176,       -91.60312, },
+      D           = {      0.00000,       0.00000,       0.00000,       0.00000, },
+    },
+  },
+}
+CI = {
+  i = HCO,
+  j = C2,
+  reference = 'EPFL, 2013 - Collision integral calculator - Unpublished',
+  model = 'GuptaYos',
+  parameters = {
+    {
+      T_low = 300.0,
+      T_high = 16000.0,
+      Pi_Omega_11 = {      0.03376,       -0.78643,       5.70949,       -55.25380, },
+      Pi_Omega_22 = {      -0.01991,       0.53298,       -4.97960,       -26.63668, },
+      D           = {      0.00000,       0.00000,       0.00000,       0.00000, },
+    },
+  },
+}
+CI = {
+  i = HCO,
+  j = C3,
+  reference = 'EPFL, 2013 - Collision integral calculator - Unpublished',
+  model = 'GuptaYos',
+  parameters = {
+    {
+      T_low = 300.0,
+      T_high = 16000.0,
+      Pi_Omega_11 = {      0.17680,       -4.31719,       34.46178,       -132.52458, },
+      Pi_Omega_22 = {      0.10581,       -2.52412,       19.48603,       -91.08230, },
+      D           = {      0.00000,       0.00000,       0.00000,       0.00000, },
+    },
+  },
+}
+CI = {
+  i = HCO,
+  j = CH,
+  reference = 'EPFL, 2013 - Collision integral calculator - Unpublished',
+  model = 'GuptaYos',
+  parameters = {
+    {
+      T_low = 300.0,
+      T_high = 16000.0,
+      Pi_Omega_11 = {      -0.01774,       0.44822,       -4.02004,       -30.29273, },
+      Pi_Omega_22 = {      -0.02421,       0.59294,       -5.05813,       -27.80234, },
+      D           = {      0.00000,       0.00000,       0.00000,       0.00000, },
+    },
+  },
+}
+CI = {
+  i = HCO,
+  j = C,
+  reference = 'EPFL, 2013 - Collision integral calculator - Unpublished',
+  model = 'GuptaYos',
+  parameters = {
+    {
+      T_low = 300.0,
+      T_high = 16000.0,
+      Pi_Omega_11 = {      -0.01288,       0.32590,       -2.98906,       -33.30781, },
+      Pi_Omega_22 = {      -0.00427,       0.11286,       -1.24132,       -37.93913, },
+      D           = {      0.00000,       0.00000,       0.00000,       0.00000, },
+    },
+  },
+}
+CI = {
+  i = HCO,
+  j = CN,
+  reference = 'EPFL, 2013 - Collision integral calculator - Unpublished',
+  model = 'GuptaYos',
+  parameters = {
+    {
+      T_low = 300.0,
+      T_high = 16000.0,
+      Pi_Omega_11 = {      -0.01651,       0.41999,       -3.81240,       -30.62303, },
+      Pi_Omega_22 = {      -0.02715,       0.66589,       -5.66004,       -25.99398, },
+      D           = {      0.00000,       0.00000,       0.00000,       0.00000, },
+    },
+  },
+}
+CI = {
+  i = HCO,
+  j = CO2,
+  reference = 'EPFL, 2013 - Collision integral calculator - Unpublished',
+  model = 'GuptaYos',
+  parameters = {
+    {
+      T_low = 300.0,
+      T_high = 16000.0,
+      Pi_Omega_11 = {      0.03380,       -0.78744,       5.71784,       -55.26888, },
+      Pi_Omega_22 = {      -0.01990,       0.53264,       -4.97686,       -26.63652, },
+      D           = {      0.00000,       0.00000,       0.00000,       0.00000, },
+    },
+  },
+}
+CI = {
+  i = HCO,
+  j = CO,
+  reference = 'EPFL, 2013 - Collision integral calculator - Unpublished',
+  model = 'GuptaYos',
+  parameters = {
+    {
+      T_low = 300.0,
+      T_high = 16000.0,
+      Pi_Omega_11 = {      -0.01288,       0.32590,       -2.98906,       -33.22221, },
+      Pi_Omega_22 = {      -0.00427,       0.11286,       -1.24132,       -37.85353, },
+      D           = {      0.00000,       0.00000,       0.00000,       0.00000, },
+    },
+  },
+}
+CI = {
+  i = 'HCO',
+  j = 'CO',
+  reference = 'To be published',
+  model = 'GuptaYos',
+  parameters = {
+    {
+      T_low = 1000.0,
+      T_high = 20000.0,
+      Pi_Omega_11 = {  -0.0181,  0.5002,  -4.7686,  18.8182,  },
+      Pi_Omega_22 = {  -0.0204,  0.5571,  -5.2261,  20.0917,  },
+      D           = { 0.0,	 0.0,	 0.0,	 0.0 },
+    },
+  },
+}CI = {
+  i = 'HCO',
+  j = 'C',
+  reference = 'To be published',
+  model = 'GuptaYos',
+  parameters = {
+    {
+      T_low = 1000.0,
+      T_high = 20000.0,
+      Pi_Omega_11 = {  -0.0196,  0.5412,  -5.1411,  19.7806,  },
+      Pi_Omega_22 = {  -0.0192,  0.5266,  -4.9644,  19.1906,  },
+      D           = { 0.0,	 0.0,	 0.0,	 0.0 },
+    },
+  },
+}CI = {
+  i = HCO,
+  j = H2,
+  reference = 'EPFL, 2013 - Collision integral calculator - Unpublished',
+  model = 'GuptaYos',
+  parameters = {
+    {
+      T_low = 300.0,
+      T_high = 16000.0,
+      Pi_Omega_11 = {      -0.01965,       0.49880,       -4.45230,       -29.32021, },
+      Pi_Omega_22 = {      -0.02634,       0.65456,       -5.62520,       -26.36617, },
+      D           = {      0.00000,       0.00000,       0.00000,       0.00000, },
+    },
+  },
+}
+CI = {
+  i = HCO,
+  j = HCO,
+  reference = 'EPFL, 2013 - Collision integral calculator - Unpublished',
+  model = 'GuptaYos',
+  parameters = {
+    {
+      T_low = 300.0,
+      T_high = 16000.0,
+      Pi_Omega_11 = {      0.15943,       -3.89366,       31.06615,       -123.46362, },
+      Pi_Omega_22 = {      0.08281,       -1.98213,       15.31900,       -80.54748, },
+      D           = {      0.00000,       0.00000,       0.00000,       0.00000, },
+    },
+  },
+}
+CI = {
+  i = HCO,
+  j = H,
+  reference = 'EPFL, 2013 - Collision integral calculator - Unpublished',
+  model = 'GuptaYos',
+  parameters = {
+    {
+      T_low = 300.0,
+      T_high = 16000.0,
+      Pi_Omega_11 = {      -0.01595,       0.40241,       -3.61851,       -31.78648, },
+      Pi_Omega_22 = {      -0.00883,       0.22481,       -2.14642,       -35.71916, },
+      D           = {      0.00000,       0.00000,       0.00000,       0.00000, },
+    },
+  },
+}
+CI = {
+  i = HCO,
+  j = N2,
+  reference = 'EPFL, 2013 - Collision integral calculator - Unpublished',
+  model = 'GuptaYos',
+  parameters = {
+    {
+      T_low = 300.0,
+      T_high = 16000.0,
+      Pi_Omega_11 = {      -0.01813,       0.46490,       -4.21011,       -29.56856, },
+      Pi_Omega_22 = {      -0.03235,       0.80331,       -6.84228,       -22.78143, },
+      D           = {      0.00000,       0.00000,       0.00000,       0.00000, },
+    },
+  },
+}
+CI = {
+  i = 'HCO',
+  j = 'N2',
+  reference = 'To be published',
+  model = 'GuptaYos',
+  parameters = {
+    {
+      T_low = 1000.0,
+      T_high = 20000.0,
+      Pi_Omega_11 = {  -0.0173,  0.4767,  -4.5428,  18.1020,  },
+      Pi_Omega_22 = {  -0.0188,  0.5145,  -4.8305,  18.8801,  },
+      D           = { 0.0,	 0.0,	 0.0,	 0.0 },
+    },
+  },
+}CI = {
+  i = HCO,
+  j = N,
+  reference = 'EPFL, 2013 - Collision integral calculator - Unpublished',
+  model = 'GuptaYos',
+  parameters = {
+    {
+      T_low = 300.0,
+      T_high = 16000.0,
+      Pi_Omega_11 = {      -0.01809,       0.45620,       -4.21686,       -29.22753, },
+      Pi_Omega_22 = {      -0.03234,       0.79529,       -6.85426,       -22.42746, },
+      D           = {      0.00000,       0.00000,       0.00000,       0.00000, },
+    },
+  },
+}
+CI = {
+  i = HCO,
+  j = NO,
+  reference = 'EPFL, 2013 - Collision integral calculator - Unpublished',
+  model = 'GuptaYos',
+  parameters = {
+    {
+      T_low = 300.0,
+      T_high = 16000.0,
+      Pi_Omega_11 = {      -0.00340,       0.11163,       -1.42850,       -36.78410, },
+      Pi_Omega_22 = {      -0.03700,       0.92231,       -7.85351,       -19.97499, },
+      D           = {      0.00000,       0.00000,       0.00000,       0.00000, },
+    },
+  },
+}
+CI = {
+  i = 'HCO',
+  j = 'NO',
+  reference = 'To be published',
+  model = 'GuptaYos',
+  parameters = {
+    {
+      T_low = 1000.0,
+      T_high = 20000.0,
+      Pi_Omega_11 = {  -0.0196,  0.5433,  -5.1813,  20.1021,  },
+      Pi_Omega_22 = {  -0.0221,  0.6054,  -5.6853,  21.5118,  },
+      D           = { 0.0,	 0.0,	 0.0,	 0.0 },
+    },
+  },
+}CI = {
+  i = 'HCO',
+  j = 'N',
+  reference = 'To be published',
+  model = 'GuptaYos',
+  parameters = {
+    {
+      T_low = 1000.0,
+      T_high = 20000.0,
+      Pi_Omega_11 = {  -0.0209,  0.5795,  -5.5084,  20.9937,  },
+      Pi_Omega_22 = {  -0.0219,  0.6008,  -5.6475,  21.3230,  },
+      D           = { 0.0,	 0.0,	 0.0,	 0.0 },
+    },
+  },
+}CI = {
+  i = HCO,
+  j = O2,
+  reference = 'EPFL, 2013 - Collision integral calculator - Unpublished',
+  model = 'GuptaYos',
+  parameters = {
+    {
+      T_low = 300.0,
+      T_high = 16000.0,
+      Pi_Omega_11 = {      -0.00701,       0.20160,       -2.16913,       -34.79085, },
+      Pi_Omega_22 = {      -0.03845,       0.96218,       -8.21434,       -18.91557, },
+      D           = {      0.00000,       0.00000,       0.00000,       0.00000, },
+    },
+  },
+}
+CI = {
+  i = 'HCO',
+  j = 'O2',
+  reference = 'To be published',
+  model = 'GuptaYos',
+  parameters = {
+    {
+      T_low = 1000.0,
+      T_high = 20000.0,
+      Pi_Omega_11 = {  -0.0198,  0.5483,  -5.2238,  20.2077,  },
+      Pi_Omega_22 = {  -0.0221,  0.6063,  -5.6913,  21.5087,  },
+      D           = { 0.0,	 0.0,	 0.0,	 0.0 },
+    },
+  },
+}CI = {
+  i = HCO,
+  j = O,
+  reference = 'EPFL, 2013 - Collision integral calculator - Unpublished',
+  model = 'GuptaYos',
+  parameters = {
+    {
+      T_low = 300.0,
+      T_high = 16000.0,
+      Pi_Omega_11 = {      -0.00695,       0.19262,       -2.17375,       -34.43671, },
+      Pi_Omega_22 = {      -0.03840,       0.95325,       -8.21943,       -18.56008, },
+      D           = {      0.00000,       0.00000,       0.00000,       0.00000, },
+    },
+  },
+}
+CI = {
+  i = 'HCO',
+  j = 'O',
+  reference = 'To be published',
+  model = 'GuptaYos',
+  parameters = {
+    {
+      T_low = 1000.0,
+      T_high = 20000.0,
+      Pi_Omega_11 = {  -0.0230,  0.6404,  -6.0986,  22.8619,  },
+      Pi_Omega_22 = {  -0.0246,  0.6795,  -6.3945,  23.6446,  },
+      D           = { 0.0,	 0.0,	 0.0,	 0.0 },
+    },
+  },
+}CI = {
+  i = CO,
+  j = H,
+  reference = 'Park - Chemical kinetic parameters of hyperbolic Earth entry, 2001',
+  model = 'GuptaYos',
+  parameters = {
+    {
+      T_low = 2000.0,
+      T_high = 32000.0,
+      Pi_Omega_11 = {     -0.0058,       0.1622,      -1.9151,      10.5937, },
+      Pi_Omega_22 = {     -0.0000,       0.0000,      -0.3986,       6.0233, },
+      D           = {      0.0000,       0.0000,       0.0000,       0.0000, },
+    },
+  },
+}CI = {
+  i = H,
+  j = H,
+  reference = 'Park - Chemical kinetic parameters of hyperbolic Earth entry, 2001',
+  model = 'GuptaYos',
+  parameters = {
+    {
+      T_low = 2000.0,
+      T_high = 32000.0,
+      Pi_Omega_11 = {     -0.0173,       0.4387,      -4.1197,      16.1438, },
+      Pi_Omega_22 = {     -0.0115,       0.2457,      -2.0661,       9.2684, },
+      D           = {      0.0000,       0.0000,       0.0000,       0.0000, },
+    },
+  },
+}CI = {
+  i = H,
+  j = N,
+  reference = 'Park - Chemical kinetic parameters of hyperbolic Earth entry, 2001',
+  model = 'GuptaYos',
+  parameters = {
+    {
+      T_low = 2000.0,
+      T_high = 32000.0,
+      Pi_Omega_11 = {     -0.0115,       0.1943,      -1.1930,       5.7563, },
+      Pi_Omega_22 = {     -0.0230,       0.5153,      -4.0813,      14.2967, },
+      D           = {      0.0000,       0.0000,       0.0000,       0.0000, },
+    },
+  },
+}CI = {
+  i = O2,
+  j = H,
+  reference = 'Park - Chemical kinetic parameters of hyperbolic Earth entry, 2001',
+  model = 'GuptaYos',
+  parameters = {
+    {
+      T_low = 2000.0,
+      T_high = 32000.0,
+      Pi_Omega_11 = {     -0.0058,       0.1485,      -1.6689,       9.4457, },
+      Pi_Omega_22 = {     -0.0058,       0.1588,      -1.8369,      10.2450, },
+      D           = {      0.0000,       0.0000,       0.0000,       0.0000, },
+    },
+  },
+}CI = {
+  i = H,
+  j = O,
+  reference = 'Park - Chemical kinetic parameters of hyperbolic Earth entry, 2001',
+  model = 'GuptaYos',
+  parameters = {
+    {
+      T_low = 2000.0,
+      T_high = 32000.0,
+      Pi_Omega_11 = {      0.0058,      -0.1588,       1.0397,       1.4102, },
+      Pi_Omega_22 = {      0.0058,      -0.1485,       0.8717,       2.2095, },
+      D           = {      0.0000,       0.0000,       0.0000,       0.0000, },
+    },
+  },
+}CI = {
+  i = N2,
+  j = C2,
+  reference = 'Park - Chemical kinetic parameters of hyperbolic Earth entry, 2001',
+  model = 'GuptaYos',
+  parameters = {
+    {
+      T_low = 2000.0,
+      T_high = 32000.0,
+      Pi_Omega_11 = {     -0.0058,       0.1622,      -1.9151,      11.0082, },
+      Pi_Omega_22 = {      0.0000,      -0.0000,      -0.3986,       6.4378, },
+      D           = {      0.0000,       0.0000,       0.0000,       0.0000, },
+    },
+  },
+}CI = {
+  i = N2,
+  j = C,
+  reference = 'Park - Chemical kinetic parameters of hyperbolic Earth entry, 2001',
+  model = 'GuptaYos',
+  parameters = {
+    {
+      T_low = 2000.0,
+      T_high = 32000.0,
+      Pi_Omega_11 = {     -0.0058,       0.1485,      -1.6689,       9.6990, },
+      Pi_Omega_22 = {      0.0058,      -0.1622,       1.1178,       1.5220, },
+      D           = {      0.0000,       0.0000,       0.0000,       0.0000, },
+    },
+  },
+}CI = {
+  i = 'N2',
+  j = 'CO2',
+  reference = 'Bruno et al ESA STR-256 September 2008',
+  model = 'Bruno curve fits',
+  parameters = {
+    beta = 7.90,
+    eps0 = 14.772,
+    re   = 3.986,
+  }
+}
+CI = {
+  i = N2,
+  j = CO,
+  reference = 'Park - Chemical kinetic parameters of hyperbolic Earth entry, 2001',
+  model = 'GuptaYos',
+  parameters = {
+    {
+      T_low = 2000.0,
+      T_high = 32000.0,
+      Pi_Omega_11 = {     -0.0058,       0.1622,      -1.9151,      10.9622, },
+      Pi_Omega_22 = {     -0.0000,       0.0000,      -0.3986,       6.3917, },
+      D           = {      0.0000,       0.0000,       0.0000,       0.0000, },
+    },
+  },
+}CI = {
+  i = 'N2',
+  j = 'CO_plus',
+  reference = 'Bruno et al ESA STR-256 September 2008',
+  model = 'Bruno curve fits',
+  parameters = {
+    beta = 8.27,
+    eps0 = 110.581,
+    re   = 3.250,
+  }
+}
+CI = {
+  i = 'N2',
+  j = 'e_minus',
+  reference = 'NASA Reference Publication 1232 by Gupta,R.N., Yos,J.M. et al 1990',
+  model = 'GuptaYos',
+  parameters = {
+    {
+      T_low  =  1000.0,
+      T_high = 30000.0,
+      Pi_Omega_11 = {   0.1147,   -2.8945,   24.5080,  -67.3691, },
+      Pi_Omega_22 = {   0.1147,   -2.8945,   24.5080,  -67.3691, },
+      D           = {  -0.1147,    2.8945,  -23.0085,   65.9815, },
+    },
+  },
+}
+CI = {
+  i = N2,
+  j = H,
+  reference = 'Park - Chemical kinetic parameters of hyperbolic Earth entry, 2001',
+  model = 'GuptaYos',
+  parameters = {
+    {
+      T_low = 2000.0,
+      T_high = 32000.0,
+      Pi_Omega_11 = {      0.0288,      -0.8075,       6.9393,     -16.0235, },
+      Pi_Omega_22 = {      0.0288,      -0.8110,       7.0174,     -16.1880, },
+      D           = {      0.0000,       0.0000,       0.0000,       0.0000, },
+    },
+  },
+}CI = {
+  i = 'N2',
+  j = 'N2',
+  reference = 'NASA Reference Publication 1232 by Gupta,R.N., Yos,J.M. et al 1990',
+  model = 'GuptaYos',
+  parameters = {
+    {
+      T_low  =  1000.0,
+      T_high = 30000.0,
+      Pi_Omega_11 = {   0.0000,   -0.0112,   -0.1182,    4.8464, },
+      Pi_Omega_22 = {   0.0000,   -0.0203,    0.0683,    4.0900, },
+      D           = {   0.0000,    0.0112,    1.6182,  -11.3091, },
+    },
+  },
+}
+CI = {
+  i = 'N2',
+  j = 'N2_plus',
+  reference = 'NASA Reference Publication 1232 by Gupta,R.N., Yos,J.M. et al 1990',
+  model = 'GuptaYos',
+  parameters = {
+    {
+      T_low  =  1000.0,
+      T_high = 30000.0,
+      Pi_Omega_11 = {   0.0000,    0.0000,   -0.4000,    6.8543, },
+      Pi_Omega_22 = {   0.0000,    0.0000,   -0.4000,    6.7760, },
+      D           = {   0.0000,    0.0000,    1.9000,  -13.3173, },
+    },
+  },
+}
+CI = {
+  i = 'N2',
+  j = 'N',
+  reference = 'NASA Reference Publication 1232 by Gupta,R.N., Yos,J.M. et al 1990',
+  model = 'GuptaYos',
+  parameters = {
+    {
+      T_low  =  1000.0,
+      T_high = 30000.0,
+      Pi_Omega_11 = {   0.0000,   -0.0194,    0.0119,    4.1055, },
+      Pi_Omega_22 = {   0.0000,   -0.0190,    0.0239,    4.1782, },
+      D           = {   0.0000,    0.0195,    1.4880,  -10.3654, },
+    },
+  },
+}
+CI = {
+  i = 'N2',
+  j = 'NO',
+  reference = 'NASA Reference Publication 1232 by Gupta,R.N., Yos,J.M. et al 1990',
+  model = 'GuptaYos',
+  parameters = {
+    {
+      T_low  =  1000.0,
+      T_high = 30000.0,
+      Pi_Omega_11 = {   0.0000,   -0.0291,    0.2324,    3.2082, },
+      Pi_Omega_22 = {   0.0000,   -0.0385,    0.4226,    2.4507, },
+      D           = {   0.0000,    0.0291,    1.2676,   -9.6878, },
+    },
+  },
+}
+CI = {
+  i = 'N2',
+  j = 'NO_plus',
+  reference = 'NASA Reference Publication 1232 by Gupta,R.N., Yos,J.M. et al 1990',
+  model = 'GuptaYos',
+  parameters = {
+    {
+      T_low  =  1000.0,
+      T_high = 30000.0,
+      Pi_Omega_11 = {   0.0000,    0.0000,   -0.4000,    6.8543, },
+      Pi_Omega_22 = {   0.0000,    0.0000,   -0.4000,    6.7760, },
+      D           = {   0.0000,    0.0000,    1.9000,  -13.3343, },
+    },
+  },
+}
+CI = {
+  i = 'N2',
+  j = 'N_plus',
+  reference = 'NASA Reference Publication 1232 by Gupta,R.N., Yos,J.M. et al 1990',
+  model = 'GuptaYos',
+  parameters = {
+    {
+      T_low  =  1000.0,
+      T_high = 30000.0,
+      Pi_Omega_11 = {   0.0000,    0.0000,   -0.4000,    6.8543, },
+      Pi_Omega_22 = {   0.0000,    0.0000,   -0.4000,    6.7760, },
+      D           = {   0.0000,    0.0000,    1.9000,  -13.1144, },
+    },
+  },
+}
+CI = {
+  i = 'N2',
+  j = 'O2',
+  reference = 'NASA Reference Publication 1232 by Gupta,R.N., Yos,J.M. et al 1990',
+  model = 'GuptaYos',
+  parameters = {
+    {
+      T_low  =  1000.0,
+      T_high = 30000.0,
+      Pi_Omega_11 = {   0.0000,   -0.0465,    0.5729,    1.6185, },
+      Pi_Omega_22 = {   0.0000,   -0.0558,    0.7590,    0.8955, },
+      D           = {   0.0000,    0.0465,    0.9271,   -8.1137, },
+    },
+  },
+}
+CI = {
+  i = 'N2',
+  j = 'O2_plus',
+  reference = 'NASA Reference Publication 1232 by Gupta,R.N., Yos,J.M. et al 1990',
+  model = 'GuptaYos',
+  parameters = {
+    {
+      T_low  =  1000.0,
+      T_high = 30000.0,
+      Pi_Omega_11 = {   0.0000,    0.0000,   -0.4000,    6.8543, },
+      Pi_Omega_22 = {   0.0000,    0.0000,   -0.4000,    6.7760, },
+      D           = {   0.0000,    0.0000,    1.9000,  -13.3173, },
+    },
+  },
+}
+CI = {
+  i = 'N2',
+  j = 'O',
+  reference = 'NASA Reference Publication 1232 by Gupta,R.N., Yos,J.M. et al 1990',
+  model = 'GuptaYos',
+  parameters = {
+    {
+      T_low  =  1000.0,
+      T_high = 30000.0,
+      Pi_Omega_11 = {   0.0000,   -0.0139,   -0.0825,    4.5785, },
+      Pi_Omega_22 = {   0.0000,   -0.0169,   -0.0143,    4.4195, },
+      D           = {   0.0000,    0.0140,    1.5824,  -10.8819, },
+    },
+  },
+}
+CI = {
+  i = 'N2',
+  j = 'O_plus',
+  reference = 'NASA Reference Publication 1232 by Gupta,R.N., Yos,J.M. et al 1990',
+  model = 'GuptaYos',
+  parameters = {
+    {
+      T_low  =  1000.0,
+      T_high = 30000.0,
+      Pi_Omega_11 = {   0.0000,    0.0000,   -0.4000,    6.8543, },
+      Pi_Omega_22 = {   0.0000,    0.0000,   -0.4000,    6.7760, },
+      D           = {   0.0000,    0.0000,    1.9000,  -13.1578, },
+    },
+  },
+}
+CI = {
+  i = N2_plus,
+  j = C2H,
+  reference = 'Park - Chemical kinetic parameters of hyperbolic Earth entry, 2001',
+  model = 'GuptaYos',
+  parameters = {
+    {
+      T_low = 2000.0,
+      T_high = 32000.0,
+      Pi_Omega_11 = {     -0.0058,       0.1485,      -1.6689,      10.4588, },
+      Pi_Omega_22 = {      0.0000,      -0.0000,      -0.3986,       6.7601, },
+      D           = {      0.0000,       0.0000,       0.0000,       0.0000, },
+    },
+  },
+}CI = {
+  i = N2_plus,
+  j = C2,
+  reference = 'Park - Chemical kinetic parameters of hyperbolic Earth entry, 2001',
+  model = 'GuptaYos',
+  parameters = {
+    {
+      T_low = 2000.0,
+      T_high = 32000.0,
+      Pi_Omega_11 = {     -0.0058,       0.1485,      -1.6689,      10.4588, },
+      Pi_Omega_22 = {      0.0000,      -0.0000,      -0.3986,       6.7601, },
+      D           = {      0.0000,       0.0000,       0.0000,       0.0000, },
+    },
+  },
+}CI = {
+  i = N2_plus,
+  j = C3,
+  reference = 'Park - Chemical kinetic parameters of hyperbolic Earth entry, 2001',
+  model = 'GuptaYos',
+  parameters = {
+    {
+      T_low = 2000.0,
+      T_high = 32000.0,
+      Pi_Omega_11 = {     -0.0058,       0.1485,      -1.6689,      10.4588, },
+      Pi_Omega_22 = {      0.0000,      -0.0000,      -0.3986,       6.7601, },
+      D           = {      0.0000,       0.0000,       0.0000,       0.0000, },
+    },
+  },
+}CI = {
+  i = N2_plus,
+  j = C,
+  reference = 'Park - Chemical kinetic parameters of hyperbolic Earth entry, 2001',
+  model = 'GuptaYos',
+  parameters = {
+    {
+      T_low = 2000.0,
+      T_high = 32000.0,
+      Pi_Omega_11 = {     -0.0058,       0.1485,      -1.6689,      10.4588, },
+      Pi_Omega_22 = {      0.0000,      -0.0000,      -0.3986,       6.7601, },
+      D           = {      0.0000,       0.0000,       0.0000,       0.0000, },
+    },
+  },
+}CI = {
+  i = N2_plus,
+  j = CN,
+  reference = 'Park - Chemical kinetic parameters of hyperbolic Earth entry, 2001',
+  model = 'GuptaYos',
+  parameters = {
+    {
+      T_low = 2000.0,
+      T_high = 32000.0,
+      Pi_Omega_11 = {     -0.0058,       0.1485,      -1.6689,      10.4588, },
+      Pi_Omega_22 = {      0.0000,      -0.0000,      -0.3986,       6.7601, },
+      D           = {      0.0000,       0.0000,       0.0000,       0.0000, },
+    },
+  },
+}CI = {
+  i = 'N2_plus',
+  j = 'CO2',
+  reference = 'Bruno et al ESA STR-256 September 2008',
+  model = 'Bruno curve fits',
+  parameters = {
+    beta = 7.90,
+    eps0 = 136.182,
+    re   = 3.582,
+  }
+}
+CI = {
+  i = N2_plus,
+  j = CO,
+  reference = 'Park - Chemical kinetic parameters of hyperbolic Earth entry, 2001',
+  model = 'GuptaYos',
+  parameters = {
+    {
+      T_low = 2000.0,
+      T_high = 32000.0,
+      Pi_Omega_11 = {     -0.0058,       0.1485,      -1.6689,      10.4588, },
+      Pi_Omega_22 = {      0.0000,      -0.0000,      -0.3986,       6.7601, },
+      D           = {      0.0000,       0.0000,       0.0000,       0.0000, },
+    },
+  },
+}CI = {
+  i = N2_plus,
+  j = C_plus,
+  reference = 'Park - Chemical kinetic parameters of hyperbolic Earth entry, 2001',
+  model = 'GuptaYos',
+  parameters = {
+    {
+      T_low = 2000.0,
+      T_high = 32000.0,
+      Pi_Omega_11 = {      0.0691,      -1.7820,      13.2505,     -17.7212, },
+      Pi_Omega_22 = {      0.0691,      -1.7820,      13.2505,     -17.7673, },
+      D           = {      0.0000,       0.0000,       0.0000,       0.0000, },
+    },
+  },
+}CI = {
+  i = 'N2_plus',
+  j = 'e_minus',
+  reference = 'NASA Reference Publication 1232 by Gupta,R.N., Yos,J.M. et al 1990',
+  model = 'GuptaYos',
+  parameters = {
+    {
+      T_low  =  1000.0,
+      T_high = 30000.0,
+      Pi_Omega_11 = {   0.0000,    0.0000,   -2.0000,   23.8237, },
+      Pi_Omega_22 = {   0.0000,    0.0000,   -2.0000,   24.3061, },
+      D           = {   0.0000,    0.0000,    3.5000,  -25.2128, },
+    },
+  },
+}
+CI = {
+  i = N2_plus,
+  j = H2,
+  reference = 'Park - Chemical kinetic parameters of hyperbolic Earth entry, 2001',
+  model = 'GuptaYos',
+  parameters = {
+    {
+      T_low = 2000.0,
+      T_high = 32000.0,
+      Pi_Omega_11 = {     -0.0058,       0.1485,      -1.6689,      10.4588, },
+      Pi_Omega_22 = {      0.0000,      -0.0000,      -0.3986,       6.7601, },
+      D           = {      0.0000,       0.0000,       0.0000,       0.0000, },
+    },
+  },
+}CI = {
+  i = N2_plus,
+  j = H,
+  reference = 'Park - Chemical kinetic parameters of hyperbolic Earth entry, 2001',
+  model = 'GuptaYos',
+  parameters = {
+    {
+      T_low = 2000.0,
+      T_high = 32000.0,
+      Pi_Omega_11 = {     -0.0058,       0.1485,      -1.6689,      10.4588, },
+      Pi_Omega_22 = {      0.0000,      -0.0000,      -0.3986,       6.7601, },
+      D           = {      0.0000,       0.0000,       0.0000,       0.0000, },
+    },
+  },
+}CI = {
+  i = 'N2_plus',
+  j = 'N2_plus',
+  reference = 'NASA Reference Publication 1232 by Gupta,R.N., Yos,J.M. et al 1990',
+  model = 'GuptaYos',
+  parameters = {
+    {
+      T_low  =  1000.0,
+      T_high = 30000.0,
+      Pi_Omega_11 = {   0.0000,    0.0000,   -2.0000,   23.8237, },
+      Pi_Omega_22 = {   0.0000,    0.0000,   -2.0000,   24.3602, },
+      D           = {   0.0000,    0.0000,    3.5000,  -30.2867, },
+    },
+  },
+}
+CI = {
+  i = 'N2_plus',
+  j = 'NO_plus',
+  reference = 'NASA Reference Publication 1232 by Gupta,R.N., Yos,J.M. et al 1990',
+  model = 'GuptaYos',
+  parameters = {
+    {
+      T_low  =  1000.0,
+      T_high = 30000.0,
+      Pi_Omega_11 = {   0.0000,    0.0000,   -2.0000,   23.8237, },
+      Pi_Omega_22 = {   0.0000,    0.0000,   -2.0000,   24.3602, },
+      D           = {   0.0000,    0.0000,    3.5000,  -30.3036, },
+    },
+  },
+}
+CI = {
+  i = 'N2_plus',
+  j = 'N_plus',
+  reference = 'NASA Reference Publication 1232 by Gupta,R.N., Yos,J.M. et al 1990',
+  model = 'GuptaYos',
+  parameters = {
+    {
+      T_low  =  1000.0,
+      T_high = 30000.0,
+      Pi_Omega_11 = {   0.0000,    0.0000,   -2.0000,   23.8237, },
+      Pi_Omega_22 = {   0.0000,    0.0000,   -2.0000,   24.3602, },
+      D           = {   0.0000,    0.0000,    3.5000,  -30.0839, },
+    },
+  },
+}
+CI = {
+  i = 'N2_plus',
+  j = 'O2_plus',
+  reference = 'NASA Reference Publication 1232 by Gupta,R.N., Yos,J.M. et al 1990',
+  model = 'GuptaYos',
+  parameters = {
+    {
+      T_low  =  1000.0,
+      T_high = 30000.0,
+      Pi_Omega_11 = {   0.0000,    0.0000,   -2.0000,   23.8237, },
+      Pi_Omega_22 = {   0.0000,    0.0000,   -2.0000,   24.3602, },
+      D           = {   0.0000,    0.0000,    3.5000,  -30.2867, },
+    },
+  },
+}
+CI = {
+  i = 'N2_plus',
+  j = 'O_plus',
+  reference = 'NASA Reference Publication 1232 by Gupta,R.N., Yos,J.M. et al 1990',
+  model = 'GuptaYos',
+  parameters = {
+    {
+      T_low  =  1000.0,
+      T_high = 30000.0,
+      Pi_Omega_11 = {   0.0000,    0.0000,   -2.0000,   23.8237, },
+      Pi_Omega_22 = {   0.0000,    0.0000,   -2.0000,   24.3602, },
+      D           = {   0.0000,    0.0000,    3.5000,  -30.1273, },
+    },
+  },
+}
+CI = {
+  i = N,
+  j = C,
+  reference = 'Park - Chemical kinetic parameters of hyperbolic Earth entry, 2001',
+  model = 'GuptaYos',
+  parameters = {
+    {
+      T_low = 2000.0,
+      T_high = 32000.0,
+      Pi_Omega_11 = {     -0.0230,       0.5392,      -4.4289,      15.5088, },
+      Pi_Omega_22 = {     -0.0461,       1.1812,     -10.3051,      33.3240, },
+      D           = {      0.0000,       0.0000,       0.0000,       0.0000, },
+    },
+  },
+}CI = {
+  i = 'N',
+  j = 'CO2',
+  reference = 'Bruno et al ESA STR-256 September 2008',
+  model = 'Bruno curve fits',
+  parameters = {
+    beta = 6.90,
+    eps0 = 10.461,
+    re   = 3.892,
+  }
+}
+CI = {
+  i = 'N',
+  j = 'CO_plus',
+  reference = 'Bruno et al ESA STR-256 September 2008',
+  model = 'Bruno curve fits',
+  parameters = {
+    beta = 6.98,
+    eps0 = 80.793,
+    re   = 3.143,
+  }
+}
+CI = {
+  i = 'N',
+  j = 'e_minus',
+  reference = 'NASA Reference Publication 1232 by Gupta,R.N., Yos,J.M. et al 1990',
+  model = 'GuptaYos',
+  parameters = {
+    {
+      T_low  =  1000.0,
+      T_high = 30000.0,
+      Pi_Omega_11 = {   0.0000,    0.0000,    0.0000,    1.6094, },
+      Pi_Omega_22 = {   0.0000,    0.0000,    0.0000,    1.6094, },
+      D           = {   0.0000,    0.0000,    1.5000,   -2.9987, },
+    },
+  },
+}
+CI = {
+  i = 'N',
+  j = 'N2_plus',
+  reference = 'NASA Reference Publication 1232 by Gupta,R.N., Yos,J.M. et al 1990',
+  model = 'GuptaYos',
+  parameters = {
+    {
+      T_low  =  1000.0,
+      T_high = 30000.0,
+      Pi_Omega_11 = {   0.0000,    0.0000,   -0.4000,    6.8543, },
+      Pi_Omega_22 = {   0.0000,    0.0000,   -0.4000,    6.7760, },
+      D           = {   0.0000,    0.0000,    1.9000,  -13.1144, },
+    },
+  },
+}
+CI = {
+  i = N,
+  j = N,
+  reference = 'Park - Chemical kinetic parameters of hyperbolic Earth entry, 2001',
+  model = 'GuptaYos',
+  parameters = {
+    {
+      T_low = 2000.0,
+      T_high = 32000.0,
+      Pi_Omega_11 = {     -0.0000,      -0.0377,       0.3613,       2.2164, },
+      Pi_Omega_22 = {     -0.0058,       0.1245,      -1.1220,       6.7646, },
+      D           = {      0.0000,       0.0000,       0.0000,       0.0000, },
+    },
+  },
+}CI = {
+  i = 'N',
+  j = 'NO_plus',
+  reference = 'NASA Reference Publication 1232 by Gupta,R.N., Yos,J.M. et al 1990',
+  model = 'GuptaYos',
+  parameters = {
+    {
+      T_low  =  1000.0,
+      T_high = 30000.0,
+      Pi_Omega_11 = {   0.0000,    0.0000,   -0.4000,    6.8543, },
+      Pi_Omega_22 = {   0.0000,    0.0000,   -0.4000,    6.7760, },
+      D           = {   0.0000,    0.0000,    1.8999,  -13.1254, },
+    },
+  },
+}
+CI = {
+  i = 'N',
+  j = 'N_plus',
+  reference = 'NASA Reference Publication 1232 by Gupta,R.N., Yos,J.M. et al 1990',
+  model = 'GuptaYos',
+  parameters = {
+    {
+      T_low  =  1000.0,
+      T_high = 30000.0,
+      Pi_Omega_11 = {   0.0000,   -0.0033,   -0.0572,    5.0452, },
+      Pi_Omega_22 = {   0.0000,    0.0000,   -0.4146,    6.9078, },
+      D           = {   0.0000,    0.0033,    1.5572,  -11.1616, },
+    },
+  },
+}
+CI = {
+  i = 'N',
+  j = 'O2_plus',
+  reference = 'NASA Reference Publication 1232 by Gupta,R.N., Yos,J.M. et al 1990',
+  model = 'GuptaYos',
+  parameters = {
+    {
+      T_low  =  1000.0,
+      T_high = 30000.0,
+      Pi_Omega_11 = {   0.0000,    0.0000,   -0.4000,    6.8543, },
+      Pi_Omega_22 = {   0.0000,    0.0000,   -0.4000,    6.7760, },
+      D           = {   0.0000,    0.0000,    1.9000,  -13.1144, },
+    },
+  },
+}
+CI = {
+  i = NO,
+  j = C2,
+  reference = 'Park - Chemical kinetic parameters of hyperbolic Earth entry, 2001',
+  model = 'GuptaYos',
+  parameters = {
+    {
+      T_low = 2000.0,
+      T_high = 32000.0,
+      Pi_Omega_11 = {     -0.0058,       0.1485,      -1.6689,       9.8832, },
+      Pi_Omega_22 = {      0.0058,      -0.1485,       0.8717,       2.7852, },
+      D           = {      0.0000,       0.0000,       0.0000,       0.0000, },
+    },
+  },
+}CI = {
+  i = NO,
+  j = C,
+  reference = 'Park - Chemical kinetic parameters of hyperbolic Earth entry, 2001',
+  model = 'GuptaYos',
+  parameters = {
+    {
+      T_low = 2000.0,
+      T_high = 32000.0,
+      Pi_Omega_11 = {     -0.0058,       0.1622,      -1.9151,      10.7549, },
+      Pi_Omega_22 = {      0.0000,      -0.0000,      -0.3986,       6.1845, },
+      D           = {      0.0000,       0.0000,       0.0000,       0.0000, },
+    },
+  },
+}CI = {
+  i = 'NO',
+  j = 'CO2',
+  reference = 'Bruno et al ESA STR-256 September 2008',
+  model = 'Bruno curve fits',
+  parameters = {
+    beta = 7.91,
+    eps0 = 14.976,
+    re   = 3.979,
+  }
+}
+CI = {
+  i = 'NO',
+  j = 'e_minus',
+  reference = 'NASA Reference Publication 1232 by Gupta,R.N., Yos,J.M. et al 1990',
+  model = 'GuptaYos',
+  parameters = {
+    {
+      T_low  =  1000.0,
+      T_high =  8000.0,
+      Pi_Omega_11 = {  -0.2202,    5.2265,  -40.5659,  104.7126, },
+      Pi_Omega_22 = {  -0.2202,    5.2265,  -40.5659,  104.7126, },
+      D           = {   0.2202,   -5.2261,   42.0630, -106.0937, },
+    },
+    {
+      T_low  =  8000.0,
+      T_high = 30000.0,
+      Pi_Omega_11 = {  -0.2871,    8.3757,  -81.3787,  265.6292, },
+      Pi_Omega_22 = {  -0.2871,    8.3757,  -81.3787,  265.6292, },
+      D           = {   0.2871,   -8.3759,   82.8802, -267.0227, },
+    },
+  },
+}
+CI = {
+  i = NO,
+  j = H,
+  reference = 'Park - Chemical kinetic parameters of hyperbolic Earth entry, 2001',
+  model = 'GuptaYos',
+  parameters = {
+    {
+      T_low = 2000.0,
+      T_high = 32000.0,
+      Pi_Omega_11 = {     -0.0000,       0.0000,      -0.3986,       5.8621, },
+      Pi_Omega_22 = {      0.0000,      -0.0000,      -0.3986,       6.0003, },
+      D           = {      0.0000,       0.0000,       0.0000,       0.0000, },
+    },
+  },
+}CI = {
+  i = N,
+  j = O,
+  reference = 'Park - Chemical kinetic parameters of hyperbolic Earth entry, 2001',
+  model = 'GuptaYos',
+  parameters = {
+    {
+      T_low = 2000.0,
+      T_high = 32000.0,
+      Pi_Omega_11 = {     -0.0000,      -0.0377,       0.3613,       2.2395, },
+      Pi_Omega_22 = {     -0.0115,       0.2730,      -2.3923,      10.4172, },
+      D           = {      0.0000,       0.0000,       0.0000,       0.0000, },
+    },
+  },
+}CI = {
+  i = 'NO',
+  j = 'N2_plus',
+  reference = 'NASA Reference Publication 1232 by Gupta,R.N., Yos,J.M. et al 1990',
+  model = 'GuptaYos',
+  parameters = {
+    {
+      T_low  =  1000.0,
+      T_high = 30000.0,
+      Pi_Omega_11 = {   0.0000,    0.0000,   -0.4000,    6.8543, },
+      Pi_Omega_22 = {   0.0000,    0.0000,   -0.4000,    6.7760, },
+      D           = {   0.0000,    0.0000,    1.9000,  -13.3343, },
+    },
+  },
+}
+CI = {
+  i = 'NO',
+  j = 'N',
+  reference = 'NASA Reference Publication 1232 by Gupta,R.N., Yos,J.M. et al 1990',
+  model = 'GuptaYos',
+  parameters = {
+    {
+      T_low  =  1000.0,
+      T_high = 30000.0,
+      Pi_Omega_11 = {   0.0000,   -0.0185,    0.0118,    4.0590, },
+      Pi_Omega_22 = {   0.0000,   -0.0196,    0.0478,    4.0321, },
+      D           = {   0.0000,    0.0185,    1.4882,  -10.3301, },
+    },
+  },
+}
+CI = {
+  i = NO,
+  j = NO,
+  reference = 'EPFL, 2013 - Collision integral calculator - Unpublished',
+  model = 'GuptaYos',
+  parameters = {
+    {
+      T_low = 300.0,
+      T_high = 16000.0,
+      Pi_Omega_11 = {      -0.01087,       0.27493,       -2.56331,       -34.48556, },
+      Pi_Omega_22 = {      -0.00154,       0.04555,       -0.69204,       -39.42236, },
+      D           = {      0.00000,       0.00000,       0.00000,       0.00000, },
+    },
+  },
+}
+CI = {
+  i = 'NO',
+  j = 'NO_plus',
+  reference = 'NASA Reference Publication 1232 by Gupta,R.N., Yos,J.M. et al 1990',
+  model = 'GuptaYos',
+  parameters = {
+    {
+      T_low  =  1000.0,
+      T_high = 30000.0,
+      Pi_Omega_11 = {   0.0000,   -0.0047,   -0.0551,    4.8737, },
+      Pi_Omega_22 = {   0.0000,    0.0000,   -0.4000,    6.7760, },
+      D           = {   0.0000,    0.0047,    1.5552,  -11.3713, },
+    },
+  },
+}
+CI = {
+  i = 'NO',
+  j = 'N_plus',
+  reference = 'NASA Reference Publication 1232 by Gupta,R.N., Yos,J.M. et al 1990',
+  model = 'GuptaYos',
+  parameters = {
+    {
+      T_low  =  1000.0,
+      T_high = 30000.0,
+      Pi_Omega_11 = {   0.0000,    0.0000,   -0.4000,    6.8543, },
+      Pi_Omega_22 = {   0.0000,    0.0000,   -0.4000,    6.7760, },
+      D           = {   0.0000,    0.0000,    1.8999,  -13.1254, },
+    },
+  },
+}
+CI = {
+  i = 'NO',
+  j = 'O2_plus',
+  reference = 'NASA Reference Publication 1232 by Gupta,R.N., Yos,J.M. et al 1990',
+  model = 'GuptaYos',
+  parameters = {
+    {
+      T_low  =  1000.0,
+      T_high = 30000.0,
+      Pi_Omega_11 = {   0.0000,    0.0000,   -0.4000,    6.8543, },
+      Pi_Omega_22 = {   0.0000,    0.0000,   -0.4000,    6.7760, },
+      D           = {   0.0000,    0.0000,    1.9000,  -13.3343, },
+    },
+  },
+}
+CI = {
+  i = 'NO',
+  j = 'O',
+  reference = 'NASA Reference Publication 1232 by Gupta,R.N., Yos,J.M. et al 1990',
+  model = 'GuptaYos',
+  parameters = {
+    {
+      T_low  =  1000.0,
+      T_high = 30000.0,
+      Pi_Omega_11 = {   0.0000,   -0.0179,    0.0152,    3.9996, },
+      Pi_Omega_22 = {   0.0000,   -0.0203,    0.0730,    3.8818, },
+      D           = {   0.0000,    0.0179,    1.4848,  -10.3155, },
+    },
+  },
+}
+CI = {
+  i = 'NO',
+  j = 'O_plus',
+  reference = 'NASA Reference Publication 1232 by Gupta,R.N., Yos,J.M. et al 1990',
+  model = 'GuptaYos',
+  parameters = {
+    {
+      T_low  =  1000.0,
+      T_high = 30000.0,
+      Pi_Omega_11 = {   0.0000,    0.0000,   -0.4000,    6.8543, },
+      Pi_Omega_22 = {   0.0000,    0.0000,   -0.4000,    6.7760, },
+      D           = {   0.0000,    0.0000,    1.9000,  -13.1701, },
+    },
+  },
+}
+CI = {
+  i = NO_plus,
+  j = C2H,
+  reference = 'Park - Chemical kinetic parameters of hyperbolic Earth entry, 2001',
+  model = 'GuptaYos',
+  parameters = {
+    {
+      T_low = 2000.0,
+      T_high = 32000.0,
+      Pi_Omega_11 = {     -0.0058,       0.1485,      -1.6689,      10.4588, },
+      Pi_Omega_22 = {      0.0000,      -0.0000,      -0.3986,       6.7601, },
+      D           = {      0.0000,       0.0000,       0.0000,       0.0000, },
+    },
+  },
+}CI = {
+  i = NO_plus,
+  j = C2,
+  reference = 'Park - Chemical kinetic parameters of hyperbolic Earth entry, 2001',
+  model = 'GuptaYos',
+  parameters = {
+    {
+      T_low = 2000.0,
+      T_high = 32000.0,
+      Pi_Omega_11 = {     -0.0058,       0.1485,      -1.6689,      10.4588, },
+      Pi_Omega_22 = {      0.0000,      -0.0000,      -0.3986,       6.7601, },
+      D           = {      0.0000,       0.0000,       0.0000,       0.0000, },
+    },
+  },
+}CI = {
+  i = NO_plus,
+  j = C3,
+  reference = 'Park - Chemical kinetic parameters of hyperbolic Earth entry, 2001',
+  model = 'GuptaYos',
+  parameters = {
+    {
+      T_low = 2000.0,
+      T_high = 32000.0,
+      Pi_Omega_11 = {     -0.0058,       0.1485,      -1.6689,      10.4588, },
+      Pi_Omega_22 = {      0.0000,      -0.0000,      -0.3986,       6.7601, },
+      D           = {      0.0000,       0.0000,       0.0000,       0.0000, },
+    },
+  },
+}CI = {
+  i = NO_plus,
+  j = C,
+  reference = 'Park - Chemical kinetic parameters of hyperbolic Earth entry, 2001',
+  model = 'GuptaYos',
+  parameters = {
+    {
+      T_low = 2000.0,
+      T_high = 32000.0,
+      Pi_Omega_11 = {     -0.0058,       0.1485,      -1.6689,      10.4588, },
+      Pi_Omega_22 = {      0.0000,      -0.0000,      -0.3986,       6.7601, },
+      D           = {      0.0000,       0.0000,       0.0000,       0.0000, },
+    },
+  },
+}CI = {
+  i = NO_plus,
+  j = CN,
+  reference = 'Park - Chemical kinetic parameters of hyperbolic Earth entry, 2001',
+  model = 'GuptaYos',
+  parameters = {
+    {
+      T_low = 2000.0,
+      T_high = 32000.0,
+      Pi_Omega_11 = {     -0.0058,       0.1485,      -1.6689,      10.4588, },
+      Pi_Omega_22 = {      0.0000,      -0.0000,      -0.3986,       6.7601, },
+      D           = {      0.0000,       0.0000,       0.0000,       0.0000, },
+    },
+  },
+}CI = {
+  i = 'NO_plus',
+  j = 'CO2',
+  reference = 'Bruno et al ESA STR-256 September 2008',
+  model = 'Bruno curve fits',
+  parameters = {
+    beta = 8.11,
+    eps0 = 156.443,
+    re   = 3.344,
+  }
+}
+CI = {
+  i = NO_plus,
+  j = CO,
+  reference = 'Park - Chemical kinetic parameters of hyperbolic Earth entry, 2001',
+  model = 'GuptaYos',
+  parameters = {
+    {
+      T_low = 2000.0,
+      T_high = 32000.0,
+      Pi_Omega_11 = {     -0.0058,       0.1485,      -1.6689,      10.4588, },
+      Pi_Omega_22 = {      0.0000,      -0.0000,      -0.3986,       6.7601, },
+      D           = {      0.0000,       0.0000,       0.0000,       0.0000, },
+    },
+  },
+}CI = {
+  i = NO_plus,
+  j = C_plus,
+  reference = 'Park - Chemical kinetic parameters of hyperbolic Earth entry, 2001',
+  model = 'GuptaYos',
+  parameters = {
+    {
+      T_low = 2000.0,
+      T_high = 32000.0,
+      Pi_Omega_11 = {      0.0691,      -1.7820,      13.2505,     -17.7212, },
+      Pi_Omega_22 = {      0.0691,      -1.7820,      13.2505,     -17.7673, },
+      D           = {      0.0000,       0.0000,       0.0000,       0.0000, },
+    },
+  },
+}CI = {
+  i = 'NO_plus',
+  j = 'e_minus',
+  reference = 'NASA Reference Publication 1232 by Gupta,R.N., Yos,J.M. et al 1990',
+  model = 'GuptaYos',
+  parameters = {
+    {
+      T_low  =  1000.0,
+      T_high = 30000.0,
+      Pi_Omega_11 = {   0.0000,    0.0000,   -2.0000,   23.8237, },
+      Pi_Omega_22 = {   0.0000,    0.0000,   -2.0000,   24.3061, },
+      D           = {   0.0000,    0.0000,    3.5000,  -25.2128, },
+    },
+  },
+}
+CI = {
+  i = NO_plus,
+  j = H2,
+  reference = 'Park - Chemical kinetic parameters of hyperbolic Earth entry, 2001',
+  model = 'GuptaYos',
+  parameters = {
+    {
+      T_low = 2000.0,
+      T_high = 32000.0,
+      Pi_Omega_11 = {     -0.0058,       0.1485,      -1.6689,      10.4588, },
+      Pi_Omega_22 = {      0.0000,      -0.0000,      -0.3986,       6.7601, },
+      D           = {      0.0000,       0.0000,       0.0000,       0.0000, },
+    },
+  },
+}CI = {
+  i = NO_plus,
+  j = H,
+  reference = 'Park - Chemical kinetic parameters of hyperbolic Earth entry, 2001',
+  model = 'GuptaYos',
+  parameters = {
+    {
+      T_low = 2000.0,
+      T_high = 32000.0,
+      Pi_Omega_11 = {     -0.0058,       0.1485,      -1.6689,      10.4588, },
+      Pi_Omega_22 = {      0.0000,      -0.0000,      -0.3986,       6.7601, },
+      D           = {      0.0000,       0.0000,       0.0000,       0.0000, },
+    },
+  },
+}CI = {
+  i = 'N',
+  j = 'O_plus',
+  reference = 'NASA Reference Publication 1232 by Gupta,R.N., Yos,J.M. et al 1990',
+  model = 'GuptaYos',
+  parameters = {
+    {
+      T_low  =  1000.0,
+      T_high = 30000.0,
+      Pi_Omega_11 = {   0.0000,    0.0000,   -0.4000,    6.8543, },
+      Pi_Omega_22 = {   0.0000,    0.0000,   -0.4000,    6.7760, },
+      D           = {   0.0000,    0.0000,    1.9000,  -13.0028, },
+    },
+  },
+}
+CI = {
+  i = 'NO_plus',
+  j = 'NO_plus',
+  reference = 'NASA Reference Publication 1232 by Gupta,R.N., Yos,J.M. et al 1990',
+  model = 'GuptaYos',
+  parameters = {
+    {
+      T_low  =  1000.0,
+      T_high = 30000.0,
+      Pi_Omega_11 = {   0.0000,    0.0000,   -2.0000,   23.8237, },
+      Pi_Omega_22 = {   0.0000,    0.0000,   -2.0000,   24.3602, },
+      D           = {   0.0000,    0.0000,    3.5000,  -30.3210, },
+    },
+  },
+}
+CI = {
+  i = 'NO_plus',
+  j = 'N_plus',
+  reference = 'NASA Reference Publication 1232 by Gupta,R.N., Yos,J.M. et al 1990',
+  model = 'GuptaYos',
+  parameters = {
+    {
+      T_low  =  1000.0,
+      T_high = 30000.0,
+      Pi_Omega_11 = {   0.0000,    0.0000,   -2.0000,   23.8237, },
+      Pi_Omega_22 = {   0.0000,    0.0000,   -2.0000,   24.3602, },
+      D           = {   0.0000,    0.0000,    3.5000,  -30.0951, },
+    },
+  },
+}
+CI = {
+  i = 'NO_plus',
+  j = 'O_plus',
+  reference = 'NASA Reference Publication 1232 by Gupta,R.N., Yos,J.M. et al 1990',
+  model = 'GuptaYos',
+  parameters = {
+    {
+      T_low  =  1000.0,
+      T_high = 30000.0,
+      Pi_Omega_11 = {   0.0000,    0.0000,   -2.0000,   23.8237, },
+      Pi_Omega_22 = {   0.0000,    0.0000,   -2.0000,   24.3602, },
+      D           = {   0.0000,    0.0000,    3.5000,  -30.1395, },
+    },
+  },
+}
+CI = {
+  i = N_plus,
+  j = C2H,
+  reference = 'Park - Chemical kinetic parameters of hyperbolic Earth entry, 2001',
+  model = 'GuptaYos',
+  parameters = {
+    {
+      T_low = 2000.0,
+      T_high = 32000.0,
+      Pi_Omega_11 = {     -0.0058,       0.1485,      -1.6689,      10.4588, },
+      Pi_Omega_22 = {      0.0000,      -0.0000,      -0.3986,       6.7601, },
+      D           = {      0.0000,       0.0000,       0.0000,       0.0000, },
+    },
+  },
+}CI = {
+  i = N_plus,
+  j = C2,
+  reference = 'Park - Chemical kinetic parameters of hyperbolic Earth entry, 2001',
+  model = 'GuptaYos',
+  parameters = {
+    {
+      T_low = 2000.0,
+      T_high = 32000.0,
+      Pi_Omega_11 = {     -0.0058,       0.1485,      -1.6689,      10.4588, },
+      Pi_Omega_22 = {      0.0000,      -0.0000,      -0.3986,       6.7601, },
+      D           = {      0.0000,       0.0000,       0.0000,       0.0000, },
+    },
+  },
+}CI = {
+  i = N_plus,
+  j = C3,
+  reference = 'Park - Chemical kinetic parameters of hyperbolic Earth entry, 2001',
+  model = 'GuptaYos',
+  parameters = {
+    {
+      T_low = 2000.0,
+      T_high = 32000.0,
+      Pi_Omega_11 = {     -0.0058,       0.1485,      -1.6689,      10.4588, },
+      Pi_Omega_22 = {      0.0000,      -0.0000,      -0.3986,       6.7601, },
+      D           = {      0.0000,       0.0000,       0.0000,       0.0000, },
+    },
+  },
+}CI = {
+  i = N_plus,
+  j = C,
+  reference = 'Park - Chemical kinetic parameters of hyperbolic Earth entry, 2001',
+  model = 'GuptaYos',
+  parameters = {
+    {
+      T_low = 2000.0,
+      T_high = 32000.0,
+      Pi_Omega_11 = {     -0.0058,       0.1485,      -1.6689,      10.4588, },
+      Pi_Omega_22 = {      0.0000,      -0.0000,      -0.3986,       6.7601, },
+      D           = {      0.0000,       0.0000,       0.0000,       0.0000, },
+    },
+  },
+}CI = {
+  i = N_plus,
+  j = CN,
+  reference = 'Park - Chemical kinetic parameters of hyperbolic Earth entry, 2001',
+  model = 'GuptaYos',
+  parameters = {
+    {
+      T_low = 2000.0,
+      T_high = 32000.0,
+      Pi_Omega_11 = {     -0.0058,       0.1485,      -1.6689,      10.4588, },
+      Pi_Omega_22 = {      0.0000,      -0.0000,      -0.3986,       6.7601, },
+      D           = {      0.0000,       0.0000,       0.0000,       0.0000, },
+    },
+  },
+}CI = {
+  i = 'N_plus',
+  j = 'CO2',
+  reference = 'Bruno et al ESA STR-256 September 2008',
+  model = 'Bruno curve fits',
+  parameters = {
+    beta = 7.29,
+    eps0 = 171.182,
+    re   = 3.217,
+  }
+}
+CI = {
+  i = N_plus,
+  j = CO,
+  reference = 'Park - Chemical kinetic parameters of hyperbolic Earth entry, 2001',
+  model = 'GuptaYos',
+  parameters = {
+    {
+      T_low = 2000.0,
+      T_high = 32000.0,
+      Pi_Omega_11 = {     -0.0058,       0.1485,      -1.6689,      10.4588, },
+      Pi_Omega_22 = {      0.0000,      -0.0000,      -0.3986,       6.7601, },
+      D           = {      0.0000,       0.0000,       0.0000,       0.0000, },
+    },
+  },
+}CI = {
+  i = N_plus,
+  j = C_plus,
+  reference = 'Park - Chemical kinetic parameters of hyperbolic Earth entry, 2001',
+  model = 'GuptaYos',
+  parameters = {
+    {
+      T_low = 2000.0,
+      T_high = 32000.0,
+      Pi_Omega_11 = {      0.0691,      -1.7820,      13.2505,     -17.7212, },
+      Pi_Omega_22 = {      0.0691,      -1.7820,      13.2505,     -17.7673, },
+      D           = {      0.0000,       0.0000,       0.0000,       0.0000, },
+    },
+  },
+}CI = {
+  i = 'N_plus',
+  j = 'e_minus',
+  reference = 'NASA Reference Publication 1232 by Gupta,R.N., Yos,J.M. et al 1990',
+  model = 'GuptaYos',
+  parameters = {
+    {
+      T_low  =  1000.0,
+      T_high = 30000.0,
+      Pi_Omega_11 = {   0.0000,    0.0000,   -2.0000,   23.8237, },
+      Pi_Omega_22 = {   0.0000,    0.0000,   -2.0000,   24.3061, },
+      D           = {   0.0000,    0.0000,    3.5000,  -25.2128, },
+    },
+  },
+}
+CI = {
+  i = N_plus,
+  j = H2,
+  reference = 'Park - Chemical kinetic parameters of hyperbolic Earth entry, 2001',
+  model = 'GuptaYos',
+  parameters = {
+    {
+      T_low = 2000.0,
+      T_high = 32000.0,
+      Pi_Omega_11 = {     -0.0058,       0.1485,      -1.6689,      10.4588, },
+      Pi_Omega_22 = {      0.0000,      -0.0000,      -0.3986,       6.7601, },
+      D           = {      0.0000,       0.0000,       0.0000,       0.0000, },
+    },
+  },
+}CI = {
+  i = N_plus,
+  j = H,
+  reference = 'Park - Chemical kinetic parameters of hyperbolic Earth entry, 2001',
+  model = 'GuptaYos',
+  parameters = {
+    {
+      T_low = 2000.0,
+      T_high = 32000.0,
+      Pi_Omega_11 = {     -0.0058,       0.1485,      -1.6689,      10.4588, },
+      Pi_Omega_22 = {      0.0000,      -0.0000,      -0.3986,       6.7601, },
+      D           = {      0.0000,       0.0000,       0.0000,       0.0000, },
+    },
+  },
+}CI = {
+  i = 'N_plus',
+  j = 'N_plus',
+  reference = 'NASA Reference Publication 1232 by Gupta,R.N., Yos,J.M. et al 1990',
+  model = 'GuptaYos',
+  parameters = {
+    {
+      T_low  =  1000.0,
+      T_high = 30000.0,
+      Pi_Omega_11 = {   0.0000,    0.0000,   -2.0000,   23.8237, },
+      Pi_Omega_22 = {   0.0000,    0.0000,   -2.0000,   24.3602, },
+      D           = {   0.0000,    0.0000,    3.5000,  -29.9401, },
+    },
+  },
+}
+CI = {
+  i = 'N_plus',
+  j = 'O_plus',
+  reference = 'NASA Reference Publication 1232 by Gupta,R.N., Yos,J.M. et al 1990',
+  model = 'GuptaYos',
+  parameters = {
+    {
+      T_low  =  1000.0,
+      T_high = 30000.0,
+      Pi_Omega_11 = {   0.0000,    0.0000,   -2.0000,   23.8237, },
+      Pi_Omega_22 = {   0.0000,    0.0000,   -2.0000,   24.3602, },
+      D           = {   0.0000,    0.0000,    3.5000,  -29.9722, },
+    },
+  },
+}
+CI = {
+  i = O2,
+  j = C2,
+  reference = 'Park - Chemical kinetic parameters of hyperbolic Earth entry, 2001',
+  model = 'GuptaYos',
+  parameters = {
+    {
+      T_low = 2000.0,
+      T_high = 32000.0,
+      Pi_Omega_11 = {     -0.0058,       0.1485,      -1.6689,       9.8601, },
+      Pi_Omega_22 = {      0.0058,      -0.1485,       0.8717,       2.7621, },
+      D           = {      0.0000,       0.0000,       0.0000,       0.0000, },
+    },
+  },
+}CI = {
+  i = O2,
+  j = C,
+  reference = 'Park - Chemical kinetic parameters of hyperbolic Earth entry, 2001',
+  model = 'GuptaYos',
+  parameters = {
+    {
+      T_low = 2000.0,
+      T_high = 32000.0,
+      Pi_Omega_11 = {     -0.0058,       0.1622,      -1.9151,      10.7319, },
+      Pi_Omega_22 = {      0.0000,      -0.0000,      -0.3986,       6.1615, },
+      D           = {      0.0000,       0.0000,       0.0000,       0.0000, },
+    },
+  },
+}CI = {
+  i = O2,
+  j = CN,
+  reference = 'Park - Chemical kinetic parameters of hyperbolic Earth entry, 2001',
+  model = 'GuptaYos',
+  parameters = {
+    {
+      T_low = 2000.0,
+      T_high = 32000.0,
+      Pi_Omega_11 = {     -0.0000,       0.0000,      -0.3986,       6.2306, },
+      Pi_Omega_22 = {     -0.0058,       0.1588,      -1.8369,      10.6364, },
+      D           = {      0.0000,       0.0000,       0.0000,       0.0000, },
+    },
+  },
+}CI = {
+  i = 'O2',
+  j = 'CO2',
+  reference = 'Bruno et al ESA STR-256 September 2008',
+  model = 'Bruno curve fits',
+  parameters = {
+    beta = 7.93,
+    eps0 = 14.931,
+    re   = 3.965,
+  }
+}
+CI = {
+  i = O2,
+  j = CO,
+  reference = 'Park - Chemical kinetic parameters of hyperbolic Earth entry, 2001',
+  model = 'GuptaYos',
+  parameters = {
+    {
+      T_low = 2000.0,
+      T_high = 32000.0,
+      Pi_Omega_11 = {      0.0058,      -0.1588,       1.0397,       1.9168, },
+      Pi_Omega_22 = {     -0.0000,       0.0000,      -0.3986,       6.3227, },
+      D           = {      0.0000,       0.0000,       0.0000,       0.0000, },
+    },
+  },
+}CI = {
+  i = 'O2',
+  j = 'CO_plus',
+  reference = 'Bruno et al ESA STR-256 September 2008',
+  model = 'Bruno curve fits',
+  parameters = {
+    beta = 8.31,
+    eps0 = 104.264,
+    re   = 3.228,
+  }
+}
+CI = {
+  i = 'O2',
+  j = 'e_minus',
+  reference = 'NASA Reference Publication 1232 by Gupta,R.N., Yos,J.M. et al 1990',
+  model = 'GuptaYos',
+  parameters = {
+    {
+      T_low  =  1000.0,
+      T_high =  9000.0,
+      Pi_Omega_11 = {   0.0241,   -0.3467,    1.3887,   -0.0110, },
+      Pi_Omega_22 = {   0.0241,   -0.3467,    1.3887,   -0.0110, },
+      D           = {  -0.0241,    0.3464,    0.1136,   -1.3848, },
+    },
+    {
+      T_low  =  9000.0,
+      T_high = 30000.0,
+      Pi_Omega_11 = {   0.0025,   -0.0742,    0.7235,   -0.2116, },
+      Pi_Omega_22 = {   0.0025,   -0.0742,    0.7235,   -0.2116, },
+      D           = {  -0.0029,    0.0856,    0.6655,   -0.8205, },
+    },
+  },
+}
+CI = {
+  i = O2,
+  j = H,
+  reference = 'Park - Chemical kinetic parameters of hyperbolic Earth entry, 2001',
+  model = 'GuptaYos',
+  parameters = {
+    {
+      T_low = 2000.0,
+      T_high = 32000.0,
+      Pi_Omega_11 = {     -0.0058,       0.1485,      -1.6689,       9.4457, },
+      Pi_Omega_22 = {     -0.0058,       0.1588,      -1.8369,      10.2450, },
+      D           = {      0.0000,       0.0000,       0.0000,       0.0000, },
+    },
+  },
+}CI = {
+  i = 'O2',
+  j = 'N2_plus',
+  reference = 'NASA Reference Publication 1232 by Gupta,R.N., Yos,J.M. et al 1990',
+  model = 'GuptaYos',
+  parameters = {
+    {
+      T_low  =  1000.0,
+      T_high = 30000.0,
+      Pi_Omega_11 = {   0.0000,    0.0000,   -0.4000,    6.8543, },
+      Pi_Omega_22 = {   0.0000,    0.0000,   -0.4000,    6.7760, },
+      D           = {   0.0000,    0.0000,    1.9000,  -13.3173, },
+    },
+  },
+}
+CI = {
+  i = 'O2',
+  j = 'N',
+  reference = 'NASA Reference Publication 1232 by Gupta,R.N., Yos,J.M. et al 1990',
+  model = 'GuptaYos',
+  parameters = {
+    {
+      T_low  =  1000.0,
+      T_high = 30000.0,
+      Pi_Omega_11 = {   0.0000,   -0.0179,    0.0152,    3.9996, },
+      Pi_Omega_22 = {   0.0000,   -0.0203,    0.0730,    3.8818, },
+      D           = {   0.0000,    0.0179,    1.4848,  -10.2810, },
+    },
+  },
+}
+CI = {
+  i = 'O2',
+  j = 'NO',
+  reference = 'NASA Reference Publication 1232 by Gupta,R.N., Yos,J.M. et al 1990',
+  model = 'GuptaYos',
+  parameters = {
+    {
+      T_low  =  1000.0,
+      T_high = 30000.0,
+      Pi_Omega_11 = {   0.0000,   -0.0438,    0.5352,    1.7252, },
+      Pi_Omega_22 = {   0.0000,   -0.0522,    0.7045,    1.0738, },
+      D           = {   0.0000,    0.0438,    0.9647,   -8.2380, },
+    },
+  },
+}
+CI = {
+  i = 'O2',
+  j = 'NO_plus',
+  reference = 'NASA Reference Publication 1232 by Gupta,R.N., Yos,J.M. et al 1990',
+  model = 'GuptaYos',
+  parameters = {
+    {
+      T_low  =  1000.0,
+      T_high = 30000.0,
+      Pi_Omega_11 = {   0.0000,    0.0000,   -0.4000,    6.8543, },
+      Pi_Omega_22 = {   0.0000,    0.0000,   -0.4000,    6.7760, },
+      D           = {   0.0000,    0.0000,    1.9001,  -13.3677, },
+    },
+  },
+}
+CI = {
+  i = 'O2',
+  j = 'N_plus',
+  reference = 'NASA Reference Publication 1232 by Gupta,R.N., Yos,J.M. et al 1990',
+  model = 'GuptaYos',
+  parameters = {
+    {
+      T_low  =  1000.0,
+      T_high = 30000.0,
+      Pi_Omega_11 = {   0.0000,    0.0000,   -0.4000,    6.8543, },
+      Pi_Omega_22 = {   0.0000,    0.0000,   -0.4000,    6.7760, },
+      D           = {   0.0000,    0.0000,    1.9000,  -13.1357, },
+    },
+  },
+}
+CI = {
+  i = 'O2',
+  j = 'O2',
+  reference = 'NASA Reference Publication 1232 by Gupta,R.N., Yos,J.M. et al 1990',
+  model = 'GuptaYos',
+  parameters = {
+    {
+      T_low  =  1000.0,
+      T_high = 30000.0,
+      Pi_Omega_11 = {   0.0000,   -0.0410,    0.4977,    1.8302, },
+      Pi_Omega_22 = {   0.0000,   -0.0485,    0.6475,    1.2607, },
+      D           = {   0.0000,    0.0410,    1.0023,   -8.3597, },
+    },
+  },
+}
+CI = {
+  i = 'O2',
+  j = 'O2_plus',
+  reference = 'NASA Reference Publication 1232 by Gupta,R.N., Yos,J.M. et al 1990',
+  model = 'GuptaYos',
+  parameters = {
+    {
+      T_low  =  1000.0,
+      T_high = 30000.0,
+      Pi_Omega_11 = {   0.0000,    0.0000,   -0.4000,    6.8543, },
+      Pi_Omega_22 = {   0.0000,    0.0000,   -0.4000,    6.7760, },
+      D           = {   0.0000,    0.0000,    1.9000,  -13.1144, },
+    },
+  },
+}
+CI = {
+  i = 'O2',
+  j = 'O',
+  reference = 'NASA Reference Publication 1232 by Gupta,R.N., Yos,J.M. et al 1990',
+  model = 'GuptaYos',
+  parameters = {
+    {
+      T_low  =  1000.0,
+      T_high = 30000.0,
+      Pi_Omega_11 = {   0.0000,   -0.0226,    0.1300,    3.3363, },
+      Pi_Omega_22 = {   0.0000,   -0.0247,    0.1783,    3.2517, },
+      D           = {   0.0000,    0.0226,    1.3700,   -9.6631, },
+    },
+  },
+}
+CI = {
+  i = 'O2',
+  j = 'O_plus',
+  reference = 'NASA Reference Publication 1232 by Gupta,R.N., Yos,J.M. et al 1990',
+  model = 'GuptaYos',
+  parameters = {
+    {
+      T_low  =  1000.0,
+      T_high = 30000.0,
+      Pi_Omega_11 = {   0.0000,    0.0000,   -0.4000,    6.8543, },
+      Pi_Omega_22 = {   0.0000,    0.0000,   -0.4000,    6.7760, },
+      D           = {   0.0000,    0.0000,    1.9000,  -13.1810, },
+    },
+  },
+}
+CI = {
+  i = 'O2_plus',
+  j = 'C3',
+  reference = 'Bruno et al ESA STR-256 September 2008',
+  model = 'Bruno curve fits',
+  parameters = {
+    beta = 8.03,
+    eps0 = 179.211,
+    re   = 3.391,
+  }
+}
+CI = {
+  i = 'O2_plus',
+  j = 'CN',
+  reference = 'Bruno et al ESA STR-256 September 2008',
+  model = 'Bruno curve fits',
+  parameters = {
+    beta = 8.26,
+    eps0 = 130.029,
+    re   = 3.233,
+  }
+}
+CI = {
+  i = 'O2_plus',
+  j = 'CO2',
+  reference = 'Bruno et al ESA STR-256 September 2008',
+  model = 'Bruno curve fits',
+  parameters = {
+    beta = 8.12,
+    eps0 = 158.365,
+    re   = 3.326,
+  }
+}
+CI = {
+  i = 'O2_plus',
+  j = 'CO',
+  reference = 'Bruno et al ESA STR-256 September 2008',
+  model = 'Bruno curve fits',
+  parameters = {
+    beta = 8.30,
+    eps0 = 124.168,
+    re   = 3.213,
+  }
+}
+CI = {
+  i = 'O2_plus',
+  j = 'C_plus',
+  reference = 'Wright et al, AIAA Journal Vol. 43 No. 12 December 2005',
+  model = 'Stallcop curve fits',
+  parameters = {}
+}
+CI = {
+  i = 'O2_plus',
+  j = 'e_minus',
+  reference = 'NASA Reference Publication 1232 by Gupta,R.N., Yos,J.M. et al 1990',
+  model = 'GuptaYos',
+  parameters = {
+    {
+      T_low  =  1000.0,
+      T_high = 30000.0,
+      Pi_Omega_11 = {   0.0000,    0.0000,   -2.0000,   23.8237, },
+      Pi_Omega_22 = {   0.0000,    0.0000,   -2.0000,   24.3061, },
+      D           = {   0.0000,    0.0000,    3.5000,  -25.2128, },
+    },
+  },
+}
+CI = {
+  i = 'O2_plus',
+  j = 'NO_plus',
+  reference = 'NASA Reference Publication 1232 by Gupta,R.N., Yos,J.M. et al 1990',
+  model = 'GuptaYos',
+  parameters = {
+    {
+      T_low  =  1000.0,
+      T_high = 30000.0,
+      Pi_Omega_11 = {   0.0000,    0.0000,   -2.0000,   23.8237, },
+      Pi_Omega_22 = {   0.0000,    0.0000,   -2.0000,   24.3602, },
+      D           = {   0.0000,    0.0000,    3.5000,  -30.3036, },
+    },
+  },
+}
+CI = {
+  i = 'O2_plus',
+  j = 'N_plus',
+  reference = 'NASA Reference Publication 1232 by Gupta,R.N., Yos,J.M. et al 1990',
+  model = 'GuptaYos',
+  parameters = {
+    {
+      T_low  =  1000.0,
+      T_high = 30000.0,
+      Pi_Omega_11 = {   0.0000,    0.0000,   -2.0000,   23.8237, },
+      Pi_Omega_22 = {   0.0000,    0.0000,   -2.0000,   24.3602, },
+      D           = {   0.0000,    0.0000,    3.5000,  -30.0839, },
+    },
+  },
+}
+CI = {
+  i = 'O2_plus',
+  j = 'O2_plus',
+  reference = 'NASA Reference Publication 1232 by Gupta,R.N., Yos,J.M. et al 1990',
+  model = 'GuptaYos',
+  parameters = {
+    {
+      T_low  =  1000.0,
+      T_high = 30000.0,
+      Pi_Omega_11 = {   0.0000,    0.0000,   -2.0000,   23.8237, },
+      Pi_Omega_22 = {   0.0000,    0.0000,   -2.0000,   24.3602, },
+      D           = {   0.0000,    0.0000,    3.5000,  -30.2867, },
+    },
+  },
+}
+CI = {
+  i = 'O2_plus',
+  j = 'O_plus',
+  reference = 'NASA Reference Publication 1232 by Gupta,R.N., Yos,J.M. et al 1990',
+  model = 'GuptaYos',
+  parameters = {
+    {
+      T_low  =  1000.0,
+      T_high = 30000.0,
+      Pi_Omega_11 = {   0.0000,    0.0000,   -2.0000,   23.8237, },
+      Pi_Omega_22 = {   0.0000,    0.0000,   -2.0000,   24.3602, },
+      D           = {   0.0000,    0.0000,    3.5000,  -30.1273, },
+    },
+  },
+}
+CI = {
+  i = O,
+  j = C,
+  reference = 'Park - Chemical kinetic parameters of hyperbolic Earth entry, 2001',
+  model = 'GuptaYos',
+  parameters = {
+    {
+      T_low = 2000.0,
+      T_high = 32000.0,
+      Pi_Omega_11 = {      0.0058,      -0.1588,       1.0397,       1.6175, },
+      Pi_Omega_22 = {     -0.0058,       0.1588,      -1.8369,      10.3140, },
+      D           = {      0.0000,       0.0000,       0.0000,       0.0000, },
+    },
+  },
+}CI = {
+  i = 'O',
+  j = 'CO2',
+  reference = 'Bruno et al ESA STR-256 September 2008',
+  model = 'Bruno curve fits',
+  parameters = {
+    beta = 7.19,
+    eps0 = 9.270,
+    re   = 3.842,
+  }
+}
+CI = {
+  i = 'O',
+  j = 'CO_plus',
+  reference = 'Bruno et al ESA STR-256 September 2008',
+  model = 'Bruno curve fits',
+  parameters = {
+    beta = 7.32,
+    eps0 = 64.280,
+    re   = 3.079,
+  }
+}
+CI = {
+  i = 'O',
+  j = 'e_minus',
+  reference = 'NASA Reference Publication 1232 by Gupta,R.N., Yos,J.M. et al 1990',
+  model = 'GuptaYos',
+  parameters = {
+    {
+      T_low  =  1000.0,
+      T_high =  9000.0,
+      Pi_Omega_11 = {   0.0164,   -0.2431,    1.1231,   -1.5561, },
+      Pi_Omega_22 = {   0.0164,   -0.2431,    1.1231,   -1.5561, },
+      D           = {   0.0581,   -1.5975,   15.4508,  -40.7370, },
+    },
+    {
+      T_low  =  9000.0,
+      T_high = 30000.0,
+      Pi_Omega_11 = {  -0.2027,    5.6428,  -51.5646,  155.6091, },
+      Pi_Omega_22 = {  -0.2027,    5.6428,  -51.5646,  155.6091, },
+      D           = {   0.0581,   -1.5975,   15.4508,  -40.7370, },
+    },
+  },
+}
+CI = {
+  i = 'O',
+  j = 'N2_plus',
+  reference = 'NASA Reference Publication 1232 by Gupta,R.N., Yos,J.M. et al 1990',
+  model = 'GuptaYos',
+  parameters = {
+    {
+      T_low  =  1000.0,
+      T_high = 30000.0,
+      Pi_Omega_11 = {   0.0000,    0.0000,   -0.4000,    6.8543, },
+      Pi_Omega_22 = {   0.0000,    0.0000,   -0.4000,    6.7760, },
+      D           = {   0.0000,    0.0000,    1.9000,  -13.1578, },
+    },
+  },
+}
+CI = {
+  i = 'O',
+  j = 'NO_plus',
+  reference = 'NASA Reference Publication 1232 by Gupta,R.N., Yos,J.M. et al 1990',
+  model = 'GuptaYos',
+  parameters = {
+    {
+      T_low  =  1000.0,
+      T_high = 30000.0,
+      Pi_Omega_11 = {   0.0000,    0.0000,   -0.4000,    6.8543, },
+      Pi_Omega_22 = {   0.0000,    0.0000,   -0.4000,    6.7760, },
+      D           = {   0.0000,    0.0000,    1.9000,  -13.1701, },
+    },
+  },
+}
+CI = {
+  i = 'O',
+  j = 'N_plus',
+  reference = 'NASA Reference Publication 1232 by Gupta,R.N., Yos,J.M. et al 1990',
+  model = 'GuptaYos',
+  parameters = {
+    {
+      T_low  =  1000.0,
+      T_high = 30000.0,
+      Pi_Omega_11 = {   0.0000,    0.0000,   -0.4000,    6.8543, },
+      Pi_Omega_22 = {   0.0000,    0.0000,   -0.4000,    6.7760, },
+      D           = {   0.0000,    0.0000,    1.9000,  -13.0028, },
+    },
+  },
+}
+CI = {
+  i = 'O',
+  j = 'O2_plus',
+  reference = 'NASA Reference Publication 1232 by Gupta,R.N., Yos,J.M. et al 1990',
+  model = 'GuptaYos',
+  parameters = {
+    {
+      T_low  =  1000.0,
+      T_high = 30000.0,
+      Pi_Omega_11 = {   0.0000,    0.0000,   -0.4000,    6.8543, },
+      Pi_Omega_22 = {   0.0000,    0.0000,   -0.4000,    6.7760, },
+      D           = {   0.0000,    0.0000,    1.9000,  -13.1578, },
+    },
+  },
+}
+CI = {
+  i = O,
+  j = O,
+  reference = 'Park - Chemical kinetic parameters of hyperbolic Earth entry, 2001',
+  model = 'GuptaYos',
+  parameters = {
+    {
+      T_low = 2000.0,
+      T_high = 32000.0,
+      Pi_Omega_11 = {      0.0115,      -0.3210,       2.6557,      -3.9868, },
+      Pi_Omega_22 = {      0.0173,      -0.4797,       4.1273,      -8.3918, },
+      D           = {      0.0000,       0.0000,       0.0000,       0.0000, },
+    },
+  },
+}CI = {
+  i = 'O',
+  j = 'O_plus',
+  reference = 'NASA Reference Publication 1232 by Gupta,R.N., Yos,J.M. et al 1990',
+  model = 'GuptaYos',
+  parameters = {
+    {
+      T_low  =  1000.0,
+      T_high = 30000.0,
+      Pi_Omega_11 = {   0.0000,   -0.0034,   -0.0572,    4.9901, },
+      Pi_Omega_22 = {   0.0000,    0.0000,   -0.4235,    6.7787, },
+      D           = {   0.0000,    0.0034,    1.5572,  -11.1729, },
+    },
+  },
+}
+CI = {
+  i = O_plus,
+  j = C2H,
+  reference = 'Park - Chemical kinetic parameters of hyperbolic Earth entry, 2001',
+  model = 'GuptaYos',
+  parameters = {
+    {
+      T_low = 2000.0,
+      T_high = 32000.0,
+      Pi_Omega_11 = {     -0.0058,       0.1485,      -1.6689,      10.4588, },
+      Pi_Omega_22 = {      0.0000,      -0.0000,      -0.3986,       6.7601, },
+      D           = {      0.0000,       0.0000,       0.0000,       0.0000, },
+    },
+  },
+}CI = {
+  i = O_plus,
+  j = C2,
+  reference = 'Park - Chemical kinetic parameters of hyperbolic Earth entry, 2001',
+  model = 'GuptaYos',
+  parameters = {
+    {
+      T_low = 2000.0,
+      T_high = 32000.0,
+      Pi_Omega_11 = {     -0.0058,       0.1485,      -1.6689,      10.4588, },
+      Pi_Omega_22 = {      0.0000,      -0.0000,      -0.3986,       6.7601, },
+      D           = {      0.0000,       0.0000,       0.0000,       0.0000, },
+    },
+  },
+}CI = {
+  i = O_plus,
+  j = C3,
+  reference = 'Park - Chemical kinetic parameters of hyperbolic Earth entry, 2001',
+  model = 'GuptaYos',
+  parameters = {
+    {
+      T_low = 2000.0,
+      T_high = 32000.0,
+      Pi_Omega_11 = {     -0.0058,       0.1485,      -1.6689,      10.4588, },
+      Pi_Omega_22 = {      0.0000,      -0.0000,      -0.3986,       6.7601, },
+      D           = {      0.0000,       0.0000,       0.0000,       0.0000, },
+    },
+  },
+}CI = {
+  i = O_plus,
+  j = C,
+  reference = 'Park - Chemical kinetic parameters of hyperbolic Earth entry, 2001',
+  model = 'GuptaYos',
+  parameters = {
+    {
+      T_low = 2000.0,
+      T_high = 32000.0,
+      Pi_Omega_11 = {     -0.0058,       0.1485,      -1.6689,      10.4588, },
+      Pi_Omega_22 = {      0.0000,      -0.0000,      -0.3986,       6.7601, },
+      D           = {      0.0000,       0.0000,       0.0000,       0.0000, },
+    },
+  },
+}CI = {
+  i = O_plus,
+  j = CN,
+  reference = 'Park - Chemical kinetic parameters of hyperbolic Earth entry, 2001',
+  model = 'GuptaYos',
+  parameters = {
+    {
+      T_low = 2000.0,
+      T_high = 32000.0,
+      Pi_Omega_11 = {     -0.0058,       0.1485,      -1.6689,      10.4588, },
+      Pi_Omega_22 = {      0.0000,      -0.0000,      -0.3986,       6.7601, },
+      D           = {      0.0000,       0.0000,       0.0000,       0.0000, },
+    },
+  },
+}CI = {
+  i = 'O_plus',
+  j = 'CO2',
+  reference = 'Bruno et al ESA STR-256 September 2008',
+  model = 'Bruno curve fits',
+  parameters = {
+    beta = 7.24,
+    eps0 = 199.043,
+    re   = 3.040,
+  }
+}
+CI = {
+  i = O_plus,
+  j = CO,
+  reference = 'Park - Chemical kinetic parameters of hyperbolic Earth entry, 2001',
+  model = 'GuptaYos',
+  parameters = {
+    {
+      T_low = 2000.0,
+      T_high = 32000.0,
+      Pi_Omega_11 = {     -0.0058,       0.1485,      -1.6689,      10.4588, },
+      Pi_Omega_22 = {      0.0000,      -0.0000,      -0.3986,       6.7601, },
+      D           = {      0.0000,       0.0000,       0.0000,       0.0000, },
+    },
+  },
+}CI = {
+  i = O_plus,
+  j = C_plus,
+  reference = 'Park - Chemical kinetic parameters of hyperbolic Earth entry, 2001',
+  model = 'GuptaYos',
+  parameters = {
+    {
+      T_low = 2000.0,
+      T_high = 32000.0,
+      Pi_Omega_11 = {      0.0691,      -1.7820,      13.2505,     -17.7212, },
+      Pi_Omega_22 = {      0.0691,      -1.7820,      13.2505,     -17.7673, },
+      D           = {      0.0000,       0.0000,       0.0000,       0.0000, },
+    },
+  },
+}CI = {
+  i = 'O_plus',
+  j = 'e_minus',
+  reference = 'NASA Reference Publication 1232 by Gupta,R.N., Yos,J.M. et al 1990',
+  model = 'GuptaYos',
+  parameters = {
+    {
+      T_low  =  1000.0,
+      T_high = 30000.0,
+      Pi_Omega_11 = {   0.0000,    0.0000,   -2.0000,   23.8237, },
+      Pi_Omega_22 = {   0.0000,    0.0000,   -2.0000,   24.3061, },
+      D           = {   0.0000,    0.0000,    3.5000,  -25.2128, },
+    },
+  },
+}
+CI = {
+  i = O_plus,
+  j = H2,
+  reference = 'Park - Chemical kinetic parameters of hyperbolic Earth entry, 2001',
+  model = 'GuptaYos',
+  parameters = {
+    {
+      T_low = 2000.0,
+      T_high = 32000.0,
+      Pi_Omega_11 = {     -0.0058,       0.1485,      -1.6689,      10.4588, },
+      Pi_Omega_22 = {      0.0000,      -0.0000,      -0.3986,       6.7601, },
+      D           = {      0.0000,       0.0000,       0.0000,       0.0000, },
+    },
+  },
+}CI = {
+  i = O_plus,
+  j = H,
+  reference = 'Park - Chemical kinetic parameters of hyperbolic Earth entry, 2001',
+  model = 'GuptaYos',
+  parameters = {
+    {
+      T_low = 2000.0,
+      T_high = 32000.0,
+      Pi_Omega_11 = {     -0.0058,       0.1485,      -1.6689,      10.4588, },
+      Pi_Omega_22 = {      0.0000,      -0.0000,      -0.3986,       6.7601, },
+      D           = {      0.0000,       0.0000,       0.0000,       0.0000, },
+    },
+  },
+}CI = {
+  i = 'O_plus',
+  j = 'O_plus',
+  reference = 'NASA Reference Publication 1232 by Gupta,R.N., Yos,J.M. et al 1990',
+  model = 'GuptaYos',
+  parameters = {
+    {
+      T_low  =  1000.0,
+      T_high = 30000.0,
+      Pi_Omega_11 = {   0.0000,    0.0000,   -2.0000,   23.8237, },
+      Pi_Omega_22 = {   0.0000,    0.0000,   -2.0000,   24.3602, },
+      D           = {   0.0000,    0.0000,    3.5000,  -30.0066, },
+    },
+  },
+}
