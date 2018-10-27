@@ -617,7 +617,8 @@ contains
   subroutine EXPCOL_Bmax(LS, MS, ET, Bmax, IERROR)
     implicit none
     integer, intent(in) :: LS, MS
-    real(8) :: ET, COLXSEC, Bmax
+    real(8), intent(in) :: ET
+    real(8) :: COLXSEC, Bmax
     real(8),pointer :: p(:)
     integer :: IERROR, iexpair
     iexpair = EXPCOLPair(LS, MS)
@@ -720,20 +721,18 @@ contains
     EXPCOL_Chi = PI-2.0d0*b/RM*a
   end function EXPCOL_Chi
 
-  subroutine EXPCOL_Scatter(LS,MS,ET0,VR,VRC,VRCP,IDT)
+  subroutine EXPCOL_Scatter(LS,MS,BMAX,ET0,VR,VRC,VRCP,IDT)
     ! VR: adjusted speed
     ! VRC: adjusted velocity
     ! VRCP: scattered velocity
     USE CALC, only : EVOLT
     USE GAS, only : SPM
     integer :: LS, MS, IDT, IERROR
-    real(8) :: VRC(3), VR, VRCP(3), ET0,RANF
-    real(8) :: b, bmax, CHI, CCHI, SCHI, EPSI, CEPSI, SEPSI, D
+    real(8) :: VRC(3), VR, VRCP(3), BMAX,RANF,ET0
+    real(8) :: b, CHI, CCHI, SCHI, EPSI, CEPSI, SEPSI, D
 
     call ZGF(RANF, IDT)
-    ! calculate bmax
-    call EXPCOL_Bmax(LS,MS,ET0,bmax,IERROR)
-    b = dsqrt(RANF)*bmax
+    b = dsqrt(RANF)*BMAX
 
     CHI = EXPCOL_Chi(LS,MS,b,ET0)
     CCHI = DCOS(CHI); SCHI = DSIN(CHI)
@@ -1212,11 +1211,12 @@ REAL(KIND=8) :: A,WCLOCK(5)
 INTEGER(KIND=8) :: COUNT0, COUNT1, COUNT_RATE
 REAL(8) :: CALC_TIME
 
+NTHREADS = 1
 !$OMP PARALLEL PRIVATE(ITHREAD)
-ITHREAD = omp_get_thread_num()
-IF (ITHREAD == 0) THEN
-  NTHREADS = omp_get_num_threads()
-END IF
+!$   ITHREAD = omp_get_thread_num()
+!$   IF (ITHREAD == 0) THEN
+!$       NTHREADS = omp_get_num_threads()
+!$   END IF
 !$OMP END PARALLEL
 !
 NVER=1          !--for changes to basic architecture
@@ -9194,7 +9194,7 @@ END SUBROUTINE DISSOCIATION
 !
 !************************************************************************************
 !
-SUBROUTINE CHECK_RXSECTION(RXSECTION,N,L,LM,M,LS,LMS,MS,VRR,SXSECTION,IVDC,IDT)
+SUBROUTINE CHECK_RXSECTION(RXSECTION,N,L,M,LS,MS,VRR,ECT,SXSECTION,IVDC,IDT)
 !
 !
 USE MOLECS
@@ -9203,22 +9203,25 @@ USE CALC
 USE OUTPUT
 USE GEOM
 USE OMP_LIB
-USE MFDSMC,only : IMF, IMFdia, NMFANG,MFRMASS,&
+USE MFDSMC,only : IMF, IMFdia, NMFANG,&
   MF_SAMPLE_PHASE,MF_CALC_COLL,MF_SAMPLE_ANGLE,MF_EVAL_F
 !
 IMPLICIT NONE
 !
 !
-INTEGER :: J,K,L,LM,M,N,LS,LMS,MS,IKA,NRE,KK,KS,MK,KA,KAA,MKK,JR,KR,JS,KV,IA,ISTE(MNRE),&
-           IDT,NS,NPM,I,IVDC(MNRE),KM,IV,IS,IVAR(MNRE),II,JJ,NSP,nstep,MTYPE,IVIB,JROT,IMAX,JMAX
+REAL(8),INTENT(IN) :: VRR,ECT,SXSECTION
+INTEGER,INTENT(IN) :: N,L,M,LS,MS
+
+INTEGER :: J,K,NRE,KK,KS,MK,KA,KAA,MKK,KV,IA,ISTE(MNRE),&
+           IDT,NS,NPM,I,IVDC(MNRE),II,MTYPE,IVIB,JROT,IMAX,JMAX
 REAL(8),EXTERNAL :: GAM
-REAL(KIND=8) :: A,B,ECT,ECR,ECV,EC,THBCELL,WF,PXSECTION,VR,VRR,RML,RMM,ECM,ECN,RANF,&
-                VDOF1(MMVM),VDOF2(MMVM),EV1(MMVM),EV2(MMVM),EV,ECV1,ECV2,ECV3,SVDOF1,SVDOF2,SVDOF3,ECR1,ECR2,ECR3,AL,&
-                ATDOF,AIDOF,ANDOF,AVDOF,X,C,D,E,ALP,TA,LF,PHI2,AA,BB,XI,PSI,PHI,CV,EE,SEV(2),EP,EFAC,EVIB,TCOLT,TEMP,ECT2,&
-                VRC(3),VCM(3),SXSECTION,RXSECTION(MNRE),STER(MNRE),ECA(MNRE),CF,VRCP(3),TVAR(7,MNRE),PROB,CVR,&
+REAL(KIND=8) :: A,B,ECR,ECV,EC,THBCELL,RANF,&
+                VDOF1(MMVM),VDOF2(MMVM),EV1(MMVM),EV2(MMVM),EV,ECV1,ECV2,SVDOF1,SVDOF2,ECR1,ECR2,AL,&
+                ATDOF,AIDOF,ANDOF,AVDOF,X,C,D,AA,BB,XI,PSI,PHI,CV,EE,SEV(2),TEMP,&
+                RXSECTION(MNRE),STER(MNRE),ECA(MNRE),CF,&
                 ALPHA1,ALPHA2,EA,CC,DD
 REAL(KIND=8),ALLOCATABLE :: VEC_I(:),VEC_J(:),VALUES(:),ARRAY_TEMP(:,:)
-REAL(KIND=8) :: MFANG(8),MFV1,MFV2,MFR1,MFR2,MFDSTAR,MFCtheta,MFbeta
+REAL(KIND=8) :: MFANG(8),MFV1,MFV2,MFR1,MFR2,MFCtheta
 REAL(KIND=8) :: MFF(2),MFcoll(2)
 INTEGER      :: NMFCALL, viblevel(2), IINPM
 LOGICAL      :: ISAME
@@ -9237,14 +9240,12 @@ LOGICAL      :: ISAME
 !--TXSECTION total cross-section
 !--THBCELL number of third body molecules in cell
 !--WF weighting factor
-!--PXSECTION probability
-!--VRC relative velocity components
 !--VCM center-of-mass velocity components
-!--VR relative speed
 !--VRR square of rel speed
 !--RML,RMM molecule mass parameters
 !--MFANG angles sampled by MF-MC model
 !--MFF threshold function maximum 4 kinds of configuration
+!--SXSECTION total collision cross sections
 !
 NMFCALL = 0           !count of MFmodel using
 NS=ICCELL(3,N)        !sampling cell
@@ -9252,11 +9253,9 @@ TEMP=VAR(10,NS)       !sampling cell vibrational temperature
 NRE=NRSP(LS,MS)       !number of reaction involving species LS and MS
 ISAME = .false.             !check if two species are the same
 IF (LS == MS) ISAME = .true.
-!SXSECTION=CVR*1d20/VR !scattering (VHS) cross-section in Angstrons^2
 !
 IF (NRE > 0) THEN
 !
-  ECT=0.5D00*SPM(1,LS,MS)*VRR
   MFF = ECT*2.0d0  !initialization
   ECR=0.D00; ECV=0.D00
   EV1=0.D00; EV2=0.D00
@@ -9848,7 +9847,7 @@ END SUBROUTINE CHECK_RXSECTION
 !
 !************************************************************************************
 !
-SUBROUTINE CHECK_REACTION(IKA,N,L,LM,M,LS,LMS,MS,CVR,VRR,VR,VCM,RML,RMM,IVDC,IDT)
+SUBROUTINE CHECK_REACTION(IKA,N,L,LM,M,LS,LMS,MS,VRR,VR,VRC,VRI,VCM,RML,RMM,IVDC)
 !
 !
 USE MOLECS
@@ -9862,14 +9861,11 @@ USE MFDSMC,only:IMF,IMFS,NMFETR,NMFERR,NMFEVR,NMFVTR
 IMPLICIT NONE
 !
 !
-INTEGER :: J,K,L,LM,M,N,LS,LMS,MS,IKA,NRE,KK,KS,MK,KA,KAA,MKK,JR,KR,JS,KV,IA,ISTE(MNRE),&
-           IDT,NS,NPM,I,IVDC(MNRE),KM,IV,IS,IVAR(MNRE),NSP,nstep
-REAL(8) :: CC,DD
+INTEGER :: J,K,L,LM,M,N,LS,LMS,MS,IKA,JR,KV,ISTE(MNRE),NS,NPM,I,IVDC(MNRE)
 REAL(8),EXTERNAL :: GAM
-REAL(KIND=8) :: A,B,ECT,ECR,ECV,EC,STERT,THBCELL,WF,PSTERT,VR,VRR,RML,RMM,ECM,ECN,RANF,&
-                VDOF1(MMVM),VDOF2(MMVM),EV1(MMVM),EV2(MMVM),EV,ECV1,ECV2,ECV3,SVDOF1,SVDOF2,SVDOF3,ECR1,ECR2,ECR3,AL,&
-                ATDOF,AIDOF,ANDOF,AVDOF,X,C,D,AA,BB,XI,PSI,PHI,CV,EE,SEV(2),EP,EFAC,EVIB,TCOLT,TEMP,ECT2,&
-                VRC(3),VCM(3),STER(MNRE),ECA(MNRE),CF,VRCP(3),TVAR(7,MNRE),PROB,CVR
+REAL(KIND=8) :: A,ECT,ECR,ECV,EC,VR,VRR,RML,RMM,&
+                VDOF1(MMVM),VDOF2(MMVM),EV1(MMVM),EV2(MMVM),ECV1,ECV2,SVDOF1,SVDOF2,ECR1,ECR2,&
+                EP,TEMP,ECT2,VRC(3),VCM(3),VRI
 INTEGER :: II,IETDX,IERDX(2)
               !
 !--A,B,C working variables
@@ -9888,10 +9884,11 @@ INTEGER :: II,IETDX,IERDX(2)
 !--THBCELL number of third body molecules in cell
 !--WF weighting factor
 !--PSTERT probability
-!--VRC relative velocity components
-!--VCM center-of-mass velocity components
-!--VR relative speed
-!--VRR square of rel speed
+!--VRC relative velocity components: can only be changed by recombination
+!--VCM center-of-mass velocity components: can only be changed by recombination
+!--VRI magnitude of VRC: can only be changed by recombination
+!--VRR new value of u^2+v^2+w^2
+!--VR  new value of relative speed
 !--RML,RMM molecule mass parameters
 !
 NS=ICCELL(3,N)     !sampling cell
@@ -10048,6 +10045,7 @@ IF (IKA > 0) THEN
       MS=IPSP(M)
       VRC(1:3)=PV(1:3,L)-PV(1:3,M)
       VRR=VRC(1)**2+VRC(2)**2+VRC(3)**2
+      VRI=DSQRT(VRR)
       ECT2=0.5D00*SPM(1,LS,MS)*VRR
       ECR2=0.d0; ECV2=0.d0
       IF (ISPR(1,MS) > 0) ECR2=PROT(M)
@@ -10535,13 +10533,13 @@ IMPLICIT NONE
 INTEGER :: N,NS,NN,M,MM,L,LL,K,KK,KT,J,I,II,III,NSP,MAXLEV,IV,IVP,NSEL,KV,LS,MS,KS,JS,IKA,LZ,KL,IS,IREC,&
            NLOOP,IA,IDISS,IE,IEX,JJ,NPRI,LIMLEV,KVV,KW,ISP1,ISP2,ISP3,INIL,INIM,JI,LV,IVM,NMC,NVM,LSI,&
            JX,MOLA,KR,JKV,NSC,KKV,NUMEXR,IAX,NSTEP,ISWITCH,NPM,LM,LMS,IVDC(MNRE),ISHUF(3),IT,IDT=0,IVDC0
-REAL(KIND=8) :: A,AA,AAA,AB,B,BB,BBB,ASEL,DTC,SEP,VRI,VR,VRR,ECT,EVIB,ECC,ZV,COLT,ERM,C,OC,SD,D,CVR,PROB,&
+REAL(KIND=8) :: A,AA,AAA,AB,B,BB,BBB,ASEL,DTC,SEP,VRI,VR,VRR,ECT,ET0,EVIB,ECC,ZV,COLT,ERM,C,OC,SD,D,CVR,PROB,&
                 RML,RMM,ECTOT,ETI,EREC,ET2,XMIN,XMAX,WFC,CENI,CENF,VRRT,TCOLT,EA,DEN,SVDOF(3,3),RANF,DT(ITMAX),& !--isebasti: included RANF,DT
                 RXSECTION(MNRE),SXSECTION,TXSECTION,&
-                QNU,A1,A2,B1,B2,C1,C2,ET0,EROT,EV,SIGMA_REF,EV_POST,SUMF,E,F,EL,ED,EF,S !ME-QCT variables
+                QNU,A1,A2,B1,B2,C1,C2,EROT,EV,SIGMA_REF,EV_POST,SUMF,E,F,EL,ED,EF,S !ME-QCT variables
 REAL(KIND=8),DIMENSION(0:100) :: VTXSECTION
 REAL(KIND=8),DIMENSION(3) :: VRC,VCM,VRCP,VRCT
-REAL(KIND=8) :: ECR(2),EVIBEV
+REAL(KIND=8) :: ECR(2),EVIBEV,BMAX
 INTEGER :: IETDX,IERDX(2),IEVDX(2),IVPS(2)
 logical :: IREACSP
 !
@@ -10554,7 +10552,8 @@ logical :: IREACSP
 !--SEP the collision partner separation
 !--VRR the square of the relative speed
 !--VR the relative speed
-!--ECT relative translational energy
+!--ECT relative translational energy (update after different process)
+!--ET0 relative intitial translational energy in eV
 !--EVIB vibrational energy
 !--ECC collision energy (rel trans +vib)
 !--MAXLEV maximum vibrational level
@@ -10587,7 +10586,7 @@ NUMEXR=0
 !$omp private(tcolt,kt,aa,bb,kvv,ji,lsi,ivm,nmc,nvm,ectot,psf,jj,ea,den,iax,jx,ika,npm,nstep,it,dt) &
 !$omp private(SXSECTION,RXSECTION,VTXSECTION,TXSECTION) &
 !$omp private(QNU,A1,A2,B1,B2,C1,C2,E,F,EL,ED,ET0,EROT,EV,SIGMA_REF,EV_POST,SUMF,EF,S) &
-!$omp private(ECR,EVIBEV,IVPS)&
+!$omp private(ECR,EVIBEV,IVPS,BMAX)&
 !$omp private(IETDX,IEVDX,IERDX,IREACSP) &
 !$omp reduction(+:ndissoc,ndissl,trecomb,nrecomb,treacl,treacg,tnex,tforex,trevex) & !Q-K
 !$omp reduction(+:totdup,totcol,pcolls,tcol,cscr,colls,wcolls,clsep,reac,npvib) &
@@ -10834,7 +10833,7 @@ DO N=1,NCCELLS
 !--Calculate the total scattering (VHS) cross-section
             ECT=0.5D00*SPM(1,LS,MS)*VRR         !collision translational energy in J
             ET0=ECT/EVOLT                        !convert to eV
-            CALL CALC_TOTXSEC(LS, MS, VR, VRR, ET0, -1.0d0, SXSECTION, CVR)
+            CALL CALC_TOTXSEC(LS, MS, VR, VRR, ET0, -1.0d0, SXSECTION, BMAX, CVR)
 
 
 ! get rotational energy and vibrational energy, ECR1 is always the one with lower sp number
@@ -10929,7 +10928,7 @@ DO N=1,NCCELLS
             ! This model has dependency on vibrational level
             IF (nonVHS == 1) THEN
               IF ((LS == 1 .and. MS == 4) .or. (LS ==4 .and. MS == 1)) THEN
-                CALL CALC_TOTXSEC(LS, MS, VR, VRR, ET0, EVIB, SXSECTION,CVR)
+                CALL CALC_TOTXSEC(LS, MS, VR, VRR, ET0, EVIB, SXSECTION,BMAX,CVR)
               END IF
             END IF
 
@@ -10940,7 +10939,7 @@ DO N=1,NCCELLS
               ! precalculate Reaction cross section before collision occur
               ! This is for the case when QCTMODEL is used
               ! Reaction cross sections might become larger than others
-              CALL CHECK_RXSECTION(RXSECTION,N,L,LM,M,LS,LMS,MS,VRR,SXSECTION,IVDC,IDT)
+              CALL CHECK_RXSECTION(RXSECTION,N,L,M,LS,MS,VRR,ECT,SXSECTION,IVDC,IDT)
             END IF
 !
 
@@ -11084,7 +11083,7 @@ DO N=1,NCCELLS
               IF (MNRE>0) THEN
                 IF (QCTMODEL .ne. 2) THEN
                   RXSECTION = 0.0d0
-                  CALL CHECK_RXSECTION(RXSECTION,N,L,LM,M,LS,LMS,MS,VRR,SXSECTION,IVDC,IDT)
+                  CALL CHECK_RXSECTION(RXSECTION,N,L,M,LS,MS,VRR,ECT,SXSECTION,IVDC,IDT)
                   ! for a chemical reaction K
                   ! IVDC(K) = 1:  LS = IREA(1,K), MS = IREA(2,K)
                   ! IVDC(K) = 2:  LS = IREA(2,K), MS = IREA(1,K)
@@ -11106,7 +11105,7 @@ DO N=1,NCCELLS
                     A=A+RXSECTION(J)/SUMF
                   END DO
                   IKA=IRCD(J,LS,MS) !reaction IKA occurs
-                  CALL CHECK_REACTION(IKA,N,L,LM,M,LS,LMS,MS,CVR,VRR,VR,VCM,RML,RMM,IVDC,IDT)
+                  CALL CHECK_REACTION(IKA,N,L,LM,M,LS,LMS,MS,VRR,VR,VRC,VRI,VCM,RML,RMM,IVDC)
                 END IF
               END IF
 !
@@ -11137,7 +11136,8 @@ DO N=1,NCCELLS
               ELSE
                 IVDC0 = 0
               END IF
-!
+
+!             !ECT is updated here
               ECT=(0.5D00*SPM(1,LS,MS)*VRR)-ELACK
               IF (ECT > 0.d0) THEN
                 ELACK=0.d0
@@ -11342,7 +11342,7 @@ DO N=1,NCCELLS
                                     PROB=(1.D00-EVIB/ECC)**(A*0.5d0-1.d0)
  !--PROB is the probability ratio of eqn (5.61) and (5.45)
                                     CALL ZGF(RANF,IDT)
-                                  IF (PROB > RANF) II=1
+                                    IF (PROB > RANF) II=1
                                   END IF
                                 END DO
                                 IF (IRELAX /= 0) ECT=ECC-EVIB !remaining energy available for redistribution; comment this line for isothermal relaxations
@@ -11440,19 +11440,24 @@ DO N=1,NCCELLS
               IF (JX == 2) THEN
                 VR=DSQRT(2.D00*ECT/SPM(1,LS,MS))
               ELSE
+                ! Reaction off
                 VR=DSQRT(2.D00*ECT/SPM(1,IREA(1,IKA),IREA(2,IKA))) !same as in SPARTA
               END IF
 !
 !--calculate new velocities
 !-------------------------------------------------
-              VRC(1:3)=PV(1:3,L)-PV(1:3,M) ! intial relative velocity vector
-              VRI = DSQRT(VRC(1)**2 + VRC(2)**2 + VRC(3)**2)
+              ! At this point for exchange or dissocation reaction
+              ! VRC and VRI are still the relative velocity of the two molecule
+              ! For recombination, it's the relative velocity of the
+              ! new molecule and the third body
+              ! The values are changed in CHECK_REACTION
               VRC = VRC/VRI*VR             ! rescale to match current magnitude
 
+              ! The current implementation may not handle recombination well for EXP scattering
               IF (JX == 2) THEN
-                CALL SCATER_MOLECULE(LS, MS, ET0, VR, VRC, VRCP, IDT)
+                CALL SCATER_MOLECULE(LS, MS, BMAX, ET0, VRI, VR, VRC, VRCP, IDT)
               ELSE
-                CALL SCATER_MOLECULE(IREA(1,IKA), IREA(2,IKA), ET0, VR, VRC, VRCP, IDT)
+                CALL SCATER_MOLECULE(IREA(1,IKA), IREA(2,IKA), BMAX,ET0, VRI, VR, VRC, VRCP, IDT)
               END IF
 
               PV(1:3,L)=VCM(1:3)+RMM*VRCP(1:3)
@@ -11521,21 +11526,21 @@ END SUBROUTINE COLLISIONS
 !
 !*****************************************************************************
 !
-SUBROUTINE CALC_TOTXSEC(LS,MS,VR,VRR,ET,EVIB,TOTXSEC,CVR)
+SUBROUTINE CALC_TOTXSEC(LS,MS,VR,VRR,ET0,EVIB,TOTXSEC,BMAX,CVR)
 !
 !--calculate the total cross sections, i.e. collision cross sections
 ! EVIB is the vibrational energy of N2 molecule for N2-O nonVHS model
 ! TOTXSEC in angstrom^2
 ! CVR,VR,VRR, EVIB in si
-! ET in eV
+! ET0 in eV
 USE GAS, only : INONVHS, SPM
 USE CALC, only: BOLTZ, EVOLT, PI
 USE EXPCOL, only: EXPCOL_Bmax
 IMPLICIT NONE
 INTEGER,intent(in) :: LS,MS
-REAL(8),intent(in) :: VRR, EVIB, VR, ET
+REAL(8),intent(in) :: VRR, EVIB, VR, ET0
 REAL(8) :: EVIBEV
-REAL(8),intent(out) ::TOTXSEC, CVR
+REAL(8),intent(out) ::TOTXSEC, CVR, BMAX
 REAL(8),PARAMETER :: CTOT(8) = (/46.039504155886434, 0.051004420857885, -0.584551057667247, &
                               &  -0.002969283806997, 0.281618756125794, 0.030181202283512, &
                               &  -0.436592532266083, 0.152224780739684/)
@@ -11545,15 +11550,17 @@ INTEGER :: IERROR
 
 IF (INONVHS(LS,MS) == 0 .or. (INONVHS(LS,MS) == 1 .and. EVIB < 0.0D0)) THEN
   TOTXSEC = SPM(2,LS,MS)*((2.D00*BOLTZ*SPM(5,LS,MS)/(SPM(1,LS,MS)*VRR))**(SPM(3,LS,MS)-0.5D00))*SPM(6,LS,MS)*1.0d20
+  BMAX = DSQRT(TOTXSEC/PI)
 ELSE IF (INONVHS(LS,MS) == 1) THEN
   EVIBEV = EVIB/EVOLT  ! convert to eV
   IF (EVIBEV >= 6.9d0  ) EVIBEV = 6.9d0  ! extrapolate
-  TOTXSEC = DLOG(ET) - (CTOT(8) + EVIBEV*(CTOT(7) + EVIBEV*CTOT(6)))
+  TOTXSEC = DLOG(ET0) - (CTOT(8) + EVIBEV*(CTOT(7) + EVIBEV*CTOT(6)))
   TOTXSEC = (CTOT(3)+CTOT(4)*EVIBEV*EVIBEV)*DTANH(CTOT(5)*TOTXSEC) + CTOT(2)*EVIBEV
   TOTXSEC = CTOT(1)*DEXP(TOTXSEC)
+  BMAX = DSQRT(TOTXSEC/PI)
 ELSE IF (INONVHS(LS,MS) == 2) THEN
-  CALL EXPCOL_Bmax(LS, MS, ET, TOTXSEC, IERROR)
-  TOTXSEC = PI*TOTXSEC**2
+  CALL EXPCOL_Bmax(LS, MS, ET0, BMAX, IERROR)
+  TOTXSEC = PI*BMAX**2
 END IF
 CVR = TOTXSEC/1.0d20*VR
 
@@ -11561,22 +11568,24 @@ END SUBROUTINE CALC_TOTXSEC
 !
 !*****************************************************************************
 !
-SUBROUTINE SCATER_MOLECULE(LS,MS,ET0,VR,VRC,VRCP,IDT)
+SUBROUTINE SCATER_MOLECULE(LS,MS,BMAX,ET0,VRI,VR,VRC,VRCP,IDT)
 !-- a wrapper of different scattering model
 USE GAS, only: INONVHS
 USE EXPCOL, only: EXPCOL_Scatter
 IMPLICIT NONE
 INTEGER,INTENT(IN) :: LS, MS
-REAL(8),INTENT(IN) :: ET0, VR, VRC(3)
+REAL(8),INTENT(IN) :: BMAX,ET0,VRI, VR, VRC(3)
 REAL(8) :: VRCP(3)
 INTEGER :: IDT
-
+! VRI original relative speed
+! VR, VRC new speed without scattering
+! all the following functions should only change VRCP
 IF (INONVHS(LS,MS) == 0 ) THEN
   CALL VHSS(LS, MS, VR, VRC, VRCP, IDT)
 ELSE IF (INONVHS(LS,MS) == 1) THEN
-  CALL N2OScatter(LS, MS, VR, VRC, VRCP, IDT)
+  CALL N2OScatter(LS, MS, BMAX,VRI, VR,VRC, VRCP, IDT)
 ELSE IF (INONVHS(LS,MS) == 2) THEN
-  CALL EXPCOL_Scatter(LS,MS,ET0,VR,VRC,VRCP,IDT)
+  CALL EXPCOL_Scatter(LS,MS,BMAX,ET0,VR,VRC,VRCP,IDT)
 END IF
 
 END SUBROUTINE SCATER_MOLECULE
@@ -11628,8 +11637,7 @@ RETURN
 END SUBROUTINE VHSS
 !
 !*****************************************************************************
-!
-SUBROUTINE N2OScatter(LS,MS,VR,VRC,VRCP,IDT)
+SUBROUTINE N2OScatter(LS,MS,BMAX, VRI,VR,VRC,VRCP,IDT)
 !
 ! -- calculate new scattering angles based on non VHS model
 ! -- only for N2+O collision
@@ -11640,8 +11648,8 @@ USE CALC
 IMPLICIT NONE
 !
 INTEGER :: LS,MS,IDT
-REAL(KIND=8) :: B,VR,VRC(3),VRCP(3),RANF,C,D
-REAL(8) :: COF(6), CTOT(8), BMAX, ET, RMASS, EVIBEV,C1,C2,CHI,CCHI,SCHI
+REAL(KIND=8) :: B,VR,VRC(3),VRCP(3),RANF,C,D,VRI
+REAL(8) :: COF(6), BMAX, ET, RMASS, EVIBEV,C1,C2,CHI,CCHI,SCHI
 REAL(8) :: EPSI,CEPSI,SEPSI
 
 COF(1) = 1.783071942310433
@@ -11651,21 +11659,60 @@ COF(4) = 0.294962630947434/1000.0D0
 COF(5) = 2.189954664950628
 COF(6) = 0.078701684994745
 
-CTOT(1) = 46.039504155886434  ! A^2
-CTOT(2) = 0.051004420857885
-CTOT(3) = -0.584551057667247
-CTOT(4) = -0.002969283806997
-CTOT(5) = 0.281618756125794
-CTOT(6) = 0.030181202283512
-CTOT(7) = -0.436592532266083
-CTOT(8) = 0.152224780739684
 
-ET = 0.5d0*SPM(1,LS,MS)*VR*VR/EVOLT
 EVIBEV =  0.063577602025999  !Erv(v=0,J=0) for N2
-BMAX = DLOG(ET) - (CTOT(8) + EVIBEV*(CTOT(7) + EVIBEV*CTOT(6)))
-BMAX = (CTOT(3)+CTOT(4)*EVIBEV*EVIBEV)*DTANH(CTOT(5)*BMAX) + CTOT(2)*EVIBEV
-BMAX = CTOT(1)*DEXP(BMAX)
-BMAX = DSQRT(BMAX)/SPI
+
+CALL ZGF(RANF,IDT)
+B = DSQRT(RANF)*BMAX
+C1 = COF(3)*DEXP(-COF(4)*VRI) +COF(5)*DEXP(-COF(6)*EVIBEV)
+C2 = COF(1) + COF(2)*VRI
+CHI = C2*(1.0d0 - 1.0d0/(C1+DLOG(2.0D0))*(B-DLOG(DCOSH(B-C1))))
+! Scattering angle should only be a function of precollision conditions
+! this two condition shouldn't occur, for safety we set it here
+IF (CHI > PI) CHI = PI
+IF (CHI < 0) CHI = 0.0D0
+CCHI = DCOS(CHI); SCHI = DSIN(CHI)
+
+CALL ZGF(RANF,IDT)
+EPSI = RANF*2.0D0*PI
+CEPSI = DCOS(EPSI)
+SEPSI = DSIN(EPSI)
+
+D=DSQRT(VRC(2)**2+VRC(3)**2)
+VRCP(1) = CCHI*VRC(1) + SCHI*SEPSI*D
+VRCP(2) = CCHI*VRC(2) + SCHI*(VR*VRC(3)*CEPSI-VRC(1)*VRC(2)*SEPSI)/D
+VRCP(3) = CCHI*VRC(3) - SCHI*(VR*VRC(2)*CEPSI+VRC(1)*VRC(3)*SEPSI)/D
+
+RETURN
+END SUBROUTINE N2OScatter
+!
+! -----------------------------------------------------------------
+SUBROUTINE N2OScatter_old(LS,MS,BMAX,VR,VRC,VRCP,IDT)
+!
+! -- calculate new scattering angles based on non VHS model
+! -- only for N2+O collision
+! -- old version: which uses the new VR to calculate scattering angle
+! -- this doesn't make sense, but it is the one Han used in PRF paper
+!
+USE GAS
+USE CALC
+!
+IMPLICIT NONE
+!
+INTEGER :: LS,MS,IDT
+REAL(KIND=8) :: B,VR,VRC(3),VRCP(3),RANF,C,D
+REAL(8) :: COF(6), BMAX, ET, RMASS, EVIBEV,C1,C2,CHI,CCHI,SCHI
+REAL(8) :: EPSI,CEPSI,SEPSI
+
+COF(1) = 1.783071942310433
+COF(2) = 0.016980219000487/1000.0D0
+COF(3) = 2.846002511624816
+COF(4) = 0.294962630947434/1000.0D0
+COF(5) = 2.189954664950628
+COF(6) = 0.078701684994745
+
+
+EVIBEV =  0.063577602025999  !Erv(v=0,J=0) for N2
 
 CALL ZGF(RANF,IDT)
 B = DSQRT(RANF)*BMAX  !sampled impact parameter
@@ -11688,7 +11735,7 @@ VRCP(2) = CCHI*VRC(2) + SCHI*(VR*VRC(3)*CEPSI-VRC(1)*VRC(2)*SEPSI)/D
 VRCP(3) = CCHI*VRC(3) - SCHI*(VR*VRC(2)*CEPSI+VRC(1)*VRC(3)*SEPSI)/D
 
 RETURN
-END SUBROUTINE N2OScatter
+END SUBROUTINE N2OScatter_old
 !
 !*****************************************************************************
 SUBROUTINE THERMOPHORETIC
