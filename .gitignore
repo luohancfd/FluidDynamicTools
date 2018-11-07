@@ -6,3 +6,4 @@ _pycache_
 *.mod
 tgas
 */tags
+*/.ipynb_checkpoints
