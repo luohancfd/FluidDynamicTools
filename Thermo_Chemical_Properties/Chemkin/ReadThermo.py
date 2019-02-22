@@ -1,10 +1,12 @@
 #!/usr/bin/env python3
 # encoding: utf-8
-# modified from https://github.com/vrlambert/RMG-Py/blob/master/rmgpy/chemkin.py
+# Read thermo.dat in Chemkin format
+# Written by https://github.com/luohancfd
 import warnings
 import re
-from periodic import mass_from_composition
-
+from periodic import GetMass, GetAtomicNumber
+from collections import OrderedDict
+import os
 
 class ChemkinError(Exception):
     """
@@ -21,16 +23,17 @@ def ReadThermoEntry(lines, H0=None, ref=None, S0=None, CAS=None):
 
     species = lines[0][0:16].strip()
     refcode = lines[0][18:24].strip()
-    formula = {}
+    formula0 = {}
     for i in range(24,40,5):
         element,count = lines[0][i:i+2].strip(), lines[0][i+2:i+5].strip()
         if element:
             try:
-                formula[element]=int(count)
+                formula0[element]=int(count)
             except ValueError:
                 # Chemkin allows float values for the number of atoms, so try this next.
-                formula[element]=int(float(count))
-    mass = mass_from_composition(formula)
+                formula0[element]=int(float(count))
+    formula = OrderedDict(sorted(list(formula0.items()), key=lambda x: GetAtomicNumber(x[0])))
+    mass = GetMass(formula)
     phase = lines[0][44]
     if phase.upper() != 'G':
         warnings.warn('Specie %s is in %s phase' % (species, phase))
@@ -66,6 +69,7 @@ def ReadThermoEntry(lines, H0=None, ref=None, S0=None, CAS=None):
         data['CAS'] = CAS
     if S0:
         data['S0'] = S0
+
     return data
 
 def ReadThermoBlock(content):
@@ -137,16 +141,70 @@ def ReadThermoBlock(content):
     return data
 
 
+def ReadThermoData(filepath):
+    '''
+    Read yaml or json format thermo data
+
+    YAML format (latest):
+        (CH2O)3:
+            formula: {C: 3, H: 6, O: 3}
+        (CH3)2SICH2:
+            formula: {C: 3, H: 8, SI: 1}
+
+    Json format
+        [
+            {
+                "sp": "(CH2O)3"
+                "formula": {C: 3, H: 6, O: 3}
+            },
+            {
+                "sp": "(CH3)2SICH2"
+                "formula": {C: 3, H: 8, SI: 1}
+            }
+        ]
+    '''
+    fname, fext = os.path.splitext(filepath)
+    with open(filepath, 'r', encoding='utf-8') as f:
+        if 'yaml' in fext or 'yml' in fext:
+            import oyaml as yaml
+            thermo = yaml.load(f)
+        elif 'json' in fext:
+            import json
+            thermo = json.load(f)
+
+    if isinstance(thermo, list):
+        # old format
+        spDatabase = {i['sp']:i for i in thermo}
+        for i in spDatabase.values():
+            i.pop('sp', None)
+    else:
+        spDatabase = thermo
+
+    return spDatabase
+
 if __name__ == "__main__":
-    with open('therm.dat', 'r', encoding='utf-8') as f:
+    with open('database\\therm.dat', 'r', encoding='utf-8') as f:
         content = f.readlines()
     data = ReadThermoBlock(content)
-    import json
-    with open('therm.json', 'w', encoding='utf-8') as f:
-        json.dump(data, f, indent=2)
-    import sys
-    import os
-    path2 = '\\'.join(os.getcwd().split('\\')[0:-1] + ['Lewis'])
-    sys.path.append(path2)
-    from loadthermo import PrettyPrint
-    z = PrettyPrint(os.path.join(os.getcwd(), 'therm.json'), True)
+
+    iWriteJson = True
+    if iWriteJson:
+        import json
+        with open('database\\therm.json', 'w', encoding='utf-8') as f:
+            json.dump(data, f, indent=2)
+        import sys
+        import os
+        path2 = '\\'.join(os.getcwd().split('\\')[0:-1] + ['Lewis'])
+        sys.path.append(path2)
+        from loadthermo import PrettyPrint
+        z = PrettyPrint(os.path.join(os.getcwd(), 'database\\therm.json'), True)
+
+    iWriteYAML = True
+    if iWriteYAML:
+        import oyaml as yaml
+        yamlData = {i['sp']: i for i in data}
+        for i in yamlData.values():
+            i.pop('sp')
+            #i['formula'] = dict(i['formula'])
+        with open('database\\therm.yaml', 'w', encoding='utf-8') as f:
+            yaml.dump(yamlData, f, encoding='utf-8')
