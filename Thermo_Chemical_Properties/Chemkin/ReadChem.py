@@ -1,80 +1,8 @@
 #!/usr/bin/python3
-from chempy.chemistry import Species, Reaction
-from chempy.util import periodic, parsing
-import itertools
 import warnings
 import re
-from enum import Enum
-
-
-# ========  Generate gas-phase reaction data ======================
-# class ReactionRate(object):
-#     '''
-#     class definition of reaction rate
-#     '''
-#     availableKeys = ['Ar', 'HIGH', 'LOW', 'TROE', 'SRI', 'T']
-#     def __init__(self, rate):
-#         '''
-#         rate: a dict define reaction rates, examples
-#              Ar: [1.698E+16, 0.0, 84840.0]
-#              HIGH: [1.698E+16, 0.0, 84840.0]
-#              LOW: [1.698E+16, 0.0, 84840.0]
-#              TROE: [1, 2, 3]
-#              SRI: [1, 2, 3]
-#              T:                  !Third body
-#                 - H2: 2
-#         '''
-#         for i in availableKeys:
-#             if i in rate.keys():
-#                 setattr(self, i, rate[i])
-#         if 'e_unit' in rate.keys():
-#             self.e_unit = rate.e_unit
-#         else:
-#             self.e_unit = 'cal/mol'
-
-#     def __repr__(self):
-#         '''
-#         print auxilary reaction rate
-#         '''
-
-
-
-
-class ChemkinReaction(object):
-    '''
-    Definition of reaction class for chemkin gas phase
-    '''
-    def __init__(self, string, rate):
-        '''
-        Initiation of the class
-
-        string: chemical formula of the reaction
-        rate: a dict containing different method of description
-        '''
-        TBODY_NONE=0
-        TBODY_PART=1
-        TBODY_PRESSURE=2
-        if '<=>' in string or '=' in string:
-            self.backward = True
-        else:
-            self.backward = False
-
-        # clean string
-        chempyString = string.replace('<=>', '->').replace('=>','->').replace('=','->')
-        if '(+M)' in chempyString:
-            self.thirdBody = TBODY_PRESSURE
-            chempyString.replace('(+M)', '')
-        elif re.findall('\+M(?!\w)', chempyString):
-            self.thirdBody = TBODY_PART
-            chempyString = re.sub('\+\s*M(?!\w)', '', chempyString)
-        else:
-            self.thirdBody = TBODY_NONE
-
-        self.rk = Reaction.from_string(chempyString)
-        self.sp = [i for i in list(self.rk.keys())]
-        self.elem = list(set(itertools.chain.from_iterable([list(Species.from_formula(i).composition.keys()) for i in self.sp])))
-        self.elem.sort()
-
+import periodic
+from ReadThermo import ReadThermoData
 
 
 def ReadGasInput(filename, yamlOutput=None):
@@ -84,6 +12,7 @@ def ReadGasInput(filename, yamlOutput=None):
     lines = []
     with open(filename, 'r', encoding='utf-8') as f:
         for line in f:
+            # strip comment
             line = re.sub('!.*', '', line).strip()
             if len(line) > 0:
                 lines.append(line)
@@ -92,31 +21,96 @@ def ReadGasInput(filename, yamlOutput=None):
     n = len(lines)
     i = 0
     blockHead = ['ELEMENTS', 'SPECIES', 'THERMO', 'REACTIONS']
-    blockHeadReg = [re.compile('^%s'%(i)) for i in blockHead]
-    blockEnd = ['END' for i in blockHead]
+    blockHeadReg = [re.compile('^%s' % (i)) for i in blockHead]
     blockEndReg = re.compile('^END')
     block = {i: [] for i in blockHead}
     while i < n:
         for name, reg in zip(blockHead, blockHeadReg):
             if reg.match(lines[i]):
-                print('Readin block: %s'%(name))
+                print('Readin block: %s' % (name))
+                block[name].append(lines[i])
                 i += 1
                 while not blockEndReg.match(lines[i]):
                     block[name].append(lines[i])
                     i += 1
-                print('Finish block: %s'%(name))
+                block[name].append(lines[i])
+                print('Finish block: %s' % (name))
                 i += 1
                 break
 
-    # process reactions block
+    # read each block
+    reacRaw = block['REACTIONS'][:]
+    reac = ReadReactionBlock(reacRaw)
+    elem = reac.pop('Elements', None)
+    sps = reac.pop('Species', None)
+    unit = reac.pop('Unit', None)
+    block['REACTIONS'] = {'Elements': elem, 'Species': sps, 'Unit': unit, 'Data': reac, 'Raw': reacRaw}
+
+    if isinstance(yamlOutput, str):
+        import oyaml as yaml
+        print('Write yaml file: %s' % (yamlOutput))
+        with open(yamlOutput, 'w', encoding='utf-8') as f:
+            yaml.dump({'Unit': unit}, stream=f, encoding='utf-8')
+            yaml.dump({'Elements': elem}, stream=f, encoding='utf-8')
+            yaml.dump({'Species': sps}, stream=f, encoding='utf-8')
+            yaml.dump(reac, stream=f, encoding='utf-8')
+
+    return block
+
+
+def ReadReactionBlock(lines, thermo=None):
+    '''
+    Read reaction block of chemkin inp
+    '''
+    if not thermo:
+        thermo = ReadThermoData('database\\therm.yaml')
+
+    eUnits = ['CAL/MOLE', 'KCAL/MOLE', 'JOULES/MOLE', 'KJOULES/MOLE', 'KELVINS', 'EVOLTS']
+    from scipy import constants
+    e2cal = [1.0, 1.0e3, 1.0/constants.calorie, 1.0e3/constants.calorie,
+             constants.k/constants.calorie*constants.N_A, constants.eV/constants.calorie*constants.N_A]
+    eConvertFac = [[1.0*i/j for j in e2cal] for i in e2cal]
+    eConvert = lambda x,i,j='CAL/MOLE': x*eConvertFac[eUnits.index(i.upper())][eUnits.index(j.upper())]
+
+    # handle unit
+    eUnit = 'CAL/MOLE'
+    molUnit = 'MOLES'
+    l1 = lines[0].split()
+    if len(l1) == 3:
+        molUnit = l1[2]
+    if len(l1) > 2:
+        eUnit = l1[1]
+    try:
+        e2cgs = eConvert(1.0, eUnit)
+        if molUnit == 'MOLECULES':
+            e2cgs /= constants.N_A
+        elif molUnit != 'MOLES':
+            raise ValueError('Wrong molecule unit')
+    except:
+        raise ValueError('Wrong units: %s and %s' % (eUnit, molUnit))
+
+
     regNumber = '[-+]?[0-9]*\.?[0-9]+(?:[eEdD][-+]?[0-9]+)?'
     reacReg = re.compile('([\w\+\-\*()]+\s*(?:=|=>|<=>)\s*[\w\+\-\*()]+)\s+(%s)\s+(%s)\s+(%s)' % (regNumber, regNumber, regNumber))
 
     reac = dict()
-    for line in block['REACTIONS']:
+    elem = set()
+    sp = set()
+    reac['Unit'] = {'eUnit': eUnit, 'molUnit': molUnit, 'e2cgs': e2cgs}
+    reac['Species'] = []
+    reac['Elements'] = []
+    for line in lines[1:]:
         m1 = reacReg.findall(line)
         if m1:
-            reac[m1[0][0]] = {'Ar': [float(i) for i in m1[0][1:]]}
+            reacName = m1[0][0]
+            reac[reacName] = {'Info': ParseChemkinReaction(reacName, thermo),
+                              'Ar': [float(i) for i in m1[0][1:]]}
+            thisElem = reac[reacName]['Info'].pop('elem',  None)
+            elem.update(set(thisElem))
+
+            thisSp = reac[reacName]['Info'].pop('sp',  None)
+            sp.update(set(thisSp))
+
             lastRK = m1[0][0]
         else:
             nSlash = line.count('/')
@@ -126,14 +120,111 @@ def ReadGasInput(filename, yamlOutput=None):
                     if propName in ['TROE', 'SRI', 'HIGH', 'LOW']:
                         reac[lastRK][propName] = [float(i) for i in value.split()]
                     else:
-                        if not 'T' in reac[lastRK].keys():
+                        if 'T' not in reac[lastRK].keys():
                             reac[lastRK]['T'] = {}
                         reac[lastRK]['T'][propName] = value
+    reac['Species'] = sorted(list(sp))
+    reac['Elements'] = sorted(list(elem), key=lambda x: periodic.GetAtomicNumber(x))
+    return reac
 
-    if yamlOutput:
-        import yaml
-        with open(yamlOutput, 'w', encoding='utf-8') as f:
-            yaml.dump(reac, stream=f, encoding='utf-8')
 
-    block['REACTIONS'] = reac
-    return block
+def ParseChemkinReaction(r, thermo):
+    '''
+    Parse chemkin format reaction
+
+    Arguments:
+       r:  a string of reaction formula
+       thermo:  a dict of thermo database (used to find elements of reactants and products)
+                like the following one in yaml format:
+                (CH2O)3:
+                    formula: {C: 3, H: 6, O: 3}
+                (CH3)2SICH2:
+                    formula: {C: 3, H: 8, SI: 1}
+
+    '''
+    if not isinstance(thermo, dict):
+        raise ValueError('Wrong type of thermo')
+    try:
+        spDatabase = {i:thermo[i]['formula'] for i in thermo.keys()}
+    except:
+        raise ValueError('Wrong type of thermo')
+
+    # remove third-body symbol
+    if '(+M)' in r:
+        thirdBody = 'PRESSURE'
+        r = r.replace('(+M)', '')
+    elif re.findall('\+M(?!\w)', r):
+        thirdBody = 'PART'
+        r = re.sub('\+\s*M(?!\w)', '', r)
+    else:
+        thirdBody = 'NONE'
+
+    # split reactants and products
+    reversible = True
+    reacStr, prodStr = r.split('=')
+    if '<=>' in r:
+        reacStr = reacStr[:-1].strip()
+        prodStr = prodStr[1:].strip()
+    elif '=>' in r:
+        prodStr = prodStr[1:].strip()
+        reversible = False
+
+    spStrs = [reacStr, prodStr]
+    spDicts = []
+
+    # replace
+    for spStr in spStrs:
+        # substitute plus sign in cation
+        spStr2 = re.sub('(\d?)\+\s*$','\\1_plus', spStr)
+        spStr2 = re.sub('(\d?)\+(?=\s*\+)', '\\1_plus',spStr2)
+
+        spsStr = [i.strip().replace('_plus','+') for i in spStr2.split('+')]
+        spsCount = [1 for i in spsStr]
+        spsName = spsStr[:]
+        for i, j in enumerate(spsStr):
+            k = re.findall('^(\d(?:\.\d+)?)\s*', j)
+            if k:
+                spsCount[i] = float(k[0])
+                spsName[i] = re.sub('^(\d(?:\.\d+)?\s*)', '', j)
+
+        spsFormula = [None] * len(spsName)
+        element = dict()
+        for i,(iname,icount) in enumerate(zip(spsName,spsCount)):
+            if iname in spDatabase.keys():
+                spsFormula[i] = spDatabase[iname]
+                for j,k in spsFormula[i].items():
+                    if j in element.keys():
+                        element[j] += icount * k
+                    else:
+                        element[j] = icount*k
+            else:
+                raise ValueError('Specie %s is not in thermo database' % (j))
+
+        spDicts.append({'Name': spsName,
+                        'Count': spsCount,
+                        'Formula': spsFormula,
+                        'Element': element})
+
+    reac = spDicts[0]
+    prod = spDicts[1]
+
+    for i,j in enumerate(reac['Element'].keys()):
+        if reac['Element'][j] != prod['Element'][j]:
+            raise ValueError('Reaction %s is not balanced' % (r))
+
+    elem = list(reac['Element'].keys())
+    sp = list(set(reac['Name'] + prod['Name']))
+
+    reac.pop('Formula', None)
+    prod.pop('Formula', None)
+    reac.pop('Element', None)
+    prod.pop('Element', None)
+
+
+    return {'reac': reac, 'prod': prod, 'elem': elem, 'sp': sp,
+            'reversible': reversible, 'thirdBody': thirdBody}
+
+
+if __name__ == "__main__":
+    filename = 'database\\chem.inp'
+    w = ReadGasInput(filename, yamlOutput='database\\chem.yaml')

@@ -1,5 +1,10 @@
-Thermo_Chemical_Properties/Chemkin/*.dat filter=git-crypt diff=git-crypt
-Thermo_Chemical_Properties/Chemkin/*.inp filter=git-crypt diff=git-crypt
-Thermo_Chemical_Properties/Chemkin/*.json filter=git-crypt diff=git-crypt
+Thermo_Chemical_Properties/Chemkin/*/*.dat filter=git-crypt diff=git-crypt
+Thermo_Chemical_Properties/Chemkin/*/*.inp filter=git-crypt diff=git-crypt
+Thermo_Chemical_Properties/Chemkin/*/*.json filter=git-crypt diff=git-crypt
+Thermo_Chemical_Properties/Chemkin/*/*.yaml filter=git-crypt diff=git-crypt
+**/*.example.dat !filter !diff
+**/*.example.inp !filter !diff
+**/*.example.json !filter !diff
+**/*.example.yaml !filter !diff
 .gitattributes !filter !diff
 .git-crypt !filter !diff
