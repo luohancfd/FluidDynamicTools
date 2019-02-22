@@ -12,11 +12,11 @@ if isempty(m)
     error('No such specie');
 end
 nT = data(m).nT;
-c = data(m).coeff;
+c = data(m).coeff(:,1:7);
 Trange =  data(m).Trange;
 Hdiff =  data(m).Hdiff;
-b = data(m).coeffb;
-mass = data(m).mass;
+b = data(m).coeff(:,8:9);
+mass = data(m).m0;
 %% group by temperature 
 index = cell(1,nT);
 findex  = [];
