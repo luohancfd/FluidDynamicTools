@@ -14,7 +14,7 @@ symbols = (
     'Rg', 'Cn', 'Uut', 'Fl', 'Uup', 'Lv', 'Uus', 'Uuo', 'D'
 )
 
-uppper_symbols = tuple(i.upper() for i in symbols)
+upper_symbols = tuple(i.upper() for i in symbols)
 period_lengths = (2, 8, 8, 18, 18, 32, 32)
 accum_period_lengths = (2, 10, 18, 36, 54, 86, 118)
 
@@ -52,11 +52,11 @@ names = (
 lower_names = tuple(n.lower().lstrip('(').rstrip(')') for n in names)
 
 
-def atomic_number(name):
+def GetAtomicNumber(name):
     if name == 'E' or name == 'e' or name == 'e-' or name == 'E-':
         return 0
-    elif name.upper() in uppper_symbols:
-        return uppper_symbols.index(name.upper()) + 1
+    elif name.upper() in upper_symbols:
+        return upper_symbols.index(name.upper()) + 1
     else:
         raise ValueError('No such element: %s' % (name))
 
@@ -95,7 +95,7 @@ def _get_relative_atomic_masses():
 relative_atomic_masses = tuple(_get_relative_atomic_masses())
 
 
-def mass_from_composition(composition):
+def GetMass(composition):
     """ Calculates molecular mass from atomic weights
 
     Parameters
@@ -116,7 +116,7 @@ def mass_from_composition(composition):
 
     Examples
     --------
-    >>> '%.2f' % mass_from_composition({0: -1, 1: 1, 8: 1})
+    >>> '%.2f' % GetMass({0: -1, 1: 1, 8: 1})
     '17.01'
     """
     mass = 0.0
@@ -130,6 +130,6 @@ def mass_from_composition(composition):
             if k.capitalize() == 'E':
                 mass += v*0.000548579903
             else:
-                i = atomic_number(k)
+                i = GetAtomicNumber(k)
                 mass += v*relative_atomic_masses[i-1]
     return mass
