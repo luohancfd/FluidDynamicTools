@@ -1,20 +1,34 @@
 #!/usr/bin/python3
-import warnings
+import argparse
 import re
 import periodic
-from ReadThermo import ReadThermoData
+from ReadThermo import ReadThermoFile, ReadThermoBlock
 
 
-def ReadGasInput(filename, yamlOutput=None):
+def ReadGasInput(filename, yamlOutput=None, thermoDefaultFile=None):
     '''
-    Read gasphase input file
+    Read GAS PHASE input file, The file usually has ELEMENTS,
+    SPECIES, THERMO and REACTIONS blocks.
+
+    Arguments:
+        filename:  path of the gas phase input file
+        yamlOutput (default: None): path of yaml file to output
+        thermoDefaultFile: path of additional pure therm.inp
+
+    Return:
+        block: a dict containing information
     '''
+    if thermoDefaultFile:
+        thermoDefault,_ = ReadThermoFile(thermoDefaultFile)
+    else:
+        thermoDefault = None
+
     lines = []
     with open(filename, 'r', encoding='utf-8') as f:
         for line in f:
             # strip comment
-            line = re.sub('!.*', '', line).strip()
-            if len(line) > 0:
+            line = re.sub('!.*', '', line)
+            if len(line.strip()) > 0:
                 lines.append(line)
 
     # divide content into blocks
@@ -27,7 +41,7 @@ def ReadGasInput(filename, yamlOutput=None):
     while i < n:
         for name, reg in zip(blockHead, blockHeadReg):
             if reg.match(lines[i]):
-                print('Readin block: %s' % (name))
+                print('Read in block: %s' % (name))
                 block[name].append(lines[i])
                 i += 1
                 while not blockEndReg.match(lines[i]):
@@ -38,13 +52,32 @@ def ReadGasInput(filename, yamlOutput=None):
                 i += 1
                 break
 
-    # read each block
-    reacRaw = block['REACTIONS'][:]
-    reac = ReadReactionBlock(reacRaw)
-    elem = reac.pop('Elements', None)
-    sps = reac.pop('Species', None)
-    unit = reac.pop('Unit', None)
-    block['REACTIONS'] = {'Elements': elem, 'Species': sps, 'Unit': unit, 'Data': reac, 'Raw': reacRaw}
+    # analyze THERMO BLOCK
+    thermoRaw = block['THERMO']
+    if thermoRaw:
+        thermo,_ = ReadThermoBlock(thermoRaw[:])
+        block['THERMO'] = {'Data': thermo, 'Raw': thermoRaw}
+    else:
+        thermo = None
+
+    # analyze REACTION BLOCK
+    reacRaw = block['REACTIONS']
+    if reacRaw:
+        if thermo:
+            if thermoDefault:
+                reac = ReadReactionBlock(reacRaw[:], thermo={**thermo, **thermoDefault})
+            else:
+                reac = ReadReactionBlock(reacRaw[:], thermo)
+        else:
+            if thermoDefault:
+                reac = ReadReactionBlock(reacRaw[:], thermoDefault)
+            else:
+                raise FileNotFoundError('No thermodynamic data found')
+
+        elem = reac.pop('Elements', None)
+        sps = reac.pop('Species', None)
+        unit = reac.pop('Unit', None)
+        block['REACTIONS'] = {'Elements': elem, 'Species': sps, 'Unit': unit, 'Data': reac, 'Raw': reacRaw}
 
     if isinstance(yamlOutput, str):
         import oyaml as yaml
@@ -63,7 +96,7 @@ def ReadReactionBlock(lines, thermo=None):
     Read reaction block of chemkin inp
     '''
     if not thermo:
-        thermo = ReadThermoData('database\\therm.yaml')
+        thermo, Trange = ReadThermoFile('database\\therm.yaml')
 
     eUnits = ['CAL/MOLE', 'KCAL/MOLE', 'JOULES/MOLE', 'KJOULES/MOLE', 'KELVINS', 'EVOLTS']
     from scipy import constants
@@ -89,7 +122,6 @@ def ReadReactionBlock(lines, thermo=None):
     except:
         raise ValueError('Wrong units: %s and %s' % (eUnit, molUnit))
 
-
     regNumber = '[-+]?[0-9]*\.?[0-9]+(?:[eEdD][-+]?[0-9]+)?'
     reacReg = re.compile('([\w\+\-\*()]+\s*(?:=|=>|<=>)\s*[\w\+\-\*()]+)\s+(%s)\s+(%s)\s+(%s)' % (regNumber, regNumber, regNumber))
 
@@ -105,10 +137,10 @@ def ReadReactionBlock(lines, thermo=None):
             reacName = m1[0][0]
             reac[reacName] = {'Info': ParseChemkinReaction(reacName, thermo),
                               'Ar': [float(i) for i in m1[0][1:]]}
-            thisElem = reac[reacName]['Info'].pop('elem',  None)
+            thisElem = reac[reacName]['Info'].pop('elem', None)
             elem.update(set(thisElem))
 
-            thisSp = reac[reacName]['Info'].pop('sp',  None)
+            thisSp = reac[reacName]['Info'].pop('sp', None)
             sp.update(set(thisSp))
 
             lastRK = m1[0][0]
@@ -220,11 +252,16 @@ def ParseChemkinReaction(r, thermo):
     reac.pop('Element', None)
     prod.pop('Element', None)
 
-
     return {'reac': reac, 'prod': prod, 'elem': elem, 'sp': sp,
             'reversible': reversible, 'thirdBody': thirdBody}
 
 
 if __name__ == "__main__":
-    filename = 'database\\chem.inp'
-    w = ReadGasInput(filename, yamlOutput='database\\chem.yaml')
+    parser = argparse.ArgumentParser(description='Reader for Chemkin chemical input file')
+
+    parser.add_argument('-i', '--input', default='database\\chem.inp', help="Path of chem input")
+    parser.add_argument('-y', '--yaml', default='database\\reaction.yaml', help='Path of yaml output')
+    parser.add_argument('-t', '--therm', default='database\\therm.yaml', help='Path of therm input')
+
+    ARGS = parser.parse_args()
+    w = ReadGasInput(ARGS.input, yamlOutput=ARGS.yaml, thermoDefaultFile=ARGS.therm)
