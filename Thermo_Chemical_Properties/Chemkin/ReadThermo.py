@@ -3,13 +3,15 @@
 # Read thermo.dat in Chemkin format
 # Written by https://github.com/luohancfd
 # pylint: disable
-import warnings
+import logging
 import re
 import os
 import argparse
 from collections import OrderedDict
 from periodic import GetMass, GetAtomicNumber
 
+logging.basicConfig(level = logging.ERROR,
+                    format = '%(asctime)s  %(levelname)-10s %(processName)s  %(name)s %(message)s')
 
 def ReadThermoEntry(lines, H0=None, ref=None, S0=None, CAS=None):
     """
@@ -32,7 +34,7 @@ def ReadThermoEntry(lines, H0=None, ref=None, S0=None, CAS=None):
     mass = GetMass(formula)
     phase = lines[0][44]
     if phase.upper() != 'G':
-        warnings.warn('Specie %s is in %s phase' % (species, phase))
+        logging.warning('Specie %s is in %s phase' % (species, phase))
     # Extract the NASA polynomial coefficients
     # Remember that the high-T polynomial comes first!
     Tmin = float(lines[0][45:55].strip())

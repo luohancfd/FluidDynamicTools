@@ -34,7 +34,7 @@ def ReadGasInput(filename, yamlOutput=None, thermoDefaultFile=None):
     # divide content into blocks
     n = len(lines)
     i = 0
-    blockHead = ['ELEMENTS', 'SPECIES', 'THERMO', 'REACTIONS']
+    blockHead = ['ELEMENTS', 'SPECIES', 'THERMO', 'REACTIONS','SITE', 'BULK']
     blockHeadReg = [re.compile('^%s' % (i)) for i in blockHead]
     blockEndReg = re.compile('^END')
     block = {i: [] for i in blockHead}
