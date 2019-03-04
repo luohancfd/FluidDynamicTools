@@ -1,8 +1,11 @@
-#!/usr/bin/python3
+#!/usr/bin/env python3
+# encoding: utf-8
 import argparse
 import re
+import numpy as np
 import periodic
-from ReadThermo import ReadThermoFile, ReadThermoBlock
+from scipy import constants
+from ReadThermo import ReadThermoFile, ReadThermoBlock, Chemkin7Par
 
 
 def ReadGasInput(filename, yamlOutput=None, thermoDefaultFile=None):
@@ -74,18 +77,18 @@ def ReadGasInput(filename, yamlOutput=None, thermoDefaultFile=None):
             else:
                 raise FileNotFoundError('No thermodynamic data found')
 
-        elem = reac.pop('Elements', None)
-        sps = reac.pop('Species', None)
-        unit = reac.pop('Unit', None)
-        block['REACTIONS'] = {'Elements': elem, 'Species': sps, 'Unit': unit, 'Data': reac, 'Raw': reacRaw}
+        elem = reac.pop('elements', None)
+        sps = reac.pop('species', None)
+        unit = reac.pop('unit', None)
+        block['REACTIONS'] = {'elements': elem, 'species': sps, 'unit': unit, 'Data': reac, 'Raw': reacRaw}
 
     if isinstance(yamlOutput, str):
         import oyaml as yaml
         print('Write yaml file: %s' % (yamlOutput))
         with open(yamlOutput, 'w', encoding='utf-8') as f:
-            yaml.dump({'Unit': unit}, stream=f, encoding='utf-8')
-            yaml.dump({'Elements': elem}, stream=f, encoding='utf-8')
-            yaml.dump({'Species': sps}, stream=f, encoding='utf-8')
+            yaml.dump({'unit': unit}, stream=f, encoding='utf-8')
+            yaml.dump({'elements': elem}, stream=f, encoding='utf-8')
+            yaml.dump({'species': sps}, stream=f, encoding='utf-8')
             yaml.dump(reac, stream=f, encoding='utf-8')
 
     return block
@@ -128,19 +131,19 @@ def ReadReactionBlock(lines, thermo=None):
     reac = dict()
     elem = set()
     sp = set()
-    reac['Unit'] = {'eUnit': eUnit, 'molUnit': molUnit, 'e2cgs': e2cgs}
-    reac['Species'] = []
-    reac['Elements'] = []
+    reac['unit'] = {'eUnit': eUnit, 'molUnit': molUnit, 'e2cgs': e2cgs}
+    reac['species'] = []
+    reac['elements'] = []
     for line in lines[1:]:
         m1 = reacReg.findall(line)
         if m1:
             reacName = m1[0][0]
-            reac[reacName] = {'Info': ParseChemkinReaction(reacName, thermo),
+            reac[reacName] = {'info': ParseChemkinReaction(reacName, thermo),
                               'Ar': [float(i) for i in m1[0][1:]]}
-            thisElem = reac[reacName]['Info'].pop('elem', None)
+            thisElem = reac[reacName]['info'].pop('elem', None)
             elem.update(set(thisElem))
 
-            thisSp = reac[reacName]['Info'].pop('sp', None)
+            thisSp = reac[reacName]['info'].pop('sp', None)
             sp.update(set(thisSp))
 
             lastRK = m1[0][0]
@@ -155,8 +158,8 @@ def ReadReactionBlock(lines, thermo=None):
                         if 'T' not in reac[lastRK].keys():
                             reac[lastRK]['T'] = {}
                         reac[lastRK]['T'][propName] = value
-    reac['Species'] = sorted(list(sp))
-    reac['Elements'] = sorted(list(elem), key=lambda x: periodic.GetAtomicNumber(x))
+    reac['species'] = sorted(list(sp))
+    reac['elements'] = sorted(list(elem), key=lambda x: periodic.GetAtomicNumber(x))
     return reac
 
 
@@ -232,29 +235,75 @@ def ParseChemkinReaction(r, thermo):
             else:
                 raise ValueError('Specie %s is not in thermo database' % (j))
 
-        spDicts.append({'Name': spsName,
-                        'Count': spsCount,
-                        'Formula': spsFormula,
-                        'Element': element})
+        spDicts.append({'name': spsName,
+                        'count': spsCount,
+                        'formula': spsFormula,
+                        'element': element})
 
     reac = spDicts[0]
     prod = spDicts[1]
 
-    for i,j in enumerate(reac['Element'].keys()):
-        if reac['Element'][j] != prod['Element'][j]:
+    for i,j in enumerate(reac['element'].keys()):
+        if reac['element'][j] != prod['element'][j]:
             raise ValueError('Reaction %s is not balanced' % (r))
 
-    elem = list(reac['Element'].keys())
-    sp = list(set(reac['Name'] + prod['Name']))
+    elem = list(reac['element'].keys())
+    sp = list(set(reac['name'] + prod['name']))
 
-    reac.pop('Formula', None)
-    prod.pop('Formula', None)
-    reac.pop('Element', None)
-    prod.pop('Element', None)
+    reac.pop('formula', None)
+    prod.pop('formula', None)
+    reac.pop('element', None)
+    prod.pop('element', None)
 
     return {'reac': reac, 'prod': prod, 'elem': elem, 'sp': sp,
             'reversible': reversible, 'thirdBody': thirdBody}
 
+
+def EquilibriumConstant(reaction, Tin, thermo, thermEvaluator='Chemkin7Par'):
+    '''
+    Calculate Equilibrium constant at temperature T
+    '''
+    if isinstance(Tin, list):
+        T2 = np.array(Tin, dtype=np.float64)
+    elif isinstance(Tin, (float, int)):
+        T2 = np.array([Tin], dtype=np.float64)
+    elif not isinstance(Tin, np.ndarray):
+        raise ValueError('Wrong dtype for T')
+    else:
+        T2 = Tin
+
+    if thermEvaluator == 'Chemkin7Par':
+        thermEval = Chemkin7Par
+
+    Rgas = constants.R / 1000  # kJ/mol/K
+    kb = constants.k
+
+    Kp = np.zeros((len(T2),), dtype=np.float64)
+    Kc = np.zeros((len(T2),), dtype=np.float64)
+
+    parsedReac = ParseChemkinReaction(reaction, thermo)
+    reactant = parsedReac['reac']
+    product = parsedReac['prod']
+
+    Gdiff = np.zeros(T2.shape, np.float64)   # kJ/mol
+    eta = np.zeros(T2.shape, np.float64)
+
+    for sp, isto in zip(reactant['name'], reactant['count']):
+        _,_,G,_ = thermEval(sp, T2, thermo, 'si')
+        Gdiff -= G
+        eta -= isto
+
+    for sp, isto in zip(product['name'], reactant['count']):
+        _,_,G,_ = thermEval(sp, T2, thermo, 'si')
+        Gdiff += G
+        eta += isto
+
+    Kp = np.exp(-Gdiff / Rgas / T2)  # for pressure in atm
+
+    # Kp = Pi_i   [(n_i kb T)*(Pa to atm)]^sto_i
+    Kc = Kp / (kb * T2 / constants.atm)**eta   # concentation in molecule/m^3
+
+    return Kp, Kc
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='Reader for Chemkin chemical input file')

@@ -1,30 +1,28 @@
-Unit: {e2cgs: 1.0, eUnit: CAL/MOLE, molUnit: MOLES}
-Elements: [H, C, SI]
-Species: [CH4, C3H6, SI2H3, H2, SIH, C2H6, C2H4, C3H4, C2H5, SI, SI2H6, CH, CH2(S),
-  SI3H8, SI2H5, H2SISIH2, H3SISIH, SI3, C2H, SIH2, CH3, C3H2, H2CCCH, CH2, I*C3H7,
-  C3H8, SIH4, CH2CHCH2, N*C3H7, SI2H2, SI2, SIH3, C2H2, H, C2H3]
+unit: {eUnit: CAL/MOLE, molUnit: MOLES, e2cgs: 1.0}
+elements: [H, C]
+species: [C2H2, C2H6, CH2, CH3, H]
 2CH2=C2H2+H+H:
-  Ar: [40000000000000.0, 0.0, 0.0]
-  Info:
-    prod:
-      Count: [1, 1, 1]
-      Name: [C2H2, H, H]
+  info:
     reac:
-      Count: [2.0]
-      Name: [CH2]
+      name: [CH2]
+      count: [2.0]
+    prod:
+      name: [C2H2, H, H]
+      count: [1, 1, 1]
     reversible: true
     thirdBody: NONE
+  Ar: [40000000000000.0, 0.0, 0.0]
 CH3+CH3(+M)=C2H6(+M):
-  Ar: [9.03e+16, -1.18, 654.0]
-  Info:
-    prod:
-      Count: [1]
-      Name: [C2H6]
+  info:
     reac:
-      Count: [1, 1]
-      Name: [CH3, CH3]
+      name: [CH3, CH3]
+      count: [1, 1]
+    prod:
+      name: [C2H6]
+      count: [1]
     reversible: true
     thirdBody: PRESSURE
+  Ar: [9.03e+16, -1.18, 654.0]
   LOW: [3.18e+41, -7.03, 2762.0]
-  T: {H2: '2'}
   TROE: [0.6041, 6927.0, 132.0]
+  T: {H2: '2'}

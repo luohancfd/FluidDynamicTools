@@ -7,13 +7,108 @@ import logging
 import re
 import os
 import argparse
+import numpy as np
 from collections import OrderedDict
 from periodic import GetMass, GetAtomicNumber
+from scipy import constants
 
 logging.basicConfig(level = logging.ERROR,
                     format = '%(asctime)s  %(levelname)-10s %(processName)s  %(name)s %(message)s')
 
-def ReadThermoEntry(lines, H0=None, ref=None, S0=None, CAS=None):
+def Chemkin7Par(sp, Tin, thermo, unit='si'):
+    '''
+    Evaluate Cp, H, S, G for given temperature and given specie
+
+    Arguments:
+        sp: name of specie
+        T:  temperature list
+        thermo: thermo database
+                       | Cp          |  S         |  H        |  G
+        unit:   si/J:  | J/mol/K     |  J/mol/K   |  kJ/mol   |  kJ/mol
+                cal:   | cal/mol/K   |  cal/mol/K |  kcal/mol |  kcal/mol
+
+    '''
+    if isinstance(Tin, list):
+        T = np.array(Tin, dtype=np.float64)
+    elif isinstance(Tin, float) or isinstance(Tin, int):
+        T = np.array([Tin], dtype=np.float64)
+    elif not isinstance(Tin, np.ndarray):
+        raise ValueError('Wrong dtype for T')
+    else:
+        T = Tin
+
+    if unit == 'si' or unit == 'cal':
+        Rgas = constants.R   # J/mol/K
+    elif unit == 'cal':
+        Rgas = constants.R / constants.calorie
+    else:
+        raise ValueError('Unknown unit')
+
+    if sp in thermo.keys():
+        data = thermo[sp]
+    elif sp.upper() in thermo.keys():
+        data = thermo[sp.upper()]
+    elif sp.capitalize() in thermo.keys():
+        data = thermo[sp.capitalize()]
+    else:
+        raise ValueError('{} is not in thermo database'.format(sp))
+
+    Trange = data['Trange']
+    coeff = data['coeff']
+    if len(Trange) > 1:
+        Tbin = [i[0] for i in Trange]
+        Tbin.append(Trange[-1][1])
+    else:
+        Tbin = Trange[0]
+
+    binIndex = np.digitize(T, Tbin, right=True)
+    tIndex = [np.where(binIndex == i)[0].tolist() for i in range(len(Tbin)+1)]
+
+    Cp = np.zeros(T.shape, dtype=np.float64)
+    S = np.zeros(T.shape, dtype=np.float64)
+    G = np.zeros(T.shape, dtype=np.float64)
+    H = np.zeros(T.shape, dtype=np.float64)
+
+    for i, index in enumerate(tIndex):
+        gT = T[index]
+        if i == 0:
+            a = coeff[0]
+        elif i == len(tIndex)-1:
+            a = coeff[-1]
+        else:
+            a = coeff[i-1]
+        if len(gT) > 0:
+            gTons = np.ones(gT.shape, np.float64)
+            gTlog = np.log(gT)
+            gTm1 = 1.0 / gT
+            gT2 = gT * gT
+            gT3 = gT2 * gT
+            gT4 = gT3 * gT
+
+            pT = np.vstack((gTons, gT, gT2, gT3, gT4))
+
+            nCoeff = np.array(a, dtype=np.float64)
+
+            gCp = Rgas * np.dot(nCoeff[:5], pT)
+            gH  = Rgas * gT * (np.dot(nCoeff[:5]/np.arange(1,6), pT) + nCoeff[-2]*gTm1)
+
+            pT = np.vstack((gTlog, gT, gT2, gT3, gT4))
+            gS = Rgas * (np.dot(nCoeff[:5]/np.array([1,1,2,3,4]), pT) + nCoeff[-1])
+
+            gG = gH - gT * gS
+
+            gH /= 1000
+            gG /= 1000
+
+            Cp[index] = gCp
+            S[index] = gS
+            G[index] = gG
+            H[index] = gH
+
+    return Cp, H, G, S
+
+
+def ReadThermoEntry(lines, H0=None, ref=None, S0=None, CAS=None, name=None):
     """
     Read a thermodynamics `lines` for one species in a Chemkin file. Return
     a dict containing all the information
@@ -56,15 +151,16 @@ def ReadThermoEntry(lines, H0=None, ref=None, S0=None, CAS=None):
         'Tcommon': Tint,
         'coeff': [coeffLow, coeffHigh]
     }
-
-    if H0:
+    if name is not None:
+        data['name'] = name
+    if H0 is not None:
         data['H0'] = H0
-    if ref:
-        data['ref'] = ref
-    if CAS:
-        data['CAS'] = CAS
-    if S0:
+    if S0 is not None:
         data['S0'] = S0
+    if ref is not None:
+        data['ref'] = ref
+    if CAS is not None:
+        data['CAS'] = CAS
 
     return data
 
@@ -120,7 +216,8 @@ def ReadThermoBlock(content):
     regH0 = re.compile('H0\(298K\)\s*=\s*([+-]?\d+\.?\d*)')
     regS0 = re.compile('S0\(298K\)\s*=\s*([+-]?\d+\.?\d*)')
     regCAS = re.compile('CAS="(.*)"')
-    regC = [regRef, regH0, regS0, regCAS]
+    regNAME = re.compile('COMMON_NAME="(.*)"')
+    regC = [regRef, regH0, regS0, regCAS, regNAME]
 
     data = dict()
     while not regEndLine.match(c[i]):
@@ -151,7 +248,8 @@ def ReadThermoBlock(content):
                             auxopt[k] = w
 
         # process dataBlock
-        dat = ReadThermoEntry(dataBlock, ref=auxopt[0], H0=auxopt[1], S0=auxopt[2], CAS=auxopt[3])
+        dat = ReadThermoEntry(dataBlock,
+                              ref=auxopt[0], H0=auxopt[1], S0=auxopt[2], CAS=auxopt[3], name=auxopt[4])
         # print('Specie: %s' % (dat['sp']))
         nsp += 1
 
