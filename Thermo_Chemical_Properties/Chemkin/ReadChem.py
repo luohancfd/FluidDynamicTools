@@ -4,11 +4,12 @@ import argparse
 import re
 import numpy as np
 import periodic
+import logging
 from scipy import constants
 from ReadThermo import ReadThermoFile, ReadThermoBlock, Chemkin7Par
 
 
-def ReadGasInput(filename, yamlOutput=None, thermoDefaultFile=None):
+def ReadGasInput(filename, yamlOutput=None, thermoDefaultFile=True):
     '''
     Read GAS PHASE input file, The file usually has ELEMENTS,
     SPECIES, THERMO and REACTIONS blocks.
@@ -58,7 +59,7 @@ def ReadGasInput(filename, yamlOutput=None, thermoDefaultFile=None):
     # analyze THERMO BLOCK
     thermoRaw = block['THERMO']
     if thermoRaw:
-        thermo,_ = ReadThermoBlock(thermoRaw[:])
+        thermo,_ = ReadThermoBlock(thermoRaw)
         block['THERMO'] = {'Data': thermo, 'Raw': thermoRaw}
     else:
         thermo = None
@@ -183,7 +184,6 @@ def ParseChemkinReaction(r, thermo):
         spDatabase = {i:thermo[i]['formula'] for i in thermo.keys()}
     except:
         raise ValueError('Wrong type of thermo')
-
     # remove third-body symbol
     if '(+M)' in r:
         thirdBody = 'PRESSURE'
@@ -233,7 +233,7 @@ def ParseChemkinReaction(r, thermo):
                     else:
                         element[j] = icount*k
             else:
-                raise ValueError('Specie %s is not in thermo database' % (j))
+                logging.warning('Specie %s is not in thermo database, it might be an etchant' % (iname))
 
         spDicts.append({'name': spsName,
                         'count': spsCount,
