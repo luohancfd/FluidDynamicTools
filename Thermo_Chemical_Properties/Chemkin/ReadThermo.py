@@ -108,12 +108,12 @@ def Chemkin7Par(sp, Tin, thermo, unit='si'):
     return Cp, H, G, S
 
 
-def ReadThermoEntry(lines, H0=None, ref=None, S0=None, CAS=None, name=None):
+def ReadThermoEntry(linesIn, H0=None, ref=None, S0=None, CAS=None, name=None):
     """
     Read a thermodynamics `lines` for one species in a Chemkin file. Return
     a dict containing all the information
     """
-
+    lines = [i for i in linesIn if not re.match('^\s*!', i)]
     species = lines[0][0:16].strip()
     refcode = lines[0][18:24].strip()
     formula0 = {}
@@ -127,9 +127,13 @@ def ReadThermoEntry(lines, H0=None, ref=None, S0=None, CAS=None, name=None):
                 formula0[element] = int(float(count))
     formula = OrderedDict(sorted(list(formula0.items()), key=lambda x: GetAtomicNumber(x[0])))
     mass = GetMass(formula)
-    phase = lines[0][44]
-    if phase.upper() != 'G':
-        logging.warning('Specie %s is in %s phase' % (species, phase))
+    try:
+        phase = lines[0][44]
+        if phase.upper() != 'G':
+            logging.warning('Specie %s is in %s phase' % (species, phase))
+    except Exception as err:
+        logging.error(err)
+        print(lines[0])
     # Extract the NASA polynomial coefficients
     # Remember that the high-T polynomial comes first!
     Tmin = float(lines[0][45:55].strip())
@@ -206,9 +210,9 @@ def ReadThermoBlock(content):
             i += 1
             while regCommentLine.match(c[i]):
                 i += 1
+            i -= 1
         else:
             Trange = [300.000, 1000.000, 5000.000]  # default value
-            i -= 1  # i is now data line
 
     # Loop all data block
     nsp = 0
