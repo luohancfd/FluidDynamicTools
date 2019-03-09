@@ -1,0 +1,53 @@
+# Good manual https://matplotlib.org/users/customizing.html
+# colormap and cycler, use jet if you really old-school style
+axes.prop_cycle: cycler('color', ['k','b','g','ffa500','r','c','m','y'])
+image.cmap: viridis
+
+# facecolor show on screen
+figure.facecolor: white
+figure.edgecolor: white
+
+# facecolor when save
+savefig.edgecolor: white
+savefig.facecolor: white
+savefig.dpi: 150
+
+figure.dpi: 80
+figure.figsize: 8.5,8.5
+figure.subplot.right: 0.925
+figure.subplot.left: 0.125
+figure.subplot.top: 0.9
+figure.subplot.bottom: 0.1
+
+axes.xmargin: 0.0
+axes.ymargin: 0.0
+xtick.direction: in
+ytick.direction: in
+
+ytick.minor.visible: true
+xtick.minor.visible: true
+
+legend.frameon: False
+
+xtick.major.pad: 8
+ytick.major.pad: 8
+xtick.major.size: 6
+ytick.major.size:6
+xtick.minor.size: 6
+ytick.minor.size:6
+axes.labelpad: 8
+axes.titlepad: 10
+
+
+font.sans-serif: Arial, Liberation Sans, DejaVu Sans, Bitstream Vera Sans, sans-serif
+font.family: sans-serif
+font.size: 18
+ytick.labelsize: small
+xtick.labelsize: small
+legend.fontsize: large
+axes.labelsize: large
+axes.labelweight: bold
+axes.titlesize: x-large
+axes.titleweight: bold
+
+mathtext.fontset: cm
