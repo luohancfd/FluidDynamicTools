@@ -10,7 +10,9 @@ figure.edgecolor: white
 # facecolor when save
 savefig.edgecolor: white
 savefig.facecolor: white
+savefig.dpi: 150
 
+figure.dpi: 80
 figure.figsize: 8.5,8.5
 figure.subplot.right: 0.925
 figure.subplot.left: 0.125
@@ -47,3 +49,5 @@ axes.labelsize: large
 axes.labelweight: bold
 axes.titlesize: x-large
 axes.titleweight: bold
+
+mathtext.fontset: cm
