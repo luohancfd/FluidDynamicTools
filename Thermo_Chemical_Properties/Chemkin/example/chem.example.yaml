@@ -1,0 +1,28 @@
+unit: {eUnit: CAL/MOLE, molUnit: MOLES, e2cgs: 1.0}
+elements: [H, C]
+species: [C2H2, C2H6, CH2, CH3, H]
+2CH2=C2H2+H+H:
+  info:
+    reac:
+      name: [CH2]
+      count: [2.0]
+    prod:
+      name: [C2H2, H, H]
+      count: [1, 1, 1]
+    reversible: true
+    thirdBody: NONE
+  Ar: [40000000000000.0, 0.0, 0.0]
+CH3+CH3(+M)=C2H6(+M):
+  info:
+    reac:
+      name: [CH3, CH3]
+      count: [1, 1]
+    prod:
+      name: [C2H6]
+      count: [1]
+    reversible: true
+    thirdBody: PRESSURE
+  Ar: [9.03e+16, -1.18, 654.0]
+  LOW: [3.18e+41, -7.03, 2762.0]
+  TROE: [0.6041, 6927.0, 132.0]
+  T: {H2: '2'}
