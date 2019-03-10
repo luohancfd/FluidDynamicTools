@@ -1379,7 +1379,7 @@ IMF = 1      ! 0: do not use MF model, 1: use MF+SHO 2: use MF+AHO
 IMFdia = 1   ! 0: for collision of same molecules, dissociate the one with higher vibrational energy
              ! 1: for collision of same molecules, dissociate the one gives lower threshold energy
 IMFS = 1     ! 0 for not sampling 1 for sampling
-nonVHS = 2
+nonVHS = 1
 !-- nonVHS 0 for VHS/VSS model
 !          1 for VHS/VSS model+QCT N2O model
 !          2 exponential model, fallback to 0 if parameters not found
@@ -1684,7 +1684,7 @@ USE GEOM
 USE GAS
 USE CALC
 USE OUTPUT
-USE MFDSMC, only : IMF, IMFS
+USE MFDSMC, only : IMF, IMFS, IMFdia
 !
 IMPLICIT NONE
 !
@@ -1947,18 +1947,37 @@ IF (IFI == 0) WRITE (3,*) ' Forced ignition is not allowed',IFI
 IF (IFI >  0) WRITE (3,*) ' Forced ignition is allowed',IFI
 
 !=================== ALL the following is commented out
+
+READ(4,*) nonVHS
+WRITE(3, *) ' noVHS = ',nonVHS
+
+
 !=== set model in DS1 head region
 READ (4,*) IMF !--han: flag to control Macheret-Fridman model
+WRITE(3, *) ' IMF = ',IMF
 IF (IMF == 0)THEN
-  WRITE(3,*) ' Macheret-Fridman model will not be applied anywhere',IMF
+  WRITE(3,*) '   Macheret-Fridman model will not be applied anywhere'
 ELSE IF( IMF == 1)THEN
-  WRITE(3,*) ' Macheret-Fridman-Monte-Carlo will be used for dissociation',IMF
+  WRITE(3,*) '   Macheret-Fridman-Monte-Carlo will be used for dissociation'
 ELSE IF( IMF == 2)THEN
-  WRITE(3,*) ' Macheret-Fridman-Monte-Carlo model with AHO vibrational phase',IMF
+  WRITE(3,*) '   Macheret-Fridman-Monte-Carlo model with AHO vibrational phase'
 ELSE
-  WRITE(3,*) ' ERROR: Wrong input for Macheret-Fridman model',IMF
+  WRITE(3,*) '   ERROR: Wrong input for Macheret-Fridman model'
   stop
 ENDIF
+
+IF (IMF .NE. 0) THEN
+  READ(4, *) IMFdia
+  IF (IMFdia == 0) THEN
+    WRITE(3,*) ' IMFdia=0, dissociate the diatomic molecule with higher vibrational energy'
+  ELSE IF (IMFdia == 1) THEN
+    WRITE(3,*) ' IMFdia=1, dissociate the diatomic molecule with lower threshold energy'
+  ELSE
+    WRITE(3,*) ' WRONG INPUT FOR IMFdia'
+    STOP
+  ENDIF
+ENDIF
+
 IF ( IMF .EQ. 0 ) IMFS = 0
 IF (QCTMODEL == 2 .AND. IMF .NE. 0)THEN
   WRITE(3,*) ' WARNING: MF MODEL BE NOT BE USED!'
