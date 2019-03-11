@@ -878,16 +878,26 @@ REAL(8),ALLOCATABLE,DIMENSION(:,:)   :: MFRMASS(:,:),NMFET0,NMFET,NMFETR
 REAL(8),ALLOCATABLE,DIMENSION(:,:,:) :: NMFER0, NMFEV0, NMFER, NMFEV
 REAL(8),ALLOCATABLE,DIMENSION(:,:,:) :: NMFERR, NMFEVR
 REAL(8),ALLOCATABLE,DIMENSION(:,:,:,:) :: NMFVT0, NMFVT,NMFVTR
+
+! variable to store AHO model parameters
 type :: aho_dt
-  logical :: iaho=.false.
+  integer :: iaho
+  ! iaho = 0 : SHO phase
+  !      = 1 : AHO phase calculated from QCT
+  !      = 2 : AHO phase calculated using Morse parameters
   integer :: vmax, mnphase
   real(8),pointer :: vphase(:,:,:)
+  real(8) :: morse(5)
 end type aho_dt
 type(aho_dt),pointer :: aho_dat(:)
+
+! variable to store Morse parameters
+
 
 contains
   subroutine MF_SET_AHO()
     USE GAS, only : IVMODEL, MSP, GASCODE, ISPV
+    USE CALC, only: EVOLT
     implicit none
 
     integer :: i
@@ -896,42 +906,77 @@ contains
     IF (GASCODE .ne. 8) THEN
       STOP "Only gascode = 8 works with MF model"
     END IF
-    IF (IMF .NE. 2) THEN
-      STOP "IMF != 2 but program gets into MF_SET_AHO"
+    IF (IMF < 2) THEN
+      STOP "IMF < 2 but program gets into MF_SET_AHO"
     END IF
 
     ALLOCATE(aho_dat(MSP), FILENAME(MSP))
     do i=1,MSP
       FILENAME(i) = 'na'
+      aho_dat(i)%iaho = 0
     end do
-    ! hard coded
-    FILENAME(1) = 'n2.bin'
-    FILENAME(3) = 'oo.bin'
-    FILENAME(5) = 'no.bin'
-    OPEN(3,FILE="DS1VD.txt", ACCESS="APPEND")
-    write(3,'(a)') "Start setting AHO model for MFDSMC"
-    do i=1,MSP
-      if (ISPV(i) == 1 .and. FILENAME(i) .ne. 'na' .and. IVMODEL(i,1) ==1 ) then
-        aho_dat(i)%iaho = .true.
-        open(10,file=FILENAME(i),form='unformatted', action='read')
-        read(10) aho_dat(i)%vmax
-        if (aho_dat(i)%vmax < IVMODEL(i,2)) then
-          write(*,'("Specie: ", I2, " don''t have enought vlevel ")') i
-          stop
+
+    IF (IMF == 2) THEN
+      ! hard coded
+      FILENAME(1) = 'n2.bin'
+      FILENAME(3) = 'oo.bin'
+      FILENAME(5) = 'no.bin'
+      OPEN(3,FILE="DS1VD.txt", ACCESS="APPEND")
+      write(3,'(a)') "Start setting AHO model for MFDSMC"
+      do i=1,MSP
+        if (ISPV(i) == 1 .and. FILENAME(i) .ne. 'na' .and. IVMODEL(i,1) ==1 ) then
+          aho_dat(i)%iaho = 1
+          open(10,file=FILENAME(i),form='unformatted', action='read')
+          read(10) aho_dat(i)%vmax
+          if (aho_dat(i)%vmax < IVMODEL(i,2)) then
+            write(*,'("Specie: ", I2, " don''t have enought vlevel ")') i
+            stop
+          end if
+          read(10) aho_dat(i)%mnphase
+          allocate(aho_dat(i)%vphase(aho_dat(i)%mnphase,2,aho_dat(i)%vmax+1))
+          read(10) aho_dat(i)%vphase(:,1,:)
+          read(10) aho_dat(i)%vphase(:,2,:)
+          ! write(*,*) aho_dat(i)%vphase(aho_dat(i)%mnphase,2,aho_dat(i)%vmax+1)
+          close(10)
+          write(3,'(" SP:", I3, " Vmax:", I3, " MNPHASE: ", I8)') i,aho_dat(i)%vmax, aho_dat(i)%mnphase
         end if
-        read(10) aho_dat(i)%mnphase
-        allocate(aho_dat(i)%vphase(aho_dat(i)%mnphase,2,aho_dat(i)%vmax+1))
-        read(10) aho_dat(i)%vphase(:,1,:)
-        read(10) aho_dat(i)%vphase(:,2,:)
-        ! write(*,*) aho_dat(i)%vphase(aho_dat(i)%mnphase,2,aho_dat(i)%vmax+1)
-        close(10)
-        write(3,'(" SP:", I3, " Vmax:", I3, " MNPHASE: ", I8)') i,aho_dat(i)%vmax, aho_dat(i)%mnphase
-      end if
-    end do
-    close(3)
+      end do
+      close(3)
+    ELSE IF (IMF == 3) THEN
+      ! hard coded setting's for Morse parameter
+      ! The first three parameters are De, Rm and beta
+      !     V(r) = De*(1-exp(-beta(x-Rm)))^2 - De
+      ! The last one is the reduced mass of the molecule
+
+      ! N2
+      aho_dat(1)%iaho = 2
+      aho_dat(1)%morse(1) = 9.904795d0*EVOLT  !Joule, Morse zero point energy
+      aho_dat(1)%morse(2) = 1.0977d0          !A
+      aho_dat(1)%morse(3) = 2.81971d10        !m^{-1}
+      aho_dat(1)%morse(4) = 2.32587d-26       !kg
+      aho_dat(1)%morse(5) = 9.82163d0*EVOLT   !Joule, QCT zero point energy
+      ! morse(5) check around line 6182
+
+      ! NO
+      aho_dat(5)%iaho = 2
+      aho_dat(5)%morse(1) = 6.623d0*EVOLT     !Joule
+      aho_dat(5)%morse(2) = 1.159d0           !A
+      aho_dat(5)%morse(3) = 2.83d10           !m^{-1}
+      aho_dat(5)%morse(4) = 2.480328d-26      !kg
+      aho_dat(5)%morse(5) = 6.55879d0*EVOLT   !Joule, check around line 6293
+
+      ! O2
+      aho_dat(3)%iaho = 2
+      aho_dat(3)%morse(1) = 5.211d0*EVOLT     !Joule
+      aho_dat(3)%morse(2) = 1.207d0           !A
+      aho_dat(3)%morse(3) = 2.78d10           !m^{-1}
+      aho_dat(3)%morse(4) = 2.65676d-26       !kg
+      aho_dat(3)%morse(5) = 5.21275d0*EVOLT   !Joule, check around line 6236
+    ENDIF
+    DEALLOCATE(FILENAME)
   end subroutine MF_SET_AHO
 
-  subroutine MF_CLEAN()
+  subroutine MF_CLEAN_AHO()
     implicit none
     integer :: i
     if (associated(aho_dat)) then
@@ -942,23 +987,31 @@ contains
       end do
       deallocate(aho_dat)
     end if
-  end subroutine MF_CLEAN
+  end subroutine MF_CLEAN_AHO
 
-
-  subroutine MF_SAMPLE_PHASE(LS, R, Vlevel)
+  subroutine MF_SAMPLE_PHASE(LS, R, Vlevel, Evib)
     use CALC, only : PI
     implicit none
-    integer,intent(in) :: LS
+    integer,intent(in) :: LS, Vlevel
+    real(8),intent(in) :: Evib
     real(8) :: R
-    integer :: ii, ij, itry, imaxtry = 5, Vlevel
-    logical :: ierror
     ! LS: specie of the molecule
     ! R: a random number between 0 and 1
-    if (IMF .ne. 2) then
+
+    ! variables for QCT based AHO
+    integer :: ii, ij, itry, imaxtry = 5
+    logical :: ierror
+
+    ! variables for Morse based AHO
+    real(8) :: rho, theta0, R2
+
+    if (IMF == 1) then
       R = R*PI
       ! it shouldn't make difference if just use R*2.0*PI
     else
-      if (aho_dat(LS)%iaho) then
+      if (aho_dat(LS)%iaho == 0) then
+        R = R*PI
+      else if (aho_dat(LS)%iaho == 1) then
         ierror = .false.
         do itry = 1, imaxtry
           call binary_search(ii,ij,R,aho_dat(LS)%vphase(:,1,Vlevel+1),&
@@ -979,8 +1032,24 @@ contains
         else
           write(*,'(A, G15.6)') "Failed to sampling for ", R
         end if
-      else
-        R = R*PI
+      else if (aho_dat(LS)%iaho == 2) then
+        ! omega0 = aho_dat(LS)%morse(3)*dsqrt(aho_dat(LS)%morse(1)/aho_dat(LS)%morse(4))/1d15
+        ! rad/fs
+        rho = 1.0d0 + (Evib - aho_dat(LS)%morse(5))/aho_dat(LS)%morse(1)
+        if (rho < 0.0d0) then
+          rho = 0.0d0
+        else
+          rho = dsqrt(rho)
+        endif
+        theta0 = dasin(rho)
+        R2 = dcos(theta0)*dcos(2*PI*R - theta0)/(1 + rho*dsin(2*PI*R-theta0))
+        IF (R2 < -1.0d0) R2 = -1.0d0
+        IF (R2 > 1.0d0)  R2 = 1.0d0
+        if (R < theta0/2.0d0/PI+0.5d0) then
+          R = dacos(R2)
+        else
+          R = 2.0d0*PI - dacos(R2)
+        end if
       end if
     end if
   end subroutine MF_SAMPLE_PHASE
@@ -1020,12 +1089,13 @@ contains
     END IF
   end subroutine MF_CALC_COLL
 
-  subroutine MF_SAMPLE_ANGLE(K,NMFCALL,MFANG,MFCtheta,viblevel,IDT)
+  subroutine MF_SAMPLE_ANGLE(K,NMFCALL,MFANG,MFCtheta,viblevel,MFV1,MFV2,IDT)
     use calc, only:PI
     use gas, only : IREA
     implicit none
     integer :: II, IDT
     integer,intent(in) :: K,viblevel(2), NMFCALL
+    real(8),intent(in) :: MFV1, MFV2
     real(8) :: MFANG(8),MFCtheta,AA
     ! K --- index of reaction
     ! nmfcall -- the time that mf model is called
@@ -1050,10 +1120,10 @@ contains
         MFANG(II) = MFANG(II)*PI
       END DO
       CALL ZGF(MFANG(4),IDT)
-      CALL MF_SAMPLE_PHASE(IREA(1,K),MFANG(4),viblevel(1))
+      CALL MF_SAMPLE_PHASE(IREA(1,K),MFANG(4),viblevel(1),MFV1)
       IF (NMFANG(K) .ge. 8) THEN !collider is diatom
         CALL ZGF(MFANG(5),IDT)
-        CALL MF_SAMPLE_PHASE(IREA(2,K),MFANG(5),viblevel(2))
+        CALL MF_SAMPLE_PHASE(IREA(2,K),MFANG(5),viblevel(2),MFV2)
         DO II=6,8
           CALL ZGF(MFANG(II),IDT)
           MFANG(II) = MFANG(II)*PI
@@ -1321,7 +1391,7 @@ USE GAS
 USE CALC
 USE OUTPUT
 USE OMP_LIB
-USE MFDSMC,only : IMF, IMFS, MF_CLEAN, IMFdia
+USE MFDSMC,only : IMF, IMFS, MF_CLEAN_AHO, IMFdia
 !
 IMPLICIT NONE
 !
@@ -1669,7 +1739,7 @@ DO WHILE (FTIME < TLIM)
   CLOSE(9)
 !
 END DO
-CALL MF_CLEAN()
+CALL MF_CLEAN_AHO()
 !
 STOP
 END PROGRAM DS1
@@ -1954,12 +2024,14 @@ WRITE(3, *) ' noVHS = ',nonVHS
 !=== set model in DS1 head region
 READ (4,*) IMF !--han: flag to control Macheret-Fridman model
 WRITE(3, *) ' IMF = ',IMF
-IF (IMF == 0)THEN
+IF (IMF == 0) THEN
   WRITE(3,*) '   Macheret-Fridman model will not be applied anywhere'
-ELSE IF( IMF == 1)THEN
+ELSE IF (IMF == 1) THEN
   WRITE(3,*) '   Macheret-Fridman-Monte-Carlo will be used for dissociation'
-ELSE IF( IMF == 2)THEN
-  WRITE(3,*) '   Macheret-Fridman-Monte-Carlo model with AHO vibrational phase'
+ELSE IF (IMF == 2) THEN
+  WRITE(3,*) '   Macheret-Fridman-Monte-Carlo model with AHO vibrational phase calculated from QCT'
+ELSE IF (IMF == 3) THEN
+  WRITE(3,*) '   MAcheret-Fridman-Monte-Carlo model with AHO vibrational phase calculated from Morse parameter'
 ELSE
   WRITE(3,*) '   ERROR: Wrong input for Macheret-Fridman model'
   stop
@@ -6865,7 +6937,7 @@ IF (IMF .ne. 0 .and. IMFS == 1) THEN
 END IF
 
 
-IF (IMF == 2) THEN
+IF (IMF == 2 .or. IMF == 3) THEN
   CALL MF_SET_AHO()
 END IF
 
@@ -6875,8 +6947,10 @@ IF (IMF .ne. 0) THEN
   WRITE(10,*)
   IF (IMF == 1) THEN
     WRITE(10,'(A,1X,I2)') 'Macheret-Fridman model: MF-SHO  Dia:',IMFdia
-  ELSE
-    WRITE(10,'(A,1X,I2)') 'Macheret-Fridman model: MF-AHO  Dia:',IMFdia
+  ELSE IF (IMF == 2) THEN
+    WRITE(10,'(A,1X,I2)') 'Macheret-Fridman model: MF-AHO QCT vphase  Dia:',IMFdia
+  ELSE IF (IMF == 3) THEN
+    WRITE(10,'(A,1X,I2)') 'Macheret-Fridman model: MF-AHO Morse vphase  Dia:',IMFdia
   END IF
   WRITE(10,'(A)') "Macheret-Fridman model parameter:"
 END IF
@@ -9673,7 +9747,7 @@ IF (NRE > 0) THEN
               !  6. beta_1
               !  7. beta_2
               !  8. delta
-              CALL MF_SAMPLE_ANGLE(K,NMFCALL,MFANG,MFCtheta,viblevel,IDT)
+              CALL MF_SAMPLE_ANGLE(K,NMFCALL,MFANG,MFCtheta,viblevel,MFV1,MFV2,IDT)
                 ! log angles for binning
                 !IF (IREAC == 2)THEN
                   !DO II = 1,NMFANG(K)
@@ -9697,7 +9771,7 @@ IF (NRE > 0) THEN
                 ! exchange MFcoll
                 CALL MF_CALC_COLL(K,NMFCALL,MFcoll,IDT)
                 ! exchange some angles
-                CALL MF_SAMPLE_ANGLE(K,NMFCALL,MFANG,MFCtheta,viblevel,IDT)
+                CALL MF_SAMPLE_ANGLE(K,NMFCALL,MFANG,MFCtheta,viblevel,MFV2,MFV1,IDT)
                 ! exchange internal energy
                 CALL MF_EVAL_F(K,NMFCALL,MFV2,MFV1,MFR2,MFR1,MFcoll,MFANG,MFCtheta,MFF(NMFCALL),IDT)
 
