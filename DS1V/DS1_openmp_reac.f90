@@ -888,7 +888,6 @@ type(aho_dt),pointer :: aho_dat(:)
 contains
   subroutine MF_SET_AHO()
     USE GAS, only : IVMODEL, MSP, GASCODE, ISPV
-    USE CALC, only : QCTMODEL
     implicit none
 
     integer :: i
@@ -1375,7 +1374,7 @@ IREAC=2      !0 reaction on and rate sampling off (standard case)
 !             1 reaction on and rate sampling on (samples only NSPDF cell, requires ISF>0)
 !             2 reaction off and rate sampling on (called by run_ireac_ds1v.sh, samples only NSPDF cell, requires ISF=0 & NSEED>= 0)
 QCTMODEL=1   !0 for LB+SHO vibrational levels, 1 for TCE+LB+AHO, 2 MEQCT+AHO (for O2+O and N2+O)
-IMF = 1      ! 0: do not use MF model, 1: use MF+SHO 2: use MF+AHO
+IMF = 1      ! 0: do not use MF model, 1: use MF+SHO 2: use MF+AHO(QCT ladder) 3: use MF+AHO(Morse Potential)
 IMFdia = 1   ! 0: for collision of same molecules, dissociate the one with higher vibrational energy
              ! 1: for collision of same molecules, dissociate the one gives lower threshold energy
 IMFS = 1     ! 0 for not sampling 1 for sampling

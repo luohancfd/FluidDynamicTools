@@ -2,7 +2,7 @@ Rovibrational ladder for:
      on
 Vmax:
           52
-Jmax: 
+Jmax:
          233         229         226         222         219         215
          212         209         206         202         199         196
          193         189         186         183         180         176
