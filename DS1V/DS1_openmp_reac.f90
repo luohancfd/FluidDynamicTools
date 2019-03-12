@@ -456,6 +456,7 @@ INTEGER :: nonVHS  !--han add
 !-- nonVHS 0 for VHS/VSS model
 !          1 for VHS/VSS model+QCT N2O model
 !          2 exponential model, fallback to 0 if parameters not found
+!          3 special fix for MF-DSMC O2/O case
 !
 END MODULE CALC
 !
@@ -1208,7 +1209,6 @@ contains
 !
 !--IMF only applied when QCTMODEL = 1, 0 for TCE, 1 for MFDSMC, 2 for MFDSMC-AHO
 !--IMFS = 0, not sample anything related to MF model =1 sample
-!--nonVHS flag to control nonVHS model for N2+O
 !--NMFANG = number of angle to sample for MF model, <8 for atom-diatom, >= 8 for diatom-diatom
 !--NMFpair number of molecular pairs to use MF dissociation model
 !--IMFpair store the index of different molecular pair
@@ -1444,14 +1444,18 @@ IREAC=2      !0 reaction on and rate sampling off (standard case)
 !             1 reaction on and rate sampling on (samples only NSPDF cell, requires ISF>0)
 !             2 reaction off and rate sampling on (called by run_ireac_ds1v.sh, samples only NSPDF cell, requires ISF=0 & NSEED>= 0)
 QCTMODEL=1   !0 for LB+SHO vibrational levels, 1 for TCE+LB+AHO, 2 MEQCT+AHO (for O2+O and N2+O)
+! WARNING: All above variables are hard coded, pay attenton before use it
+
+! WARNING: The following variables are set by reading input
 IMF = 1      ! 0: do not use MF model, 1: use MF+SHO 2: use MF+AHO(QCT ladder) 3: use MF+AHO(Morse Potential)
 IMFdia = 1   ! 0: for collision of same molecules, dissociate the one with higher vibrational energy
              ! 1: for collision of same molecules, dissociate the one gives lower threshold energy
 IMFS = 1     ! 0 for not sampling 1 for sampling
-nonVHS = 1
+nonVHS = 0
 !-- nonVHS 0 for VHS/VSS model
 !          1 for VHS/VSS model+QCT N2O model
 !          2 exponential model, fallback to 0 if parameters not found
+!          3 special fix for MF-DSMC O2/O case
 !
 !--variables for vibratioal sampling
 ALLOCATE (NSVEC(NSCELLS))
@@ -2015,10 +2019,13 @@ READ (4,*) IFI !--isebasti: included IFI option
 IF (IFI == 0) WRITE (3,*) ' Forced ignition is not allowed',IFI
 IF (IFI >  0) WRITE (3,*) ' Forced ignition is allowed',IFI
 
-!=================== ALL the following is commented out
-
 READ(4,*) nonVHS
 WRITE(3, *) ' noVHS = ',nonVHS
+IF (nonVHS == 3 .and. IRM .ne. 250 .and. IRM .ne. 150 .and. IRM .ne. 160) THEN
+  WRITE(3,*) ' nonVHS = 3 should be used with IRM == 250/150/160'
+  WRITE(*,*) ' nonVHS = 3 should be used with IRM == 250/150/160'
+  STOP
+END IF
 
 
 !=== set model in DS1 head region
@@ -6403,6 +6410,8 @@ IF (GASCODE .eq. 8) THEN
   ELSE IF (nonVHS == 1) THEN
     INONVHS(1,4) = 1
     INONVHS(4,1) = 1
+  ELSE IF (nonVHS == 3) THEN
+    INONVHS = 0
   END IF
 END IF
 
@@ -6418,7 +6427,7 @@ USE GEOM
 USE GAS
 USE CALC
 USE OUTPUT
-USE MFDSMC, only:IMF,IMFS,NMFpair,NMFANG, IMFpair, &
+USE MFDSMC, only:IMF,IMFS,NMFpair,NMFANG, IMFpair,IMFdia,&
   MFRMASS, NMFER0, NMFET0,NMFEV0,NMFER,&
   NMFET,NMFEV,NMFERR,NMFETR,NMFEVR,NMFVT0,NMFVT,NMFVTR
 !
@@ -6429,7 +6438,8 @@ ZCHECK = 0; ZCHECK2 = 0
 !
 101 CONTINUE
 OPEN (7,FILE='PARAMETERS.DAT',FORM='UNFORMATTED',ERR=101) !--isebasti: replace binary by unformatted
-READ (7) NCCELLS,NCELLS,MMRM,MMVM,MNM,MNRE,MNSR,MSP,MTBP,ILEVEL,MDIV,IRECOM,MMEX,MEX,ISF,NBINS,NSNAP,ITMAX,IMF, IMFS, NMFpair,nonVHS !--isebasti: included ISF,NBINS,NSAP
+READ (7) NCCELLS,NCELLS,MMRM,MMVM,MNM,MNRE,MNSR,MSP,MTBP,ILEVEL,MDIV,IRECOM,MMEX,MEX,ISF,NBINS,NSNAP,ITMAX !--isebasti: included ISF,NBINS,NSAP
+READ (7) IMF, IMFS, NMFpair, IMFdia, nonVHS !--han: included these for MF model
 CLOSE(7)
 !
 IF (MMVM > 0) THEN
@@ -6519,7 +6529,7 @@ USE GEOM
 USE GAS
 USE CALC
 USE OUTPUT
-USE MFDSMC, only:IMF,IMFS,NMFpair,NMFANG, IMFpair, &
+USE MFDSMC, only:IMF,IMFS,NMFpair,NMFANG, IMFpair, IMFdia,&
   MFRMASS, NMFER0, NMFET0,NMFEV0,NMFER,&
   NMFET,NMFEV,NMFERR,NMFETR,NMFEVR,NMFVT0,NMFVT,NMFVTR
 !
@@ -6532,7 +6542,8 @@ ZCHECK2 = 1234567
 !
 101 CONTINUE
 OPEN (7,FILE='PARAMETERS.DAT',FORM='UNFORMATTED',ERR=101) !--isebasti: replace binary by unformatted
-WRITE (7) NCCELLS,NCELLS,MMRM,MMVM,MNM,MNRE,MNSR,MSP,MTBP,ILEVEL,MDIV,IRECOM,MMEX,MEX,ISF,NBINS,NSNAP,ITMAX,IMF,IMFS,NMFpair,nonVHS !--isebasti: included ISF,NBINS,NSAP,ITMAX
+WRITE(7) NCCELLS,NCELLS,MMRM,MMVM,MNM,MNRE,MNSR,MSP,MTBP,ILEVEL,MDIV,IRECOM,MMEX,MEX,ISF,NBINS,NSNAP,ITMAX !--isebasti: included ISF,NBINS,NSAP,ITMAX
+WRITE(7) IMF, IMFS, NMFpair, IMFdia, nonVHS !--han: included these for MF model
 CLOSE(7)
 !
 102 CONTINUE
@@ -7802,11 +7813,11 @@ INTEGER, INTENT(IN) :: LS, MS
 REAL(KIND=8), INTENT(IN) :: EV, EC, DOF
 REAL(KIND=8) :: P
 
-IF (INONVHS(LS,MS) == 0 .OR. INONVHS(LS, MS) == 1) THEN
+IF (INONVHS(LS,MS) == 2) THEN
+  P = EXPCOL_VT(LS, MS, EV, EC)
+ELSE
   ! use regular LB model
   P = (1.d0 - EV/EC)**(DOF*0.5d0 - 1.0d0)  ! bird eq 5.61
-ELSE
-  P = EXPCOL_VT(LS, MS, EV, EC)
 END IF
 !
 END SUBROUTINE INELASTIC_VT
@@ -7825,7 +7836,9 @@ INTEGER :: IDT
 REAL(KIND=8), INTENT(IN) :: EC
 REAL(KIND=8) :: P, RANF, PMAX
 
-IF (INONVHS(KS, JS) == 0 .OR. INONVHS(KS, JS) == 1) THEN
+IF (INONVHS(KS, JS) == 2) THEN
+  P =  EXPCOL_RT(KS,JS,EC,ISPR(1,KS),IDT)
+ELSE
   ! use regular LB model
   IF (ISPR(1,KS) == 2) THEN
     CALL ZGF(RANF, IDT)
@@ -7833,8 +7846,6 @@ IF (INONVHS(KS, JS) == 0 .OR. INONVHS(KS, JS) == 1) THEN
   ELSE
     CALL LBS(DBLE(ISPR(1,KS))*0.5d0 - 1.0d0, 1.5d0 - SPM(3,KS,JS), P, IDT)
   END IF
-ELSE
-  P =  EXPCOL_RT(KS,JS,EC,ISPR(1,KS),IDT)
 END IF
 
 END SUBROUTINE INELASTIC_RT
@@ -10810,6 +10821,11 @@ REAL(KIND=8),DIMENSION(3) :: VRC,VCM,VRCP,VRCT
 REAL(KIND=8) :: ECR(2),EVIBEV,BMAX,REST_DOF
 INTEGER :: IETDX,IERDX(2),IEVDX(2),IVPS(2)
 logical :: IREACSP
+! variable used for nonVHS == 3
+LOGICAL :: IVHS
+REAL(8) :: CVR2, Tomega, Tomega2, SXSECTION2
+REAL(8),EXTERNAL :: GAM
+
 !
 !--N,M,K working integer
 !--LS,MS,KS,JS molecular species
@@ -10860,6 +10876,7 @@ NUMEXR=0
 !$omp private(SXSECTION,RXSECTION,VTXSECTION,TXSECTION) &
 !$omp private(QNU,A1,A2,B1,B2,C1,C2,E,F,EL,ED,ET0,EROT,EV,SIGMA_REF,EV_POST,SUMF,EF,S) &
 !$omp private(ECR,EVIBEV,IVPS,BMAX,REST_DOF)&
+!$omp private(CVR2,IVHS, TOmega, TOmega2, SXSECTION2)&
 !$omp private(IETDX,IEVDX,IERDX,IREACSP) &
 !$omp reduction(+:ndissoc,ndissl,trecomb,nrecomb,treacl,treacg,tnex,tforex,trevex) & !Q-K
 !$omp reduction(+:totdup,totcol,pcolls,tcol,cscr,colls,wcolls,clsep,reac,npvib) &
@@ -11121,6 +11138,49 @@ DO N=1,NCCELLS
             ECT=0.5D00*SPM(1,LS,MS)*VRR         !collision translational energy in J
             ET0=ECT/EVOLT                        !convert to eV
             CALL CALC_TOTXSEC(LS, MS, VR, VRR, ET0, -1.0d0, SXSECTION, BMAX, CVR)
+            IF (nonVHS == 3) THEN
+              TOmega = SPM(3,LS,MS)
+              CVR2 = CVR   !save true vhs cross sections
+              SXSECTION2 = SXSECTION
+
+              ! Han added the following to correct reaction rate for MF-DSMC model
+              IF ((LS == 3 .and. MS == 4) .or. (LS == 4 .and. MS == 3)) THEN
+                ! For O2+O with MF-DSMC model, the total cross sections are corrected to match
+                ! O2+O dissociation rates calculated by Marat Kulakhmetov
+                IF (IMF == 3) THEN
+                  CVR  = CVR*5.8863204392427d0
+                  ! original dref of O2+O VHS: 3.4420
+                  ! dref_correct= 8.3509
+                  ! the multiplier is dref_correct^2/dref^2
+                ELSE IF (IMF == 1) THEN
+                  CVR  = CVR*6.681561661633024d0
+                  ! MF-DSMC-SHO, match Marat's rate, check 2018 Han Luo's PRF
+                ELSE
+                  WRITE(*,*) "Something wrong in collision Code:1"
+                  STOP
+                END IF
+                SXSECTION = CVR/CVR2*SXSECTION2
+                IVHS = .false.
+              ELSE IF (LS == 3 .and. MS == 3) THEN
+                IF (IMF == 1) THEN
+                  ! the following one try to match Park's rate, or Byron's rate
+                  TOmega = 0.99531175d0
+                  CVR = VR*PI*(17.4742452D-10)**2*((2.D00*BOLTZ*SPM(5,LS,MS)/(SPM(1,LS,MS)*VRR))**(TOmega-0.5D00))
+                  CVR = CVR / GAM(2.5D0 - TOmega)
+                  CVR = CVR*(1.0d0 - DEXP(-2238.0d0/VAR(8,NN)))
+                  SXSECTION = CVR/CVR2*SXSECTION2
+                  IVHS = .false.
+                ELSE IF (IMF == 3) THEN
+                  ! DON'T DO ANYTHING, because MF-DSMC-AHO matches well with Ross Chaudry's QCT rate
+                  IVHS = .true.
+                ELSE
+                  WRITE(*,*) "Something wrong in collision Code:2"
+                  STOP
+                END IF
+              END IF
+            ELSE
+              IVHS = .true.
+            END IF
 
 
 ! get rotational energy and vibrational energy, ECR1 is always the one with lower sp number
@@ -11746,12 +11806,23 @@ DO N=1,NCCELLS
               ! new molecule and the third body
               ! The values are changed in CHECK_REACTION
               VRC = VRC/VRI*VR             ! rescale to match current magnitude
+              IF ( .not. IVHS ) THEN
+                CALL ZGF(RANF,IDT)
+                IF (RANF .le. (CVR2*1d20/VRI/TXSECTION)) THEN
+                   IVHS = .true.
+                END IF
+                ! either by probability or if CVR2>CVR
+              END IF
 
               ! The current implementation may not handle recombination well for EXP scattering
-              IF (JX == 2) THEN
-                CALL SCATTER_MOL(LS, MS, BMAX, ET0, VRI, VR, VRC, VRCP, IDT)
+              IF (IVHS) THEN
+                IF (JX == 2) THEN
+                  CALL SCATTER_MOL(LS, MS, BMAX, ET0, VRI, VR, VRC, VRCP, IDT)
+                ELSE
+                  CALL SCATTER_MOL(IREA(1,IKA), IREA(2,IKA), BMAX,ET0, VRI, VR, VRC, VRCP, IDT)
+                END IF
               ELSE
-                CALL SCATTER_MOL(IREA(1,IKA), IREA(2,IKA), BMAX,ET0, VRI, VR, VRC, VRCP, IDT)
+                VRCP = VRC
               END IF
 
               PV(1:3,L)=VCM(1:3)+RMM*VRCP(1:3)
@@ -11861,16 +11932,16 @@ INTEGER :: IERROR
 
 ! ET = 0.5d0*SPM(1,LS,MS)*VRR/EVOLT  ! collisional energy in eV
 
-IF (INONVHS(LS,MS) == 0 .or. (INONVHS(LS,MS) == 1 .and. EVIB < 0.0D0)) THEN
+IF (INONVHS(LS, MS) == 2) THEN
+  CALL EXPCOL_TOTXSEC(LS, MS, ET0, TOTXSEC, IERROR)
+ELSE IF (INONVHS(LS,MS) == 0 .or. (INONVHS(LS,MS) == 1 .and. EVIB < 0.0D0)) THEN
   TOTXSEC = SPM(2,LS,MS)*((2.D00*BOLTZ*SPM(5,LS,MS)/(SPM(1,LS,MS)*VRR))**(SPM(3,LS,MS)-0.5D00))*SPM(6,LS,MS)*1.0d20
-ELSE IF (INONVHS(LS,MS) == 1) THEN
+ELSE
   EVIBEV = EVIB/EVOLT  ! convert to eV
   IF (EVIBEV >= 6.9d0  ) EVIBEV = 6.9d0  ! extrapolate
   TOTXSEC = DLOG(ET0) - (CTOT(8) + EVIBEV*(CTOT(7) + EVIBEV*CTOT(6)))
   TOTXSEC = (CTOT(3)+CTOT(4)*EVIBEV*EVIBEV)*DTANH(CTOT(5)*TOTXSEC) + CTOT(2)*EVIBEV
   TOTXSEC = CTOT(1)*DEXP(TOTXSEC)
-ELSE IF (INONVHS(LS,MS) == 2) THEN
-  CALL EXPCOL_TOTXSEC(LS, MS, ET0, TOTXSEC, IERROR)
 END IF
 BMAX = DSQRT(TOTXSEC/PI)  !angstrom
 CVR = TOTXSEC/1.0d20*VR
