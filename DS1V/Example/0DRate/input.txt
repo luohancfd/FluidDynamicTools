@@ -1,0 +1,5 @@
+3       !new run
+0       !seed
+0       !continue with current cells
+15000 !translational temperature
+15000 !vibrational temperature

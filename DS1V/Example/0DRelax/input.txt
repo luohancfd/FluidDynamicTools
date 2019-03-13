@@ -1,0 +1,5 @@
+3       !new run
+0       !seed
+0       !continue with current cells
+20000 !temperature
+500     !vibrational temperature

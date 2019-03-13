@@ -1721,7 +1721,7 @@ DO WHILE (FTIME < TLIM)
   CLOSE(119)
 118  FORMAT(I10,2X, 10(G14.6,2X))
   IF (IREAC .ne. 2) THEN
-    ! do not write restart for ireac = 2, file is too huge
+    ! WARNING: do not write restart for ireac = 2, file is too huge
     CALL WRITE_RESTART
   END IF
   IF (ISF > 0) CALL INITIALISE_SAMPLES
@@ -2021,7 +2021,7 @@ IF (IFI >  0) WRITE (3,*) ' Forced ignition is allowed',IFI
 
 READ(4,*) nonVHS
 WRITE(3, *) ' noVHS = ',nonVHS
-IF (nonVHS == 3 .and. IRM .ne. 250 .and. IRM .ne. 150 .and. IRM .ne. 160) THEN
+IF (nonVHS == 3 .and. IRM .ne. 250 .and. IRM .ne. 150 .and. IRM .ne. 160 .and. IRM .ne. 0) THEN
   WRITE(3,*) ' nonVHS = 3 should be used with IRM == 250/150/160'
   WRITE(*,*) ' nonVHS = 3 should be used with IRM == 250/150/160'
   STOP
@@ -6397,6 +6397,17 @@ IF (MNRE > 0 .AND. IMF .ne. 0) THEN
   END IF
 ENDIF
 
+! allocate dummy variable due to the reduction in SUBROUTINE COLLISION
+!$IF (MNRE <= 0 .or. IMF  == 0 .or. IMFS .ne. 1 ) THEN
+!$  ALLOCATE(NMFET0(1,1), NMFER0(1,2,1), NMFEV0(1,2,1), NMFVT0(1,1,2,1), &
+!$            NMFEV(1,2,1), NMFET(1,1), NMFER(1,2,1), NMFVT(1,1,2,1), STAT=ERROR)
+!$  IF (ERROR /= 0) THEN
+!$    WRITE(*,*) 'PROGRAM COULD NOT ALLOCATE SPACE FOR OPENMP DUMMY VARIABLE', ERROR
+!$    STOP
+!$  END IF
+!$END IF
+
+
 !-- Allocate variables related to nonVHS model
 ALLOCATE(INONVHS(MSP,MSP), STAT=ERROR)
 IF (ERROR /= 0) THEN
@@ -10266,7 +10277,7 @@ IF (IKA > 0) THEN
     !$omp atomic
     NPVIB(1,IKA,3,KV,K)=NPVIB(1,IKA,3,KV,K)+1
     !$omp critical
-    IF (IREAC > 0 .and. NPM == 3 .and. IMF .ne. 0 .and. KV == 1 .and. IMFS == 1) THEN
+    IF (IREAC > 0 .and. NPM == 3 .and. IMF .ne. 0 .and. KV == 1 .and. IMFS == 1 .and. MNRE > 0) THEN
       IETDX = FLOOR(ECT/BOLTZ/FTMP0/0.01D0)+1;
       IETDX=MIN(IETDX,1000)
       NMFETR(IETDX,IKA) = NMFETR(IETDX,IKA) + 1.0d0
@@ -10864,7 +10875,8 @@ REAL(8),EXTERNAL :: GAM
 !--MSVELC mean square of the velocity
 !--VARIANCE
 
-NUMEXR=0
+
+
 
 !
 !$omp parallel &
@@ -11212,7 +11224,10 @@ DO N=1,NCCELLS
               END IF
             END IF
             ! Sample rotational, translational and vibrational energy
-            IF ((IREAC .eq. 2) .and. (IMF .ne. 0) .and. (MNRE <= 2) .and. (IMFS == 1)) THEN
+            IF (IREAC .eq. 2 .and. IMF .ne. 0 .and. MNRE > 0 .and. IMFS == 1) THEN
+              IF (MNRE > 2) THEN
+                WRITE(*,*) " IMFS shouldn't be enabled if MNRE > 2"
+              END IF
               IETDX = FLOOR(ECT/BOLTZ/FTMP0/0.010D0)+1
               IETDX = MIN(IETDX,1000)
               NMFET0(IETDX,IMFpair(LS,MS)) = NMFET0(IETDX,IMFpair(LS,MS)) + 1.0D0
@@ -11409,7 +11424,10 @@ DO N=1,NCCELLS
               !--Sample internal states and energy
               !-------------------------------------------------
               ! sample t,r,v energy for particles that collide
-              IF ((IREAC .eq. 2) .and. (IMF .ne. 0) .and. (MNRE <= 2) .and. (IMFS == 1)) THEN
+              IF ((IREAC .eq. 2) .and. (IMF .ne. 0) .and. (MNRE > 0) .and. (IMFS == 1)) THEN
+                IF (MNRE > 2) THEN
+                  WRITE(*,*) 'MNRE should be less than 3 when IMFS is enabled'
+                END IF
                 NMFET(IETDX,IMFpair(LS,MS)) = NMFET(IETDX,IMFpair(LS,MS)) + 1.0D0
                 ! KK=1 the one with lower smaller sp number
                 DO KK = 1,2
@@ -11665,12 +11683,27 @@ DO N=1,NCCELLS
                                   IF (VAR(8,NN)<= 1.d3) ZV=C*(60.01d0+0.04268d0*VAR(8,NN)-2.29d-5*VAR(8,NN)**2.d0)
                                   IF (VAR(8,NN) > 1.d3) ZV=C*DEXP(-0.1372d0*DLOG(VAR(8,NN))+5.328d0)
                                 END IF
+
+                                ! =========== Israel's correction of VT O2-O2 for omega = 0.71, dref=3.985====
                                 !IF (LS==3.AND.MS==3) THEN
                                 !  !calibrated with O2-O2 ibraguimova2013 data
                                 !  A=VAR(8,NN)**(-1.d0/3.d0)                          !T^(-1/3)
                                 !  B=7.206d0-289.4d0*A+4919.d0*A**2.d0-2.23d4*A**3.d0 !log10(Zv)
                                 !  ZV=C*10.d0**B
                                 !END IF
+
+                                ! === Han's correction
+                                IF (LS==3.AND.MS==3) THEN
+                                  !calibrated with O2-O2 ibraguimova2013 data
+                                  A=VAR(8,NN)**(-1.d0/3.d0)                          !T^(-1/3)
+                                  IF (VAR(8,NN) .ge. 6.0d3) THEN
+                                      B=5.2258d0-232.766d0*A+4.6605d3*A**2 - 2.22176d4*A**3
+                                      ZV = 10.0d0**B
+                                  ELSE
+                                      ZV=4.5134d5*VAR(8,NN)**(-1.795d0)/(1.0D0-DEXP(-2238.D0/VAR(8,NN)))*DEXP(144.123d0*A)
+                                  END IF
+                                  ZV=C*ZV
+                                END IF
                               END IF
                               CALL ZGF(RANF,IDT)
                               IF ((1.D00/ZV > RANF).OR.(IKA /= 0)) THEN
