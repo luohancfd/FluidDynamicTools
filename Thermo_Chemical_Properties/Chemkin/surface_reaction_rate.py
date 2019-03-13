@@ -23,10 +23,32 @@ def S2Rate(formula, stickCoeff=1.0, nsite=1, siteOccupy=1, siteDensity=1.0826715
     Arguments:
         formula: eg: {'H':1}
     '''
-    mass = GetMass(formula) / 1000  #kg/mol
+    if isinstance(formula, dict):
+        mass = GetMass(formula) / 1000  #kg/mol
+    else:
+        mass = THERMO[formula]['m0']/1000
+
     rate = np.sqrt(Rgas/2/np.pi/mass) * 100 * (siteOccupy / siteDensity)**nsite * stickCoeff  # cc/mol/s
     return rate
 
 if __name__ == "__main__":
-    print('{:e}'.format(S2Rate({'H':1})))
-    print('{:e}'.format(S2Rate({'Si':1})))
+    sp = {'CH4': [5e-5, 1],
+          'CH3': [0.01, 1],
+          'CH2': [0.01, 1],
+          'CH': [0.01, 1],
+          'C2H6': [0.0016, 2],
+          'C2H5': [0.03, 2],
+          'C2H4': [0.0016, 2],
+          'C2H3': [0.03, 2],
+          'C2H2': [0.02, 2],
+          'C2H': [0.03, 2],
+          'SIH3': [0.5, 1],
+          'SIH2': [0.7, 1],
+          'SIH': [0.94, 1],
+          'SI': [1.0, 1],
+          'SI2C': [1.0, 1],
+          'SI2': [1.0, 2],
+          'SI3': [1.0, 3]}
+    for key,val in sp.items():
+        r = S2Rate(key, val[0], val[1])
+        print('{:4s}   A = {:e}   log10(A) = {:2f}'.format(key,r,np.log10(r)))
