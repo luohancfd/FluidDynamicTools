@@ -2031,7 +2031,11 @@ IF (nonVHS == 3 .and. IRM .ne. 250 .and. IRM .ne. 150 .and. IRM .ne. 160 .and. I
   WRITE(*,*) ' nonVHS = 3 should be used with IRM == 250/150/160'
   STOP
 END IF
-
+IF (nonVHS .ne. 0 .and. IMF == 0) THEN
+  WRITE(*,*) ' nonVHS has only been tested with MF-DSMC model'
+  WRITE(3,*) ' nonVHS has only been tested with MF-DSMC model'
+  STOP
+END IF
 
 !=== set model in DS1 head region
 READ (4,*) IMF !--han: flag to control Macheret-Fridman model
@@ -2446,8 +2450,9 @@ DO N=1,NCCELLS
 END DO
 
 !-- Han: enlarge CCELL(4) in case of error
+!-- Han's trick for nonVHS
 IF (nonVHS .ne. 0) THEN
-  CCELL(4,:) = CCELL(4,:)*1.2D0
+  CCELL(4,:) = CCELL(4,:)*1.1D0
 END IF
 !
 !--set the entry quantities
@@ -7936,11 +7941,10 @@ TNEX=0.D00    !--isebasti: uncommented
 !
  CS=0. ; CSS=0. ; CSSS=0. ; CST=0.d0; BINS=0.d0; BIN=0.d0 !--isebasti: CST,BINS,BIN included
  CST(0,:)=1.d0; BINS(0,:,:)=1.d0; BIN(0,:)=1.d0           !--isebasti: to avoid dividing by zero
- CCELL(4,:)=SQRT(2.D00*BOLTZ*VAR(8,:)/SP(5,3))*SPM(2,3,3) !--isebasti: included
+! Han: I don't think the following line makes sense
+! CCELL(4,:)=SQRT(2.D00*BOLTZ*VAR(8,:)/SP(5,3))*SPM(2,3,3) !--isebasti: included
 
-IF (nonVHS .ne. 0)THEN
-  CCELL(4,:) = CCELL(4,:)*1.2d0
-ENDIF
+
 
 !
 REAC=0.       !--isebasti: uncommented
@@ -10630,7 +10634,8 @@ DO N=1,NCELLS
   END DO
 END DO
 
-IF (nonVHS .ne. 0) CCELL(4,:) = CCELL(4,:)*1.2D0
+!-- Han's trick for nonVHS
+IF (nonVHS .ne. 0) CCELL(4,:) = CCELL(4,:)*1.1D0
 !
 !--assign the molecules to the cells
 !
@@ -10837,7 +10842,7 @@ INTEGER :: IETDX,IERDX(2),IEVDX(2),IVPS(2)
 logical :: IREACSP
 ! variable used for nonVHS == 3
 LOGICAL :: IVHS
-REAL(8) :: CVR2, Tomega, Tomega2, SXSECTION2
+REAL(8) :: CVR2, SXSECTION2
 REAL(8),EXTERNAL :: GAM
 
 !
@@ -10891,7 +10896,7 @@ REAL(8),EXTERNAL :: GAM
 !$omp private(SXSECTION,RXSECTION,VTXSECTION,TXSECTION) &
 !$omp private(QNU,A1,A2,B1,B2,C1,C2,E,F,EL,ED,ET0,EROT,EV,SIGMA_REF,EV_POST,SUMF,EF,S) &
 !$omp private(ECR,EVIBEV,IVPS,BMAX,REST_DOF)&
-!$omp private(CVR2,IVHS, TOmega, TOmega2, SXSECTION2)&
+!$omp private(CVR2,IVHS, SXSECTION2)&
 !$omp private(IETDX,IEVDX,IERDX,IREACSP) &
 !$omp reduction(+:ndissoc,ndissl,trecomb,nrecomb,treacl,treacg,tnex,tforex,trevex) & !Q-K
 !$omp reduction(+:totdup,totcol,pcolls,tcol,cscr,colls,wcolls,clsep,reac,npvib) &
@@ -11154,7 +11159,6 @@ DO N=1,NCCELLS
             ET0=ECT/EVOLT                        !convert to eV
             CALL CALC_TOTXSEC(LS, MS, VR, VRR, ET0, -1.0d0, SXSECTION, BMAX, CVR)
             IF (nonVHS == 3) THEN
-              TOmega = SPM(3,LS,MS)
               CVR2 = CVR   !save true vhs cross sections
               SXSECTION2 = SXSECTION
 
@@ -11183,12 +11187,22 @@ DO N=1,NCCELLS
               ELSE IF (LS == 3 .and. MS == 3) THEN
                 IF (IMF == 1) THEN
                   ! MF-DSMC-SHO model: the following one try to match Park's rate, or Byron's rate
-                  ! Should only be used with omega = 0.99531, dref = 17.474A
-                  TOmega = 0.99531175d0
-                  CVR = VR*PI*(17.4742452D-10)**2*((2.D00*BOLTZ*SPM(5,LS,MS)/(SPM(1,LS,MS)*VRR))**(TOmega-0.5D00))
-                  CVR = CVR / GAM(2.5D0 - TOmega)
-                  CVR = CVR*(1.0d0 - DEXP(-2238.0d0/VAR(8,NN)))
-                  SXSECTION = CVR/CVR2*SXSECTION2
+                  ! to use this one, you first need to change dref of O2 to 17.474245e-10,
+                  ! and omega to 0.99531
+                  !
+				  ! the original value of dref should be 4.1515e-10, omega should be 0.7318
+				  !
+				  ! What I do here is that I first set CVR and SXSECTION as the corrected one with parameter
+				  ! dref = 17.474245e-10 and omega = 0.99531
+				  !
+                  ! And then I set CVR2 and SXSECTION2 as the real VHS one
+                  CVR = CVR2*(1.0d0 - DEXP(-2238.0d0/VAR(8,NN)))
+				          SXSECTION = SXSECTION2 * CVR / CVR2
+
+                  CVR2 = VR*PI*(4.1515d-10)**2*((2.D00*BOLTZ*SPM(5,LS,MS)/(SPM(1,LS,MS)*VRR))**(0.7318D0-0.5D00))
+                  CVR2 = CVR2 / GAM(2.5D0 - 0.7318D0)
+				          SXSECTION2 = CVR2/VR*1e20
+
                   IVHS = .false.
                 ELSE IF (IMF == 3) THEN
                   ! MF-DSMC-AHO Morse version
