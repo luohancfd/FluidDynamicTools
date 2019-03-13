@@ -12,3 +12,8 @@
     - IRELAX = 0
 2. Create `DS1VD.in` and `input.txt` like the ones in folder `Example/0DRelax`. `IRM` has to be `0` to turn off all reactions
 3. Track `RELAX.TXT`, it should contain information needed
+
+## Special tags
+- MF-DSMC-Correct: correct of `VHS` and `ZV` for MF-DSMC model
+- trick: trick Israel made
+- WARNING: something you should be careful with

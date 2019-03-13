@@ -9,7 +9,7 @@
 NMAC=1    
 
 # set run parameters
-NPROC=1     #number of processors
+NPROC=2     #number of processors
 
 # --------------------------------------------------------------
 
@@ -28,15 +28,14 @@ echo "Setting script: done"
 # --------------------------------------------------------------
 
 # compile executable
-gfortran -O2 -fopenmp -o ds1v_${CASE}.exe DS1_openmp_reac.f90
+gfortran -O3 -fopenmp -o ds1v_${CASE}.exe DS1_openmp_reac.f90
 echo "Compiling executable: done"
 
 # --------------------------------------------------------------
 
 # do for all temperatures
 i=-1
-TEMPS="200 600 1000 1500 2000 4000 6000 8000 10000 15000 20000"
-TEMPS="1000 1500 2000 4000 6000 8000 10000 15000"
+TEMPS="600 1000 1500 2000 4000 6000 8000 10000 15000 1750 20000"
 #TEMPS="15000 20000"
 for TEMP in ${TEMPS}; do
 i=$((i+1))

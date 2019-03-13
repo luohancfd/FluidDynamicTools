@@ -1656,6 +1656,7 @@ WRITE(119,"(10(A,1X))") 'VARIABLES = ','"NOUT",', '"CALC_TIME (s)",', '"FTIME (s
                   &   '"DTM (s)",', '"NMOL,"', '"NSAMP",', '"TISAMP"'
 CALL SYSTEM_CLOCK(COUNT=COUNT0, COUNT_RATE=COUNT_RATE)
 CLOSE(119)
+
 DO WHILE (FTIME < TLIM)
   OPEN (9,FILE='DIAG.TXT',ACCESS='APPEND')
 !
@@ -1716,10 +1717,14 @@ DO WHILE (FTIME < TLIM)
   CALL OUTPUT_RESULTS
   CALL SYSTEM_CLOCK(COUNT=COUNT1)
   CALC_TIME = dble(COUNT1-COUNT0) / dble(COUNT_RATE)
+
+  ! io
+  FLUSH(9)
   OPEN(119, FILE="RunningTime.dat", POSITION="APPEND")
   WRITE(119,118) NOUT, CALC_TIME, FTIME, DTM, NM, NSAMP, TISAMP
   CLOSE(119)
 118  FORMAT(I10,2X, 10(G14.6,2X))
+
   IF (IREAC .ne. 2) THEN
     ! WARNING: do not write restart for ireac = 2, file is too huge
     CALL WRITE_RESTART
@@ -6395,17 +6400,15 @@ IF (MNRE > 0 .AND. IMF .ne. 0) THEN
       STOP
     ENDIF
   END IF
-ENDIF
-
+ELSE
 ! allocate dummy variable due to the reduction in SUBROUTINE COLLISION
-!$IF (MNRE <= 0 .or. IMF  == 0 .or. IMFS .ne. 1 ) THEN
 !$  ALLOCATE(NMFET0(1,1), NMFER0(1,2,1), NMFEV0(1,2,1), NMFVT0(1,1,2,1), &
 !$            NMFEV(1,2,1), NMFET(1,1), NMFER(1,2,1), NMFVT(1,1,2,1), STAT=ERROR)
 !$  IF (ERROR /= 0) THEN
 !$    WRITE(*,*) 'PROGRAM COULD NOT ALLOCATE SPACE FOR OPENMP DUMMY VARIABLE', ERROR
 !$    STOP
 !$  END IF
-!$END IF
+END IF
 
 
 !-- Allocate variables related to nonVHS model
@@ -11155,18 +11158,22 @@ DO N=1,NCCELLS
               CVR2 = CVR   !save true vhs cross sections
               SXSECTION2 = SXSECTION
 
+              ! MF-DSMC-Correct
               ! Han added the following to correct reaction rate for MF-DSMC model
               IF ((LS == 3 .and. MS == 4) .or. (LS == 4 .and. MS == 3)) THEN
                 ! For O2+O with MF-DSMC model, the total cross sections are corrected to match
                 ! O2+O dissociation rates calculated by Marat Kulakhmetov
                 IF (IMF == 3) THEN
+                  ! MF-DSMC-AHO, Morse version
                   CVR  = CVR*5.8863204392427d0
                   ! original dref of O2+O VHS: 3.4420
                   ! dref_correct= 8.3509
                   ! the multiplier is dref_correct^2/dref^2
                 ELSE IF (IMF == 1) THEN
+                  ! MF-DSMC-SHO, 2018 Han Luo's PRF
                   CVR  = CVR*6.681561661633024d0
-                  ! MF-DSMC-SHO, match Marat's rate, check 2018 Han Luo's PRF
+                  ! original dref of O2+O VHS: 3.4420
+                  ! dref_correct= 9.6196
                 ELSE
                   WRITE(*,*) "Something wrong in collision Code:1"
                   STOP
@@ -11175,7 +11182,8 @@ DO N=1,NCCELLS
                 IVHS = .false.
               ELSE IF (LS == 3 .and. MS == 3) THEN
                 IF (IMF == 1) THEN
-                  ! the following one try to match Park's rate, or Byron's rate
+                  ! MF-DSMC-SHO model: the following one try to match Park's rate, or Byron's rate
+                  ! Should only be used with omega = 0.99531, dref = 17.474A
                   TOmega = 0.99531175d0
                   CVR = VR*PI*(17.4742452D-10)**2*((2.D00*BOLTZ*SPM(5,LS,MS)/(SPM(1,LS,MS)*VRR))**(TOmega-0.5D00))
                   CVR = CVR / GAM(2.5D0 - TOmega)
@@ -11183,7 +11191,9 @@ DO N=1,NCCELLS
                   SXSECTION = CVR/CVR2*SXSECTION2
                   IVHS = .false.
                 ELSE IF (IMF == 3) THEN
-                  ! DON'T DO ANYTHING, because MF-DSMC-AHO matches well with Ross Chaudry's QCT rate
+                  ! MF-DSMC-AHO Morse version
+                  ! don't do anything because the model matches well with Ross Chaudry's QCT rate
+                  ! dref = 4.1515, omega = 0.7318
                   IVHS = .true.
                 ELSE
                   WRITE(*,*) "Something wrong in collision Code:2"
@@ -11678,29 +11688,42 @@ DO N=1,NCCELLS
 !write(*,*) VAR(10,NN)/SPVM(1,KV,KS),VAR(8,NN)/SPVM(1,KV,KS),E/SPVM(1,KV,KS),C
 !end do
 !stop
-                                IF ((LS==3.AND.MS==4).OR.(LS==4.AND.MS==3)) THEN
-                                  !calibrated with O2-O MeQct model
-                                  IF (VAR(8,NN)<= 1.d3) ZV=C*(60.01d0+0.04268d0*VAR(8,NN)-2.29d-5*VAR(8,NN)**2.d0)
-                                  IF (VAR(8,NN) > 1.d3) ZV=C*DEXP(-0.1372d0*DLOG(VAR(8,NN))+5.328d0)
-                                END IF
 
-                                ! =========== Israel's correction of VT O2-O2 for omega = 0.71, dref=3.985====
-                                !IF (LS==3.AND.MS==3) THEN
-                                !  !calibrated with O2-O2 ibraguimova2013 data
-                                !  A=VAR(8,NN)**(-1.d0/3.d0)                          !T^(-1/3)
-                                !  B=7.206d0-289.4d0*A+4919.d0*A**2.d0-2.23d4*A**3.d0 !log10(Zv)
-                                !  ZV=C*10.d0**B
-                                !END IF
+                                ! =========== Israel's correction of VT ====================
+                                ! O2-O2 omega = 0.71, dref=3.985
+                                ! O2-O  omega = 0.75, dref=3.442
+                                ! IF ((LS==3.AND.MS==4).OR.(LS==4.AND.MS==3)) THEN
+                                !   !calibrated with O2-O MeQct model
+                                !   IF (VAR(8,NN)<= 1.d3) ZV=C*(60.01d0+0.04268d0*VAR(8,NN)-2.29d-5*VAR(8,NN)**2.d0)
+                                !   IF (VAR(8,NN) > 1.d3) ZV=C*DEXP(-0.1372d0*DLOG(VAR(8,NN))+5.328d0)
+                                ! END IF
+                                ! IF (LS==3.AND.MS==3) THEN
+                                !   !calibrated with O2-O2 ibraguimova2013 data
+                                !   A=VAR(8,NN)**(-1.d0/3.d0)                          !T^(-1/3)
+                                !   B=7.206d0-289.4d0*A+4919.d0*A**2.d0-2.23d4*A**3.d0 !log10(Zv)
+                                !   ZV=C*10.d0**B
+                                ! END IF
 
-                                ! === Han's correction
-                                IF (LS==3.AND.MS==3) THEN
-                                  !calibrated with O2-O2 ibraguimova2013 data
-                                  A=VAR(8,NN)**(-1.d0/3.d0)                          !T^(-1/3)
-                                  IF (VAR(8,NN) .ge. 6.0d3) THEN
-                                      B=5.2258d0-232.766d0*A+4.6605d3*A**2 - 2.22176d4*A**3
-                                      ZV = 10.0d0**B
-                                  ELSE
-                                      ZV=4.5134d5*VAR(8,NN)**(-1.795d0)/(1.0D0-DEXP(-2238.D0/VAR(8,NN)))*DEXP(144.123d0*A)
+                                ! ============ Han's correction ===========================
+                                ! MF-DSMC-Correct by Han Luo
+                                IF (LS==3 .and. MS==3 .and. IMF .ne. 0) THEN
+                                  IF ( IMF == 1) THEN
+                                    ! MF-DSMC-SHO model, the following tries to match Ibraguimova 2013's VT relaxation time
+                                    ! should be used with corrected total cross sections, check around L 11187
+                                    ! and omega = 0.99531, dref = 17.474 A
+                                    A=VAR(8,NN)**(-1.d0/3.d0)                          !T^(-1/3)
+                                    IF (VAR(8,NN) .ge. 6.0d3) THEN
+                                        B=5.2258d0-232.766d0*A+4.6605d3*A**2 - 2.22176d4*A**3
+                                        ZV = 10.0d0**B
+                                    ELSE
+                                        ZV=4.5134d5*VAR(8,NN)**(-1.795d0)/(1.0D0-DEXP(-2238.D0/VAR(8,NN)))*DEXP(144.123d0*A)
+                                    END IF
+                                  ELSE IF (IMF == 3) THEN
+                                    ! MF-DSMC-AHO Morse
+                                    ! dref = 4.1515, omega = 0.7318
+                                    A=VAR(8,NN)**(-1.d0/3.d0)                          !T^(-1/3)
+                                    B=1.767075d5*A**4 - 6.347191d4*A**3 + 8.422653d3*A**2 - 4.179710d2*A + 8.891025d0
+                                    ZV = 10.0d0**B
                                   END IF
                                   ZV=C*ZV
                                 END IF
