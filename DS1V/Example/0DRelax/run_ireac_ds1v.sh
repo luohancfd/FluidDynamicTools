@@ -35,7 +35,7 @@ echo "Compiling executable: done"
 
 # do for all temperatures
 i=-1
-TEMPS="600 1000 1500 2000 4000 6000 8000 10000 15000 1750 20000"
+TEMPS="600 1000 1500 2000 4000 6000 8000 10000 15000 17500 20000"
 #TEMPS="15000 20000"
 for TEMP in ${TEMPS}; do
 i=$((i+1))

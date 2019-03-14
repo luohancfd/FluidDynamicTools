@@ -1,0 +1,644 @@
+#!MC 1410
+$!VarSet |LFDSFN1| = '"ZV_Corrected\RELAX_000.DAT" "ZV_Corrected\RELAX_001.DAT" "ZV_Corrected\RELAX_002.DAT" "ZV_Corrected\RELAX_003.DAT" "ZV_Corrected\RELAX_004.DAT" "ZV_Corrected\RELAX_005.DAT" "ZV_Corrected\RELAX_006.DAT" "ZV_Corrected\RELAX_007.DAT" "ZV_Corrected\RELAX_008.DAT" "ZV_Corrected\RELAX_009.DAT" "ZV_Corrected\RELAX_010.DAT"'
+$!VarSet |LFDSVL1| = '"V1" "V2" "V3" "V4" "V5" "V6" "V7" "V8" "V9" "V10" "V11" "V12" "V13" "V14" "V15" "V16" "V17" "V18" "V19" "V20" "V21" "V22" "V23" "V24" "V25" "V26" "V27" "V28" "V29" "V30" "V31" "V32" "V33" "V34" "V35" "V36" "V37" "V38" "V39" "V40" "V41" "V42" "V43" "V44" "V45"'
+$!SETSTYLEBASE FACTORY
+$!PLOTOPTIONS 
+  SUBDIVIDEALLCELLS = NO
+$!GLOBALPAPER 
+  PAPERSIZEINFO
+    {
+    LETTER
+      {
+      WIDTH = 8.5
+      HEIGHT = 11
+      LEFTHARDCLIPOFFSET = 0.125
+      RIGHTHARDCLIPOFFSET = 0.125
+      TOPHARDCLIPOFFSET = 0.125
+      BOTTOMHARDCLIPOFFSET = 0.125
+      }
+    }
+$!PAGE 
+  NAME = ''
+  PAPERATTRIBUTES
+    {
+    BACKGROUNDCOLOR = WHITE
+    ISTRANSPARENT = YES
+    ORIENTPORTRAIT = NO
+    SHOWGRID = YES
+    SHOWRULER = NO
+    SHOWPAPER = NO
+    PAPERSIZE = LETTER
+    RULERSPACING = ONEINCH
+    PAPERGRIDSPACING = HALFINCH
+    REGIONINWORKAREA
+      {
+      X1 = 1
+      Y1 = 0.25
+      X2 = 10
+      Y2 = 8.25
+      }
+    }
+### Frame Number 1 ###
+$!READDATASET  '|LFDSFN1|'
+  INITIALPLOTTYPE = XYLINE
+  INCLUDETEXT = NO
+  INCLUDEGEOM = NO
+  RESETSTYLE = NO
+  ASSIGNSTRANDIDS = YES
+  VARLOADMODE = BYNAME
+  VARNAMELIST = '|LFDSVL1|'
+$!REMOVEVAR |LFDSVL1|
+$!REMOVEVAR |LFDSFN1|
+$!ALTERDATA 
+  EQUATION = 'V45=(V38-V39)/(V38(1)-V39)'
+$!FRAMELAYOUT 
+  SHOWBORDER = NO
+  SHOWHEADER = NO
+  HEADERCOLOR = RED
+  XYPOS
+    {
+    X = 1
+    Y = 0.25
+    }
+  WIDTH = 9
+  HEIGHT = 8
+$!THREEDAXIS 
+  ASPECTRATIOLIMIT = 25
+  BOXASPECTRATIOLIMIT = 25
+$!PLOTTYPE  = XYLINE
+$!FRAMENAME  = 'Frame 001'
+$!GLOBALTIME 
+  SOLUTIONTIME = 0
+$!DELETELINEMAPS 
+$!ACTIVELINEMAPS  =  [1-11]
+$!GLOBALLINEPLOT 
+  DATALABELS
+    {
+    DISTANCESKIP = 5
+    }
+  LEGEND
+    {
+    SHOW = YES
+    TEXTSHAPE
+      {
+      ISBOLD = NO
+      HEIGHT = 3.8
+      }
+    BOX
+      {
+      BOXTYPE = FILLED
+      MARGIN = 1
+      COLOR = WHITE
+      }
+    ROWSPACING = 1.3
+    XYPOS
+      {
+      X = 16
+      Y = 72
+      }
+    ANCHORALIGNMENT = TOPLEFT
+    }
+$!BLANKING 
+  VALUE
+    {
+    INCLUDE = YES
+    CONSTRAINT 1
+      {
+      RELOP = GREATERTHAN
+      VALUECUTOFF = 10500
+      VARA = 4
+      VARB = 5
+      }
+    CONSTRAINT 2
+      {
+      VARA = 1
+      VARB = 1
+      }
+    }
+$!LINEMAP  [1]
+  NAME = '200 K '
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 1
+    YAXISVAR = 45
+    }
+  LINES
+    {
+    COLOR = BLACK
+    LINETHICKNESS = 0.4
+    }
+  SYMBOLS
+    {
+    SHOW = NO
+    COLOR = CUSTOM3
+    FILLCOLOR = CUSTOM3
+    }
+  BARCHARTS
+    {
+    COLOR = CUSTOM3
+    FILLCOLOR = CUSTOM3
+    }
+  ERRORBARS
+    {
+    COLOR = CUSTOM3
+    }
+$!LINEMAP  [2]
+  NAME = '600 K '
+  ASSIGN
+    {
+    ZONE = 2
+    XAXISVAR = 1
+    YAXISVAR = 45
+    }
+  LINES
+    {
+    COLOR = BLACK
+    LINEPATTERN = DASHED
+    LINETHICKNESS = 0.4
+    }
+  SYMBOLS
+    {
+    SHOW = NO
+    COLOR = CUSTOM3
+    FILLCOLOR = CUSTOM3
+    }
+  BARCHARTS
+    {
+    COLOR = CUSTOM3
+    FILLCOLOR = CUSTOM3
+    }
+  ERRORBARS
+    {
+    COLOR = CUSTOM3
+    }
+$!LINEMAP  [3]
+  NAME = '1000 K '
+  ASSIGN
+    {
+    ZONE = 3
+    XAXISVAR = 1
+    YAXISVAR = 45
+    }
+  LINES
+    {
+    COLOR = BLUE
+    LINETHICKNESS = 0.4
+    }
+  SYMBOLS
+    {
+    SHOW = NO
+    COLOR = CUSTOM1
+    FILLCOLOR = CUSTOM1
+    }
+  BARCHARTS
+    {
+    COLOR = CUSTOM1
+    FILLCOLOR = CUSTOM1
+    }
+  ERRORBARS
+    {
+    COLOR = CUSTOM1
+    }
+$!LINEMAP  [4]
+  NAME = '1500 K '
+  ASSIGN
+    {
+    ZONE = 4
+    XAXISVAR = 1
+    YAXISVAR = 45
+    }
+  LINES
+    {
+    COLOR = BLUE
+    LINEPATTERN = DASHED
+    LINETHICKNESS = 0.4
+    }
+  SYMBOLS
+    {
+    SHOW = NO
+    COLOR = CUSTOM1
+    FILLCOLOR = CUSTOM1
+    }
+  BARCHARTS
+    {
+    COLOR = CUSTOM1
+    FILLCOLOR = CUSTOM1
+    }
+  ERRORBARS
+    {
+    COLOR = CUSTOM1
+    }
+$!LINEMAP  [5]
+  NAME = '2000 K '
+  ASSIGN
+    {
+    ZONE = 5
+    XAXISVAR = 1
+    YAXISVAR = 45
+    }
+  LINES
+    {
+    COLOR = PURPLE
+    LINETHICKNESS = 0.4
+    }
+  SYMBOLS
+    {
+    SHOW = NO
+    COLOR = BLUE
+    FILLCOLOR = BLUE
+    }
+  BARCHARTS
+    {
+    COLOR = BLUE
+    FILLCOLOR = BLUE
+    }
+  ERRORBARS
+    {
+    COLOR = BLUE
+    }
+$!LINEMAP  [6]
+  NAME = '4000 K '
+  ASSIGN
+    {
+    ZONE = 6
+    XAXISVAR = 1
+    YAXISVAR = 45
+    }
+  LINES
+    {
+    COLOR = PURPLE
+    LINEPATTERN = DASHED
+    LINETHICKNESS = 0.4
+    }
+  SYMBOLS
+    {
+    SHOW = NO
+    COLOR = GREEN
+    FILLCOLOR = GREEN
+    }
+  BARCHARTS
+    {
+    COLOR = GREEN
+    FILLCOLOR = GREEN
+    }
+  ERRORBARS
+    {
+    COLOR = GREEN
+    }
+$!LINEMAP  [7]
+  NAME = '6000 K '
+  ASSIGN
+    {
+    ZONE = 7
+    XAXISVAR = 1
+    YAXISVAR = 45
+    }
+  LINES
+    {
+    COLOR = GREEN
+    LINETHICKNESS = 0.4
+    }
+  SYMBOLS
+    {
+    SHOW = NO
+    COLOR = RED
+    FILLCOLOR = RED
+    }
+  BARCHARTS
+    {
+    COLOR = RED
+    FILLCOLOR = RED
+    }
+  ERRORBARS
+    {
+    COLOR = RED
+    }
+$!LINEMAP  [8]
+  NAME = '8000 K '
+  ASSIGN
+    {
+    ZONE = 8
+    XAXISVAR = 1
+    YAXISVAR = 45
+    }
+  LINES
+    {
+    COLOR = GREEN
+    LINEPATTERN = DASHED
+    LINETHICKNESS = 0.4
+    }
+  SYMBOLS
+    {
+    SHOW = NO
+    COLOR = PURPLE
+    FILLCOLOR = PURPLE
+    }
+  BARCHARTS
+    {
+    COLOR = PURPLE
+    FILLCOLOR = PURPLE
+    }
+  ERRORBARS
+    {
+    COLOR = PURPLE
+    }
+$!LINEMAP  [9]
+  NAME = '10000 K '
+  ASSIGN
+    {
+    ZONE = 9
+    XAXISVAR = 1
+    YAXISVAR = 45
+    }
+  LINES
+    {
+    COLOR = CUSTOM3
+    LINETHICKNESS = 0.4
+    }
+  SYMBOLS
+    {
+    SHOW = NO
+    COLOR = CUSTOM3
+    FILLCOLOR = CUSTOM3
+    }
+  BARCHARTS
+    {
+    COLOR = CUSTOM3
+    FILLCOLOR = CUSTOM3
+    }
+  ERRORBARS
+    {
+    COLOR = CUSTOM3
+    }
+$!LINEMAP  [10]
+  NAME = '15000 K '
+  ASSIGN
+    {
+    ZONE = 10
+    XAXISVAR = 1
+    YAXISVAR = 45
+    }
+  LINES
+    {
+    COLOR = CUSTOM3
+    LINEPATTERN = DASHED
+    LINETHICKNESS = 0.4
+    }
+  SYMBOLS
+    {
+    SHOW = NO
+    COLOR = CUSTOM1
+    FILLCOLOR = CUSTOM1
+    }
+  BARCHARTS
+    {
+    COLOR = CUSTOM1
+    FILLCOLOR = CUSTOM1
+    }
+  ERRORBARS
+    {
+    COLOR = CUSTOM1
+    }
+$!LINEMAP  [11]
+  NAME = '20000 K'
+  ASSIGN
+    {
+    ZONE = 11
+    XAXISVAR = 1
+    YAXISVAR = 45
+    }
+  LINES
+    {
+    COLOR = RED
+    LINETHICKNESS = 0.4
+    }
+  SYMBOLS
+    {
+    SHOW = NO
+    COLOR = RED
+    FILLCOLOR = RED
+    }
+  BARCHARTS
+    {
+    COLOR = RED
+    FILLCOLOR = RED
+    }
+  ERRORBARS
+    {
+    COLOR = RED
+    }
+$!XYLINEAXIS 
+  DEPXTOYRATIO = 1
+  VIEWPORTPOSITION
+    {
+    X1 = 12
+    Y1 = 12
+    X2 = 95
+    Y2 = 96
+    }
+  VIEWPORTTOPSNAPTARGET = 96
+$!XYLINEAXIS 
+  XDETAIL 1
+    {
+    COORDSCALE = LOG
+    RANGEMIN = 1E-008
+    RANGEMAX = 0.10000000000000001
+    GRSPACING = 0.02
+    TICKS
+      {
+      NUMMINORTICKS = 3
+      }
+    TICKLABEL
+      {
+      TEXTSHAPE
+        {
+        HEIGHT = 4
+        }
+      NUMFORMAT
+        {
+        PRECISION = 1
+        REMOVELEADINGZEROS = YES
+        TIMEDATEFORMAT = ''
+        }
+      OFFSET = 1.5
+      }
+    TITLE
+      {
+      TITLEMODE = USETEXT
+      TEXT = 'Time (s)'
+      TEXTSHAPE
+        {
+        ISBOLD = NO
+        HEIGHT = 4
+        }
+      OFFSET = 6.5
+      }
+    }
+$!XYLINEAXIS 
+  YDETAIL 1
+    {
+    RANGEMIN = 0
+    RANGEMAX = 1.01
+    GRSPACING = 0.1
+    TICKLABEL
+      {
+      TEXTSHAPE
+        {
+        HEIGHT = 4
+        }
+      NUMFORMAT
+        {
+        FORMATTING = FIXEDFLOAT
+        PRECISION = 1
+        TIMEDATEFORMAT = ''
+        }
+      }
+    TITLE
+      {
+      TITLEMODE = USETEXT
+      TEXT = '<greek>L</greek> (-)'
+      TEXTSHAPE
+        {
+        ISBOLD = NO
+        HEIGHT = 5
+        }
+      OFFSET = 8
+      }
+    }
+$!LINEPLOTLAYERS 
+  SHOWSYMBOLS = YES
+$!ATTACHTEXT 
+  POSITIONCOORDSYS = GRID
+  ANCHORPOS
+    {
+    X = 1084.074566484818
+    Y = 3642.857142857142
+    }
+  ZONE = 11
+  TEXTSHAPE
+    {
+    ISBOLD = NO
+    SIZEUNITS = FRAME
+    HEIGHT = 3.5
+    }
+  ANGLE = 90
+  TEXT = 't / <greek>t</greek><sub>C</sub> = 1500'
+$!ATTACHTEXT 
+  POSITIONCOORDSYS = GRID
+  ANCHORPOS
+    {
+    X = 72.0071210827208
+    Y = 3642.857142857143
+    }
+  ZONE = 11
+  TEXTSHAPE
+    {
+    ISBOLD = NO
+    SIZEUNITS = FRAME
+    HEIGHT = 3.5
+    }
+  ANGLE = 90
+  TEXT = 't / <greek>t</greek><sub>C</sub> = 100'
+$!ATTACHTEXT 
+  POSITIONCOORDSYS = GRID
+  ANCHORPOS
+    {
+    X = 3.732965547184422
+    Y = 3642.857142857143
+    }
+  ZONE = 11
+  TEXTSHAPE
+    {
+    ISBOLD = NO
+    SIZEUNITS = FRAME
+    HEIGHT = 3.5
+    }
+  ANGLE = 90
+  TEXT = 't / <greek>t</greek><sub>C</sub> = 5'
+$!ATTACHTEXT 
+  ANCHORPOS
+    {
+    X = 82.05705705705695
+    Y = 41.38513513513507
+    }
+  ZONE = 2
+  TEXTSHAPE
+    {
+    ISBOLD = NO
+    SIZEUNITS = FRAME
+    HEIGHT = 4.5
+    }
+  BOX
+    {
+    BOXTYPE = FILLED
+    COLOR = WHITE
+    }
+  TEXT = '1/e'
+$!ATTACHTEXT 
+  ANCHORPOS
+    {
+    X = 51.39386791635918
+    Y = 25.43778640231926
+    }
+  ZONE = 2
+  TEXTSHAPE
+    {
+    ISBOLD = NO
+    SIZEUNITS = FRAME
+    HEIGHT = 6
+    }
+  BOX
+    {
+    MARGIN = 0
+    COLOR = WHITE
+    }
+  TEXT = '<greek>t</greek><sub>v'
+$!ATTACHTEXT 
+  ANCHORPOS
+    {
+    X = 35.09244538656284
+    Y = 73.65001246921672
+    }
+  ZONE = 2
+  TEXTSHAPE
+    {
+    ISBOLD = NO
+    SIZEUNITS = FRAME
+    HEIGHT = 4
+    }
+  BOX
+    {
+    BOXTYPE = FILLED
+    COLOR = WHITE
+    }
+  TEXT = 'T<sub>RT</sub>'
+$!ATTACHGEOM 
+  GEOMTYPE = RECTANGLE
+  ANCHORPOS
+    {
+    X = 1E-010
+    }
+  ZONE = 11
+  RAWDATA
+2 0.367900013924 
+$!ATTACHGEOM 
+  ANCHORPOS
+    {
+    X = 3.000468231953684E-005
+    Y = 0.2051952545724134
+    }
+  ZONE = 11
+  ARROWHEADATTACHMENT = ATEND
+  ARROWHEADSIZE = 3
+  ARROWHEADANGLE = 20
+  RAWDATA
+1
+4
+3.39337639161E-005 0.217732295394 
+3.39337639161E-005 0.104012235999 
+8.20313489445E-013 0.0748888105154 
+8.20313489445E-013 -2.93181035005E-008 
+$!FRAMECONTROL ACTIVATEBYNUMBER
+  FRAME = 1
+$!SETSTYLEBASE CONFIG

@@ -1,0 +1,804 @@
+#!MC 1410
+$!VarSet |LFDSFN1| = '"ZV_Corrected\RELAX_000.DAT" "ZV_Corrected\RELAX_001.DAT" "ZV_Corrected\RELAX_002.DAT" "ZV_Corrected\RELAX_003.DAT" "ZV_Corrected\RELAX_004.DAT" "ZV_Corrected\RELAX_005.DAT" "ZV_Corrected\RELAX_006.DAT" "ZV_Corrected\RELAX_007.DAT" "ZV_Corrected\RELAX_008.DAT" "ZV_Corrected\RELAX_009.DAT" "ZV_Corrected\RELAX_010.DAT"'
+$!VarSet |LFDSVL1| = '"V1" "V2" "V3" "V4" "V5" "V6" "V7" "V8" "V9" "V10" "V11" "V12" "V13" "V14" "V15" "V16" "V17" "V18" "V19" "V20" "V21" "V22" "V23" "V24" "V25" "V26" "V27" "V28" "V29" "V30" "V31" "V32" "V33" "V34" "V35" "V36" "V37" "V38" "V39" "V40" "V41" "V42" "V43" "V44" "V45"'
+$!SETSTYLEBASE FACTORY
+$!PLOTOPTIONS 
+  SUBDIVIDEALLCELLS = NO
+$!GLOBALPAPER 
+  PAPERSIZEINFO
+    {
+    LETTER
+      {
+      WIDTH = 8.5
+      HEIGHT = 11
+      LEFTHARDCLIPOFFSET = 0.125
+      RIGHTHARDCLIPOFFSET = 0.125
+      TOPHARDCLIPOFFSET = 0.125
+      BOTTOMHARDCLIPOFFSET = 0.125
+      }
+    }
+$!PAGE 
+  NAME = ''
+  PAPERATTRIBUTES
+    {
+    BACKGROUNDCOLOR = WHITE
+    ISTRANSPARENT = YES
+    ORIENTPORTRAIT = NO
+    SHOWGRID = YES
+    SHOWRULER = NO
+    SHOWPAPER = NO
+    PAPERSIZE = LETTER
+    RULERSPACING = ONEINCH
+    PAPERGRIDSPACING = HALFINCH
+    REGIONINWORKAREA
+      {
+      X1 = 1
+      Y1 = 0.25
+      X2 = 10
+      Y2 = 8.25
+      }
+    }
+### Frame Number 1 ###
+$!READDATASET  '|LFDSFN1|'
+  INITIALPLOTTYPE = XYLINE
+  INCLUDETEXT = NO
+  INCLUDEGEOM = NO
+  RESETSTYLE = NO
+  ASSIGNSTRANDIDS = YES
+  VARLOADMODE = BYNAME
+  VARNAMELIST = '|LFDSVL1|'
+$!REMOVEVAR |LFDSVL1|
+$!REMOVEVAR |LFDSFN1|
+$!ALTERDATA 
+  EQUATION = 'V45=(V38-V39)/(V38(1)-V39)'
+$!FRAMELAYOUT 
+  SHOWBORDER = NO
+  SHOWHEADER = NO
+  HEADERCOLOR = RED
+  XYPOS
+    {
+    X = 1
+    Y = 0.25
+    }
+  WIDTH = 9
+  HEIGHT = 8
+$!THREEDAXIS 
+  ASPECTRATIOLIMIT = 25
+  BOXASPECTRATIOLIMIT = 25
+$!PLOTTYPE  = XYLINE
+$!FRAMENAME  = 'Frame 001'
+$!GLOBALTIME 
+  SOLUTIONTIME = 0
+$!DELETELINEMAPS 
+$!ACTIVELINEMAPS  =  [1-11]
+$!GLOBALLINEPLOT 
+  DATALABELS
+    {
+    DISTANCESKIP = 5
+    }
+  LEGEND
+    {
+    TEXTSHAPE
+      {
+      ISBOLD = NO
+      HEIGHT = 3.5
+      }
+    BOX
+      {
+      BOXTYPE = NONE
+      MARGIN = 3
+      }
+    XYPOS
+      {
+      X = 55
+      Y = 97
+      }
+    ANCHORALIGNMENT = TOPLEFT
+    }
+$!BLANKING 
+  VALUE
+    {
+    INCLUDE = YES
+    CONSTRAINT 1
+      {
+      RELOP = GREATERTHAN
+      VALUECUTOFF = 10500
+      VARA = 4
+      VARB = 5
+      }
+    CONSTRAINT 2
+      {
+      VARA = 1
+      VARB = 1
+      }
+    }
+$!LINEMAP  [1]
+  NAME = 'T<sub>TR</sub>= 200 K '
+  ASSIGN
+    {
+    ZONE = 1
+    XAXISVAR = 1
+    YAXISVAR = 41
+    }
+  LINES
+    {
+    COLOR = BLACK
+    LINETHICKNESS = 0.4
+    }
+  SYMBOLS
+    {
+    SHOW = NO
+    COLOR = CUSTOM3
+    FILLCOLOR = CUSTOM3
+    }
+  BARCHARTS
+    {
+    COLOR = CUSTOM3
+    FILLCOLOR = CUSTOM3
+    }
+  ERRORBARS
+    {
+    COLOR = CUSTOM3
+    }
+$!LINEMAP  [2]
+  NAME = '        600 K '
+  ASSIGN
+    {
+    ZONE = 2
+    XAXISVAR = 1
+    YAXISVAR = 41
+    }
+  LINES
+    {
+    COLOR = BLACK
+    LINEPATTERN = DASHED
+    LINETHICKNESS = 0.4
+    }
+  SYMBOLS
+    {
+    SHOW = NO
+    COLOR = CUSTOM3
+    FILLCOLOR = CUSTOM3
+    }
+  BARCHARTS
+    {
+    COLOR = CUSTOM3
+    FILLCOLOR = CUSTOM3
+    }
+  ERRORBARS
+    {
+    COLOR = CUSTOM3
+    }
+$!LINEMAP  [3]
+  NAME = '        1000 K '
+  ASSIGN
+    {
+    ZONE = 3
+    XAXISVAR = 1
+    YAXISVAR = 41
+    }
+  LINES
+    {
+    COLOR = BLUE
+    LINETHICKNESS = 0.4
+    }
+  SYMBOLS
+    {
+    SHOW = NO
+    COLOR = CUSTOM1
+    FILLCOLOR = CUSTOM1
+    }
+  BARCHARTS
+    {
+    COLOR = CUSTOM1
+    FILLCOLOR = CUSTOM1
+    }
+  ERRORBARS
+    {
+    COLOR = CUSTOM1
+    }
+$!LINEMAP  [4]
+  NAME = '        1500 K '
+  ASSIGN
+    {
+    ZONE = 4
+    XAXISVAR = 1
+    YAXISVAR = 41
+    }
+  LINES
+    {
+    COLOR = BLUE
+    LINEPATTERN = DASHED
+    LINETHICKNESS = 0.4
+    }
+  SYMBOLS
+    {
+    SHOW = NO
+    COLOR = CUSTOM1
+    FILLCOLOR = CUSTOM1
+    }
+  BARCHARTS
+    {
+    COLOR = CUSTOM1
+    FILLCOLOR = CUSTOM1
+    }
+  ERRORBARS
+    {
+    COLOR = CUSTOM1
+    }
+$!LINEMAP  [5]
+  NAME = '        2000 K '
+  ASSIGN
+    {
+    ZONE = 5
+    XAXISVAR = 1
+    YAXISVAR = 41
+    }
+  LINES
+    {
+    COLOR = PURPLE
+    LINETHICKNESS = 0.4
+    }
+  SYMBOLS
+    {
+    SHOW = NO
+    COLOR = BLUE
+    FILLCOLOR = BLUE
+    }
+  BARCHARTS
+    {
+    COLOR = BLUE
+    FILLCOLOR = BLUE
+    }
+  ERRORBARS
+    {
+    COLOR = BLUE
+    }
+$!LINEMAP  [6]
+  NAME = '        4000 K '
+  ASSIGN
+    {
+    ZONE = 6
+    XAXISVAR = 1
+    YAXISVAR = 41
+    }
+  LINES
+    {
+    COLOR = PURPLE
+    LINEPATTERN = DASHED
+    LINETHICKNESS = 0.4
+    }
+  SYMBOLS
+    {
+    SHOW = NO
+    COLOR = GREEN
+    FILLCOLOR = GREEN
+    }
+  BARCHARTS
+    {
+    COLOR = GREEN
+    FILLCOLOR = GREEN
+    }
+  ERRORBARS
+    {
+    COLOR = GREEN
+    }
+$!LINEMAP  [7]
+  NAME = '        6000 K '
+  ASSIGN
+    {
+    ZONE = 7
+    XAXISVAR = 1
+    YAXISVAR = 41
+    }
+  LINES
+    {
+    COLOR = GREEN
+    LINETHICKNESS = 0.4
+    }
+  SYMBOLS
+    {
+    SHOW = NO
+    COLOR = RED
+    FILLCOLOR = RED
+    }
+  BARCHARTS
+    {
+    COLOR = RED
+    FILLCOLOR = RED
+    }
+  ERRORBARS
+    {
+    COLOR = RED
+    }
+$!LINEMAP  [8]
+  NAME = '        8000 K '
+  ASSIGN
+    {
+    ZONE = 8
+    XAXISVAR = 1
+    YAXISVAR = 41
+    }
+  LINES
+    {
+    COLOR = GREEN
+    LINEPATTERN = DASHED
+    LINETHICKNESS = 0.4
+    }
+  SYMBOLS
+    {
+    SHOW = NO
+    COLOR = PURPLE
+    FILLCOLOR = PURPLE
+    }
+  BARCHARTS
+    {
+    COLOR = PURPLE
+    FILLCOLOR = PURPLE
+    }
+  ERRORBARS
+    {
+    COLOR = PURPLE
+    }
+$!LINEMAP  [9]
+  NAME = '        10000 K '
+  ASSIGN
+    {
+    ZONE = 9
+    XAXISVAR = 1
+    YAXISVAR = 41
+    }
+  LINES
+    {
+    COLOR = PURPLE
+    LINETHICKNESS = 0.4
+    }
+  SYMBOLS
+    {
+    SHOW = NO
+    COLOR = CUSTOM3
+    FILLCOLOR = CUSTOM3
+    }
+  BARCHARTS
+    {
+    COLOR = CUSTOM3
+    FILLCOLOR = CUSTOM3
+    }
+  ERRORBARS
+    {
+    COLOR = CUSTOM3
+    }
+$!LINEMAP  [10]
+  NAME = '        15000 K '
+  ASSIGN
+    {
+    ZONE = 10
+    XAXISVAR = 1
+    YAXISVAR = 41
+    }
+  LINES
+    {
+    COLOR = PURPLE
+    LINEPATTERN = DASHED
+    LINETHICKNESS = 0.4
+    }
+  SYMBOLS
+    {
+    SHOW = NO
+    COLOR = CUSTOM1
+    FILLCOLOR = CUSTOM1
+    }
+  BARCHARTS
+    {
+    COLOR = CUSTOM1
+    FILLCOLOR = CUSTOM1
+    }
+  ERRORBARS
+    {
+    COLOR = CUSTOM1
+    }
+$!LINEMAP  [11]
+  NAME = '        20000 K'
+  ASSIGN
+    {
+    ZONE = 11
+    XAXISVAR = 1
+    YAXISVAR = 41
+    }
+  LINES
+    {
+    COLOR = RED
+    LINETHICKNESS = 0.4
+    }
+  SYMBOLS
+    {
+    SHOW = NO
+    COLOR = RED
+    FILLCOLOR = RED
+    }
+  BARCHARTS
+    {
+    COLOR = RED
+    FILLCOLOR = RED
+    }
+  ERRORBARS
+    {
+    COLOR = RED
+    }
+$!XYLINEAXIS 
+  DEPXTOYRATIO = 1
+  VIEWPORTPOSITION
+    {
+    X1 = 14
+    Y1 = 12
+    X2 = 95
+    Y2 = 96
+    }
+  VIEWPORTTOPSNAPTARGET = 96
+$!XYLINEAXIS 
+  XDETAIL 1
+    {
+    COORDSCALE = LOG
+    RANGEMIN = 9.9999999999999995E-008
+    RANGEMAX = 0.01
+    GRSPACING = 0.005
+    TICKS
+      {
+      NUMMINORTICKS = 3
+      }
+    TICKLABEL
+      {
+      TEXTSHAPE
+        {
+        HEIGHT = 4
+        }
+      NUMFORMAT
+        {
+        PRECISION = 1
+        REMOVELEADINGZEROS = YES
+        TIMEDATEFORMAT = ''
+        }
+      OFFSET = 1.5
+      }
+    TITLE
+      {
+      TITLEMODE = USETEXT
+      TEXT = 'Time (s)'
+      TEXTSHAPE
+        {
+        ISBOLD = NO
+        HEIGHT = 4
+        }
+      OFFSET = 6.5
+      }
+    }
+$!XYLINEAXIS 
+  YDETAIL 1
+    {
+    RANGEMIN = 9.9999999999999995E-007
+    RANGEMAX = 6.9999999999999999E-006
+    GRSPACING = 1E-006
+    TICKLABEL
+      {
+      TEXTSHAPE
+        {
+        HEIGHT = 3.5
+        }
+      NUMFORMAT
+        {
+        FORMATTING = EXPONENTIAL
+        PRECISION = 1
+        REMOVELEADINGZEROS = YES
+        TIMEDATEFORMAT = ''
+        }
+      ANGLE = 45
+      }
+    TITLE
+      {
+      TITLEMODE = USETEXT
+      TEXT = '<greek>t</greek><sub>c, N2-O</sub> (s)'
+      TEXTSHAPE
+        {
+        ISBOLD = NO
+        HEIGHT = 4.5
+        }
+      OFFSET = 11
+      }
+    }
+$!LINEPLOTLAYERS 
+  SHOWSYMBOLS = YES
+$!ATTACHTEXT 
+  POSITIONCOORDSYS = GRID
+  ANCHORPOS
+    {
+    X = 1084.074566484818
+    Y = 3642.857142857142
+    }
+  ZONE = 11
+  TEXTSHAPE
+    {
+    ISBOLD = NO
+    SIZEUNITS = FRAME
+    HEIGHT = 3.5
+    }
+  ANGLE = 90
+  TEXT = 't / <greek>t</greek><sub>C</sub> = 1500'
+$!ATTACHTEXT 
+  POSITIONCOORDSYS = GRID
+  ANCHORPOS
+    {
+    X = 72.0071210827208
+    Y = 3642.857142857143
+    }
+  ZONE = 11
+  TEXTSHAPE
+    {
+    ISBOLD = NO
+    SIZEUNITS = FRAME
+    HEIGHT = 3.5
+    }
+  ANGLE = 90
+  TEXT = 't / <greek>t</greek><sub>C</sub> = 100'
+$!ATTACHTEXT 
+  POSITIONCOORDSYS = GRID
+  ANCHORPOS
+    {
+    X = 3.732965547184422
+    Y = 3642.857142857143
+    }
+  ZONE = 11
+  TEXTSHAPE
+    {
+    ISBOLD = NO
+    SIZEUNITS = FRAME
+    HEIGHT = 3.5
+    }
+  ANGLE = 90
+  TEXT = 't / <greek>t</greek><sub>C</sub> = 5'
+$!ATTACHTEXT 
+  POSITIONCOORDSYS = GRID
+  ANCHORPOS
+    {
+    X = 0.0005882816437053033
+    Y = 5.909787444389518E-006
+    }
+  TEXTSHAPE
+    {
+    ISBOLD = NO
+    SIZEUNITS = FRAME
+    HEIGHT = 3.5
+    }
+  BOX
+    {
+    BOXTYPE = FILLED
+    MARGIN = 30
+    COLOR = WHITE
+    }
+  TEXT = 'T<sub>RT</sub> = 200 K'
+$!ATTACHTEXT 
+  POSITIONCOORDSYS = GRID
+  ANCHORPOS
+    {
+    X = 3.261644215013945E-005
+    Y = 2.757620695336962E-006
+    }
+  TEXTSHAPE
+    {
+    ISBOLD = NO
+    SIZEUNITS = FRAME
+    HEIGHT = 3.5
+    }
+  BOX
+    {
+    BOXTYPE = FILLED
+    MARGIN = 30
+    COLOR = WHITE
+    }
+  TEXT = '4000 K'
+$!ATTACHTEXT 
+  POSITIONCOORDSYS = GRID
+  ANCHORPOS
+    {
+    X = 0.001664512876870891
+    Y = 4.454770143351459E-006
+    }
+  TEXTSHAPE
+    {
+    ISBOLD = NO
+    SIZEUNITS = FRAME
+    HEIGHT = 3.5
+    }
+  BOX
+    {
+    BOXTYPE = FILLED
+    MARGIN = 30
+    COLOR = WHITE
+    }
+  TEXT = '600 K'
+$!ATTACHTEXT 
+  POSITIONCOORDSYS = GRID
+  ANCHORPOS
+    {
+    X = 0.001525158780155365
+    Y = 2.320975449003092E-006
+    }
+  TEXTSHAPE
+    {
+    ISBOLD = NO
+    SIZEUNITS = FRAME
+    HEIGHT = 3.5
+    }
+  BOX
+    {
+    BOXTYPE = FILLED
+    MARGIN = 10
+    COLOR = WHITE
+    }
+  TEXT = '8000 K'
+$!ATTACHTEXT 
+  POSITIONCOORDSYS = GRID
+  ANCHORPOS
+    {
+    X = 3.508164927804997E-005
+    Y = 3.902784643269075E-006
+    }
+  TEXTSHAPE
+    {
+    ISBOLD = NO
+    SIZEUNITS = FRAME
+    HEIGHT = 3.5
+    }
+  BOX
+    {
+    BOXTYPE = FILLED
+    MARGIN = 30
+    COLOR = WHITE
+    }
+  TEXT = '1000 K'
+$!ATTACHTEXT 
+  POSITIONCOORDSYS = GRID
+  ANCHORPOS
+    {
+    X = 0.001438799658038849
+    Y = 3.268413247651999E-006
+    }
+  TEXTSHAPE
+    {
+    ISBOLD = NO
+    SIZEUNITS = FRAME
+    HEIGHT = 3.5
+    }
+  BOX
+    {
+    BOXTYPE = FILLED
+    MARGIN = 30
+    COLOR = WHITE
+    }
+  TEXT = '2000 K'
+$!ATTACHTEXT 
+  POSITIONCOORDSYS = GRID
+  ANCHORPOS
+    {
+    X = 0.0001835345438063521
+    Y = 1.933761739990112E-006
+    }
+  TEXTSHAPE
+    {
+    ISBOLD = NO
+    SIZEUNITS = FRAME
+    HEIGHT = 3.5
+    }
+  BOX
+    {
+    BOXTYPE = FILLED
+    MARGIN = 10
+    COLOR = WHITE
+    }
+  TEXT = '15000 K'
+$!ATTACHTEXT 
+  POSITIONCOORDSYS = GRID
+  ANCHORPOS
+    {
+    X = 2.621237278868497E-005
+    Y = 2.147965068380279E-006
+    }
+  TEXTSHAPE
+    {
+    ISBOLD = NO
+    SIZEUNITS = FRAME
+    HEIGHT = 3.5
+    }
+  BOX
+    {
+    BOXTYPE = FILLED
+    MARGIN = 10
+    COLOR = WHITE
+    }
+  TEXT = '10000 K'
+$!ATTACHTEXT 
+  POSITIONCOORDSYS = GRID
+  ANCHORPOS
+    {
+    X = 0.001243693866679277
+    Y = 1.719558411599929E-006
+    }
+  TEXTSHAPE
+    {
+    ISBOLD = NO
+    SIZEUNITS = FRAME
+    HEIGHT = 3.5
+    }
+  BOX
+    {
+    BOXTYPE = FILLED
+    MARGIN = 10
+    COLOR = WHITE
+    }
+  TEXT = '20000 K'
+$!ATTACHTEXT 
+  POSITIONCOORDSYS = GRID
+  ANCHORPOS
+    {
+    X = 0.0002186059692777057
+    Y = 3.532048113362994E-006
+    }
+  TEXTSHAPE
+    {
+    ISBOLD = NO
+    SIZEUNITS = FRAME
+    HEIGHT = 3.5
+    }
+  BOX
+    {
+    BOXTYPE = FILLED
+    MARGIN = 30
+    COLOR = WHITE
+    }
+  TEXT = '1500 K'
+$!ATTACHTEXT 
+  POSITIONCOORDSYS = GRID
+  ANCHORPOS
+    {
+    X = 0.0002283747403896584
+    Y = 2.493985829625951E-006
+    }
+  TEXTSHAPE
+    {
+    ISBOLD = NO
+    SIZEUNITS = FRAME
+    HEIGHT = 3.5
+    }
+  BOX
+    {
+    BOXTYPE = FILLED
+    MARGIN = 10
+    COLOR = WHITE
+    }
+  TEXT = '6000 K'
+$!ATTACHGEOM 
+  GEOMTYPE = RECTANGLE
+  ANCHORPOS
+    {
+    X = -1
+    }
+  ZONE = 11
+  RAWDATA
+2000 0.367900013924 
+$!ATTACHGEOM 
+  ANCHORPOS
+    {
+    X = 81.54781287311452
+    Y = 0.4122216859716702
+    }
+  ZONE = 11
+  ARROWHEADATTACHMENT = ATEND
+  ARROWHEADSIZE = 3
+  ARROWHEADANGLE = 20
+  RAWDATA
+1
+2
+-5.93066106376E-005 -0.0264036767185 
+-5.93066106376E-005 -0.168576911092 
+$!FRAMECONTROL ACTIVATEBYNUMBER
+  FRAME = 1
+$!SETSTYLEBASE CONFIG
