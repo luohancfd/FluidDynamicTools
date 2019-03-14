@@ -922,7 +922,7 @@ contains
       FILENAME(1) = 'n2.bin'
       FILENAME(3) = 'oo.bin'
       FILENAME(5) = 'no.bin'
-      OPEN(3,FILE="DS1VD.txt", ACCESS="APPEND")
+      OPEN(3,FILE="DS1VD.TXT", ACCESS="APPEND")
       write(3,'(a)') "Start setting AHO model for MFDSMC"
       do i=1,MSP
         if (ISPV(i) == 1 .and. FILENAME(i) .ne. 'na' .and. IVMODEL(i,1) ==1 ) then
@@ -1207,7 +1207,6 @@ contains
   end subroutine MF_EVAL_F
 
 !
-!--IMF only applied when QCTMODEL = 1, 0 for TCE, 1 for MFDSMC, 2 for MFDSMC-AHO
 !--IMFS = 0, not sample anything related to MF model =1 sample
 !--NMFANG = number of angle to sample for MF model, <8 for atom-diatom, >= 8 for diatom-diatom
 !--NMFpair number of molecular pairs to use MF dissociation model
@@ -1443,15 +1442,18 @@ IRELAX=0     !=0 for isothermal relaxation tests: 0 moving/indexing are prohibit
 IREAC=2      !0 reaction on and rate sampling off (standard case)
 !             1 reaction on and rate sampling on (samples only NSPDF cell, requires ISF>0)
 !             2 reaction off and rate sampling on (called by run_ireac_ds1v.sh, samples only NSPDF cell, requires ISF=0 & NSEED>= 0)
-QCTMODEL=1   !0 for LB+SHO vibrational levels, 1 for TCE+LB+AHO, 2 MEQCT+AHO (for O2+O and N2+O)
+QCTMODEL=2   !0 for TCE+LB+SHO vibrational levels
+             !1 for TCE/MF+LB+AHO
+             !2 for TCE/MF+MEQCT+AHO (MEQCT for O2+O and N2+O), IMF should also be turned on
+             !3 for TCE+SSD+SSE+MEQCT+AHO (QCT SSD for O2+O, N2+O and SSE for N2+O)
 ! WARNING: All above variables are hard coded, pay attenton before use it
 
 ! WARNING: The following variables are set by reading input
-IMF = 1      ! 0: do not use MF model, 1: use MF+SHO 2: use MF+AHO(QCT ladder) 3: use MF+AHO(Morse Potential)
-IMFdia = 1   ! 0: for collision of same molecules, dissociate the one with higher vibrational energy
+IMF=1      ! 0: do not use MF model, 1: use MF+SHO 2: use MF+AHO(QCT ladder) 3: use MF+AHO(Morse Potential)
+IMFdia=1   ! 0: for collision of same molecules, dissociate the one with higher vibrational energy
              ! 1: for collision of same molecules, dissociate the one gives lower threshold energy
-IMFS = 1     ! 0 for not sampling 1 for sampling
-nonVHS = 0
+IMFS=1     ! 0 for not sampling 1 for sampling
+nonVHS=0
 !-- nonVHS 0 for VHS/VSS model
 !          1 for VHS/VSS model+QCT N2O model
 !          2 exponential model, fallback to 0 if parameters not found
@@ -1560,7 +1562,7 @@ IF (IRUN == 3) THEN
   WRITE (*,*) '      2 to adapt cells based on mininum number density;'
   READ (*,*) IADAPT
   CALL READ_DATA
-  IF (IREAC == 0) THEN !extracting MeQct Zv(T) values
+  IF (IREAC == 0 .and. IRELAX == 0) THEN !extracting MeQct Zv(T) values
     WRITE (*,*) 'Enter temperature value for reaction rate sampling'
     READ (*,*) FTMP(1)
     READ (*,*) FVTMP(1)
@@ -1572,7 +1574,7 @@ IF (IRUN == 3) THEN
     !FND=101325.d0/(BOLTZ*FTMP(1))
     !IF (AE(1) <= 0.) FND=2.5d25*(FTMP/300.d0)  !101325.d0/(BOLTZ*FTMP(1))
   END IF
-  IF (IREAC == 2) THEN
+  IF (IREAC == 2 .and. IRELAX == 0) THEN
     WRITE (*,*) 'Enter temperature value for reaction rate sampling'
     READ (*,*) FTMP(1)
     READ (*,*) FVTMP(1)
@@ -1625,7 +1627,7 @@ IF (NOUT == -1) THEN
     WRITE(*,*) 'Adapting cells at beginning: done'
   END IF
 !
-  !CALL WRITE_RESTART
+  CALL WRITE_RESTART
   CALL INITIALISE_SAMPLES
   WRITE(*,*) 'Writing outputs for initial condition: done'
 END IF
@@ -1646,7 +1648,7 @@ CLOSE(9)
 !
 !------------------------------------------------------------------------------
 !
-OPEN(119, FILE="RunningTime.dat", STATUS="REPLACE")
+OPEN(119, FILE="RunningTime.DAT", STATUS="REPLACE")
 WRITE(119,"(10(A,1X,I2,2X))") "# IRELAX:",IRELAX,"IREAC:",IREAC,"nonVHS:",nonVHS,"GASCODE:",GASCODE
 WRITE(119,"(10(A,1X,I2,2X))") "# QCTMODEL:",QCTMODEL,"IMF:",IMF,"IMFdia:",IMFdia,"IMFS:",IMFS
 WRITE(119,"(A,G14.6)") '# SAMPRAT = ', SAMPRAT
@@ -1710,6 +1712,7 @@ DO WHILE (FTIME < TLIM)
 !    !$ WRITE(*,*) 'UPDATE_MP wallclock time (s):', omp_get_wtime()-WCLOCK(1)
 !
     IF ((ISF == 2).AND.(N == INT(TPOUT-10))) CALL INITIALISE_SAMPLES
+    CALL FLUSH(6)
 !
   END DO
 !
@@ -1719,13 +1722,13 @@ DO WHILE (FTIME < TLIM)
   CALC_TIME = dble(COUNT1-COUNT0) / dble(COUNT_RATE)
 
   ! io
-  FLUSH(9)
-  OPEN(119, FILE="RunningTime.dat", POSITION="APPEND")
+  CALL FLUSH(9)
+  OPEN(119, FILE="RunningTime.DAT", POSITION="APPEND")
   WRITE(119,118) NOUT, CALC_TIME, FTIME, DTM, NM, NSAMP, TISAMP
   CLOSE(119)
 118  FORMAT(I10,2X, 10(G14.6,2X))
 
-  IF (IREAC .ne. 2) THEN
+  IF (IREAC .ne. 2 .AND. IMFS .ne. 1) THEN
     ! WARNING: do not write restart for ireac = 2, file is too huge
     CALL WRITE_RESTART
   END IF
@@ -1770,7 +1773,7 @@ INTEGER :: NVERD,MVERD,N,K
 !
 WRITE (*,*) 'Reading the data file DS1VD.in'
 OPEN (4,FILE='DS1VD.in')
-OPEN (3,FILE='DS1VD.txt')
+OPEN (3,FILE='DS1VD.TXT')
 !
 WRITE (3,*) 'Data summary for program DS1'
 !
@@ -1868,6 +1871,7 @@ IF (GASCODE == 8) THEN
   IF (IRM >= 200)  WRITE (3,*) ' Both forward and reverse reactions'
   CALL OXYGEN_NITROGEN
 END IF
+
 !
 WRITE (3,*) 'Approach for post-reaction vibrational energy redistribution:',IPRS
 WRITE (3,*) 'Approach for reaction sampling and thermal relaxation:',IREAC,IRELAX
@@ -2031,11 +2035,6 @@ IF (nonVHS == 3 .and. IRM .ne. 250 .and. IRM .ne. 150 .and. IRM .ne. 160 .and. I
   WRITE(*,*) ' nonVHS = 3 should be used with IRM == 250/150/160'
   STOP
 END IF
-IF (nonVHS .ne. 0 .and. IMF == 0) THEN
-  WRITE(*,*) ' nonVHS has only been tested with MF-DSMC model'
-  WRITE(3,*) ' nonVHS has only been tested with MF-DSMC model'
-  STOP
-END IF
 
 !=== set model in DS1 head region
 READ (4,*) IMF !--han: flag to control Macheret-Fridman model
@@ -2052,6 +2051,13 @@ ELSE
   WRITE(3,*) '   ERROR: Wrong input for Macheret-Fridman model'
   stop
 ENDIF
+IF ( IMF .EQ. 0 ) IMFS = 0
+
+IF (nonVHS .ne. 0 .and. IMF == 0) THEN
+  WRITE(*,*) ' nonVHS has only been tested with MF-DSMC model'
+  WRITE(3,*) ' nonVHS has only been tested with MF-DSMC model'
+  STOP
+END IF
 
 IF (IMF .NE. 0) THEN
   READ(4, *) IMFdia
@@ -2065,9 +2071,10 @@ IF (IMF .NE. 0) THEN
   ENDIF
 ENDIF
 
-IF ( IMF .EQ. 0 ) IMFS = 0
-IF (QCTMODEL == 2 .AND. IMF .NE. 0)THEN
-  WRITE(3,*) ' WARNING: MF MODEL BE NOT BE USED!'
+IF (QCTMODEL .ne. 2 .and. QCTMODEL .ne. 1 .AND. IMF .NE. 0)THEN
+  WRITE(3,*) ' WARNING: MF MODEL CAN ONLY BE USED WIITH QCTMODEL=1/2'
+  WRITE(*,*) ' WARNING: MF MODEL CAN ONLY BE USED WIITH QCTMODEL=1/2'
+  stop
 ENDIF
 !==============================================================
 !
@@ -2168,9 +2175,9 @@ ENDIF
 !
 ALLOCATE (COLLS(NCELLS),WCOLLS(NCELLS),CLSEP(NCELLS),REAC(MNRE),SREAC(MNSR),VAR(21,NCELLS), &
           VARSP(0:11,NCELLS,MSP),VARS(0:32+MSP,2),CS(0:8+MMVM,NCELLS,MSP),CSS(0:8,2,MSP,2), &  !-isebasti: correcting CS allocation
-          CSSS(6,2),CST(0:4,NCELLS),BINS(0:NBINS,5,MSP),BIN(0:NBINS,5),PDFS(0:NBINS,5,MSP),PDF(0:NBINS,5), &
+          CSSS(6,2),CST(0:4,NCELLS),BINS(0:NBINS,5,MSP),BIN(0:NBINS,5),EVREM(MNRE),&
+          PDFS(0:NBINS,5,MSP),PDF(0:NBINS,5), &
           NDROT(MSP,100),NDVIB(NSCELLS,0:MMVM,MSP,0:100),STAT=ERROR) !--isebasti: CST,PDFS,PDF,BINS,BIN included
-ALLOCATE (EVREM(MNRE),STAT=ERROR)
 IF (ERROR /= 0) THEN
   WRITE (*,*) 'PROGRAM COULD NOT ALLOCATE SPACE FOR SAMPLING ARRAYS',ERROR
 ENDIF
@@ -2451,7 +2458,7 @@ END DO
 
 !-- Han: enlarge CCELL(4) in case of error
 !-- Han's trick for nonVHS
-IF (nonVHS .ne. 0) THEN
+IF (nonVHS .eq. 1) THEN
   CCELL(4,:) = CCELL(4,:)*1.1D0
 END IF
 !
@@ -6487,18 +6494,18 @@ ENDIF
 !
 ALLOCATE (COLLS(NCELLS),WCOLLS(NCELLS),CLSEP(NCELLS),REAC(MNRE),SREAC(MNSR),VAR(21,NCELLS), &
           VARSP(0:11,NCELLS,MSP),VARS(0:32+MSP,2),CS(0:8+MMVM,NCELLS,MSP),CSS(0:8,2,MSP,2), &  !--isebasti: correcting CS allocation
-          CSSS(6,2),CST(0:4,NCELLS),BINS(0:NBINS,5,MSP),BIN(0:NBINS,5),&
+          CSSS(6,2),CST(0:4,NCELLS),BINS(0:NBINS,5,MSP),BIN(0:NBINS,5),EVREM(MNRE),&
           PDFS(0:NBINS,5,MSP),PDF(0:NBINS,5),NDROT(MSP,100),NDVIB(NSCELLS,0:MMVM,MSP,0:100),STAT=ERROR) !--isebasti: CST,BINS,BIN,PDFS,PDF included
-IF (MNRE > 0) THEN
-  ALLOCATE (NPVIB(2,MNRE,3,3,0:100),FPVIB(MNRE,ITMAX,3,3,0:100),FPTEMP(ITMAX),STAT=ERROR)
-  ALLOCATE (NEVIB(MNRE,2,0:100),FEVIB(MNRE,ITMAX,2,0:100),STAT=ERROR) !--isebasti: included
-ELSE
-  ALLOCATE (NPVIB(1,1,1,1,1),FPVIB(1,1,1,1,1),FPTEMP(1),NEVIB(1,1,1),FEVIB(1,1,1,1),STAT=ERROR) !--isebasti: included
-  ALLOCATE (EVREM(MNRE),STAT=ERROR)
-END IF
-IF (ERROR /= 0) THEN
-  WRITE (*,*) 'PROGRAM COULD NOT ALLOCATE SPACE FOR SAMPLING ARRAYS',ERROR
-ENDIF
+! IF (MNRE > 0) THEN
+!   ALLOCATE (NPVIB(2,MNRE,3,3,0:100),FPVIB(MNRE,ITMAX,3,3,0:100),FPTEMP(ITMAX),STAT=ERROR)
+!   ALLOCATE (NEVIB(MNRE,2,0:100),FEVIB(MNRE,ITMAX,2,0:100),STAT=ERROR) !--isebasti: included
+! ELSE
+!   ALLOCATE (NPVIB(1,1,1,1,1),FPVIB(1,1,1,1,1),FPTEMP(1),NEVIB(1,1,1),FEVIB(1,1,1,1),STAT=ERROR) !--isebasti: included
+!   ALLOCATE (EVREM(MNRE),STAT=ERROR)
+! END IF
+! IF (ERROR /= 0) THEN
+!   WRITE (*,*) 'PROGRAM COULD NOT ALLOCATE SPACE FOR SAMPLING ARRAYS',ERROR
+! ENDIF
 !
 !
 CALL ALLOCATE_GAS
@@ -6876,7 +6883,7 @@ IF (MNRE > 0) THEN
      MFRMASS=-100.d0; NMFANG = 0;
   END IF
 !
-  OPEN(10, FILE="ChemicalReaction.txt")
+  OPEN(10, FILE="ChemicalReaction.TXT")
   WRITE(10, "(A, I3)") "Number of reactions",MNRE
   DO  N=1,MNRE
     WRITE(10, "(A,I3)") "Reaction ",N
@@ -6972,7 +6979,7 @@ IF (IMF == 2 .or. IMF == 3) THEN
 END IF
 
 IF (IMF .ne. 0) THEN
-  OPEN(10, FILE="ChemicalReaction.txt", ACCESS="APPEND")
+  OPEN(10, FILE="ChemicalReaction.TXT", ACCESS="APPEND")
   WRITE(10,*)
   WRITE(10,*)
   IF (IMF == 1) THEN
@@ -8108,8 +8115,8 @@ REAL(8),EXTERNAL :: ERF,gamain,GAM
 !--set variables
 !
 NOUT=NOUT+1
-IF (NOUT > 999999999) NOUT=NOUT-999999999
-! CALL NUMCHAR4 (NOUT,E)
+IF (NOUT > 9999) NOUT=NOUT-9999
+CALL NUMCHAR4 (NOUT,E)
 WRITE (*,*) 'Generating files for output interval',NOUT
 WRITE (*,*) 'ISF,FTIME,Number of samples',ISF,FTIME,NSAMP
 !
@@ -8854,9 +8861,9 @@ END IF
 !----------------------------------------------------------------------------
 !--write flowfield overall properties
 !
-!IF (ISF >= 1) OPEN (3,FILE='DS1FP00_'//E//'.DAT')
-!IF (ISF == 0) OPEN (3,FILE='DS1FP00.DAT')
-OPEN (3,FILE='DS1FP00.DAT') !to generate only one output file
+IF (ISF >= 1) OPEN (3,FILE='DS1FP00_'//E//'.DAT')
+IF (ISF == 0) OPEN (3,FILE='DS1FP00.DAT')
+
 !
 WRITE(TNAME,7791) NOUT
 7791 FORMAT('ZONE T = "'i4.4,'"')
@@ -8999,10 +9006,10 @@ IF(IPDF > 0) THEN
   END IF
 !
 !--vibrational levels
-  F =0.0d0
   IF (MMVM > 0) THEN
     DO I=1,NSCELLS
       J=NSVEC(I) !sampling cell
+      F =0.0d0
       DO L=1,MSP
         IF (ISPV(L) > 0 .AND. (L==1 .or. L==3 .or. L==5) ) THEN !plotting only O2 or N2 populations
           K=1 !single vibrational mode
@@ -9061,7 +9068,7 @@ END IF
 
 !-- vibrational state-specific rates
 IF (IREAC == 2 .AND. IMF .ne. 0 .AND. MNRE <= 2.AND. IMFS == 1 .AND. MNRE>0 .AND. NSCELLS==1) THEN
-  OPEN(3, FILE='IMF_Vrate.dat')
+  OPEN(3, FILE='IMF_Vrate.DAT')
   WRITE(3,"(A,G14.6,A,F10.3)") '# time:',FTIME, ' VT: ',VAR(10,NSPDF)
   WRITE(3,"(A)") 'VARIABLES = "Evib(eV)","v","Nreac","Rate (cm3/mol/s)"'
   DO L = 1,MNRE
@@ -9212,14 +9219,14 @@ ZCHECK=1234567
 !
 102 CONTINUE
   !OPEN (7,FILE='DS1OUT_'//E//'.BIN',FORM='UNFORMATTED',ERR=102)
-!trick  !OPEN (7,FILE='DS1OUT.BIN',FORM='UNFORMATTED',ERR=102)
-  !WRITE (7)IFX,NOUT,FTIME,NSAMP,TISAMP,NM,TOTMOV,TOTCOL,PCOLLS,TOTDUP,TCOL,CSCR,&
-  !         CTIME,TOTCOLI,TOTMOVI,NDISSOC,NRECOMB,&
-  !         ITYPE,XB,VARS,NCELLS,VARSP,&  !end of general properties
-  !         JCD,TREACG,TREACL,ITCV,IEAA,IZV,REAC,VAR,DTM,CELL,NCIS,CST,UVFX,NMS,& !end of reactions,flow properties, and composition
-  !         IPDF,IPRS,BIN,BINS,DBINV,SPI,PDF,PDFS,NSPDF,NDROT,NDVIB,DBINC,DBINE,ISNAP,PSNAP,VSNAP,SP,ZCHECK    !end of sample pdf and snapshot
-!trick  !CLOSE(7)
-!
+  OPEN (7,FILE='DS1OUT.BIN',FORM='UNFORMATTED',ERR=102)
+  WRITE (7)IFX,NOUT,FTIME,NSAMP,TISAMP,NM,TOTMOV,TOTCOL,PCOLLS,TOTDUP,TCOL,CSCR,&
+          CTIME,TOTCOLI,TOTMOVI,NDISSOC,NRECOMB,&
+          ITYPE,XB,VARS,NCELLS,VARSP,&  !end of general properties
+          JCD,TREACG,TREACL,ITCV,IEAA,IZV,REAC,VAR,DTM,CELL,NCIS,CST,UVFX,NMS,& !end of reactions,flow properties, and composition
+          IPDF,IPRS,BIN,BINS,DBINV,SPI,PDF,PDFS,NSPDF,NDROT,NDVIB,DBINC,DBINE,ISNAP,PSNAP,VSNAP,SP,ZCHECK    !end of sample pdf and snapshot
+  CLOSE(7)
+
 WRITE (*,*) 'Output and binary files are written'
 !
 !----------------------------------------------------------------------------
@@ -9278,10 +9285,13 @@ IF (ISF > 0) THEN
 !  IF ((NOUT >= 150).AND.(NOUT < 170)) TPOUT=OUTRAT*.5d0
 !  IF ((NOUT >= 200)) TPOUT=OUTRAT*INT(.9999999+(NOUT-190)/10) !comment for RELAX.DAT
 !
-  IF (NOUT >= 50 ) CPDTM=0.005
-  IF (NOUT >= 100) CPDTM=0.010
-  IF (NOUT >= 150) CPDTM=0.050
-  IF (NOUT >= 200) CPDTM=0.100
+  IF (IRELAX .eq. 0) THEN
+  ! for special case, accelerate convergence
+    IF (NOUT >= 50 ) CPDTM=0.005
+    IF (NOUT >= 100) CPDTM=0.010
+    IF (NOUT >= 150) CPDTM=0.050
+    IF (NOUT >= 200) CPDTM=0.100
+  END IF
 !  IF ((CPDTM < 0.02  ).AND.(NOUT >= 200)) CPDTM=0.02
 !  IF ((CPDTM < 0.2   ).AND.(NOUT >= 250)) CPDTM=0.2
 END IF
@@ -9619,12 +9629,12 @@ IF (NRE > 0) THEN
       END IF
 !
 !--check reaction model
-      MTYPE=0 !TCE is the standard model
-      IF (QCTMODEL==2.AND.GASCODE==8)THEN !QCT model
+      MTYPE=0 !TCE/MF/VDC is the standard model
+      IF (QCTMODEL==3.AND.GASCODE==8)THEN
+        !Enable QCT reaction model
         IF ((LS==1.AND.MS==4).OR.(LS==4.AND.MS==1)) MTYPE=1 !N2-O collision
         IF ((LS==3.AND.MS==4).OR.(LS==4.AND.MS==3)) MTYPE=3 !O2-O collision
       END IF
-!     MTYPE=0 !to enforce the use of TCE model for all collisions
 !
 !--------------------------------------------------------------------------------
       IF (MTYPE == 0) THEN !use TCE/MFDSMC/VDC model
@@ -10635,7 +10645,7 @@ DO N=1,NCELLS
 END DO
 
 !-- Han's trick for nonVHS
-IF (nonVHS .ne. 0) CCELL(4,:) = CCELL(4,:)*1.1D0
+IF (nonVHS .eq. 1) CCELL(4,:) = CCELL(4,:)*1.1D0
 !
 !--assign the molecules to the cells
 !
@@ -11321,9 +11331,9 @@ DO N=1,NCCELLS
 !--Calculate the reaction cross-sections
             IVDC=0                 !to track the order of reacting species
             RXSECTION=0.d0
-            IF (MNRE>0 .and. IMF .ne.  0 .and. QCTMODEL == 2) THEN
+            IF (MNRE>0 .and. IMF .ne.  0 .and. QCTMODEL == 3) THEN
               ! precalculate Reaction cross section before collision occur
-              ! This is for the case when QCTMODEL is used
+              ! This is for the case when QCT-SSD/SSE is used
               ! Reaction cross sections might become larger than others
               CALL CHECK_RXSECTION(RXSECTION,N,L,M,LS,MS,VRR,ECT,SXSECTION,IVDC,IDT)
             END IF
@@ -11332,7 +11342,7 @@ DO N=1,NCCELLS
 
             ! QCT VT cross sections
             VTXSECTION=0.d0
-            IF (QCTMODEL==2.AND.GASCODE==8.AND.J>0) THEN
+            IF (QCTMODEL>=2.AND.GASCODE==8.AND.J>0) THEN
 !
               IF(J==1) THEN  !N2+O collisions
                 SIGMA_REF=14.5351d0/3.d0 !24.2788d0/3.d0
@@ -11411,7 +11421,7 @@ DO N=1,NCCELLS
 !
 !--Define the total cross-section
             TXSECTION=DMAX1(SXSECTION,SUM(VTXSECTION(:)))      !trick
-            IF (MNRE>0 .and. IMF .ne.  0 .and. QCTMODEL == 2) THEN
+            IF (MNRE>0 .and. IMF .ne.  0 .and. QCTMODEL == 3) THEN
               TXSECTION=DMAX1(TXSECTION,SUM(RXSECTION(:)))
             END IF
             !TXSECTION=DMAX1(TXSECTION,SUM(VTXSECTION(:)))     !total cross-section in Angstrons^2
@@ -11471,8 +11481,9 @@ DO N=1,NCCELLS
               JX=2                   !standard number of post reaction species
               LMS=1                  !initialize
               IF (MNRE>0) THEN
-                IF (QCTMODEL .ne. 2) THEN
+                IF (QCTMODEL .ne. 3) THEN
                   RXSECTION = 0.0d0
+                  ! For non QCT model, the function is called here
                   CALL CHECK_RXSECTION(RXSECTION,N,L,M,LS,MS,VRR,ECT,SXSECTION,IVDC,IDT)
                   ! for a chemical reaction K
                   ! IVDC(K) = 1:  LS = IREA(1,K), MS = IREA(2,K)
@@ -11553,10 +11564,10 @@ DO N=1,NCCELLS
               IF ((LS==1.AND.MS==4).OR.(LS==4.AND.MS==1)) J=1 !N2-O collision
               IF ((LS==3.AND.MS==4).OR.(LS==4.AND.MS==3)) J=3 !O2-O collision
 !
-              IF (IREAC<=1.AND.QCTMODEL==2.AND.IKA==0.AND.GASCODE==8.AND.J>0) THEN
+              IF (IREAC<=1.AND.QCTMODEL>=2.AND.IKA==0.AND.GASCODE==8.AND.J>0) THEN
                 ! The following code is run under the condition that
-                !  1. Reaction can happend (IREA <=1)
-                !  2. QCTMODEL is on
+                !  1. Reaction can occur (IREA <=1)
+                !  2. QCT-VT Modell is on
                 !  3. Reaction doesn't occur (IKA = 0)
                 !  4. GASCODE == 8
                 !  5. the species is either N2-O or O2-O
