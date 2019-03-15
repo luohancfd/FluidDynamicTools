@@ -1438,21 +1438,21 @@ ITHP=0       !>0 compute thermophoretic forces
 IUBC=0       !>0 update boundary conditions
 IPRS=2       !post-reaction vibrational levels are populated using 0 LB, 1 pre-reaction pdf sampling, 2 modified LB
 ITMAX=4      !number of temperature intervlas for pre-reaction sampling (it might be redefined after reading restart files)
-IRELAX=0     !=0 for isothermal relaxation tests: 0 moving/indexing are prohibited, 1 allowed
-IREAC=2      !0 reaction on and rate sampling off (standard case)
+IRELAX=1     !=0 for isothermal relaxation tests: 0 moving/indexing are prohibited, 1 allowed
+IREAC=0      !0 reaction on and rate sampling off (standard case)
 !             1 reaction on and rate sampling on (samples only NSPDF cell, requires ISF>0)
 !             2 reaction off and rate sampling on (called by run_ireac_ds1v.sh, samples only NSPDF cell, requires ISF=0 & NSEED>= 0)
 QCTMODEL=2   !0 for TCE+LB+SHO vibrational levels
              !1 for TCE/MF+LB+AHO
              !2 for TCE/MF+MEQCT+AHO (MEQCT for O2+O and N2+O), IMF should also be turned on
              !3 for TCE+SSD+SSE+MEQCT+AHO (QCT SSD for O2+O, N2+O and SSE for N2+O)
+IMFS=0     ! 0 for not sampling 1 for sampling
 ! WARNING: All above variables are hard coded, pay attenton before use it
 
 ! WARNING: The following variables are set by reading input
 IMF=1      ! 0: do not use MF model, 1: use MF+SHO 2: use MF+AHO(QCT ladder) 3: use MF+AHO(Morse Potential)
 IMFdia=1   ! 0: for collision of same molecules, dissociate the one with higher vibrational energy
              ! 1: for collision of same molecules, dissociate the one gives lower threshold energy
-IMFS=1     ! 0 for not sampling 1 for sampling
 nonVHS=0
 !-- nonVHS 0 for VHS/VSS model
 !          1 for VHS/VSS model+QCT N2O model
@@ -1499,10 +1499,10 @@ IF (IRUN <= 2) THEN
   CALL SET_ZIGGURAT
   WRITE (*,*) 'Setting Ziggurat Random# Generator: done'
   CALL READ_RESTART
-  ISF=1                    !to restart a case that is already ISF=0 as an unsteady-case
+  !ISF=1                    !to restart a case that is already ISF=0 as an unsteady-case
   IF (NSEED == 9999) ISF=0 !special code for shockwave sampling
-  CALL OXYGEN_NITROGEN     !special code to update reaction rates
-  CALL INIT_REAC           !special code to update reaction rates
+  !CALL OXYGEN_NITROGEN     !special code to update reaction rates
+  !CALL INIT_REAC           !special code to update reaction rates
   TSAMP=FTIME
   TOUT=FTIME
 END IF
@@ -1652,10 +1652,10 @@ OPEN(119, FILE="RunningTime.DAT", STATUS="REPLACE")
 WRITE(119,"(10(A,1X,I2,2X))") "# IRELAX:",IRELAX,"IREAC:",IREAC,"nonVHS:",nonVHS,"GASCODE:",GASCODE
 WRITE(119,"(10(A,1X,I2,2X))") "# QCTMODEL:",QCTMODEL,"IMF:",IMF,"IMFdia:",IMFdia,"IMFS:",IMFS
 WRITE(119,"(A,G14.6)") '# SAMPRAT = ', SAMPRAT
-WRITE(119,"(A,G14.6)") '# TPOUT = ', TPOUT
+WRITE(119,"(A,G14.6)") '# OUTRAT = ', OUTRAT
 WRITE(119,"(A,I5)") '# Nthreads = ', NTHREADS
 WRITE(119,"(10(A,1X))") 'VARIABLES = ','"NOUT",', '"CALC_TIME (s)",', '"FTIME (s)",', &
-                  &   '"DTM (s)",', '"NMOL,"', '"NSAMP",', '"TISAMP"'
+                  &   '"DTM (s)",', '"NMOL,"', '"NSAMP",', '"TISAMP",','"TPOUT"'
 CALL SYSTEM_CLOCK(COUNT=COUNT0, COUNT_RATE=COUNT_RATE)
 CLOSE(119)
 
@@ -1724,7 +1724,7 @@ DO WHILE (FTIME < TLIM)
   ! io
   CALL FLUSH(9)
   OPEN(119, FILE="RunningTime.DAT", POSITION="APPEND")
-  WRITE(119,118) NOUT, CALC_TIME, FTIME, DTM, NM, NSAMP, TISAMP
+  WRITE(119,118) NOUT, CALC_TIME, FTIME, DTM, NM, NSAMP, TISAMP, TPOUT
   CLOSE(119)
 118  FORMAT(I10,2X, 10(G14.6,2X))
 
@@ -6399,11 +6399,11 @@ END IF
 !
 !-- Allocate variables related to MF model
 IF (MNRE > 0 .AND. IMF .ne. 0) THEN
-  ALLOCATE(NMFANG(MNRE),IMFpair(MSP,MSP),MFRMASS(3,MNRE),STAT = ERROR)
+  ALLOCATE(NMFANG(MNRE),MFRMASS(3,MNRE),STAT = ERROR)
   !--count number of pairs
   NMFpair0 = FLOOR(DBLE(MSP*(MSP+1))/2.0d0)
   IF (IMFS == 1 ) THEN
-    ALLOCATE(NMFER0(1000,2,NMFpair0), NMFET0(1000,NMFpair0),NMFEV0(0:100,2,NMFpair0), &
+    ALLOCATE(IMFpair(MSP,MSP),NMFER0(1000,2,NMFpair0), NMFET0(1000,NMFpair0),NMFEV0(0:100,2,NMFpair0), &
       NMFER(1000,2,NMFpair0), NMFET(1000,NMFpair0),NMFEV(0:100,2,NMFpair0), &
       NMFERR(1000,2,MNRE),   NMFETR(1000,MNRE),  NMFEVR(0:100,2,MNRE), &
       NMFVT0(0:100,1000,2,NMFpair0), NMFVT(0:100,1000,2,NMFpair0),NMFVTR(0:100,1000,2,MNRE),STAT=ERROR)
@@ -6411,6 +6411,14 @@ IF (MNRE > 0 .AND. IMF .ne. 0) THEN
       WRITE(*,*) 'PROGRAM COULD NOT ALLOCATE SPACE FOR MF RELATED VARIBALES', ERROR
       STOP
     ENDIF
+  ELSE
+  ! allocate dummy variable due to the reduction in SUBROUTINE COLLISION
+  !$  ALLOCATE(NMFET0(1,1), NMFER0(1,2,1), NMFEV0(1,2,1), NMFVT0(1,1,2,1), &
+  !$            NMFEV(1,2,1), NMFET(1,1), NMFER(1,2,1), NMFVT(1,1,2,1), STAT=ERROR)
+  !$  IF (ERROR /= 0) THEN
+  !$    WRITE(*,*) 'PROGRAM COULD NOT ALLOCATE SPACE FOR OPENMP DUMMY VARIABLE', ERROR
+  !$    STOP
+  !$  END IF
   END IF
 ELSE
 ! allocate dummy variable due to the reduction in SUBROUTINE COLLISION
@@ -6455,7 +6463,8 @@ USE CALC
 USE OUTPUT
 USE MFDSMC, only:IMF,IMFS,NMFpair,NMFANG, IMFpair,IMFdia,&
   MFRMASS, NMFER0, NMFET0,NMFEV0,NMFER,&
-  NMFET,NMFEV,NMFERR,NMFETR,NMFEVR,NMFVT0,NMFVT,NMFVTR
+  NMFET,NMFEV,NMFERR,NMFETR,NMFEVR,NMFVT0,NMFVT,NMFVTR, &
+  MF_SET_AHO
 !
 IMPLICIT NONE
 !
@@ -6530,15 +6539,18 @@ IF (ZCHECK /= 1234567) THEN
 END IF
 
 IF (MNRE >0 .AND. IMF .ne. 0) THEN
-  READ(7) NMFANG, IMFpair,MFRMASS
+  READ(7) NMFANG, MFRMASS
   IF (IMFS == 1 .AND. NMFpair > 0)THEN
-    READ(7) NMFER0,NMFET0,NMFEV0,NMFER,NMFET,NMFEV,&
+    READ(7) IMFpair,NMFER0,NMFET0,NMFEV0,NMFER,NMFET,NMFEV,&
       NMFERR,NMFETR,NMFEVR,NMFVT0,NMFVT,NMFVTR
   END IF
   READ(7) ZCHECK2
   IF (ZCHECK2 /= 1234567) THEN
     WRITE (9,*) 'WrongIMFpair, Check integer =',ZCHECK2
     STOP
+  END IF
+  IF (IMF == 2 .or. IMF == 3) THEN
+    CALL MF_SET_AHO()
   END IF
 END IF
 CLOSE(7)
@@ -6587,9 +6599,9 @@ WRITE (7)AC,AE,AVDTM,BC,BOLTZ,EVOLT,CCELL,CELL,CI,CLSEP,COLLS, &
          VMPM,VNMAX,VSURF,WCOLLS,WFM,XB,XREM,XVELS,YVELS,TNEX,NEVIB,FEVIB,QCTMODEL,IVMODEL,VIBEN,IGS,AMEG,EVREM,ZCHECK
 !--isebasti: CST,BINS,BIN,PDFS,PDF,UVFX,IDL,CPER,DPER,ENERS,ENERS0,IREV,NPVIB,FPVIB,FPTEMP,UVFX,UFND,UFTMP,UVMP included
 IF (MNRE >0 .AND. IMF .ne. 0) THEN
-  WRITE(7) NMFANG, IMFpair,MFRMASS
+  WRITE(7) NMFANG, MFRMASS
   IF (IMFS == 1 .AND. NMFpair > 0)THEN
-    WRITE(7) NMFER0,NMFET0,NMFEV0,NMFER,NMFET,NMFEV,&
+    WRITE(7) IMFpair,NMFER0,NMFET0,NMFEV0,NMFER,NMFET,NMFEV,&
       NMFERR,NMFETR,NMFEVR,NMFVT0,NMFVT,NMFVTR
   END IF
   WRITE(7) ZCHECK2
@@ -6963,7 +6975,7 @@ END DO
 !--calculate the coefficients of the energy terms in steric factors (see SMILE documentation)
 !
 NMFpair = 0
-IF (IMF .ne. 0 .and. IMFS == 1) THEN
+IF (IMF .ne. 0 .and. IMFS == 1 .and. MNRE >0) THEN
   DO I=1,MSP
     DO K = I,MSP
       NMFpair = NMFpair+1
@@ -6974,7 +6986,7 @@ IF (IMF .ne. 0 .and. IMFS == 1) THEN
 END IF
 
 
-IF (IMF == 2 .or. IMF == 3) THEN
+IF (IMF == 2 .or. IMF == 3 .and. MNRE>0) THEN
   CALL MF_SET_AHO()
 END IF
 
