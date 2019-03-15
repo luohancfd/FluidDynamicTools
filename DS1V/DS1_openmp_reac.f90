@@ -638,7 +638,7 @@ contains
     implicit none
     integer, intent(in) :: LS, MS
     real(8), intent(in) :: ET  !should be in eV
-    real(8) :: COLXSEC, XSEC
+    real(8) :: XSEC
     real(8),pointer :: p(:)
     integer :: IERROR, iexpair
     iexpair = EXPCOLPair(LS, MS)
@@ -763,7 +763,7 @@ contains
     USE CALC, only : EVOLT, PI
     USE GAS, only : SPM
     implicit none
-    integer :: LS, MS, IDT, IERROR
+    integer :: LS, MS, IDT
     real(8) :: VRC(3), VR, VRCP(3), BMAX,RANF,ET0
     real(8) :: b, CHI, CCHI, SCHI, EPSI, CEPSI, SEPSI, D
 
@@ -817,7 +817,7 @@ contains
     integer,intent(in) :: LS,MS,RDOF
     real(8),intent(in) :: EC
     integer :: IDT, samp_t, ipair, i
-    real(8) :: EXPCOL_RT,lx,rx,RANF,xs,PROB,xout,fa0,fb0,a,b
+    real(8) :: EXPCOL_RT,RANF,xs,PROB,xout,fa0,fb0,a,b
     real(8),parameter :: tol = 1.0d-4
     real(8),external :: brent
     ipair = EXPCOLPair(LS,MS)
@@ -1394,7 +1394,7 @@ USE MFDSMC,only : IMF, IMFS, MF_CLEAN_AHO, IMFdia
 !
 IMPLICIT NONE
 !
-INTEGER :: IRUN,NSEED,N,I,J,IRETREM,ISET, NTHREADS, ITHREAD
+INTEGER :: IRUN,NSEED,N,I,J,IRETREM,NTHREADS, ITHREAD
 REAL(KIND=8) :: A,WCLOCK(5)
 INTEGER(KIND=8) :: COUNT0, COUNT1, COUNT_RATE
 REAL(8) :: CALC_TIME
@@ -2093,11 +2093,10 @@ USE GEOM
 USE GAS
 USE CALC
 USE OUTPUT
-USE MFDSMC,only : IMF, IMFS
 !
 IMPLICIT NONE
 !
-INTEGER :: I,J,L,K,KK,KN,NMI,II,III,INC,NSET,NSC,NC,NDES,IDES(10000),IV,IDT=0 !--isebasti: included NC,IDT
+INTEGER :: I,J,L,K,KK,KN,NMI,II,III,INC,NC,NDES,IDES(10000),IDT=0 !--isebasti: included NC,IDT
 INTEGER(KIND=8) :: N,M
 REAL(KIND=8) :: AA,A,B,BB,SN,XMIN,XMAX,WFMIN,DENG,TDF,DNF,VMP2,RANF,EVIB,TVAR(10000),BVMP,BTEMP !--isebasti: included TDF,DNF,VMP2,RANF,EVIB
 REAL(KIND=8), DIMENSION(3) :: DMOM
@@ -6675,8 +6674,8 @@ USE CALC
 !
 IMPLICIT NONE
 !
-INTEGER :: N,L,M,NSC,NCC,ND
-REAL(KIND=8) :: X,FRAC,DSC,A,B,C,TIM
+INTEGER :: NSC,NCC,ND
+REAL(KIND=8) :: X,A,B,TIM
 !
 !--NCC collision cell number
 !--NSC sampling cell number
@@ -6866,7 +6865,7 @@ USE MFDSMC, only : IMF,IMFS,MFRMASS, NMFANG,NMFpair, IMFpair,MF_SET_AHO, IMFdia
 !
 IMPLICIT NONE
 !
-INTEGER :: I,K,KK,L,M,N,LS,MS,NNRE,NTBP,II,JJ
+INTEGER :: I,K,L,M,N,LS,MS,NNRE,NTBP,II
 REAL(KIND=8) :: A,B,C,D,EPS,AL,X,AA,BB
 REAL(8),EXTERNAL :: GAM
 !
@@ -7347,7 +7346,7 @@ REAL(KIND=8) :: A,B,X,XI,XC,DX,DY,DZ,DTIM,S1,XM,R,TI,DTC,POB,UR,WFI,WFR,WFRI,RAN
 !$omp private(idt,n,nci,dtim,wfi,ii,ti,xi,dx,x,dz,dy,r,j,l,dtc,xc,s1,wfr,wfri,k,m,jj) &
 !$omp reduction(+:totmov,entmass)
 !$    idt=omp_get_thread_num()  !thread id
-!$omp do !schedule (dynamic,NCCELLS/32)
+!$omp do !schedule (static)
 !
 DO N=1,NM
 !
@@ -9513,7 +9512,7 @@ END SUBROUTINE DISSOCIATION
 !
 !************************************************************************************
 !
-SUBROUTINE CHECK_RXSECTION(RXSECTION,N,L,M,LS,MS,VRR,ECT,SXSECTION,IVDC,IDT)
+SUBROUTINE CHECK_RXSECTION(RXSECTION,N,L,M,LS,MS,ECT,SXSECTION,IVDC,IDT)
 !
 !
 USE MOLECS
@@ -9528,7 +9527,7 @@ USE MFDSMC,only : IMF, IMFdia, NMFANG,&
 IMPLICIT NONE
 !
 !
-REAL(8),INTENT(IN) :: VRR,ECT,SXSECTION
+REAL(8),INTENT(IN) :: ECT,SXSECTION
 INTEGER,INTENT(IN) :: N,L,M,LS,MS
 
 INTEGER :: J,K,NRE,KK,KS,MK,KA,KAA,MKK,KV,IA,ISTE(MNRE),&
@@ -9575,7 +9574,7 @@ IF (LS == MS) ISAME = .true.
 !
 IF (NRE > 0) THEN
 !
-  MFF = ECT*2.0d0  !initialization
+  MFF = ECT*2.0d0  !initialization MF model
   ECR=0.D00; ECV=0.D00
   EV1=0.D00; EV2=0.D00
   ECR1=0.D00; ECR2=0.D00
@@ -10166,7 +10165,7 @@ END SUBROUTINE CHECK_RXSECTION
 !
 !************************************************************************************
 !
-SUBROUTINE CHECK_REACTION(IKA,N,L,LM,M,LS,LMS,MS,VRR,VR,VRC,VRI,VCM,RML,RMM,IVDC)
+SUBROUTINE CHECK_REACTION(IKA,N,L,LM,M,LS,LMS,MS,VRR,VR,VRC,VRI,VCM,RML,RMM,IVDC,LOCAL_NPVIB, LOCAL_EVREM)
 !
 !
 USE MOLECS
@@ -10180,12 +10179,17 @@ USE MFDSMC,only:IMF,IMFS,NMFETR,NMFERR,NMFEVR,NMFVTR
 IMPLICIT NONE
 !
 !
-INTEGER :: J,K,L,LM,M,N,LS,LMS,MS,IKA,JR,KV,ISTE(MNRE),NS,NPM,I,IVDC(MNRE)
+INTEGER :: I,J,K,L,LM,M,N,LS,LMS,MS,IKA,JR,KV,ISTE(MNRE),NS,NPM,IVDC(MNRE)
 REAL(8),EXTERNAL :: GAM
 REAL(KIND=8) :: A,ECT,ECR,ECV,EC,VR,VRR,RML,RMM,&
                 VDOF1(MMVM),VDOF2(MMVM),EV1(MMVM),EV2(MMVM),ECV1,ECV2,SVDOF1,SVDOF2,ECR1,ECR2,&
                 EP,TEMP,ECT2,VRC(3),VCM(3),VRI
 INTEGER :: II,IETDX,IERDX(2)
+
+REAL(8) :: LOCAL_EVREM
+INTEGER :: LOCAL_NPVIB(3, MMVM,0:100)
+LOCAL_NPVIB = 0
+LOCAL_EVREM = 0
               !
 !--A,B,C working variables
 !--J,K,KK,MK,KA,KAA,MKK,JR,KR,JS,KV,IA working integers
@@ -10299,14 +10303,19 @@ IF (IKA > 0) THEN
     IF (I > 100) I=100
     IF (J > 100) J=100
     IF (K > 100) K=100
-    !$omp atomic
-    NPVIB(1,IKA,1,KV,I)=NPVIB(1,IKA,1,KV,I)+1  !bin counter
-    !$omp atomic
-    NPVIB(1,IKA,2,KV,J)=NPVIB(1,IKA,2,KV,J)+1
-    !$omp atomic
-    NPVIB(1,IKA,3,KV,K)=NPVIB(1,IKA,3,KV,K)+1
-    !$omp critical
+    LOCAL_NPVIB(1,KV,I) = LOCAL_NPVIB(1,KV,I)+1
+    LOCAL_NPVIB(2,KV,J) = LOCAL_NPVIB(2,KV,J)+1
+    LOCAL_NPVIB(3,KV,K) = LOCAL_NPVIB(3,KV,K)+1
+    ! !$omp atomic
+    ! NPVIB(1,IKA,1,KV,I)=NPVIB(1,IKA,1,KV,I)+1  !bin counter
+    ! !$omp atomic
+    ! NPVIB(1,IKA,2,KV,J)=NPVIB(1,IKA,2,KV,J)+1
+    ! !$omp atomic
+    ! NPVIB(1,IKA,3,KV,K)=NPVIB(1,IKA,3,KV,K)+1
+
+    !//TODO
     IF (IREAC > 0 .and. NPM == 3 .and. IMF .ne. 0 .and. KV == 1 .and. IMFS == 1 .and. MNRE > 0) THEN
+    !$omp critical
       IETDX = FLOOR(ECT/BOLTZ/FTMP0/0.01D0)+1;
       IETDX=MIN(IETDX,1000)
       NMFETR(IETDX,IKA) = NMFETR(IETDX,IKA) + 1.0d0
@@ -10330,16 +10339,20 @@ IF (IKA > 0) THEN
 
       NMFVTR(I,IETDX,1,IKA) = NMFVTR(I,IETDX,1,IKA) + 1.0d0
       NMFVTR(J,IETDX,2,IKA) = NMFVTR(J,IETDX,2,IKA) + 1.0d0
+    !$omp end critical
     ENDIF
 
+    !remove!$omp critical
     IF (NPM == 3 .and. KV == 1 .and. NPM ==3) THEN
       IF (IVDC(K) == 1) THEN
-        EVREM(IKA) = EVREM(IKA) + ECV1  ! EVREM in Joule
+        LOCAL_EVREM = LOCAL_EVREM + ECV1
+!        EVREM(IKA) = EVREM(IKA) + ECV1  ! EVREM in Joule
       ELSE
-        EVREM(IKA) = EVREM(IKA) + ECV2
+        LOCAL_EVREM = LOCAL_EVREM + ECV2
+ !       EVREM(IKA) = EVREM(IKA) + ECV2
       END IF
     END IF
-    !$omp end critical
+    !remove!$omp end critical
   END DO
 !
 !--sample pre-reaction vibrational energies (normalized by 1000*BOLTZ)
@@ -10867,6 +10880,9 @@ LOGICAL :: IVHS
 REAL(8) :: CVR2, SXSECTION2
 REAL(8),EXTERNAL :: GAM
 
+INTEGER :: LOCAL_NPVIB(3,MMVM,0:100)
+REAL(8) :: LOCAL_EVREM
+
 !
 !--N,M,K working integer
 !--LS,MS,KS,JS molecular species
@@ -10919,12 +10935,12 @@ REAL(8),EXTERNAL :: GAM
 !$omp private(QNU,A1,A2,B1,B2,C1,C2,E,F,EL,ED,ET0,EROT,EV,SIGMA_REF,EV_POST,SUMF,EF,S) &
 !$omp private(ECR,EVIBEV,IVPS,BMAX,REST_DOF)&
 !$omp private(CVR2,IVHS, SXSECTION2)&
-!$omp private(IETDX,IEVDX,IERDX,IREACSP) &
+!$omp private(IETDX,IEVDX,IERDX,IREACSP,LOCAL_NPVIB,LOCAL_EVREM) &
 !$omp reduction(+:ndissoc,ndissl,trecomb,nrecomb,treacl,treacg,tnex,tforex,trevex) & !Q-K
-!$omp reduction(+:totdup,totcol,pcolls,tcol,cscr,colls,wcolls,clsep,reac,npvib) &
+!$omp reduction(+:totdup,totcol,pcolls,tcol,cscr,colls,wcolls,clsep,reac,npvib, EVREM) &
 !$omp reduction(+:NMFET0,NMFER0,NMFEV0,NMFVT0,NMFEV,NMFET,NMFER,NMFVT)
 !$    idt=omp_get_thread_num()  !thread id
-!$omp do !schedule (dynamic,NCCELLS/32)
+!$omp do !schedule (static)
 
 ! OPEN(19, FILE="VelocityVAR.txt", ACCESS="APPEND")
 DO N=1,NCCELLS
@@ -11212,18 +11228,18 @@ DO N=1,NCCELLS
                   ! to use this one, you first need to change dref of O2 to 17.474245e-10,
                   ! and omega to 0.99531
                   !
-				  ! the original value of dref should be 4.1515e-10, omega should be 0.7318
-				  !
-				  ! What I do here is that I first set CVR and SXSECTION as the corrected one with parameter
-				  ! dref = 17.474245e-10 and omega = 0.99531
-				  !
+                  ! the original value of dref should be 4.1515e-10, omega should be 0.7318
+                  !
+                  ! What I do here is that I first set CVR and SXSECTION as the corrected one with parameter
+                  ! dref = 17.474245e-10 and omega = 0.99531
+                  !
                   ! And then I set CVR2 and SXSECTION2 as the real VHS one
                   CVR = CVR2*(1.0d0 - DEXP(-2238.0d0/VAR(8,NN)))
-				          SXSECTION = SXSECTION2 * CVR / CVR2
+                  SXSECTION = SXSECTION2 * CVR / CVR2
 
                   CVR2 = VR*PI*(4.1515d-10)**2*((2.D00*BOLTZ*SPM(5,LS,MS)/(SPM(1,LS,MS)*VRR))**(0.7318D0-0.5D00))
                   CVR2 = CVR2 / GAM(2.5D0 - 0.7318D0)
-				          SXSECTION2 = CVR2/VR*1e20
+                  SXSECTION2 = CVR2/VR*1e20
 
                   IVHS = .false.
                 ELSE IF (IMF == 3) THEN
@@ -11326,10 +11342,10 @@ DO N=1,NCCELLS
                 IVP = IPVIB(1,M)
               ENDIF
             END IF
-            IF (IVP > 0)THEN
+            IF (IVP >= 0)THEN
               CALL VIB_ENERGY(EVIB,IVP,1,ABS(J))
             END IF
-            ! the following values are used in ME-QCT-VT model
+            ! the following value of ECC is only used in ME-QCT-VT model
             ECC=(ECT+EVIB)/EVOLT                !available collision energy in eV
 
             ! Han: add nonVHS cross section model for N2+O
@@ -11347,7 +11363,7 @@ DO N=1,NCCELLS
               ! precalculate Reaction cross section before collision occur
               ! This is for the case when QCT-SSD/SSE is used
               ! Reaction cross sections might become larger than others
-              CALL CHECK_RXSECTION(RXSECTION,N,L,M,LS,MS,VRR,ECT,SXSECTION,IVDC,IDT)
+              CALL CHECK_RXSECTION(RXSECTION,N,L,M,LS,MS,ECT,SXSECTION,IVDC,IDT)
             END IF
 !
 
@@ -11496,7 +11512,7 @@ DO N=1,NCCELLS
                 IF (QCTMODEL .ne. 3) THEN
                   RXSECTION = 0.0d0
                   ! For non QCT model, the function is called here
-                  CALL CHECK_RXSECTION(RXSECTION,N,L,M,LS,MS,VRR,ECT,SXSECTION,IVDC,IDT)
+                  CALL CHECK_RXSECTION(RXSECTION,N,L,M,LS,MS,ECT,SXSECTION,IVDC,IDT)
                   ! for a chemical reaction K
                   ! IVDC(K) = 1:  LS = IREA(1,K), MS = IREA(2,K)
                   ! IVDC(K) = 2:  LS = IREA(2,K), MS = IREA(1,K)
@@ -11518,7 +11534,16 @@ DO N=1,NCCELLS
                     A=A+RXSECTION(J)/SUMF
                   END DO
                   IKA=IRCD(J,LS,MS) !reaction IKA occurs
-                  CALL CHECK_REACTION(IKA,N,L,LM,M,LS,LMS,MS,VRR,VR,VRC,VRI,VCM,RML,RMM,IVDC)
+                  CALL CHECK_REACTION(IKA,N,L,LM,M,LS,LMS,MS,VRR,VR,VRC,VRI,VCM,RML,RMM,IVDC,LOCAL_NPVIB,LOCAL_EVREM)
+                  IF (IKA > 0) THEN
+                    DO I=1,MMVM
+                      NPVIB(1,IKA,1,I,:) = NPVIB(1,IKA,1,I,:) + LOCAL_NPVIB(1,I,:)
+                      NPVIB(1,IKA,2,I,:) = NPVIB(1,IKA,2,I,:) + LOCAL_NPVIB(2,I,:)
+                      NPVIB(1,IKA,3,I,:) = NPVIB(1,IKA,3,I,:) + LOCAL_NPVIB(3,I,:)
+                    END DO
+                    EVREM(IKA) = EVREM(IKA) + LOCAL_EVREM
+                  END IF
+
                   ! VRR, VR become the velocites make 0.5*mr*VRR = Etot
                   ! For recombination, VRC is changed from A-B relative velocity to AB-C, the same applies to VCM
                 END IF
@@ -11553,8 +11578,9 @@ DO N=1,NCCELLS
               END IF
 
 !             !ECT is updated here
-              ! This is the very tricky part, for the case without chemical reaction, VRR is the original one
-              ! otherwise ECT is the total energy containg all modes
+              ! :cry:
+              ! TLDR, ECT is precollision translational energy for nonreaction case
+              !       ECT is total energy available to distribute for reactive case
               ECT=(0.5D00*SPM(1,LS,MS)*VRR)-ELACK
               IF (ECT > 0.d0) THEN
                 ELACK=0.d0
@@ -11607,7 +11633,11 @@ DO N=1,NCCELLS
                   IF (LS == J) IPVIB(1,L)=IV
                   IF (MS == J) IPVIB(1,M)=IV
 !
+                  ! for diatom-atom ME-QCT-VT, ECC is the collisional energy + vibrational energy of diatom molecule
+                  ! ECC is in eV
+                  ! Note that, ME-QCT-VT don't work when reaction occurs
                   IF (IRELAX /= 0) ECT=(ECC*EVOLT)-EV_POST  !remaining energy available for redistribution; comment this line for isothermal relaxations
+                  ! ECT don't have precollision rotational energy
                 END IF
 !
               ELSE
@@ -11679,9 +11709,18 @@ DO N=1,NCCELLS
                             IF (IPVIB(KV,K) >= 0) THEN
 !--do not redistribute to a dissociating molecule marked for removal or for a recombined molecule
                               IF (IKA .eq. 0) THEN
-                                ! IF IKA == 0, ECC is the total energy before chemical reaction + reaction heat
+                                ! IF IKA == 0, ECT is the precollision translational energy
+                                ! This part of the code is called when no reaction occurs
+                                ! and LB model is used to redistribute energy
                                 CALL VIB_ENERGY(EVIB,IPVIB(KV,K),KV,KS)
                                 ECC=ECT+EVIB
+                              ELSE
+                                ECC=ECT
+                                ! This part of the code is called when reaction
+                                ! occurs and LB model distributes internal energy of each molecule
+                                ! from the total energy available. ECC was updated around line 11651
+                                ! In Israel's old version, he didn't differenciate these two cases
+                                ! because IPVIB~=0 => EVIB~=0. But it's not true
                               END IF
                               CALL VIB_LEVEL(ECC,MAXLEV,KV,KS)
                               IF (SPVM(3,KV,KS) > 0.) THEN
@@ -11841,6 +11880,9 @@ DO N=1,NCCELLS
                       NPVIB(2,IKA,3,KV,K)=NPVIB(2,IKA,3,KV,K)+1
                     END DO
               END IF
+              ! up to now
+              ! nonreacting case: ECT collisional energy
+              ! reacting case: ECT collisional energy + rotational energy to distribute
 !
 !--Check RT energy redistribution (LB model)
 !-------------------------------------------------
@@ -11874,6 +11916,8 @@ DO N=1,NCCELLS
                       A=B*C                         !Corrected Zr
                       CALL ZGF(RANF,IDT)
                       IF ((1.d0/A > RANF).OR.(IKA /= 0)) THEN
+                        ! we don't distinguish for the value of IKA because PROT is REALLY zero
+                      ! for reacting case
                         ECC=ECT+PROT(K)
                         CALL INELASTIC_RT(KS, JS, ECC, ERM, IDT)
                         PROT(K)=ERM*ECC
@@ -11881,6 +11925,7 @@ DO N=1,NCCELLS
                       END IF
                     END IF
               END DO
+              ! At this point, energy left in ECT is just collisional energy
 !
 !--adjust VR after energy redistribution
 !-------------------------------------------------
@@ -11894,7 +11939,7 @@ DO N=1,NCCELLS
 !--calculate new velocities
 !-------------------------------------------------
               ! At this point for exchange or dissocation reaction
-              ! VRC and VRI are still the relative velocity of the two molecule
+              ! VRC and VRI are still the original relative velocity of the two molecule
               ! For recombination, it's the relative velocity of the
               ! new molecule and the third body
               ! The values are changed in CHECK_REACTION
