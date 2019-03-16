@@ -10346,7 +10346,7 @@ IF (IKA > 0) THEN
 
     !remove!$omp critical
     IF (NPM == 3 .and. KV == 1 .and. NPM ==3) THEN
-      IF (IVDC(K) == 1) THEN
+      IF (IVDC(IKA) == 1) THEN
         LOCAL_EVREM = LOCAL_EVREM + ECV1
 !        EVREM(IKA) = EVREM(IKA) + ECV1  ! EVREM in Joule
       ELSE
