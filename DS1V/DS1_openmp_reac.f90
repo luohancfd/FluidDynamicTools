@@ -801,11 +801,13 @@ contains
     ! x = Et/Ec
     implicit none
     real(8) :: EXPCOL_PMAXEQ,x
-    ! temp_real(1) : zeta
+    ! temp_real(1) : RDOF
     ! temp_real(2) : alpha
     ! temp_real(3) : Ec
+    ! temp_real(4) : Et,ref in Jourle
     EXPCOL_PMAXEQ = 1.d0 + (1.0d0 - temp_real(1)/2)*x/(1.0d0-x) - &
       & temp_real(2)*(temp_real(3)*x/temp_real(4))**temp_real(2)
+    ! Eq 19 in report
   end function EXPCOL_PMAXEQ
 
   function EXPCOL_RT(LS,MS,EC,RDOF,IDT)
@@ -843,7 +845,7 @@ contains
       a = xs*dexp(-(EC*xs/temp_real(4))**temp_real(2))
       b = 0.d0
     else
-      xs = brent(0.01d0,0.99d0,EXPCOL_RT,tol,fa0,fb0)
+      xs = brent(0.01d0,0.99d0,EXPCOL_PMAXEQ,tol,fa0,fb0)
       b = dble(RDOF)*0.5d0-1.0d0
       a = (1.0d0-xs)**b*xs*dexp(-(EC*xs/temp_real(4))**temp_real(2))
     end if
