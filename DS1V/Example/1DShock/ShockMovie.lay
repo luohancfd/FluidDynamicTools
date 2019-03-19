@@ -1,0 +1,606 @@
+#!MC 1410
+$!VarSet |LFDSFN1| = '"MFshockHighU_201\DS1FP00_0000.DAT" "MFshockHighU_201\DS1FP00_0001.DAT" "MFshockHighU_201\DS1FP00_0002.DAT" "MFshockHighU_201\DS1FP00_0003.DAT" "MFshockHighU_201\DS1FP00_0004.DAT" "MFshockHighU_201\DS1FP00_0005.DAT" "MFshockHighU_201\DS1FP00_0006.DAT" "MFshockHighU_201\DS1FP00_0007.DAT" "MFshockHighU_201\DS1FP00_0008.DAT" "MFshockHighU_201\DS1FP00_0009.DAT" "MFshockHighU_201\DS1FP00_0010.DAT" "MFshockHighU_201\DS1FP00_0011.DAT" "MFshockHighU_201\DS1FP00_0012.DAT" "MFshockHighU_201\DS1FP00_0013.DAT" "MFshockHighU_201\DS1FP00_0014.DAT" "MFshockHighU_201\DS1FP00_0015.DAT" "MFshockHighU_201\DS1FP00_0016.DAT" "MFshockHighU_201\DS1FP00_0017.DAT" "MFshockHighU_201\DS1FP00_0018.DAT" "MFshockHighU_201\DS1FP00_0019.DAT" "MFshockHighU_201\DS1FP00_0020.DAT" "MFshockHighU_201\DS1FP00_0021.DAT" "MFshockHighU_201\DS1FP00_0022.DAT" "MFshockHighU_201\DS1FP00_0023.DAT" "MFshockHighU_201\DS1FP00_0024.DAT" "MFshockHighU_201\DS1FP00_0025.DAT" "MFshockHighU_201\DS1FP00_0026.DAT" "MFshockHighU_201\DS1FP00_0027.DAT" "MFshockHighU_201\DS1FP00_0028.DAT" "MFshockHighU_201\DS1FP00_0029.DAT" "MFshockHighU_201\DS1FP00_0030.DAT" "MFshockHighU_201\DS1FP00_0031.DAT" "MFshockHighU_201\DS1FP00_0032.DAT" "MFshockHighU_201\DS1FP00_0033.DAT" "MFshockHighU_201\DS1FP00_0034.DAT" "MFshockHighU_201\DS1FP00_0035.DAT" "MFshockHighU_201\DS1FP00_0036.DAT" "MFshockHighU_201\DS1FP00_0037.DAT" "MFshockHighU_201\DS1FP00_0038.DAT" "MFshockHighU_201\DS1FP00_0039.DAT" "MFshockHighU_201\DS1FP00_0040.DAT" "MFshockHighU_201\DS1FP00_0041.DAT" "MFshockHighU_201\DS1FP00_0042.DAT" "MFshockHighU_201\DS1FP00_0043.DAT" "MFshockHighU_201\DS1FP00_0044.DAT" "MFshockHighU_201\DS1FP00_0045.DAT" "MFshockHighU_201\DS1FP00_0046.DAT" "MFshockHighU_201\DS1FP00_0047.DAT" "MFshockHighU_201\DS1FP00_0048.DAT" "MFshockHighU_201\DS1FP00_0049.DAT" "MFshockHighU_201\DS1FP00_0050.DAT" "MFshockHighU_201\DS1FP00_0051.DAT" "MFshockHighU_201\DS1FP00_0052.DAT" "MFshockHighU_201\DS1FP00_0053.DAT" "MFshockHighU_201\DS1FP00_0054.DAT" "MFshockHighU_201\DS1FP00_0055.DAT" "MFshockHighU_201\DS1FP00_0056.DAT" "MFshockHighU_201\DS1FP00_0057.DAT" "MFshockHighU_201\DS1FP00_0058.DAT" "MFshockHighU_201\DS1FP00_0059.DAT" "MFshockHighU_201\DS1FP00_0060.DAT" "MFshockHighU_201\DS1FP00_0061.DAT" "MFshockHighU_201\DS1FP00_0062.DAT" "MFshockHighU_201\DS1FP00_0063.DAT" "MFshockHighU_201\DS1FP00_0064.DAT" "MFshockHighU_201\DS1FP00_0065.DAT" "MFshockHighU_201\DS1FP00_0066.DAT" "MFshockHighU_201\DS1FP00_0067.DAT" "MFshockHighU_201\DS1FP00_0068.DAT" "MFshockHighU_201\DS1FP00_0069.DAT" "MFshockHighU_201\DS1FP00_0070.DAT" "MFshockHighU_201\DS1FP00_0071.DAT" "MFshockHighU_201\DS1FP00_0072.DAT" "MFshockHighU_201\DS1FP00_0073.DAT" "MFshockHighU_201\DS1FP00_0074.DAT" "MFshockHighU_201\DS1FP00_0075.DAT" "MFshockHighU_201\DS1FP00_0076.DAT" "MFshockHighU_201\DS1FP00_0077.DAT" "MFshockHighU_201\DS1FP00_0078.DAT" "MFshockHighU_201\DS1FP00_0079.DAT" "MFshockHighU_201\DS1FP00_0080.DAT" "MFshockHighU_201\DS1FP00_0081.DAT" "MFshockHighU_201\DS1FP00_0082.DAT" "MFshockHighU_201\DS1FP00_0083.DAT" "MFshockHighU_201\DS1FP00_0084.DAT" "MFshockHighU_201\DS1FP00_0085.DAT" "MFshockHighU_201\DS1FP00_0086.DAT" "MFshockHighU_201\DS1FP00_0087.DAT" "MFshockHighU_201\DS1FP00_0088.DAT" "MFshockHighU_201\DS1FP00_0089.DAT" "MFshockHighU_201\DS1FP00_0090.DAT" "MFshockHighU_201\DS1FP00_0091.DAT" "MFshockHighU_201\DS1FP00_0092.DAT" "MFshockHighU_201\DS1FP00_0093.DAT" "MFshockHighU_201\DS1FP00_0094.DAT" "MFshockHighU_201\DS1FP00_0095.DAT" "MFshockHighU_201\DS1FP00_0096.DAT" "MFshockHighU_201\DS1FP00_0097.DAT" "MFshockHighU_201\DS1FP00_0098.DAT" "MFshockHighU_201\DS1FP00_0099.DAT" "MFshockHighU_201\DS1FP00_0100.DAT" "MFshockHighU_201\DS1FP00_0101.DAT" "MFshockHighU_201\DS1FP00_0102.DAT" "MFshockHighU_201\DS1FP00_0103.DAT" "MFshockHighU_201\DS1FP00_0104.DAT" "MFshockHighU_201\DS1FP00_0105.DAT" "MFshockHighU_201\DS1FP00_0106.DAT" "MFshockHighU_201\DS1FP00_0107.DAT" "MFshockHighU_201\DS1FP00_0108.DAT" "MFshockHighU_201\DS1FP00_0109.DAT" "MFshockHighU_201\DS1FP00_0110.DAT" "MFshockHighU_201\DS1FP00_0111.DAT" "MFshockHighU_201\DS1FP00_0112.DAT" "MFshockHighU_201\DS1FP00_0113.DAT" "MFshockHighU_201\DS1FP00_0114.DAT" "MFshockHighU_201\DS1FP00_0115.DAT" "MFshockHighU_201\DS1FP00_0116.DAT" "MFshockHighU_201\DS1FP00_0117.DAT" "MFshockHighU_201\DS1FP00_0118.DAT" "MFshockHighU_201\DS1FP00_0119.DAT" "MFshockHighU_201\DS1FP00_0120.DAT" "MFshockHighU_201\DS1FP00_0121.DAT" "MFshockHighU_201\DS1FP00_0122.DAT" "MFshockHighU_201\DS1FP00_0123.DAT" "MFshockHighU_201\DS1FP00_0124.DAT" "MFshockHighU_201\DS1FP00_0125.DAT" "MFshockHighU_201\DS1FP00_0126.DAT" "MFshockHighU_201\DS1FP00_0127.DAT" "MFshockHighU_201\DS1FP00_0128.DAT" "MFshockHighU_201\DS1FP00_0129.DAT" "MFshockHighU_201\DS1FP00_0130.DAT" "MFshockHighU_201\DS1FP00_0131.DAT" "MFshockHighU_201\DS1FP00_0132.DAT" "MFshockHighU_201\DS1FP00_0133.DAT" "MFshockHighU_201\DS1FP00_0134.DAT" "MFshockHighU_201\DS1FP00_0135.DAT" "MFshockHighU_201\DS1FP00_0136.DAT" "MFshockHighU_201\DS1FP00_0137.DAT" "MFshockHighU_201\DS1FP00_0138.DAT" "MFshockHighU_201\DS1FP00_0139.DAT" "MFshockHighU_201\DS1FP00_0140.DAT" "MFshockHighU_201\DS1FP00_0141.DAT" "MFshockHighU_201\DS1FP00_0142.DAT" "MFshockHighU_201\DS1FP00_0143.DAT" "MFshockHighU_201\DS1FP00_0144.DAT" "MFshockHighU_201\DS1FP00_0145.DAT" "MFshockHighU_201\DS1FP00_0146.DAT" "MFshockHighU_201\DS1FP00_0147.DAT" "MFshockHighU_201\DS1FP00_0148.DAT" "MFshockHighU_201\DS1FP00_0149.DAT" "MFshockHighU_201\DS1FP00_0150.DAT" "MFshockHighU_201\DS1FP00_0151.DAT" "MFshockHighU_201\DS1FP00_0152.DAT" "MFshockHighU_201\DS1FP00_0153.DAT" "MFshockHighU_201\DS1FP00_0154.DAT" "MFshockHighU_201\DS1FP00_0155.DAT" "MFshockHighU_201\DS1FP00_0156.DAT" "MFshockHighU_201\DS1FP00_0157.DAT" "MFshockHighU_202\DS1FP00_0158.DAT" "MFshockHighU_202\DS1FP00_0159.DAT" "MFshockHighU_202\DS1FP00_0160.DAT" "MFshockHighU_202\DS1FP00_0161.DAT" "MFshockHighU_202\DS1FP00_0162.DAT" "MFshockHighU_202\DS1FP00_0163.DAT" "MFshockHighU_202\DS1FP00_0164.DAT" "MFshockHighU_202\DS1FP00_0165.DAT" "MFshockHighU_202\DS1FP00_0166.DAT" "MFshockHighU_202\DS1FP00_0167.DAT" "MFshockHighU_202\DS1FP00_0168.DAT" "MFshockHighU_202\DS1FP00_0169.DAT" "MFshockHighU_202\DS1FP00_0170.DAT" "MFshockHighU_202\DS1FP00_0171.DAT" "MFshockHighU_202\DS1FP00_0172.DAT" "MFshockHighU_202\DS1FP00_0173.DAT" "MFshockHighU_202\DS1FP00_0174.DAT" "MFshockHighU_202\DS1FP00_0175.DAT" "MFshockHighU_202\DS1FP00_0176.DAT" "MFshockHighU_202\DS1FP00_0177.DAT" "MFshockHighU_202\DS1FP00_0178.DAT" "MFshockHighU_202\DS1FP00_0179.DAT" "MFshockHighU_202\DS1FP00_0180.DAT" "MFshockHighU_202\DS1FP00_0181.DAT" "MFshockHighU_202\DS1FP00_0182.DAT" "MFshockHighU_202\DS1FP00_0183.DAT" "MFshockHighU_202\DS1FP00_0184.DAT" "MFshockHighU_202\DS1FP00_0185.DAT" "MFshockHighU_202\DS1FP00_0186.DAT" "MFshockHighU_202\DS1FP00_0187.DAT" "MFshockHighU_202\DS1FP00_0188.DAT" "MFshockHighU_202\DS1FP00_0189.DAT" "MFshockHighU_202\DS1FP00_0190.DAT" "MFshockHighU_202\DS1FP00_0191.DAT" "MFshockHighU_202\DS1FP00_0192.DAT" "MFshockHighU_202\DS1FP00_0193.DAT" "MFshockHighU_202\DS1FP00_0194.DAT" "MFshockHighU_202\DS1FP00_0195.DAT" "MFshockHighU_202\DS1FP00_0196.DAT" "MFshockHighU_202\DS1FP00_0197.DAT" "MFshockHighU_202\DS1FP00_0198.DAT" "MFshockHighU_202\DS1FP00_0199.DAT" "MFshockHighU_202\DS1FP00_0200.DAT" "MFshockHighU_202\DS1FP00_0201.DAT" "MFshockHighU_202\DS1FP00_0202.DAT" "MFshockHighU_202\DS1FP00_0203.DAT" "MFshockHighU_202\DS1FP00_0204.DAT" "MFshockHighU_202\DS1FP00_0205.DAT" "MFshockHighU_202\DS1FP00_0206.DAT" "MFshockHighU_202\DS1FP00_0207.DAT" "MFshockHighU_202\DS1FP00_0208.DAT" "MFshockHighU_202\DS1FP00_0209.DAT" "MFshockHighU_202\DS1FP00_0210.DAT" "MFshockHighU_202\DS1FP00_0211.DAT" "MFshockHighU_202\DS1FP00_0212.DAT" "MFshockHighU_202\DS1FP00_0213.DAT" "MFshockHighU_202\DS1FP00_0214.DAT" "MFshockHighU_202\DS1FP00_0215.DAT" "MFshockHighU_202\DS1FP00_0216.DAT" "MFshockHighU_202\DS1FP00_0217.DAT" "MFshockHighU_202\DS1FP00_0218.DAT" "MFshockHighU_202\DS1FP00_0219.DAT" "MFshockHighU_202\DS1FP00_0220.DAT" "MFshockHighU_202\DS1FP00_0221.DAT" "MFshockHighU_202\DS1FP00_0222.DAT" "MFshockHighU_202\DS1FP00_0223.DAT" "MFshockHighU_202\DS1FP00_0224.DAT" "MFshockHighU_202\DS1FP00_0225.DAT" "MFshockHighU_202\DS1FP00_0226.DAT" "MFshockHighU_202\DS1FP00_0227.DAT" "MFshockHighU_202\DS1FP00_0228.DAT" "MFshockHighU_202\DS1FP00_0229.DAT" "MFshockHighU_202\DS1FP00_0230.DAT" "MFshockHighU_202\DS1FP00_0231.DAT" "MFshockHighU_202\DS1FP00_0232.DAT" "MFshockHighU_202\DS1FP00_0233.DAT" "MFshockHighU_202\DS1FP00_0234.DAT" "MFshockHighU_202\DS1FP00_0235.DAT" "MFshockHighU_202\DS1FP00_0236.DAT" "MFshockHighU_202\DS1FP00_0237.DAT" "MFshockHighU_202\DS1FP00_0238.DAT" "MFshockHighU_202\DS1FP00_0239.DAT" "MFshockHighU_202\DS1FP00_0240.DAT" "MFshockHighU_202\DS1FP00_0241.DAT" "MFshockHighU_202\DS1FP00_0242.DAT" "MFshockHighU_202\DS1FP00_0243.DAT" "MFshockHighU_202\DS1FP00_0244.DAT" "MFshockHighU_202\DS1FP00_0245.DAT" "MFshockHighU_202\DS1FP00_0246.DAT" "MFshockHighU_202\DS1FP00_0247.DAT" "MFshockHighU_202\DS1FP00_0248.DAT" "MFshockHighU_202\DS1FP00_0249.DAT" "MFshockHighU_202\DS1FP00_0250.DAT" "MFshockHighU_202\DS1FP00_0251.DAT" "MFshockHighU_202\DS1FP00_0252.DAT" "MFshockHighU_202\DS1FP00_0253.DAT" "MFshockHighU_202\DS1FP00_0254.DAT" "MFshockHighU_202\DS1FP00_0255.DAT" "MFshockHighU_202\DS1FP00_0256.DAT" "MFshockHighU_202\DS1FP00_0257.DAT" "MFshockHighU_202\DS1FP00_0258.DAT" "MFshockHighU_202\DS1FP00_0259.DAT" "MFshockHighU_202\DS1FP00_0260.DAT" "MFshockHighU_202\DS1FP00_0261.DAT" "MFshockHighU_202\DS1FP00_0262.DAT" "MFshockHighU_202\DS1FP00_0263.DAT" "MFshockHighU_202\DS1FP00_0264.DAT" "MFshockHighU_202\DS1FP00_0265.DAT" "MFshockHighU_202\DS1FP00_0266.DAT" "MFshockHighU_202\DS1FP00_0267.DAT" "MFshockHighU_202\DS1FP00_0268.DAT" "MFshockHighU_202\DS1FP00_0269.DAT" "MFshockHighU_202\DS1FP00_0270.DAT" "MFshockHighU_202\DS1FP00_0271.DAT" "MFshockHighU_202\DS1FP00_0272.DAT" "MFshockHighU_202\DS1FP00_0273.DAT" "MFshockHighU_202\DS1FP00_0274.DAT" "MFshockHighU_202\DS1FP00_0275.DAT" "MFshockHighU_202\DS1FP00_0276.DAT" "MFshockHighU_202\DS1FP00_0277.DAT" "MFshockHighU_202\DS1FP00_0278.DAT" "MFshockHighU_202\DS1FP00_0279.DAT" "MFshockHighU_202\DS1FP00_0280.DAT" "MFshockHighU_202\DS1FP00_0281.DAT" "MFshockHighU_202\DS1FP00_0282.DAT" "MFshockHighU_202\DS1FP00_0283.DAT" "MFshockHighU_202\DS1FP00_0284.DAT" "MFshockHighU_202\DS1FP00_0285.DAT" "MFshockHighU_202\DS1FP00_0286.DAT" "MFshockHighU_202\DS1FP00_0287.DAT" "MFshockHighU_202\DS1FP00_0288.DAT" "MFshockHighU_202\DS1FP00_0289.DAT" "MFshockHighU_202\DS1FP00_0290.DAT" "MFshockHighU_202\DS1FP00_0291.DAT" "MFshockHighU_202\DS1FP00_0292.DAT" "MFshockHighU_202\DS1FP00_0293.DAT" "MFshockHighU_202\DS1FP00_0294.DAT" "MFshockHighU_202\DS1FP00_0295.DAT" "MFshockHighU_202\DS1FP00_0296.DAT" "MFshockHighU_202\DS1FP00_0297.DAT" "MFshockHighU_202\DS1FP00_0298.DAT" "MFshockHighU_202\DS1FP00_0299.DAT" "MFshockHighU_202\DS1FP00_0300.DAT" "MFshockHighU_202\DS1FP00_0301.DAT" "MFshockHighU_202\DS1FP00_0302.DAT" "MFshockHighU_202\DS1FP00_0303.DAT" "MFshockHighU_202\DS1FP00_0304.DAT" "MFshockHighU_202\DS1FP00_0305.DAT" "MFshockHighU_202\DS1FP00_0306.DAT" "MFshockHighU_202\DS1FP00_0307.DAT" "MFshockHighU_202\DS1FP00_0308.DAT" "MFshockHighU_202\DS1FP00_0309.DAT" "MFshockHighU_202\DS1FP00_0310.DAT" "MFshockHighU_202\DS1FP00_0311.DAT" "MFshockHighU_202\DS1FP00_0312.DAT" "MFshockHighU_202\DS1FP00_0313.DAT" "MFshockHighU_202\DS1FP00_0314.DAT" "MFshockHighU_202\DS1FP00_0315.DAT" "MFshockHighU_202\DS1FP00_0316.DAT" "MFshockHighU_202\DS1FP00_0317.DAT" "MFshockHighU_202\DS1FP00_0318.DAT" "MFshockHighU_202\DS1FP00_0319.DAT" "MFshockHighU_202\DS1FP00_0320.DAT" "MFshockHighU_202\DS1FP00_0321.DAT" "MFshockHighU_202\DS1FP00_0322.DAT" "MFshockHighU_202\DS1FP00_0323.DAT" "MFshockUnsteady_201\DS1FP00_0000.DAT" "MFshockUnsteady_201\DS1FP00_0001.DAT" "MFshockUnsteady_201\DS1FP00_0002.DAT" "MFshockUnsteady_201\DS1FP00_0003.DAT" "MFshockUnsteady_201\DS1FP00_0004.DAT" "MFshockUnsteady_201\DS1FP00_0005.DAT" "MFshockUnsteady_201\DS1FP00_0006.DAT" "MFshockUnsteady_201\DS1FP00_0007.DAT" "MFshockUnsteady_201\DS1FP00_0008.DAT" "MFshockUnsteady_201\DS1FP00_0009.DAT" "MFshockUnsteady_201\DS1FP00_0010.DAT" "MFshockUnsteady_201\DS1FP00_0011.DAT" "MFshockUnsteady_201\DS1FP00_0012.DAT" "MFshockUnsteady_201\DS1FP00_0013.DAT" "MFshockUnsteady_201\DS1FP00_0014.DAT" "MFshockUnsteady_201\DS1FP00_0015.DAT" "MFshockUnsteady_201\DS1FP00_0016.DAT" "MFshockUnsteady_201\DS1FP00_0017.DAT" "MFshockUnsteady_201\DS1FP00_0018.DAT" "MFshockUnsteady_201\DS1FP00_0019.DAT" "MFshockUnsteady_201\DS1FP00_0020.DAT" "MFshockUnsteady_201\DS1FP00_0021.DAT" "MFshockUnsteady_201\DS1FP00_0022.DAT" "MFshockUnsteady_201\DS1FP00_0023.DAT" "MFshockUnsteady_201\DS1FP00_0024.DAT" "MFshockUnsteady_201\DS1FP00_0025.DAT" "MFshockUnsteady_201\DS1FP00_0026.DAT" "MFshockUnsteady_201\DS1FP00_0027.DAT" "MFshockUnsteady_201\DS1FP00_0028.DAT" "MFshockUnsteady_201\DS1FP00_0029.DAT" "MFshockUnsteady_201\DS1FP00_0030.DAT" "MFshockUnsteady_201\DS1FP00_0031.DAT" "MFshockUnsteady_201\DS1FP00_0032.DAT" "MFshockUnsteady_201\DS1FP00_0033.DAT" "MFshockUnsteady_201\DS1FP00_0034.DAT" "MFshockUnsteady_201\DS1FP00_0035.DAT" "MFshockUnsteady_201\DS1FP00_0036.DAT" "MFshockUnsteady_201\DS1FP00_0037.DAT" "MFshockUnsteady_201\DS1FP00_0038.DAT" "MFshockUnsteady_201\DS1FP00_0039.DAT" "MFshockUnsteady_201\DS1FP00_0040.DAT" "MFshockUnsteady_201\DS1FP00_0041.DAT" "MFshockUnsteady_201\DS1FP00_0042.DAT" "MFshockUnsteady_201\DS1FP00_0043.DAT" "MFshockUnsteady_201\DS1FP00_0044.DAT" "MFshockUnsteady_201\DS1FP00_0045.DAT" "MFshockUnsteady_201\DS1FP00_0046.DAT" "MFshockUnsteady_201\DS1FP00_0047.DAT" "MFshockUnsteady_201\DS1FP00_0048.DAT" "MFshockUnsteady_201\DS1FP00_0049.DAT" "MFshockUnsteady_201\DS1FP00_0050.DAT" "MFshockUnsteady_201\DS1FP00_0051.DAT" "MFshockUnsteady_201\DS1FP00_0052.DAT" "MFshockUnsteady_201\DS1FP00_0053.DAT" "MFshockUnsteady_201\DS1FP00_0054.DAT" "MFshockUnsteady_201\DS1FP00_0055.DAT" "MFshockUnsteady_201\DS1FP00_0056.DAT" "MFshockUnsteady_201\DS1FP00_0057.DAT" "MFshockUnsteady_201\DS1FP00_0058.DAT" "MFshockUnsteady_201\DS1FP00_0059.DAT" "MFshockUnsteady_201\DS1FP00_0060.DAT" "MFshockUnsteady_201\DS1FP00_0061.DAT" "MFshockUnsteady_201\DS1FP00_0062.DAT" "MFshockUnsteady_201\DS1FP00_0063.DAT" "MFshockUnsteady_201\DS1FP00_0064.DAT" "MFshockUnsteady_201\DS1FP00_0065.DAT" "MFshockUnsteady_201\DS1FP00_0066.DAT" "MFshockUnsteady_201\DS1FP00_0067.DAT" "MFshockUnsteady_201\DS1FP00_0068.DAT" "MFshockUnsteady_201\DS1FP00_0069.DAT" "MFshockUnsteady_201\DS1FP00_0070.DAT" "MFshockUnsteady_201\DS1FP00_0071.DAT" "MFshockUnsteady_201\DS1FP00_0072.DAT" "MFshockUnsteady_201\DS1FP00_0073.DAT" "MFshockUnsteady_201\DS1FP00_0074.DAT" "MFshockUnsteady_201\DS1FP00_0075.DAT" "MFshockUnsteady_201\DS1FP00_0076.DAT" "MFshockUnsteady_201\DS1FP00_0077.DAT" "MFshockUnsteady_201\DS1FP00_0078.DAT" "MFshockUnsteady_201\DS1FP00_0079.DAT" "MFshockUnsteady_201\DS1FP00_0080.DAT" "MFshockUnsteady_201\DS1FP00_0081.DAT" "MFshockUnsteady_201\DS1FP00_0082.DAT" "MFshockUnsteady_201\DS1FP00_0083.DAT" "MFshockUnsteady_201\DS1FP00_0084.DAT" "MFshockUnsteady_201\DS1FP00_0085.DAT" "MFshockUnsteady_201\DS1FP00_0086.DAT" "MFshockUnsteady_201\DS1FP00_0087.DAT" "MFshockUnsteady_201\DS1FP00_0088.DAT" "MFshockUnsteady_201\DS1FP00_0089.DAT" "MFshockUnsteady_201\DS1FP00_0090.DAT" "MFshockUnsteady_201\DS1FP00_0091.DAT" "MFshockUnsteady_201\DS1FP00_0092.DAT" "MFshockUnsteady_201\DS1FP00_0093.DAT" "MFshockUnsteady_201\DS1FP00_0094.DAT" "MFshockUnsteady_201\DS1FP00_0095.DAT" "MFshockUnsteady_201\DS1FP00_0096.DAT" "MFshockUnsteady_201\DS1FP00_0097.DAT" "MFshockUnsteady_201\DS1FP00_0098.DAT" "MFshockUnsteady_201\DS1FP00_0099.DAT" "MFshockUnsteady_201\DS1FP00_0100.DAT" "MFshockUnsteady_201\DS1FP00_0101.DAT" "MFshockUnsteady_201\DS1FP00_0102.DAT" "MFshockUnsteady_201\DS1FP00_0103.DAT" "MFshockUnsteady_201\DS1FP00_0104.DAT" "MFshockUnsteady_201\DS1FP00_0105.DAT" "MFshockUnsteady_201\DS1FP00_0106.DAT" "MFshockUnsteady_201\DS1FP00_0107.DAT" "MFshockUnsteady_201\DS1FP00_0108.DAT" "MFshockUnsteady_201\DS1FP00_0109.DAT" "MFshockUnsteady_201\DS1FP00_0110.DAT" "MFshockUnsteady_201\DS1FP00_0111.DAT" "MFshockUnsteady_201\DS1FP00_0112.DAT" "MFshockUnsteady_201\DS1FP00_0113.DAT" "MFshockUnsteady_201\DS1FP00_0114.DAT" "MFshockUnsteady_201\DS1FP00_0115.DAT" "MFshockUnsteady_201\DS1FP00_0116.DAT" "MFshockUnsteady_201\DS1FP00_0117.DAT" "MFshockUnsteady_201\DS1FP00_0118.DAT" "MFshockUnsteady_201\DS1FP00_0119.DAT" "MFshockUnsteady_201\DS1FP00_0120.DAT" "MFshockUnsteady_201\DS1FP00_0121.DAT" "MFshockUnsteady_201\DS1FP00_0122.DAT" "MFshockUnsteady_201\DS1FP00_0123.DAT" "MFshockUnsteady_201\DS1FP00_0124.DAT" "MFshockUnsteady_201\DS1FP00_0125.DAT" "MFshockUnsteady_201\DS1FP00_0126.DAT" "MFshockUnsteady_201\DS1FP00_0127.DAT" "MFshockUnsteady_201\DS1FP00_0128.DAT" "MFshockUnsteady_201\DS1FP00_0129.DAT" "MFshockUnsteady_201\DS1FP00_0130.DAT" "MFshockUnsteady_201\DS1FP00_0131.DAT" "MFshockUnsteady_201\DS1FP00_0132.DAT" "MFshockUnsteady_201\DS1FP00_0133.DAT" "MFshockUnsteady_201\DS1FP00_0134.DAT" "MFshockUnsteady_201\DS1FP00_0135.DAT" "MFshockUnsteady_201\DS1FP00_0136.DAT" "MFshockUnsteady_201\DS1FP00_0137.DAT" "MFshockUnsteady_201\DS1FP00_0138.DAT" "MFshockUnsteady_201\DS1FP00_0139.DAT" "MFshockUnsteady_201\DS1FP00_0140.DAT" "MFshockUnsteady_201\DS1FP00_0141.DAT" "MFshockUnsteady_201\DS1FP00_0142.DAT" "MFshockUnsteady_201\DS1FP00_0143.DAT" "MFshockUnsteady_201\DS1FP00_0144.DAT" "MFshockUnsteady_201\DS1FP00_0145.DAT" "MFshockUnsteady_201\DS1FP00_0146.DAT" "MFshockUnsteady_201\DS1FP00_0147.DAT" "MFshockUnsteady_201\DS1FP00_0148.DAT" "MFshockUnsteady_201\DS1FP00_0149.DAT" "MFshockUnsteady_201\DS1FP00_0150.DAT" "MFshockUnsteady_201\DS1FP00_0151.DAT" "MFshockUnsteady_201\DS1FP00_0152.DAT" "MFshockUnsteady_201\DS1FP00_0153.DAT" "MFshockUnsteady_201\DS1FP00_0154.DAT" "MFshockUnsteady_201\DS1FP00_0155.DAT" "MFshockUnsteady_201\DS1FP00_0156.DAT" "MFshockUnsteady_201\DS1FP00_0157.DAT" "MFshockUnsteady_201\DS1FP00_0158.DAT" "MFshockUnsteady_201\DS1FP00_0159.DAT" "MFshockUnsteady_201\DS1FP00_0160.DAT" "MFshockUnsteady_201\DS1FP00_0161.DAT" "MFshockUnsteady_201\DS1FP00_0162.DAT" "MFshockUnsteady_201\DS1FP00_0163.DAT" "MFshockUnsteady_201\DS1FP00_0164.DAT" "MFshockUnsteady_201\DS1FP00_0165.DAT" "MFshockUnsteady_201\DS1FP00_0166.DAT" "MFshockUnsteady_201\DS1FP00_0167.DAT" "MFshockUnsteady_201\DS1FP00_0168.DAT" "MFshockUnsteady_201\DS1FP00_0169.DAT" "MFshockUnsteady_201\DS1FP00_0170.DAT" "MFshockUnsteady_201\DS1FP00_0171.DAT" "MFshockUnsteady_201\DS1FP00_0172.DAT" "MFshockUnsteady_201\DS1FP00_0173.DAT" "MFshockUnsteady_201\DS1FP00_0174.DAT" "MFshockUnsteady_201\DS1FP00_0175.DAT" "MFshockUnsteady_201\DS1FP00_0176.DAT" "MFshockUnsteady_201\DS1FP00_0177.DAT" "MFshockUnsteady_201\DS1FP00_0178.DAT" "MFshockUnsteady_201\DS1FP00_0179.DAT" "MFshockUnsteady_201\DS1FP00_0180.DAT" "MFshockUnsteady_201\DS1FP00_0181.DAT" "MFshockUnsteady_201\DS1FP00_0182.DAT" "MFshockUnsteady_201\DS1FP00_0183.DAT" "MFshockUnsteady_201\DS1FP00_0184.DAT" "MFshockUnsteady_201\DS1FP00_0185.DAT" "MFshockUnsteady_201\DS1FP00_0186.DAT" "MFshockUnsteady_201\DS1FP00_0187.DAT" "MFshockUnsteady_201\DS1FP00_0188.DAT" "MFshockUnsteady_201\DS1FP00_0189.DAT" "MFshockUnsteady_201\DS1FP00_0190.DAT" "MFshockUnsteady_201\DS1FP00_0191.DAT" "MFshockUnsteady_201\DS1FP00_0192.DAT" "MFshockUnsteady_201\DS1FP00_0193.DAT"'
+$!VarSet |LFDSVL1| = '"V1" "V2" "V3" "V4" "V5" "V6" "V7" "V8" "V9" "V10" "V11" "V12" "V13" "V14" "V15" "V16" "V17" "V18" "V19" "V20" "V21" "V22" "V23" "V24" "V25" "V26" "V27" "V28" "V29" "V30" "V31" "V32" "V33" "V34" "V35" "V36"'
+$!SetStyleBase Factory
+$!GlobalPaper 
+  PaperSizeInfo
+    {
+    Letter
+      {
+      Width = 8.5
+      Height = 11
+      LeftHardClipOffset = 0.125
+      RightHardClipOffset = 0.125
+      TopHardClipOffset = 0.125
+      BottomHardClipOffset = 0.125
+      }
+    }
+$!Page 
+  Name = 'Untitled'
+  PaperAttributes
+    {
+    BackgroundColor = White
+    IsTransparent = Yes
+    OrientPortrait = No
+    ShowGrid = Yes
+    ShowRuler = No
+    ShowPaper = No
+    PaperSize = Letter
+    RulerSpacing = OneInch
+    PaperGridSpacing = HalfInch
+    RegionInWorkArea
+      {
+      X1 = 1
+      Y1 = 0.25
+      X2 = 10
+      Y2 = 8.25
+      }
+    }
+### Frame Number 1 ###
+$!ReadDataSet  '|LFDSFN1|'
+  InitialPlotType = Cartesian2D
+  IncludeText = No
+  IncludeGeom = No
+  AssignStrandIDs = Yes
+  VarLoadMode = ByName
+  VarNameList = '|LFDSVL1|'
+$!RemoveVar |LFDSVL1|
+$!RemoveVar |LFDSFN1|
+$!FrameLayout 
+  ShowBorder = No
+  ShowHeader = No
+  HeaderColor = Red
+  XYPos
+    {
+    X = 1
+    Y = 0.25
+    }
+  Width = 9
+  Height = 8
+$!ThreeDAxis 
+  AspectRatioLimit = 25
+  BoxAspectRatioLimit = 25
+$!PlotType  = Cartesian2D
+$!FrameName  = 'Frame 001'
+$!GlobalTime 
+  SolutionTime = 0.00011443
+$!ActiveFieldMaps  =  [1]
+$!GlobalRGB 
+  RangeMin = 0
+  RangeMax = 1
+$!GlobalContour  1
+  Legend
+    {
+    Show = Yes
+    XYPos
+      {
+      X = 95
+      }
+    }
+  ColorMapFilter
+    {
+    ContinuousColor
+      {
+      CMin = 0
+      CMax = 1
+      }
+    }
+$!GlobalContour  2
+  Legend
+    {
+    Show = Yes
+    XYPos
+      {
+      X = 95
+      }
+    }
+  ColorMapFilter
+    {
+    ContinuousColor
+      {
+      CMin = 0
+      CMax = 1
+      }
+    }
+$!GlobalContour  3
+  Legend
+    {
+    Show = Yes
+    XYPos
+      {
+      X = 95
+      }
+    }
+  ColorMapFilter
+    {
+    ContinuousColor
+      {
+      CMin = 0
+      CMax = 1
+      }
+    }
+$!GlobalContour  4
+  Legend
+    {
+    Show = Yes
+    XYPos
+      {
+      X = 95
+      }
+    }
+  ColorMapFilter
+    {
+    ContinuousColor
+      {
+      CMin = 0
+      CMax = 1
+      }
+    }
+$!GlobalContour  5
+  Legend
+    {
+    Show = Yes
+    XYPos
+      {
+      X = 95
+      }
+    }
+  ColorMapFilter
+    {
+    ContinuousColor
+      {
+      CMin = 0
+      CMax = 1
+      }
+    }
+$!GlobalContour  6
+  Legend
+    {
+    Show = Yes
+    XYPos
+      {
+      X = 95
+      }
+    }
+  ColorMapFilter
+    {
+    ContinuousColor
+      {
+      CMin = 0
+      CMax = 1
+      }
+    }
+$!GlobalContour  7
+  Legend
+    {
+    Show = Yes
+    XYPos
+      {
+      X = 95
+      }
+    }
+  ColorMapFilter
+    {
+    ContinuousColor
+      {
+      CMin = 0
+      CMax = 1
+      }
+    }
+$!GlobalContour  8
+  Legend
+    {
+    Show = Yes
+    XYPos
+      {
+      X = 95
+      }
+    }
+  ColorMapFilter
+    {
+    ContinuousColor
+      {
+      CMin = 0
+      CMax = 1
+      }
+    }
+$!GlobalScatter 
+  Var = 2
+  RelativeSize = 4E+015
+  Legend
+    {
+    XYPos
+      {
+      X = 95
+      }
+    }
+  RefScatSymbol
+    {
+    Color = Red
+    FillColor = Red
+    }
+$!FieldMap  [1]
+  Mesh
+    {
+    Color = Black
+    }
+  Contour
+    {
+    ContourType = Flood
+    Color = Black
+    UseLightingEffect = Yes
+    }
+  Vector
+    {
+    Color = Black
+    }
+  Scatter
+    {
+    SymbolShape
+      {
+      GeomShape = Circle
+      }
+    Color = Black
+    FillMode = UseLineColor
+    FrameSize = 0.5
+    }
+  Shade
+    {
+    Color = Custom2
+    }
+  EdgeLayer
+    {
+    Show = No
+    Color = Black
+    LineThickness = 0.1
+    }
+  Points
+    {
+    PointsToPlot = SurfaceNodes
+    }
+  Surfaces
+    {
+    SurfacesToPlot = KPlanes
+    IRange
+      {
+      Max = 1
+      }
+    }
+  VolumeMode
+    {
+    VolumeObjectsToPlot
+      {
+      ShowIsosurfaces = No
+      ShowSlices = No
+      ShowStreamtraces = No
+      }
+    }
+  Effects
+    {
+    LightingEffect = Gouraud
+    }
+$!TwoDAxis 
+  XDetail
+    {
+    VarNum = 1
+    }
+  YDetail
+    {
+    VarNum = 9
+    }
+$!View Fit
+$!TwoDAxis 
+  AxisMode = Independent
+  DepXToYRatio = 1
+  ViewportPosition
+    {
+    Y1 = 10
+    X2 = 96
+    Y2 = 96
+    }
+  ViewportTopSnapTarget = 96
+$!TwoDAxis 
+  XDetail
+    {
+    RangeMin = -0.029985000000000001
+    RangeMax = -1.2003E-005
+    GRSpacing = 0.005
+    TickLabel
+      {
+      TextShape
+        {
+        Height = 3.8
+        }
+      NumFormat
+        {
+        Formatting = FixedFloat
+        Precision = 2
+        TimeDateFormat = ''
+        }
+      Offset = 2
+      }
+    Title
+      {
+      TitleMode = UseText
+      Text = 'x (m)'
+      TextShape
+        {
+        IsBold = No
+        Height = 4
+        }
+      Offset = 6
+      }
+    }
+$!TwoDAxis 
+  YDetail
+    {
+    RangeMin = 258.44
+    RangeMax = 13359.309955999999
+    GRSpacing = 5000
+    TickLabel
+      {
+      EraseBehindLabels = No
+      TextShape
+        {
+        Height = 3.8
+        }
+      NumFormat
+        {
+        Formatting = Integer
+        Precision = 1
+        TimeDateFormat = ''
+        }
+      Offset = 1.5
+      Angle = 45
+      }
+    Title
+      {
+      TitleMode = UseText
+      Text = 'Temperature (K)'
+      TextShape
+        {
+        IsBold = No
+        Height = 4
+        }
+      Offset = 10
+      }
+    }
+$!IsoSurfaceAttributes  1
+  IsoSurfaceSelection = OneSpecificValue
+  Effects
+    {
+    LightingEffect = Gouraud
+    }
+$!IsoSurfaceAttributes  2
+  DefinitionContourGroup = 2
+  IsoSurfaceSelection = OneSpecificValue
+  Contour
+    {
+    LineContourGroup = 2
+    FloodColoring = Group2
+    }
+  Effects
+    {
+    LightingEffect = Gouraud
+    }
+$!IsoSurfaceAttributes  3
+  DefinitionContourGroup = 3
+  IsoSurfaceSelection = OneSpecificValue
+  Contour
+    {
+    LineContourGroup = 3
+    FloodColoring = Group3
+    }
+  Effects
+    {
+    LightingEffect = Gouraud
+    }
+$!IsoSurfaceAttributes  4
+  DefinitionContourGroup = 4
+  IsoSurfaceSelection = OneSpecificValue
+  Contour
+    {
+    LineContourGroup = 4
+    FloodColoring = Group4
+    }
+  Effects
+    {
+    LightingEffect = Gouraud
+    }
+$!IsoSurfaceAttributes  5
+  DefinitionContourGroup = 5
+  IsoSurfaceSelection = OneSpecificValue
+  Contour
+    {
+    LineContourGroup = 5
+    FloodColoring = Group5
+    }
+  Effects
+    {
+    LightingEffect = Gouraud
+    }
+$!IsoSurfaceAttributes  6
+  DefinitionContourGroup = 6
+  IsoSurfaceSelection = OneSpecificValue
+  Contour
+    {
+    LineContourGroup = 6
+    FloodColoring = Group6
+    }
+  Effects
+    {
+    LightingEffect = Gouraud
+    }
+$!IsoSurfaceAttributes  7
+  DefinitionContourGroup = 7
+  IsoSurfaceSelection = OneSpecificValue
+  Contour
+    {
+    LineContourGroup = 7
+    FloodColoring = Group7
+    }
+  Effects
+    {
+    LightingEffect = Gouraud
+    }
+$!IsoSurfaceAttributes  8
+  DefinitionContourGroup = 8
+  IsoSurfaceSelection = OneSpecificValue
+  Contour
+    {
+    LineContourGroup = 8
+    FloodColoring = Group8
+    }
+  Effects
+    {
+    LightingEffect = Gouraud
+    }
+$!SliceAttributes  1
+  PrimaryPosition
+    {
+    X = 0
+    Y = 0
+    Z = 0
+    I = 1
+    J = 1
+    K = 1
+    }
+  EdgeLayer
+    {
+    Show = No
+    }
+  Effects
+    {
+    LightingEffect = Gouraud
+    SurfaceTranslucency = 10
+    }
+  SliceConstraint
+    {
+    Include = No
+    Origin
+      {
+      X = 0
+      Y = 0
+      Z = 0
+      }
+    BoxDimension
+      {
+      X = 0
+      Y = 0
+      Z = 0
+      }
+    }
+$!SliceAttributes  2
+  SliceSurface = YPlanes
+  EdgeLayer
+    {
+    Show = No
+    }
+  Effects
+    {
+    LightingEffect = Gouraud
+    SurfaceTranslucency = 10
+    }
+$!SliceAttributes  3
+  SliceSurface = ZPlanes
+  EdgeLayer
+    {
+    Show = No
+    }
+  Effects
+    {
+    LightingEffect = Gouraud
+    SurfaceTranslucency = 10
+    }
+$!SliceAttributes  4
+  EdgeLayer
+    {
+    Show = No
+    }
+  Effects
+    {
+    LightingEffect = Gouraud
+    SurfaceTranslucency = 10
+    }
+$!SliceAttributes  5
+  SliceSurface = YPlanes
+  EdgeLayer
+    {
+    Show = No
+    }
+  Effects
+    {
+    LightingEffect = Gouraud
+    SurfaceTranslucency = 10
+    }
+$!SliceAttributes  6
+  SliceSurface = ZPlanes
+  EdgeLayer
+    {
+    Show = No
+    }
+  Effects
+    {
+    LightingEffect = Gouraud
+    SurfaceTranslucency = 10
+    }
+$!SliceAttributes  7
+  EdgeLayer
+    {
+    Show = No
+    }
+  Effects
+    {
+    LightingEffect = Gouraud
+    SurfaceTranslucency = 10
+    }
+$!SliceAttributes  8
+  SliceSurface = YPlanes
+  EdgeLayer
+    {
+    Show = No
+    }
+  Effects
+    {
+    LightingEffect = Gouraud
+    SurfaceTranslucency = 10
+    }
+$!StreamAttributes 
+  StreamTiming
+    {
+    MarkSize = 1
+    MarkSymbol
+      {
+      GeomShape = Sphere
+      }
+    }
+  RodRibbon
+    {
+    Effects
+      {
+      LightingEffect = Gouraud
+      }
+    }
+  MaxSteps = 10000
+$!FieldLayers 
+  ShowMesh = No
+  ShowScatter = Yes
+  ShowEdge = No
+$!StreamtraceLayers 
+  Show = No
+$!AttachText 
+  AnchorPos
+    {
+    X = 20
+    Y = 90
+    }
+  TextShape
+    {
+    IsBold = No
+    SizeUnits = Frame
+    Height = 4
+    }
+  Text = 't = &(Solutiontime%2.6f)<sub> </sub>s'
+$!FrameControl ActivateByNumber
+  Frame = 1
+$!SetStyleBase Config

@@ -1,0 +1,4 @@
+2    !restart
+9999   !seed special code for sample shock
+0    !continue with current cells
+0    !no molecule removal

@@ -1463,15 +1463,16 @@ nonVHS=0
 !          3 special fix for MF-DSMC O2/O case
 !
 !--variables for vibratioal sampling
+NSCELLS=100
 ALLOCATE (NSVEC(NSCELLS))
 NSVEC=NSCELLS/2.+0.9999999d0
 IF (NSCELLS > 1) THEN
-  I=400              !user defined; values for shockwave sampling (nonreactive case)
+  I=292             !user defined; values for shockwave sampling (nonreactive case)
   DO J=1,NSCELLS
     NSVEC(J)=I+J
   END DO
-  NSVEC(1)=250       !user defined; override initial pdf sampling cell
-  NSVEC(NSCELLS)=750 !user defined; override final pdf sampling cell
+  NSVEC(1)=285       !user defined; override initial pdf sampling cell
+  NSVEC(NSCELLS)=390 !user defined; override final pdf sampling cell
 END IF
 !
 OPEN (9,FILE='DIAG.TXT',ACCESS='APPEND')
@@ -1552,7 +1553,7 @@ IF ((IRUN == 2).AND.(IVB == 0)) THEN
     END IF
   END IF
 !
-  CALL INITIALISE_SAMPLES
+  !CALL INITIALISE_SAMPLES
 !
 END IF
 !
@@ -1665,7 +1666,11 @@ IF (.NOT. FILE_EXIST) THEN
                     &   '"DTM (s)",', '"NMOL,"', '"NSAMP",', '"TISAMP",','"TPOUT"'
 ELSE
   OPEN(119, FILE="RunningTime.DAT", POSITION="APPEND")
-  WRITE(119, "(A)") "# Running is restarted"
+  WRITE(119, "(A)") "# Running is restarted: Sample Run"
+  WRITE(119,"(A,G14.6)") '# SAMPRAT = ', SAMPRAT
+  WRITE(119,"(A,G14.6)") '# OUTRAT = ', OUTRAT
+  WRITE(119,"(A,G14.6)") '# TPOUY = ', TPOUT
+  WRITE(119,"(A,G14.6)") '# ISF,IPDF = ', ISF,IPDF
 END IF
 CLOSE(119)
 CALL SYSTEM_CLOCK(COUNT=COUNT0, COUNT_RATE=COUNT_RATE)
@@ -9144,7 +9149,8 @@ IF(IPDF > 0) THEN
       J=NSVEC(I) !sampling cell
       F =0.0d0
       DO L=1,MSP
-        IF (ISPV(L) > 0 .AND. (L==1 .or. L==3 .or. L==5) ) THEN !plotting only O2 or N2 populations
+        !IF (ISPV(L) > 0 .AND. (L==1 .or. L==3 .or. L==5) ) THEN !plotting only O2 or N2 populations
+        IF (ISPV(L) > 0 .AND. L==3) THEN !plotting only O2 populations
           K=1 !single vibrational mode
 !
           !calculate the vibrational partition function
@@ -9167,10 +9173,10 @@ IF(IPDF > 0) THEN
           END DO
 !
           !write sampled values
-          !WRITE(FILENAME,778) L,NOUT
-          !778 FORMAT('DS1DVIB',i2.2,'_',i4.4)
-          WRITE(FILENAME,879) L
-          879 FORMAT('DS1DVIB',i2.2)
+          WRITE(FILENAME,778) L,J
+          778 FORMAT('DS1DVIB',i2.2,'_',i4.4)
+          !WRITE(FILENAME,879) L,NOUT
+          !879 FORMAT('DS1DVIB',i2.2,'_',i4.4)
           WRITE(TNAME,779) L,J !NOUT
           779 FORMAT('ZONE T = "',i2.2,'_',i4.4,'"')
           OPEN (7,FILE=TRIM(FILENAME)//'.DAT')
@@ -10436,33 +10442,33 @@ IF (IKA > 0) THEN
     ! NPVIB(1,IKA,3,KV,K)=NPVIB(1,IKA,3,KV,K)+1
 
     !//TODO
-    IF (IREAC > 0 .and. NPM == 3 .and. IMF .ne. 0 .and. KV == 1 .and. IMFS == 1 .and. MNRE > 0) THEN
-    !$omp critical
-      IETDX = FLOOR(ECT/BOLTZ/FTMP0/0.01D0)+1;
-      IETDX=MIN(IETDX,1000)
-      NMFETR(IETDX,IKA) = NMFETR(IETDX,IKA) + 1.0d0
+    ! IF (IREAC > 0 .and. NPM == 3 .and. IMF .ne. 0 .and. KV == 1 .and. IMFS == 1 .and. MNRE > 0) THEN
+    ! !$omp critical
+      ! IETDX = FLOOR(ECT/BOLTZ/FTMP0/0.01D0)+1;
+      ! IETDX=MIN(IETDX,1000)
+      ! NMFETR(IETDX,IKA) = NMFETR(IETDX,IKA) + 1.0d0
 
-      ! IREDX(1) is the one dissociated
-      IF (IVDC(IKA) == 1) THEN
-        IERDX(1) = FLOOR(ECR1/BOLTZ/FTMP0/0.01D0)+1
-        IERDX(2) = FLOOR(ECR2/BOLTZ/FTMP0/0.01D0)+1
-      ELSE
-        IERDX(2) = FLOOR(ECR1/BOLTZ/FTMP0/0.01D0)+1
-        IERDX(1) = FLOOR(ECR2/BOLTZ/FTMP0/0.01D0)+1
-      END IF
+      ! ! IREDX(1) is the one dissociated
+      ! IF (IVDC(IKA) == 1) THEN
+        ! IERDX(1) = FLOOR(ECR1/BOLTZ/FTMP0/0.01D0)+1
+        ! IERDX(2) = FLOOR(ECR2/BOLTZ/FTMP0/0.01D0)+1
+      ! ELSE
+        ! IERDX(2) = FLOOR(ECR1/BOLTZ/FTMP0/0.01D0)+1
+        ! IERDX(1) = FLOOR(ECR2/BOLTZ/FTMP0/0.01D0)+1
+      ! END IF
 
-      DO II = 1,2
-        IERDX(II) = MIN(IERDX(II),1000)
-        NMFERR(IERDX(II),II,IKA) = NMFERR(IERDX(II),II,IKA)+1.0d0
-      END DO
+      ! DO II = 1,2
+        ! IERDX(II) = MIN(IERDX(II),1000)
+        ! NMFERR(IERDX(II),II,IKA) = NMFERR(IERDX(II),II,IKA)+1.0d0
+      ! END DO
 
-      NMFEVR(I,1,IKA) = NMFEVR(I,1,IKA) + 1.0d0
-      NMFEVR(J,2,IKA) = NMFEVR(J,2,IKA) + 1.0d0
+      ! NMFEVR(I,1,IKA) = NMFEVR(I,1,IKA) + 1.0d0
+      ! NMFEVR(J,2,IKA) = NMFEVR(J,2,IKA) + 1.0d0
 
-      NMFVTR(I,IETDX,1,IKA) = NMFVTR(I,IETDX,1,IKA) + 1.0d0
-      NMFVTR(J,IETDX,2,IKA) = NMFVTR(J,IETDX,2,IKA) + 1.0d0
-    !$omp end critical
-    ENDIF
+      ! NMFVTR(I,IETDX,1,IKA) = NMFVTR(I,IETDX,1,IKA) + 1.0d0
+      ! NMFVTR(J,IETDX,2,IKA) = NMFVTR(J,IETDX,2,IKA) + 1.0d0
+    ! !$omp end critical
+    ! ENDIF
 
     !remove!$omp critical
     IF (NPM == 3 .and. KV == 1 .and. NPM ==3) THEN

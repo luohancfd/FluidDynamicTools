@@ -1,0 +1,6 @@
+1    !restart
+9999   !seed
+100  !nscells
+292  !I
+285  !1
+390  !end

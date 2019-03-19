@@ -1462,17 +1462,6 @@ nonVHS=0
 !          2 exponential model, fallback to 0 if parameters not found
 !          3 special fix for MF-DSMC O2/O case
 !
-!--variables for vibratioal sampling
-ALLOCATE (NSVEC(NSCELLS))
-NSVEC=NSCELLS/2.+0.9999999d0
-IF (NSCELLS > 1) THEN
-  I=400              !user defined; values for shockwave sampling (nonreactive case)
-  DO J=1,NSCELLS
-    NSVEC(J)=I+J
-  END DO
-  NSVEC(1)=250       !user defined; override initial pdf sampling cell
-  NSVEC(NSCELLS)=750 !user defined; override final pdf sampling cell
-END IF
 !
 OPEN (9,FILE='DIAG.TXT',ACCESS='APPEND')
 WRITE (9,*,IOSTAT=ERROR)
@@ -1503,13 +1492,41 @@ IF (IRUN <= 2) THEN
   WRITE (*,*) 'Setting Ziggurat Random# Generator: done'
   CALL READ_RESTART
   !ISF=1                    !to restart a case that is already ISF=0 as an unsteady-case
-  IF (NSEED == 9999) ISF=0 !special code for shockwave sampling
+  IF (NSEED == 9999) THEN
+     ISF=0 !special code for shockwave sampling, trick restart
+     WRITE(9,*) "NSEED=9999, this is a trick restart"
+  END IF
   !CALL OXYGEN_NITROGEN     !special code to update reaction rates
   !CALL INIT_REAC           !special code to update reaction rates
-  WRITE(9,*) ' ISF = ', ISF
-  WRITE(9,*) ' NSEED = ',NSEED
   TSAMP=FTIME
   TOUT=FTIME
+  !
+  !--variables for vibratioal sampling
+  IF (NSEED == 9999) THEN
+    WRITE(*,*) "Input the number of sampling cells for vibrational PDF (length of NSVEC)"
+    READ (*,*) NSCELLS       !use your shock animation to find it, 100 might be good
+    WRITE(9,*) "NSCELLS = ",NSCELLS
+    IF (NSCELLS <= 1) THEN
+      WRITE(*,*) "There should be more than 1"
+      STOP
+    ELSE
+      ALLOCATE (NSVEC(NSCELLS))
+      DEALLOCATE(NDVIB)
+      ALLOCATE(NDVIB(NSCELLS,0:MMVM,1:MSP,0:100))
+      WRITE(*,*) "Input NSVEC(2)"
+      READ(*,*) I        !user defined; values for shockwave sampling (nonreactive case)
+      WRITE(9,*) "NSVEC(2) = ",I
+      WRITE(*,*) "Input NSVEC(1)"
+      READ(*,*) NSVEC(1)        !user defined; values for shockwave sampling (nonreactive case)
+      WRITE(9,*) "NSVEC(1) = ",NSVEC(1)
+      WRITE(*,*) "Input NSVEC(NSCELLS)"
+      READ(*,*) NSVEC(NSCELLS)
+      WRITE(9,*) "NSVEC(NSCELLS) = ",NSVEC(NSCELLS)
+      DO J=2,NSCELLS-1
+        NSVEC(J) = I + J - 2
+      END DO
+    END IF
+  END IF
 END IF
 !
 IF ((IRUN == 2).AND.(IVB == 0)) THEN
@@ -1665,24 +1682,18 @@ IF (.NOT. FILE_EXIST) THEN
                     &   '"DTM (s)",', '"NMOL,"', '"NSAMP",', '"TISAMP",','"TPOUT"'
 ELSE
   OPEN(119, FILE="RunningTime.DAT", POSITION="APPEND")
-  WRITE(119, "(A)") "# Running is restarted"
+  WRITE(119, "(A)") "# Running is restarted: trick restart"
 END IF
 CLOSE(119)
 CALL SYSTEM_CLOCK(COUNT=COUNT0, COUNT_RATE=COUNT_RATE)
 
 DO WHILE (FTIME < TLIM)
   OPEN (9,FILE='DIAG.TXT',ACCESS='APPEND')
-  IF (TPOUT >= 1000) THEN
-    OPEN(91, FILE="TPOUT_LOG.TXT",ACCESS="APPEND")
-  END IF
 !
 !$ WCLOCK(2)=omp_get_wtime()
 !
   DO N=1,INT(TPOUT)
-    !
-    IF (MOD(N,50) == 0 .and. TPOUT >= 1000) THEN
-      WRITE(91,*) " TPOUT = ", N, "/", TPOUT
-    END IF
+!
     DO I=1,INT(SAMPRAT)
       FTIME=FTIME+DTM
 !      !$ WCLOCK(1)=omp_get_wtime()
@@ -1772,9 +1783,7 @@ DO WHILE (FTIME < TLIM)
   WRITE(*,*)
   WRITE(9,*)
   CLOSE(9)
-  IF (TPOUT >= 1000) THEN
-    CLOSE(91)
-  END IF
+  STOP
 !
 END DO
 CALL MF_CLEAN_AHO()
@@ -2820,7 +2829,6 @@ END IF
 !
 END IF
 
-CLOSE(9)
 !
 !
 RETURN
@@ -10436,33 +10444,33 @@ IF (IKA > 0) THEN
     ! NPVIB(1,IKA,3,KV,K)=NPVIB(1,IKA,3,KV,K)+1
 
     !//TODO
-    IF (IREAC > 0 .and. NPM == 3 .and. IMF .ne. 0 .and. KV == 1 .and. IMFS == 1 .and. MNRE > 0) THEN
-    !$omp critical
-      IETDX = FLOOR(ECT/BOLTZ/FTMP0/0.01D0)+1;
-      IETDX=MIN(IETDX,1000)
-      NMFETR(IETDX,IKA) = NMFETR(IETDX,IKA) + 1.0d0
+    ! IF (IREAC > 0 .and. NPM == 3 .and. IMF .ne. 0 .and. KV == 1 .and. IMFS == 1 .and. MNRE > 0) THEN
+    ! !$omp critical
+      ! IETDX = FLOOR(ECT/BOLTZ/FTMP0/0.01D0)+1;
+      ! IETDX=MIN(IETDX,1000)
+      ! NMFETR(IETDX,IKA) = NMFETR(IETDX,IKA) + 1.0d0
 
-      ! IREDX(1) is the one dissociated
-      IF (IVDC(IKA) == 1) THEN
-        IERDX(1) = FLOOR(ECR1/BOLTZ/FTMP0/0.01D0)+1
-        IERDX(2) = FLOOR(ECR2/BOLTZ/FTMP0/0.01D0)+1
-      ELSE
-        IERDX(2) = FLOOR(ECR1/BOLTZ/FTMP0/0.01D0)+1
-        IERDX(1) = FLOOR(ECR2/BOLTZ/FTMP0/0.01D0)+1
-      END IF
+      ! ! IREDX(1) is the one dissociated
+      ! IF (IVDC(IKA) == 1) THEN
+        ! IERDX(1) = FLOOR(ECR1/BOLTZ/FTMP0/0.01D0)+1
+        ! IERDX(2) = FLOOR(ECR2/BOLTZ/FTMP0/0.01D0)+1
+      ! ELSE
+        ! IERDX(2) = FLOOR(ECR1/BOLTZ/FTMP0/0.01D0)+1
+        ! IERDX(1) = FLOOR(ECR2/BOLTZ/FTMP0/0.01D0)+1
+      ! END IF
 
-      DO II = 1,2
-        IERDX(II) = MIN(IERDX(II),1000)
-        NMFERR(IERDX(II),II,IKA) = NMFERR(IERDX(II),II,IKA)+1.0d0
-      END DO
+      ! DO II = 1,2
+        ! IERDX(II) = MIN(IERDX(II),1000)
+        ! NMFERR(IERDX(II),II,IKA) = NMFERR(IERDX(II),II,IKA)+1.0d0
+      ! END DO
 
-      NMFEVR(I,1,IKA) = NMFEVR(I,1,IKA) + 1.0d0
-      NMFEVR(J,2,IKA) = NMFEVR(J,2,IKA) + 1.0d0
+      ! NMFEVR(I,1,IKA) = NMFEVR(I,1,IKA) + 1.0d0
+      ! NMFEVR(J,2,IKA) = NMFEVR(J,2,IKA) + 1.0d0
 
-      NMFVTR(I,IETDX,1,IKA) = NMFVTR(I,IETDX,1,IKA) + 1.0d0
-      NMFVTR(J,IETDX,2,IKA) = NMFVTR(J,IETDX,2,IKA) + 1.0d0
-    !$omp end critical
-    ENDIF
+      ! NMFVTR(I,IETDX,1,IKA) = NMFVTR(I,IETDX,1,IKA) + 1.0d0
+      ! NMFVTR(J,IETDX,2,IKA) = NMFVTR(J,IETDX,2,IKA) + 1.0d0
+    ! !$omp end critical
+    ! ENDIF
 
     !remove!$omp critical
     IF (NPM == 3 .and. KV == 1 .and. NPM ==3) THEN

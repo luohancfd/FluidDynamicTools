@@ -1,0 +1,6 @@
+2      !restart
+102     !seed
+0      !continue with current cells
+1      !iretrem
+1      !full removal
+-0.005 !xrem

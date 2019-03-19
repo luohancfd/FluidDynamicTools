@@ -1,0 +1,4 @@
+2    !restart
+101   !seed
+0    !continue with current cells
+0    !no molecule removal

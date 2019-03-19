@@ -10436,33 +10436,33 @@ IF (IKA > 0) THEN
     ! NPVIB(1,IKA,3,KV,K)=NPVIB(1,IKA,3,KV,K)+1
 
     !//TODO
-    IF (IREAC > 0 .and. NPM == 3 .and. IMF .ne. 0 .and. KV == 1 .and. IMFS == 1 .and. MNRE > 0) THEN
-    !$omp critical
-      IETDX = FLOOR(ECT/BOLTZ/FTMP0/0.01D0)+1;
-      IETDX=MIN(IETDX,1000)
-      NMFETR(IETDX,IKA) = NMFETR(IETDX,IKA) + 1.0d0
+    ! IF (IREAC > 0 .and. NPM == 3 .and. IMF .ne. 0 .and. KV == 1 .and. IMFS == 1 .and. MNRE > 0) THEN
+    ! !$omp critical
+      ! IETDX = FLOOR(ECT/BOLTZ/FTMP0/0.01D0)+1;
+      ! IETDX=MIN(IETDX,1000)
+      ! NMFETR(IETDX,IKA) = NMFETR(IETDX,IKA) + 1.0d0
 
-      ! IREDX(1) is the one dissociated
-      IF (IVDC(IKA) == 1) THEN
-        IERDX(1) = FLOOR(ECR1/BOLTZ/FTMP0/0.01D0)+1
-        IERDX(2) = FLOOR(ECR2/BOLTZ/FTMP0/0.01D0)+1
-      ELSE
-        IERDX(2) = FLOOR(ECR1/BOLTZ/FTMP0/0.01D0)+1
-        IERDX(1) = FLOOR(ECR2/BOLTZ/FTMP0/0.01D0)+1
-      END IF
+      ! ! IREDX(1) is the one dissociated
+      ! IF (IVDC(IKA) == 1) THEN
+        ! IERDX(1) = FLOOR(ECR1/BOLTZ/FTMP0/0.01D0)+1
+        ! IERDX(2) = FLOOR(ECR2/BOLTZ/FTMP0/0.01D0)+1
+      ! ELSE
+        ! IERDX(2) = FLOOR(ECR1/BOLTZ/FTMP0/0.01D0)+1
+        ! IERDX(1) = FLOOR(ECR2/BOLTZ/FTMP0/0.01D0)+1
+      ! END IF
 
-      DO II = 1,2
-        IERDX(II) = MIN(IERDX(II),1000)
-        NMFERR(IERDX(II),II,IKA) = NMFERR(IERDX(II),II,IKA)+1.0d0
-      END DO
+      ! DO II = 1,2
+        ! IERDX(II) = MIN(IERDX(II),1000)
+        ! NMFERR(IERDX(II),II,IKA) = NMFERR(IERDX(II),II,IKA)+1.0d0
+      ! END DO
 
-      NMFEVR(I,1,IKA) = NMFEVR(I,1,IKA) + 1.0d0
-      NMFEVR(J,2,IKA) = NMFEVR(J,2,IKA) + 1.0d0
+      ! NMFEVR(I,1,IKA) = NMFEVR(I,1,IKA) + 1.0d0
+      ! NMFEVR(J,2,IKA) = NMFEVR(J,2,IKA) + 1.0d0
 
-      NMFVTR(I,IETDX,1,IKA) = NMFVTR(I,IETDX,1,IKA) + 1.0d0
-      NMFVTR(J,IETDX,2,IKA) = NMFVTR(J,IETDX,2,IKA) + 1.0d0
-    !$omp end critical
-    ENDIF
+      ! NMFVTR(I,IETDX,1,IKA) = NMFVTR(I,IETDX,1,IKA) + 1.0d0
+      ! NMFVTR(J,IETDX,2,IKA) = NMFVTR(J,IETDX,2,IKA) + 1.0d0
+    ! !$omp end critical
+    ! ENDIF
 
     !remove!$omp critical
     IF (NPM == 3 .and. KV == 1 .and. NPM ==3) THEN
