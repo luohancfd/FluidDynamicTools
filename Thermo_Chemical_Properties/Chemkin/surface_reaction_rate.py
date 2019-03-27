@@ -16,6 +16,11 @@ def S2Rate(formula, stickCoeff=1.0, nsite=1, siteOccupy=1, siteDensity=1.0826715
     Calculate preexponential factor of surface reaction rate based on
     Eq4-8 in chemkin theory manual
 
+    The default site density is for SiC epitaxal growth, check doi: 10.1149/1.2085688
+    SiC : 6.52E14 molecules/cm^2 = 6.52 molecules/nm^2 doi: 10.1149/1.2085688
+
+
+
     Only support:
       A + nsite*S => ....
     where S is the site
