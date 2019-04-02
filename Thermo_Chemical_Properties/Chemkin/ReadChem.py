@@ -46,42 +46,53 @@ def ReadGasInput(filename, yamlOutput=None, thermoDefaultFile=True):
         for name, reg in zip(blockHead, blockHeadReg):
             if reg.match(lines[i]):
                 print('Read in block: %s' % (name))
-                block[name].append(lines[i])
+                oneBlock = []
+                oneBlock.append(lines[i])
                 i += 1
                 while not blockEndReg.match(lines[i]):
-                    block[name].append(lines[i])
+                    oneBlock.append(lines[i])
                     i += 1
-                block[name].append(lines[i])
+                oneBlock.append(lines[i])
+                block[name].append(oneBlock)
                 print('Finish block: %s' % (name))
                 i += 1
                 break
+    for key, val in block.items():
+        if val:
+            if len(val) == 1:
+                block[key] = val[0]
 
     # analyze THERMO BLOCK
     thermoRaw = block['THERMO']
     if thermoRaw:
         thermo,_ = ReadThermoBlock(thermoRaw)
         block['THERMO'] = {'Data': thermo, 'Raw': thermoRaw}
+        if thermoDefault:
+            thermo = {**thermo, **thermoDefault}
     else:
-        thermo = None
+        if thermoDefault:
+            thermo = thermoDefault
+        else:
+            raise ValueError("No Thermodynamic data is found")
+
+
+    # analyze SITE BLOCK
+    siteRaw = block['SITE']
+    site = ReadSiteBlock(siteRaw, thermo)
+    block['SITE'] = {'Data': site, 'Raw': siteRaw}
+
 
     # analyze REACTION BLOCK
     reacRaw = block['REACTIONS']
     if reacRaw:
-        if thermo:
-            if thermoDefault:
-                reac = ReadReactionBlock(reacRaw[:], thermo={**thermo, **thermoDefault})
-            else:
-                reac = ReadReactionBlock(reacRaw[:], thermo)
-        else:
-            if thermoDefault:
-                reac = ReadReactionBlock(reacRaw[:], thermoDefault)
-            else:
-                raise FileNotFoundError('No thermodynamic data found')
+        reac = ReadReactionBlock(reacRaw[:], thermo)
+    else:
+        raise ValueError("No Reaction is found")
 
-        elem = reac.pop('elements', None)
-        sps = reac.pop('species', None)
-        unit = reac.pop('unit', None)
-        block['REACTIONS'] = {'elements': elem, 'species': sps, 'unit': unit, 'Data': reac, 'Raw': reacRaw}
+    elem = reac.pop('elements', None)
+    sps = reac.pop('species', None)
+    unit = reac.pop('unit', None)
+    block['REACTIONS'] = {'elements': elem, 'species': sps, 'unit': unit, 'Data': reac, 'Raw': reacRaw}
 
     if isinstance(yamlOutput, str):
         import oyaml as yaml
@@ -94,6 +105,54 @@ def ReadGasInput(filename, yamlOutput=None, thermoDefaultFile=True):
 
     return block
 
+def ReadSiteBlock(block, thermo):
+    if isinstance(block[0], str):
+        sitePhase, siteDensity, site = ReadOneSiteBlock(block, thermo)
+        return {sitePhase: {"sden": siteDensity, "data": site}}
+    else:
+        data = {}
+        for i in block:
+            sitePhase, siteDensity, site = ReadOneSiteBlock(block, thermo)
+            data[sitePhase] = {"sden": siteDensity, "data": site}
+        return data
+
+def ReadOneSiteBlock(oldLines, themro):
+    lines = [i for i in oldLines if not re.match('^\s*!.*$', i)]
+    lines = [re.sub('^\s*(.*)!.*','$1', i) for i in lines]
+    m = re.findall('^\s*SITE\s+/(.*?)/\s*SDEN\s*/(.*)/\s*$', lines[0])[0]
+    sitePhase = m[0].strip()
+    siteDensity = float(m[1].strip())
+    site = {}
+    for i in range(1,len(lines)):
+        if re.match('^\s*END', lines[i]):
+            break
+        splitLine = lines[i].split()
+        prevsp = splitLine[0]
+        site[prevsp] = 1
+
+        j = 1
+        while j < len(splitLine):
+            if splitLine[j] == "/":
+                site[prevsp] = int(splitLine[j+1])
+                if splitLine[j+2] == "/":
+                    j += 3
+                else:
+                    j += 2
+            elif splitLine[j][0] == "/":
+                k = re.findall('/([^/]*)/?', splitLine[j])[0]
+                site[prevsp] = k[0]
+                if splitLine[j+1] == "/":
+                    j += 2
+                else:
+                    j += 1
+            else:
+                prevsp = splitLine[j]
+                site[prevsp] = 1
+                j += 1
+    for i in site.keys():
+        if i not in themro.keys():
+            raise ValueError("No thermo for {:s}".format(i))
+    return sitePhase, siteDensity, site
 
 def ReadReactionBlock(lines, thermo=None):
     '''
@@ -127,7 +186,7 @@ def ReadReactionBlock(lines, thermo=None):
         raise ValueError('Wrong units: %s and %s' % (eUnit, molUnit))
 
     regNumber = '[-+]?[0-9]*\.?[0-9]+(?:[eEdD][-+]?[0-9]+)?'
-    reacReg = re.compile('([\w\+\-\*()]+\s*(?:=|=>|<=>)\s*[\w\+\-\*()]+)\s+(%s)\s+(%s)\s+(%s)' % (regNumber, regNumber, regNumber))
+    reacReg = re.compile('([\w\s\+\-\*()]+\s*(?:=|=>|<=>)\s*[\w\s\+\-\*()]+)\s+(%s)\s+(%s)\s+(%s)' % (regNumber, regNumber, regNumber))
 
     reac = dict()
     elem = set()
@@ -162,6 +221,19 @@ def ReadReactionBlock(lines, thermo=None):
     reac['species'] = sorted(list(sp))
     reac['elements'] = sorted(list(elem), key=lambda x: periodic.GetAtomicNumber(x))
     return reac
+
+def WriteChemBlock(data):
+    lines = ['REACTIONS\n']
+    for key, val in data.items():
+        l = "{:s} {:>.3E} {:>7.1f} {:>11.1f}\n".format(key, val['Ar'][0], val['Ar'][1], val['Ar'][2])
+        lines.append(l)
+        auxOpt = ['TROE', 'SRI', 'HIGH', 'LOW']
+        for i in auxOpt:
+            if i in val.keys():
+                l = ' {:s} /{:s}/\n'.format(i, ' '.join(val[i]))
+                lines.append(l)
+    lines.append('END')
+    return lines
 
 
 def ParseChemkinReaction(r, thermo):
