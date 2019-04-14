@@ -194,6 +194,7 @@ def ReadThermoBlock(content):
     c = content
     i = 0
     regCommentLine = re.compile('^!')
+    regHeaderLine = re.compile('^\s*[^!].*\s1\s*$')
     regEndLine = re.compile('^END')
     # Loop to the start of 'THERMO' block
     while regCommentLine.match(c[i]):
@@ -231,12 +232,21 @@ def ReadThermoBlock(content):
         while regCommentLine.match(c[i]):
             commentBlock.append(c[i])
             i += 1
+
         # data lines
-        while not regCommentLine.match(c[i]):
+        if not regHeaderLine.match(c[i]):
+            raise ValueError('The first line of thermo block is wrong')
+        else:
             dataBlock.append(c[i])
             i += 1
-            if regEndLine.match(c[i]):
+        while not regCommentLine.match(c[i]):
+            if regHeaderLine.match(c[i]):
                 break
+            else:
+                dataBlock.append(c[i])
+                i += 1
+                if regEndLine.match(c[i]):
+                    break
 
         # extract information from comment lines
         auxopt = [None for i in regC]
