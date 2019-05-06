@@ -1463,6 +1463,10 @@ nonVHS=0
 !          3 special fix for MF-DSMC O2/O case
 !
 !--variables for vibratioal sampling
+!
+! TAG: SHOCK SAMPLE
+! When you start sampling of vibrational levels, you should set appropriate value
+! for NSCELLS, I, J, NSVEC
 ALLOCATE (NSVEC(NSCELLS))
 NSVEC=NSCELLS/2.+0.9999999d0
 IF (NSCELLS > 1) THEN
@@ -1665,7 +1669,11 @@ IF (.NOT. FILE_EXIST) THEN
                     &   '"DTM (s)",', '"NMOL,"', '"NSAMP",', '"TISAMP",','"TPOUT"'
 ELSE
   OPEN(119, FILE="RunningTime.DAT", POSITION="APPEND")
-  WRITE(119, "(A)") "# Running is restarted"
+  WRITE(119, "(A)") "# Running is restarted: Sample Run"
+  WRITE(119,"(A,G14.6)") '# SAMPRAT = ', SAMPRAT
+  WRITE(119,"(A,G14.6)") '# OUTRAT = ', OUTRAT
+  WRITE(119,"(A,G14.6)") '# TPOUY = ', TPOUT
+  WRITE(119,"(A,G14.6)") '# ISF,IPDF = ', ISF,IPDF
 END IF
 CLOSE(119)
 CALL SYSTEM_CLOCK(COUNT=COUNT0, COUNT_RATE=COUNT_RATE)
@@ -9166,11 +9174,15 @@ IF(IPDF > 0) THEN
             EQVIBOT(K,L,M)=DEXP(-EVIB/(BOLTZ*VARSP(8,J,L)))/QVIBOT !based on Tov
           END DO
 !
-          !write sampled values
-          !WRITE(FILENAME,778) L,NOUT
-          !778 FORMAT('DS1DVIB',i2.2,'_',i4.4)
+          ! TAG: SHOCK SAMPLE
+          ! Use the following naming of file for vibrational level sampling
+          ! WRITE(FILENAME,778) L,J
+          ! 778 FORMAT('DS1DVIB',i2.2,'_',i4.4)
+
+          ! Regular naming
           WRITE(FILENAME,879) L
           879 FORMAT('DS1DVIB',i2.2)
+
           WRITE(TNAME,779) L,J !NOUT
           779 FORMAT('ZONE T = "',i2.2,'_',i4.4,'"')
           OPEN (7,FILE=TRIM(FILENAME)//'.DAT')

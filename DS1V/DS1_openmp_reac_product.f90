@@ -1463,6 +1463,10 @@ nonVHS=0
 !          3 special fix for MF-DSMC O2/O case
 !
 !--variables for vibratioal sampling
+!
+! TAG: SHOCK SAMPLE
+! When you start sampling of vibrational levels, you should set appropriate value
+! for NSCELLS, I, J, NSVEC
 ALLOCATE (NSVEC(NSCELLS))
 NSVEC=NSCELLS/2.+0.9999999d0
 IF (NSCELLS > 1) THEN
@@ -1506,6 +1510,8 @@ IF (IRUN <= 2) THEN
   IF (NSEED == 9999) ISF=0 !special code for shockwave sampling
   !CALL OXYGEN_NITROGEN     !special code to update reaction rates
   !CALL INIT_REAC           !special code to update reaction rates
+  WRITE(9,*) ' ISF = ', ISF
+  WRITE(9,*) ' NSEED = ',NSEED
   TSAMP=FTIME
   TOUT=FTIME
 END IF
@@ -1663,18 +1669,28 @@ IF (.NOT. FILE_EXIST) THEN
                     &   '"DTM (s)",', '"NMOL,"', '"NSAMP",', '"TISAMP",','"TPOUT"'
 ELSE
   OPEN(119, FILE="RunningTime.DAT", POSITION="APPEND")
-  WRITE(119, "(A)") "# Running is restarted"
+  WRITE(119, "(A)") "# Running is restarted: Sample Run"
+  WRITE(119,"(A,G14.6)") '# SAMPRAT = ', SAMPRAT
+  WRITE(119,"(A,G14.6)") '# OUTRAT = ', OUTRAT
+  WRITE(119,"(A,G14.6)") '# TPOUY = ', TPOUT
+  WRITE(119,"(A,G14.6)") '# ISF,IPDF = ', ISF,IPDF
 END IF
 CLOSE(119)
 CALL SYSTEM_CLOCK(COUNT=COUNT0, COUNT_RATE=COUNT_RATE)
 
 DO WHILE (FTIME < TLIM)
   OPEN (9,FILE='DIAG.TXT',ACCESS='APPEND')
+  IF (TPOUT >= 1000) THEN
+    OPEN(91, FILE="TPOUT_LOG.TXT",ACCESS="APPEND")
+  END IF
 !
 !$ WCLOCK(2)=omp_get_wtime()
 !
   DO N=1,INT(TPOUT)
-!
+    !
+    IF (MOD(N,50) == 0 .and. TPOUT >= 1000) THEN
+      WRITE(91,*) " TPOUT = ", N, "/", TPOUT
+    END IF
     DO I=1,INT(SAMPRAT)
       FTIME=FTIME+DTM
 !      !$ WCLOCK(1)=omp_get_wtime()
@@ -1700,9 +1716,15 @@ DO WHILE (FTIME < TLIM)
 !
 !    !$ WCLOCK(1)=omp_get_wtime()
     IF (IPDF > 0) THEN
-      IF (ISF == 0) CALL SAMPLE_PDF
-      IF ((ISF == 1).AND.(N/TPOUT >= (1.d0-FRACSAM))) CALL SAMPLE_PDF
-      IF ((ISF == 2).AND.(N >= INT(TPOUT-10))) CALL SAMPLE_PDF
+      IF (ISF == 0) THEN
+        CALL SAMPLE_PDF
+      ELSE IF ((ISF == 1).AND.(DBLE(N/TPOUT) >= (1.d0-FRACSAM))) THEN
+        CALL SAMPLE_PDF
+      ELSE IF (IPDF == 2 .AND. TPOUT < 10) THEN
+        CALL SAMPLE_PDF
+      ELSE IF ((ISF == 2).AND.(N >= INT(TPOUT-10))) THEN
+        CALL SAMPLE_PDF
+      END IF
     END IF
 !    !$ WRITE(*,*) 'PDF wallclock time (s):      ', omp_get_wtime()-WCLOCK(1)
 !
@@ -1758,6 +1780,9 @@ DO WHILE (FTIME < TLIM)
   WRITE(*,*)
   WRITE(9,*)
   CLOSE(9)
+  IF (TPOUT >= 1000) THEN
+    CLOSE(91)
+  END IF
 !
 END DO
 CALL MF_CLEAN_AHO()
@@ -7353,14 +7378,17 @@ INTEGER :: LOCAL_ISP
 !--WFR weighting factor radius
 !--WFRI initial weighting factor radius
 !
-!$omp parallel &
-!$omp& private(idt,n,nci,dtim,wfi,ii,ti,xi,dx,x,dz,dy,r,j,l,dtc,xc,s1,wfr,wfri,k,m,jj) &
-!$omp& private(LOCAL_CSS,LOCAL_CSSS,lOCAL_ISP) &
-!$omp& reduction(+:totmov,entmass,css,csss)
-!$    idt=omp_get_thread_num()  !thread id
-!$omp do schedule (static)
+!$OMP PARALLEL &
+!$OMP& PRIVATE(IDT,N,NCI,DTIM,WFI,II,TI,XI,DX,X,DZ,DY,R,J,L,DTC,XC,S1,WFR,WFRI,K,M,JJ) &
+!$OMP& PRIVATE(LOCAL_CSS,LOCAL_CSSS,LOCAL_ISP) &
+!$OMP& DEFAULT(SHARED) &
+!$OMP& REDUCTION(+:TOTMOV,ENTMASS,CSS,CSSS)
+!$    IDT=OMP_GET_THREAD_NUM()  !THREAD ID
+!$OMP DO SCHEDULE (STATIC)
 !
 DO N=1,NM
+  LOCAL_CSS=0.0d0
+  LOCAL_CSSS=0.0d0
 !
   NCI=IPCELL(N)
   LOCAL_ISP=IPSP(N)
@@ -7411,7 +7439,11 @@ DO N=1,NM
 !
             IF (ITYPE(J) == 2) THEN
               CALL REFLECT(N,J,X,IDT,LOCAL_CSS,LOCAL_CSSS)
-              CSS(:,J,LOCAL_ISP,:) = CSS(:,J,LOCAL_ISP,:) + LOCAL_CSS
+              DO L=1,2
+                DO K=0,8
+                  CSS(K,J,LOCAL_ISP,L) = CSS(K,J,LOCAL_ISP,L) + LOCAL_CSS(K,L)
+                END DO
+              END DO
               CSSS(:,J) = CSSS(:,J) + LOCAL_CSSS
 
                 IF((J == 2).AND.(X < XB(1))) THEN !--isebasti: included to fix bug
@@ -7419,12 +7451,16 @@ DO N=1,NM
                    !WRITE(9,*) 'REFLECTED MOLEC CROSSING OPPOSITE BOUNDARY:',FTIME,N,X,PV(1,N)
                     IF (X < XB(1)) THEN
                       CALL REFLECT(N,1,X,IDT,LOCAL_CSS, LOCAL_CSSS) !molecules reflected at xb2 crossed xb1
-                      CSS(:,1,LOCAL_ISP,:) = CSS(:,1,LOCAL_ISP,:) + LOCAL_CSS
+                      DO L=1,2
+                          CSS(:,1,LOCAL_ISP,L) = CSS(:,1,LOCAL_ISP,L) + LOCAL_CSS(:,L)
+                      END DO
                       CSSS(:,1) = CSSS(:,1) + LOCAL_CSSS
                     END IF
                     IF (X > XB(2)) THEN
                       CALL REFLECT(N,2,X,IDT,LOCAL_CSS,LOCAL_CSSS) !molecules reflected at xb1 crossed xb2
-                      CSS(:,2,LOCAL_ISP,:) = CSS(:,2,LOCAL_ISP,:) + LOCAL_CSS
+                      DO L=1,2
+                          CSS(:,2,LOCAL_ISP,L) = CSS(:,2,LOCAL_ISP,L) + LOCAL_CSS(:,L)
+                      END DO
                       CSSS(:,2) = CSSS(:,2) + LOCAL_CSSS
                     END IF
                    !WRITE(9,*) 'REFLECTED MOLEC CROSSING OPPOSITE BOUNDARY:',FTIME,N,X,PV(1,N)
@@ -7445,7 +7481,9 @@ DO N=1,NM
             DZ=S1*DZ
             CALL AIFX(XI,DX,DY,DZ,X,PV(1,N),PV(2,N),PV(3,N),IDT)
             CALL REFLECT(N,1,X,IDT,LOCAL_CSS, LOCAL_CSSS)
-            CSS(:,1,LOCAL_ISP,:) = CSS(:,1,LOCAL_ISP,:) + LOCAL_CSS
+            DO L=1,2
+                CSS(:,1,LOCAL_ISP,L) = CSS(:,1,LOCAL_ISP,L) + LOCAL_CSS(:,L)
+            END DO
             CSSS(:,1) = CSSS(:,1) + LOCAL_CSSS
           ELSE
             IPCELL(N)=-IPCELL(N) !--isebasti: CALL REMOVE_MOL(N); !N=N-1
@@ -7463,7 +7501,9 @@ DO N=1,NM
             X=1.001D00*XB(2)
             DO WHILE (X > XB(2))
               CALL REFLECT(N,2,X,IDT,LOCAL_CSS,LOCAL_CSSS)
-              CSS(:,2,LOCAL_ISP,:) = CSS(:,2,LOCAL_ISP,:) + LOCAL_CSS
+              DO L=1,2
+                  CSS(:,2,LOCAL_ISP,L) = CSS(:,2,LOCAL_ISP,L) + LOCAL_CSS(:,L)
+              END DO
               CSSS(:,2) = CSSS(:,2) + LOCAL_CSSS
             END DO
           ELSE
@@ -8303,49 +8343,51 @@ DO N=1,NCELLS
   DSUM=0.
   NMCR=NMCR+1
   DO L=1,MSP
-    DSUM(0)=DSUM(0)+CS(0,N,L)
-    DSUM(1)=DSUM(1)+CS(1,N,L)
-    DSUM(2)=DSUM(2)+SP(5,L)*CS(1,N,L)
-    DO K=1,3
-      DSUM(K+2)=DSUM(K+2)+SP(5,L)*CS(K+1,N,L)
-      IF (CS(1,N,L) > 0.1D00) THEN
-        VARSP(K+1,N,L)=CS(K+4,N,L)/CS(1,N,L)
-!--VARSP(2,3,4 are temporarily the mean of the squares of the velocities
-        VARSP(K+8,N,L)=CS(K+1,N,L)/CS(1,N,L)
-!--VARSP(9,10,11 are temporarily the mean of the velocities
-      END IF
-    END DO
-    DSUM(6)=DSUM(6)+SP(5,L)*(CS(5,N,L)+CS(6,N,L)+CS(7,N,L))
-    DSUM(10)=DSUM(10)+SP(5,L)*CS(5,N,L)
-    DSUM(11)=DSUM(11)+SP(5,L)*CS(6,N,L)
-    DSUM(12)=DSUM(12)+SP(5,L)*CS(7,N,L)
-    IF (CS(1,N,L) > 0.5D00) THEN
+    IF (CS(0,N,L) > 0.99d0) THEN
+      DSUM(0)=DSUM(0)+CS(0,N,L)
+      DSUM(1)=DSUM(1)+CS(1,N,L)
+      DSUM(2)=DSUM(2)+SP(5,L)*CS(1,N,L)
+      DO K=1,3
+        DSUM(K+2)=DSUM(K+2)+SP(5,L)*CS(K+1,N,L)
+        IF (CS(1,N,L) >= 0.1D00) THEN
+          VARSP(K+1,N,L)=CS(K+4,N,L)/CS(1,N,L)
+  !--VARSP(2,3,4 are temporarily the mean of the squares of the velocities
+          VARSP(K+8,N,L)=CS(K+1,N,L)/CS(1,N,L)
+  !--VARSP(9,10,11 are temporarily the mean of the velocities
+        END IF
+      END DO
+      DSUM(6)=DSUM(6)+SP(5,L)*(CS(5,N,L)+CS(6,N,L)+CS(7,N,L))
+      DSUM(10)=DSUM(10)+SP(5,L)*CS(5,N,L)
+      DSUM(11)=DSUM(11)+SP(5,L)*CS(6,N,L)
+      DSUM(12)=DSUM(12)+SP(5,L)*CS(7,N,L)
       DSUM(7)=DSUM(7)+CS(5,N,L)+CS(6,N,L)+CS(7,N,L)
-    END IF
-    IF (ISPR(1,L) > 0) THEN
-      DSUM(8)=DSUM(8)+CS(8,N,L)
-      DSUM(9)=DSUM(9)+CS(1,N,L)*ISPR(1,L)
+      IF (ISPR(1,L) > 0) THEN
+        DSUM(8)=DSUM(8)+CS(8,N,L)
+        DSUM(9)=DSUM(9)+CS(1,N,L)*ISPR(1,L)
+      END IF
     END IF
   END DO
   AVW=0.
   DO L=1,MSP
-    VARSP(0,N,L)=CS(1,N,L)
-    VARSP(1,N,L)=0.D00
-    VARSP(6,N,L)=0.
-    VARSP(7,N,L)=0.
-    VARSP(8,N,L)=0.
-    IF (DSUM(1) > 0.1) THEN
-      VARSP(1,N,L)=CS(1,N,L)/DSUM(1)  !isebasti: deleted 100* factor
-      AVW=AVW+SP(3,L)*CS(1,N,L)/DSUM(1)
-      IF ((ISPR(1,L) > 0).AND.(CS(1,N,L) > 0.5)) VARSP(6,N,L)=(2.D00/BOLTZ)*CS(8,N,L)/(DFLOAT(ISPR(1,L))*CS(1,N,L))
+    IF (CS(0,N,L) > 0.99D0) THEN
+      VARSP(0,N,L)=CS(1,N,L)
+      VARSP(1,N,L)=0.D00
+      VARSP(6,N,L)=0.
+      VARSP(7,N,L)=0.
+      VARSP(8,N,L)=0.
+      IF (DSUM(1) > 0.1) THEN
+        VARSP(1,N,L)=CS(1,N,L)/DSUM(1)  !isebasti: deleted 100* factor
+        AVW=AVW+SP(3,L)*CS(1,N,L)/DSUM(1)
+        IF ((ISPR(1,L) > 0).AND.(CS(1,N,L) > 0.5)) VARSP(6,N,L)=(2.D00/BOLTZ)*CS(8,N,L)/(DFLOAT(ISPR(1,L))*CS(1,N,L))
+      END IF
+      VARSP(5,N,L)=0.
+      DO K=1,3
+        VARSP(K+1,N,L)=(SP(5,L)/BOLTZ)*(VARSP(K+1,N,L)-VARSP(K+8,N,L)**2)
+        VARSP(5,N,L)=VARSP(5,N,L)+VARSP(K+1,N,L)
+      END DO
+      VARSP(5,N,L)=VARSP(5,N,L)/3.D00
+      VARSP(8,N,L)=(3.D00*VARSP(5,N,L)+DFLOAT(ISPR(1,L))*VARSP(6,N,L))/(3.D00+DFLOAT(ISPR(1,L))) !isebasti: included according to DSMC.f90
     END IF
-    VARSP(5,N,L)=0.
-    DO K=1,3
-      VARSP(K+1,N,L)=(SP(5,L)/BOLTZ)*(VARSP(K+1,N,L)-VARSP(K+8,N,L)**2)
-      VARSP(5,N,L)=VARSP(5,N,L)+VARSP(K+1,N,L)
-    END DO
-    VARSP(5,N,L)=VARSP(5,N,L)/3.D00
-    VARSP(8,N,L)=(3.D00*VARSP(5,N,L)+DFLOAT(ISPR(1,L))*VARSP(6,N,L))/(3.D00+DFLOAT(ISPR(1,L))) !isebasti: included according to DSMC.f90
   END DO
 !
   IF (IVB == 0) VAR(1,N)=CELL(1,N)
@@ -8389,11 +8431,13 @@ DO N=1,NCELLS
 !
 !--Tvib calculations according to DSMC.f90
     IF (MMVM > 0) THEN
+      TV = 0.0d0
+      TVIB=0.0d0
       DO L=1,MSP
         VDOF(L)=0.
         IF (ISPV(L) > 0) THEN
           DO K=1,ISPV(L)
-            IF (CS(K+8,N,L) > 0.d0) THEN
+            IF (CS(K+8,N,L) > 0.d0 .and. CS(0,N,L) >= 1.0d0) THEN
               AQUAD=CS(K+8,N,L)/CS(1,N,L)   !average vibrational energy (J)
               EVIB=AQUAD/EVOLT              !average vibrational energy (eV)
               IF (IVMODEL(L,1) == 0) THEN
@@ -8483,7 +8527,7 @@ DO N=1,NCELLS
     VAR(17,N)=DSQRT(VAR(5,N)**2+VAR(6,N)**2+VAR(7,N)**2)
     VAR(12,N)=VAR(17,N)/SQRT((DOF+2.D00)*VAR(11,N)*(DSUM(1)*BOLTZ/DSUM(2))/DOF)
 !--average number of molecules in (collision) cell
-    VAR(13,N)=DSUM(0)/NSAMP/DFLOAT(NCIS)
+    VAR(13,N)=DSUM(0)/DBLE(NSAMP)/DFLOAT(NCIS)
     IF (COLLS(N) > 2.) THEN
 !--mean collision time (see page 17 of my Bird94 book)
       VAR(14,N)=0.5D00*(FTIME-TISAMP)*(DSUM(1)/NSAMP)/WCOLLS(N)
@@ -9130,11 +9174,15 @@ IF(IPDF > 0) THEN
             EQVIBOT(K,L,M)=DEXP(-EVIB/(BOLTZ*VARSP(8,J,L)))/QVIBOT !based on Tov
           END DO
 !
-          !write sampled values
-          !WRITE(FILENAME,778) L,NOUT
-          !778 FORMAT('DS1DVIB',i2.2,'_',i4.4)
+          ! TAG: SHOCK SAMPLE
+          ! Use the following naming of file for vibrational level sampling
+          ! WRITE(FILENAME,778) L,J
+          ! 778 FORMAT('DS1DVIB',i2.2,'_',i4.4)
+
+          ! Regular naming
           WRITE(FILENAME,879) L
           879 FORMAT('DS1DVIB',i2.2)
+
           WRITE(TNAME,779) L,J !NOUT
           779 FORMAT('ZONE T = "',i2.2,'_',i4.4,'"')
           OPEN (7,FILE=TRIM(FILENAME)//'.DAT')

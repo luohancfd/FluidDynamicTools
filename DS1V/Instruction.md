@@ -1,3 +1,6 @@
+## Note
+1. If the code crashes and throws error "Segmentation Fault", it is likely due to the overflow of stack. You may need to set `export OMP_STACKSIZE=256M` or even larger
+
 ## 0DRate calculation
 
 1. Set the following flags
