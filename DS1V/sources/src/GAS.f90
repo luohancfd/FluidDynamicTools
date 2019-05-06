@@ -25,6 +25,7 @@ INTEGER, ALLOCATABLE, DIMENSION(:,:,:,:,:) :: NPVIB  !--isebasti: UVFX,UFND,UFTM
 REAL(KIND=8) :: FTMP0,FVTMP0
 INTEGER, ALLOCATABLE, DIMENSION(:,:) :: IVMODEL !--isebasti: included
 INTEGER, ALLOCATABLE, DIMENSION(:,:) :: INONVHS(:,:) !-- Han add, for nonVHS model
+LOGICAL, ALLOCATABLE, DIMENSION(:,:) :: IQCTVT(:,:)
 
 !--NCANGLE sample of angle
 !--NCRANGLE sample of angle which react
@@ -165,4 +166,9 @@ INTEGER, ALLOCATABLE, DIMENSION(:,:) :: INONVHS(:,:) !-- Han add, for nonVHS mod
 !--CR(L) collision rate of species L
 !--TREACG(N,L) the total number of species L gained from reaction type N=1 for dissociation, 2 for recombination, 3 for forward exchange, 4 for reverse exchange
 !--TREACL(N,L) the total number of species L lost from reaction type N=1 for dissociation, 2 for recombination, 3 for forward exchange, 4 for reverse exchange
+!--INONVHS(L,M): 0: VHS model between specie L and M
+!                1: Special QCT based model for N2+O
+!                2: Collision model based on exponential potential
+!--IQCTVT(L,M): .false.  ME-QCT-VT model doesn't exist
+!               .true.   ME-QCT-VT model exists
 END MODULE GAS

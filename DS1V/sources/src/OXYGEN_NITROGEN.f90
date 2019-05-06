@@ -6,6 +6,7 @@ SUBROUTINE OXYGEN_NITROGEN
 USE GAS
 USE CALC
 USE MOLECS
+USE EXPCOL,only : EXPCOL_INIT
 !
 IMPLICIT NONE
 REAL(KIND=8) :: VDC=-1.d0, ZV=1.d12 !1.d12
@@ -40,6 +41,10 @@ END IF
 MNSR=0
 !
 CALL ALLOCATE_GAS
+IQCTVT(1,4) = .true.
+IQCTVT(4,1) = .true.
+IQCTVT(3,4) = .true.
+IQCTVT(4,3) = .true.
 !
 !--species 1 is hydrogen H2
 !SP(1,1)=2.92D-10        !reference diameter  !vss/vhs  2.88/2.92

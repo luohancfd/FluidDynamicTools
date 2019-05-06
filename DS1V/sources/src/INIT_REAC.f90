@@ -16,7 +16,7 @@ USE MFDSMC, only : IMF,IMFS,MFRMASS, NMFANG,NMFpair, IMFpair,MF_SET_AHO, IMFdia
 IMPLICIT NONE
 !
 INTEGER :: I,K,L,M,N,LS,MS,NNRE,NTBP,II
-REAL(KIND=8) :: A,B,C,D,EPS,AL,X,AA,BB
+REAL(KIND=8) :: B,C,D,EPS,AL,X,BB
 REAL(8),EXTERNAL :: GAM
 !
 !--I,K,L,M,N working integers
@@ -135,7 +135,7 @@ IF (IMF .ne. 0 .and. IMFS == 1 .and. MNRE >0) THEN
 END IF
 
 
-IF (IMF == 2 .or. IMF == 3 .and. MNRE>0) THEN
+IF (IMF >= 2 .and. MNRE>0) THEN
   CALL MF_SET_AHO()
 END IF
 
@@ -147,9 +147,14 @@ IF (IMF .ne. 0) THEN
     WRITE(10,'(A,1X,I2)') 'Macheret-Fridman model: MF-SHO  Dia:',IMFdia
   ELSE IF (IMF == 2) THEN
     WRITE(10,'(A,1X,I2)') 'Macheret-Fridman model: MF-AHO QCT vphase  Dia:',IMFdia
-  ELSE IF (IMF == 3) THEN
+  ELSE IF (IMF == 3 .or. IMF == 4) THEN
     WRITE(10,'(A,1X,I2)') 'Macheret-Fridman model: MF-AHO Morse vphase  Dia:',IMFdia
   END IF
+
+  IF (IMF == 4) THEN
+    WRITE(10,'(A,1X,I2)') 'Macheret-Fridman model: Impact parameter coulpling'
+  END IF
+
   WRITE(10,'(A)') "Macheret-Fridman model parameter:"
 END IF
 

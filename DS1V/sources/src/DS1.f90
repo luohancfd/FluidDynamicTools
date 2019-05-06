@@ -22,7 +22,7 @@ USE MFDSMC,only : IMF, IMFS, MF_CLEAN_AHO, IMFdia
 IMPLICIT NONE
 !
 INTEGER :: IRUN,NSEED,N,I,J,IRETREM,NTHREADS, ITHREAD
-REAL(KIND=8) :: A,WCLOCK(5)
+REAL(KIND=8) :: WCLOCK(5)
 INTEGER(KIND=8) :: COUNT0, COUNT1, COUNT_RATE
 REAL(8) :: CALC_TIME
 LOGICAL :: FILE_EXIST
@@ -77,15 +77,20 @@ QCTMODEL=2   !0 for TCE+LB+SHO vibrational levels
 IMFS=0     ! 0 for not sampling 1 for sampling
 ! WARNING: All above variables are hard coded, pay attenton before use it
 
-! WARNING: The following variables are set by reading input
-IMF=1      ! 0: do not use MF model, 1: use MF+SHO 2: use MF+AHO(QCT ladder) 3: use MF+AHO(Morse Potential)
+! ----- WARNING: The following variables are overwriten by reading input ------------------
+IMF=1      ! 0: do not use MF model
+           ! 1: use MF+SHO
+           ! 2: use MF+AHO(QCT ladder)
+           ! 3: use MF+AHO(Morse Potential)
+           ! 4: use MF+AHO(Morse Potential)+Effective translational energy
 IMFdia=1   ! 0: for collision of same molecules, dissociate the one with higher vibrational energy
-             ! 1: for collision of same molecules, dissociate the one gives lower threshold energy
+           ! 1: for collision of same molecules, dissociate the one gives lower threshold energy
 nonVHS=0
 !-- nonVHS 0 for VHS/VSS model
 !          1 for VHS/VSS model+QCT N2O model
 !          2 exponential model, fallback to 0 if parameters not found
 !          3 special fix for MF-DSMC O2/O case
+!-------------------------------------------------------------------------------------------
 !
 !--variables for vibratioal sampling
 !

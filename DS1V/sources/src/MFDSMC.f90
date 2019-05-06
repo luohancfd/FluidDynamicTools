@@ -73,7 +73,7 @@ contains
         end if
       end do
       close(3)
-    ELSE IF (IMF == 3) THEN
+    ELSE IF (IMF == 3 .or. IMF == 4) THEN
       ! hard coded setting's for Morse parameter
       ! The first three parameters are De, Rm and beta
       !     V(r) = De*(1-exp(-beta(x-Rm)))^2 - De
@@ -335,6 +335,15 @@ contains
       MFF = MFF / 4.d0
     END IF
   end subroutine MF_EVAL_F
+
+  subroutine MF_INIT_SAMPLE
+    implicit none
+    NMFEV0 = 0.; NMFER0 = 0.; NMFET0 = 0.
+    NMFEV = 0.; NMFER = 0.; NMFET = 0.
+    NMFEVR = 0.; NMFERR = 0.; NMFETR = 0.
+    NMFVT0 = 0.; NMFVT = 0.; NMFVTR = 0.
+    !NCANGLE = 0; NCRANGLE = 0.
+  end subroutine MF_INIT_SAMPLE
 
 !
 !--IMFS = 0, not sample anything related to MF model =1 sample

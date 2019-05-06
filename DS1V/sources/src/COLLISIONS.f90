@@ -16,17 +16,16 @@ USE MFDSMC,only: NMFET0,NMFER0,NMFEV0,NMFVT0,NMFEV,NMFET,NMFER,NMFVT, &
 !
 IMPLICIT NONE
 !
-INTEGER :: N,NS,NN,M,MM,L,LL,K,KK,KT,J,I,II,III,NSP,MAXLEV,IV,IVP,NSEL,KV,LS,MS,KS,JS,IKA,LZ,KL,IS,IREC,&
-           NLOOP,IA,IDISS,IE,IEX,JJ,NPRI,LIMLEV,KVV,KW,ISP1,ISP2,ISP3,INIL,INIM,JI,LV,IVM,NMC,NVM,LSI,&
-           JX,MOLA,KR,JKV,NSC,KKV,NUMEXR,IAX,NSTEP,ISWITCH,NPM,LM,LMS,IVDC(MNRE),ISHUF(3),IT,IDT=0,IVDC0
-REAL(KIND=8) :: A,AA,AAA,AB,B,BB,BBB,ASEL,DTC,SEP,VRI,VR,VRR,ECT,ET0,EVIB,ECC,ZV,COLT,ERM,C,OC,SD,D,CVR,PROB,&
-                RML,RMM,ECTOT,ETI,EREC,ET2,XMIN,XMAX,WFC,CENI,CENF,VRRT,TCOLT,EA,DEN,SVDOF(3,3),RANF,DT(ITMAX),& !--isebasti: included RANF,DT
+INTEGER :: N,NS,NN,M,MM,L,LL,K,KK,J,I,II,III,NSP,MAXLEV,IV,IVP,NSEL,KV,LS,MS,KS,JS,IKA,KL,&
+           IE,NPRI,JI,IVM,JX,IAX,NSTEP,NPM,LM,LMS,IVDC(MNRE),ISHUF(3),IT,IDT=0,IVDC0
+REAL(KIND=8) :: A,AAA,AB,B,BB,BBB,ASEL,DTC,SEP,VRI,VR,VRR,ECT,ET0,EVIB,ECC,ZV,COLT,ERM,C,D,CVR,PROB,&
+                RML,RMM,XMIN,XMAX,WFC,SVDOF(3,3),RANF,DT(ITMAX),& !--isebasti: included RANF,DT
                 RXSECTION(MNRE),SXSECTION,TXSECTION,&
-                QNU,A1,A2,B1,B2,C1,C2,EROT,EV,SIGMA_REF,EV_POST,SUMF,E,F,EL,ED,EF,S !ME-QCT variables
+                QNU,A1,A2,B1,B2,C1,C2,SIGMA_REF,EV_POST,SUMF,E,F,EL,ED,EF,S !ME-QCT variables
 REAL(KIND=8),DIMENSION(0:100) :: VTXSECTION
-REAL(KIND=8),DIMENSION(3) :: VRC,VCM,VRCP,VRCT
-REAL(KIND=8) :: ECR(2),EVIBEV,BMAX,REST_DOF
-INTEGER :: IETDX,IERDX(2),IEVDX(2),IVPS(2)
+REAL(KIND=8),DIMENSION(3) :: VRC,VCM,VRCP
+REAL(KIND=8) :: ECR(2),BMAX,REST_DOF
+INTEGER :: IETDX,IERDX(2),IEVDX(2),IVPS(2), IDIATOM
 logical :: IREACSP
 ! variable used for nonVHS == 3
 LOGICAL :: IVHS
@@ -80,14 +79,14 @@ REAL(8) :: LOCAL_EVREM
 !$OMP& PRIVATE(IDT) &
 !$OMP& PRIVATE(N,NS,DTC,NN,WFC,AAA,BBB,C,XMIN,XMAX,ASEL,NSEL,I,IE,KL,NPRI,III,K,L,LM,M,RANF,LL) &
 !$OMP& PRIVATE(SEP,J,MM,A,KK,VRC,VRR,VRI,VR,CVR,ECT,NSP,KV,EVIB,ECC,MAXLEV,COLT,B,ZV,II,IV,IVP,PROB,SVDOF) &
-!$OMP& PRIVATE(ERM,VCM,VRCP,OC,SD,D,LS,LMS,MS,IVDC,IVDC0,ISHUF,RML,RMM,ISWITCH,IDISS,KS,JS,LIMLEV,LZ,IEX,IREC) &
-!$OMP& PRIVATE(TCOLT,KT,AA,AB,BB,KVV,JI,LSI,IVM,NMC,NVM,ECTOT,PSF,JJ,EA,DEN,IAX,JX,IKA,NPM,NSTEP,IT,DT) &
+!$OMP& PRIVATE(ERM,VCM,VRCP,D,LS,LMS,MS,IVDC,IVDC0,ISHUF,RML,RMM,KS,JS) &
+!$OMP& PRIVATE(AB,BB,JI,IVM,PSF,IAX,JX,IKA,NPM,NSTEP,IT,DT) &
 !$OMP& PRIVATE(SXSECTION,RXSECTION,VTXSECTION,TXSECTION) &
-!$OMP& PRIVATE(QNU,A1,A2,B1,B2,C1,C2,E,F,EL,ED,ET0,EROT,EV,SIGMA_REF,EV_POST,SUMF,EF,S) &
-!$OMP& PRIVATE(ECR,EVIBEV,IVPS,BMAX,REST_DOF)&
+!$OMP& PRIVATE(QNU,A1,A2,B1,B2,C1,C2,E,F,EL,ED,ET0,SIGMA_REF,EV_POST,SUMF,EF,S) &
+!$OMP& PRIVATE(ECR,IVPS,BMAX,REST_DOF)&
 !$OMP& PRIVATE(CVR2,IVHS, SXSECTION2)&
 !$OMP& PRIVATE(IETDX,IEVDX,IERDX,IREACSP,LOCAL_NPVIB,LOCAL_EVREM) &
-!$OMP& PRIVATE(ELACK) &
+!$OMP& PRIVATE(ELACK,IDIATOM) &
 !$OMP& REDUCTION(+:NDISSOC,NDISSL,TRECOMB,NRECOMB,TREACL,TREACG,TNEX,TFOREX,TREVEX) & !Q-K
 !$OMP& REDUCTION(+:TOTDUP,TOTCOL,PCOLLS,TCOL,CSCR,COLLS,WCOLLS,CLSEP,REAC,NPVIB, EVREM) &
 !$OMP& REDUCTION(+:NMFET0,NMFER0,NMFEV0,NMFVT0,NMFEV,NMFET,NMFER,NMFVT)
@@ -346,7 +345,8 @@ DO N=1,NCCELLS
 !
 !--Calculate the total scattering (VHS) cross-section
             ECT=0.5D00*SPM(1,LS,MS)*VRR         !collision translational energy in J
-            ET0=ECT/EVOLT                        !convert to eV
+            ET0=ECT/EVOLT                       !convert to eV
+            IVHS = .true.
             CALL CALC_TOTXSEC(LS, MS, VR, VRR, ET0, -1.0d0, SXSECTION, BMAX, CVR)
             IF (nonVHS == 3) THEN
               CVR2 = CVR   !save true vhs cross sections
@@ -437,7 +437,8 @@ DO N=1,NCCELLS
                 END IF
               END IF
             END IF
-            ! Sample rotational, translational and vibrational energy
+
+            ! Sample rotational, translational and vibrational energy for IMFS==1
             IF (IREAC .eq. 2 .and. IMF .ne. 0 .and. MNRE > 0 .and. IMFS == 1) THEN
               IF (MNRE > 2) THEN
                 WRITE(*,*) " IMFS shouldn't be enabled if MNRE > 2"
@@ -461,41 +462,30 @@ DO N=1,NCCELLS
               END DO
             END IF
 
-!
-!--Calculate the VT (ME-QCT) cross-sections (only for O2+O and N2+O collisions)
-            J=0
-            IF ((LS==1.AND.MS==4).OR.(LS==4.AND.MS==1)) J=1 !N2-O collision
-            IF ((LS==3.AND.MS==4).OR.(LS==4.AND.MS==3)) J=3 !O2-O collision
-            ! J is only larger than 0 for the above two pairs
-
-            ! Calcuate pre-collision vibrational energy
-            ! IVP is the vibrational level of the molecule which is more
-            ! likely to be dissociated
-            ! For J>0, predefined QCT model *MIGHT* be used later
-            ! For J<0, QCT model will never be used
-            IVP = -1
-            EVIB = 0.0d0
-            IF (LS == J) THEN
-              IVP=IPVIB(1,L);
-            ELSE IF  (MS == J) THEN
-              IVP=IPVIB(1,M)
-            ELSE IF ((ISPV(LS) == 1) .and. (ISPV(MS) == 0))THEN
+        !-------- Modify total cross sections if it has dependency on internal energy -----------------
+            !--Calculate the VT (ME-QCT) cross-sections (only for O2+O and N2+O collisions)
+            IDIATOM=0  !index of the specie to be dissociated
+            IVP = -1   !vibrational level of the molecule which is more likely to be dissociated
+            EVIB = 0.0d0  !vibrational energy of the molecule
+            IF ((ISPV(LS) == 1) .and. (ISPV(MS) == 0))THEN
               IVP = IPVIB(1,L)
-              J = -LS
+              IDIATOM = LS
             ELSE IF ((ISPV(MS) == 1) .and. (ISPV(LS) == 0))THEN
               IVP = IPVIB(1,M)
-              J = -MS
-            ELSE ! both are diatom, select the one with higher vibrational energy to be dissociated
+              IDIATOM = MS
+            ELSE IF (ISPV(MS) >=1 .and. ISPV(LS) >= 1) THEN
+              ! both are diatom, select the one with higher vibrational level
+              ! the one which is dissociated is determined in CHECK_RXSECTION
               IF (IPVIB(1,L) >= IPVIB(1,M)) THEN
-                J = -LS
+                IDIATOM = LS
                 IVP = IPVIB(1,L)
               ELSE
-                J = -MS
+                IDIATOM = MS
                 IVP = IPVIB(1,M)
               ENDIF
             END IF
             IF (IVP >= 0)THEN
-              CALL VIB_ENERGY(EVIB,IVP,1,ABS(J))
+              CALL VIB_ENERGY(EVIB,IVP,1,IDIATOM)
             END IF
             ! the following value of ECC is only used in ME-QCT-VT model
             ECC=(ECT+EVIB)/EVOLT                !available collision energy in eV
@@ -507,8 +497,9 @@ DO N=1,NCCELLS
                 CALL CALC_TOTXSEC(LS, MS, VR, VRR, ET0, EVIB, SXSECTION,BMAX,CVR)
               END IF
             END IF
+        !----------------------------------------------------------------------------------
 
-!--Calculate the reaction cross-sections
+!--Precalculate the reaction cross-sections for QCT reaction model
             IVDC=0                 !to track the order of reacting species
             RXSECTION=0.d0
             IF (MNRE>0 .and. IMF .ne.  0 .and. QCTMODEL == 3) THEN
@@ -522,9 +513,9 @@ DO N=1,NCCELLS
 
             ! QCT VT cross sections
             VTXSECTION=0.d0
-            IF (QCTMODEL>=2.AND.GASCODE==8.AND.J>0) THEN
+            IF (QCTMODEL>=2.AND.GASCODE==8 .AND. IQCTVT(LS,MS)) THEN
 !
-              IF(J==1) THEN  !N2+O collisions
+              IF(IDIATOM==1) THEN  !N2+O collisions
                 SIGMA_REF=14.5351d0/3.d0 !24.2788d0/3.d0
                 QNU=0.7074d0 !0.3994d0
                 A1=1.0570d0  !0.1253d0
@@ -539,7 +530,7 @@ DO N=1,NCCELLS
                 ED=9.8216d0  !E_dissociation in eV
               END IF
 !
-              IF(J==3) THEN  !O2+O collisions
+              IF(IDIATOM==3) THEN  !O2+O collisions
                 SIGMA_REF=6.0108d0/27.d0
                 QNU=0.6390d0
                 A1=0.0331d0
@@ -562,11 +553,11 @@ DO N=1,NCCELLS
               SUMF=0.d0
               EL=DMIN1(ECC,ED)                    !in eV
 !
-              IF(J==1) THEN !N2+O collisions
+              IF(IDIATOM==1) THEN !N2+O collisions
                 AB=ECT+EVIB
-                CALL VIB_LEVEL(AB,MAXLEV,1,J)              !max level based on the collision energy
+                CALL VIB_LEVEL(AB,MAXLEV,1,IDIATOM)              !max level based on the collision energy
                 DO IV=0,MAXLEV
-                  CALL VIB_ENERGY(EV_POST,IV,1,J)
+                  CALL VIB_ENERGY(EV_POST,IV,1,IDIATOM)
                   AB=DABS(EVIB-EV_POST)/EVOLT              !energy difference in eV
                   BB=DABS(AB/C)
                   EF=(EV_POST/EVOLT)/ECC                   !energy ratio
@@ -579,10 +570,10 @@ DO N=1,NCCELLS
                 END DO
               END IF
 !
-              IF(J==3) THEN !O2+O collisions
-                MAXLEV=IVMODEL(J,2)
+              IF(IDIATOM==3) THEN !O2+O collisions
+                MAXLEV=IVMODEL(IDIATOM,2)
                 DO IV=0,MAXLEV
-                  CALL VIB_ENERGY(EV_POST,IV,1,J)
+                  CALL VIB_ENERGY(EV_POST,IV,1,IDIATOM)
                   AB=DABS(EVIB-EV_POST)/EVOLT             !energy difference in eV
                   BB=DABS(AB/C)
                   EF=(EV_POST/EVOLT)/ECC                  !energy ratio
@@ -757,17 +748,13 @@ DO N=1,NCCELLS
 !
 !--Check VT energy redistribution
 !-------------------------------------------------
-              J=0
-              IF ((LS==1.AND.MS==4).OR.(LS==4.AND.MS==1)) J=1 !N2-O collision
-              IF ((LS==3.AND.MS==4).OR.(LS==4.AND.MS==3)) J=3 !O2-O collision
-!
-              IF (IREAC<=1.AND.QCTMODEL>=2.AND.IKA==0.AND.GASCODE==8.AND.J>0) THEN
+              IF (IREAC<=1 .AND. IKA == 0 .AND. QCTMODEL>=2 .AND. GASCODE==8 .AND. IQCTVT(LS,MS)) THEN
                 ! The following code is run under the condition that
-                !  1. Reaction can occur (IREA <=1)
-                !  2. QCT-VT Modell is on
-                !  3. Reaction doesn't occur (IKA = 0)
+                !  1. Reaction can occur (IREAC <=1)
+                !  2. Reaction doesn't occur (IKA = 0)
+                !  3. QCT-VT Model is on (QCTMODEL>=2)
                 !  4. GASCODE == 8
-                !  5. the species is either N2-O or O2-O
+                !  5. QCT-VT Model exists for the pair (either N2-O or O2-O)
               !--Vibrational relaxation based on ME-QCT model
 !
                 SUMF=SUM(VTXSECTION(:))      !total VT cross-section (SIGMA_ME-QCT-VT,T)
@@ -777,20 +764,20 @@ DO N=1,NCCELLS
                 CALL ZGF(RANF,IDT)
                 IF (PROB > RANF) THEN        !vibrational relaxation occurs
                   II=0
-                  MAXLEV=IVMODEL(J,2)
+                  MAXLEV=IVMODEL(IDIATOM,2)
                   DO WHILE (II == 0)
                     CALL ZGF(RANF,IDT)
                     IV=RANF*(MAXLEV+0.99999999D00)
                     PROB=VTXSECTION(IV)/SUMF !SIGMA_ME-QCT-VT to SIGMA_ME-QCT-VT,T ratio
                     CALL ZGF(RANF,IDT)
                     IF (PROB > RANF) THEN    !a vibrational level is accepted
-                      CALL VIB_ENERGY(EV_POST,IV,1,J)
+                      CALL VIB_ENERGY(EV_POST,IV,1,IDIATOM)
                       II=1
                     END IF
                   END DO
 !
-                  IF (LS == J) IPVIB(1,L)=IV
-                  IF (MS == J) IPVIB(1,M)=IV
+                  IF (LS == IDIATOM) IPVIB(1,L)=IV
+                  IF (MS == IDIATOM) IPVIB(1,M)=IV
 !
                   ! for diatom-atom ME-QCT-VT, ECC is the collisional energy + vibrational energy of diatom molecule
                   ! ECC is in eV

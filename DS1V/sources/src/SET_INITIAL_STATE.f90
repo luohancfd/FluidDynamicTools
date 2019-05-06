@@ -8,6 +8,7 @@ USE GEOM
 USE GAS
 USE CALC
 USE OUTPUT
+USE EXPCOL, only:EXPCOL_INIT
 !
 IMPLICIT NONE
 !
@@ -15,14 +16,12 @@ INTEGER :: I,J,L,K,KK,KN,NMI,II,III,INC,NC,NDES,IDES(10000),IDT=0 !--isebasti: i
 INTEGER(KIND=8) :: N,M
 REAL(KIND=8) :: AA,A,B,BB,SN,XMIN,XMAX,WFMIN,DENG,TDF,DNF,VMP2,RANF,EVIB,TVAR(10000),BVMP,BTEMP !--isebasti: included TDF,DNF,VMP2,RANF,EVIB
 REAL(KIND=8), DIMENSION(3) :: DMOM
-REAL(KIND=8), DIMENSION(3,2) :: VB
 REAL(KIND=8), DIMENSION(2) :: ROTE
 REAL(8),EXTERNAL :: ERF,GAM
 !
 !--NSET the alternative set numbers in the setting of exact initial state
 !--DMOM(N) N=1,2,3 for x,y and z momentum sums of initial molecules
 !--DENG the energy sum of the initial molecules
-!--VB alternative sets of velocity components
 !--ROTE alternative sets of rotational energy
 !--NMI the initial number of molecules
 !--INC counting increment
@@ -184,6 +183,7 @@ DO L=1,MSP
 END DO
 !
 IF (GASCODE==8) THEN !special code with wysong2014 data for O2-O collisions
+    ! special settings for GASCODE==8
     ! O-O2
     SPM(3,3,4)=0.75d0      !omega_ref
     SPM(4,3,4)=3.442d-10  !d_ref
@@ -215,6 +215,16 @@ IF (GASCODE==8) THEN !special code with wysong2014 data for O2-O collisions
     DO N = 2,6
       SPM(N,M,L) = SPM(N,L,M)
     ENDDO
+
+    IF (nonVHS == 2) THEN
+      CALL EXPCOL_INIT()
+    ELSE IF (nonVHS == 1) THEN
+      CCELL(4,:) = CCELL(4,:)*1.1D0
+      INONVHS(1,4) = 1
+      INONVHS(4,1) = 1
+    ELSE IF (nonVHS == 3) THEN
+      INONVHS = 0
+    END IF
 END IF
 
 !IF (GASCODE == 8 )THEN
@@ -370,11 +380,6 @@ DO N=1,NCCELLS
   CCELL(5,N)=0.D00
 END DO
 
-!-- Han: enlarge CCELL(4) in case of error
-!-- Han's trick for nonVHS
-IF (nonVHS .eq. 1) THEN
-  CCELL(4,:) = CCELL(4,:)*1.1D0
-END IF
 !
 !--set the entry quantities
 !

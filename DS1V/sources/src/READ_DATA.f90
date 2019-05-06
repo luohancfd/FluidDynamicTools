@@ -289,7 +289,9 @@ ELSE IF (IMF == 1) THEN
 ELSE IF (IMF == 2) THEN
   WRITE(3,*) '   Macheret-Fridman-Monte-Carlo model with AHO vibrational phase calculated from QCT'
 ELSE IF (IMF == 3) THEN
-  WRITE(3,*) '   MAcheret-Fridman-Monte-Carlo model with AHO vibrational phase calculated from Morse parameter'
+  WRITE(3,*) '   Macheret-Fridman-Monte-Carlo model with AHO vibrational phase calculated from Morse parameter'
+ELSE IF (IMF == 4) THEN
+  WRITE(3,*) '   Macheret-Fridman-Monte-Carlo model with AHO-Morse and impact parameter coupling'
 ELSE
   WRITE(3,*) '   ERROR: Wrong input for Macheret-Fridman model'
   stop
