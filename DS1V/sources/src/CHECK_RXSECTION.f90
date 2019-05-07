@@ -1,7 +1,7 @@
 !
 !************************************************************************************
 !
-SUBROUTINE CHECK_RXSECTION(RXSECTION,N,L,M,LS,MS,ECT,SXSECTION,IVDC,IDT)
+SUBROUTINE CHECK_RXSECTION(RXSECTION,N,L,M,LS,MS,ECT,SXSECTION,BMAX,BR,IVDC,IDT)
 !
 !
 USE MOLECS
@@ -12,6 +12,7 @@ USE GEOM
 USE OMP_LIB
 USE MFDSMC,only : IMF, IMFdia, NMFANG,&
   MF_SAMPLE_PHASE,MF_CALC_COLL,MF_SAMPLE_ANGLE,MF_EVAL_F
+USE EXPCOL,only : EXPCOL_SOLVERM
 !
 IMPLICIT NONE
 !
@@ -30,6 +31,9 @@ REAL(KIND=8) :: A,B,ECR,ECV,EC,THBCELL,RANF,&
 REAL(KIND=8),ALLOCATABLE :: VEC_I(:),VEC_J(:),VALUES(:),ARRAY_TEMP(:,:)
 REAL(KIND=8) :: MFANG(8),MFV1,MFV2,MFR1,MFR2,MFCtheta
 REAL(KIND=8) :: MFF(2),MFcoll(2)
+! variable for IMF=4
+REAL(KIND=8) :: BMAX,BR,ECT_E,RM
+
 INTEGER      :: NMFCALL, viblevel(2), IINPM
 LOGICAL      :: ISAME
 !
@@ -41,6 +45,7 @@ LOGICAL      :: ISAME
 !--ECR rotational energy
 !--ECV vibrational energy
 !--ECA available energy
+!--ECT_E effective translational energy taking impact parameter into consideration
 !--XSECTION cross-section
 !--ISTE third body species
 !--NRE number of reactions that may occur for this pair
@@ -58,8 +63,9 @@ NMFCALL = 0           !count of MFmodel using
 NS=ICCELL(3,N)        !sampling cell
 TEMP=VAR(10,NS)       !sampling cell vibrational temperature
 NRE=NRSP(LS,MS)       !number of reaction involving species LS and MS
-ISAME = .false.             !check if two species are the same
+ISAME = .false.       !check if two species are the same
 IF (LS == MS) ISAME = .true.
+RM = -1.0d0
 !
 IF (NRE > 0) THEN
 !
@@ -250,6 +256,19 @@ IF (NRE > 0) THEN
               !--note measures to prevent underflows
               STER(J)=CF*(REA(6,K)*(C/D))*(((ECA(J)-REA(2,K))*1.d10)**AA/(ECA(J)*1.d10)**BB)*1.d10**(BB-AA)
             ELSE
+              IF (IMF == 4) THEN
+                IF (RM < 0) THEN
+                  IF (INONVHS(LS,MS) == 2) THEN
+                    RM = EXPCOL_SOLVERM(LS,MS, BMAX*DSQRT(BR),ECT/EVOLT)
+                  ELSE
+                    RM = BMAX
+                  END IF
+                END IF
+                ECT_E = ECT * (1-BR*BMAX**2/RM**2)
+              ELSE
+                ECT_E = ECT
+              END IF
+
               ! Macheret-Fridman-MC mode
               !
               !---get energy of each one particle
@@ -297,7 +316,7 @@ IF (NRE > 0) THEN
                 !END IF
               CALL MF_EVAL_F(K,NMFCALL,MFV1,MFV2,MFR1,MFR2,MFcoll,MFANG,MFCtheta,MFF(NMFCALL),IDT)
               STER(J) = 0.0d0
-              IF (ECT >= MFF(NMFCALL)) STER(J) = 1.0D0
+              IF (ECT_E >= MFF(NMFCALL)) STER(J) = 1.0D0
 
               IF (ISAME .and. IMFdia == 1) THEN
                 ! check the possibility of dissociate the molecule with lower vibrational energy
@@ -314,7 +333,7 @@ IF (NRE > 0) THEN
                 ! exchange internal energy
                 CALL MF_EVAL_F(K,NMFCALL,MFV2,MFV1,MFR2,MFR1,MFcoll,MFANG,MFCtheta,MFF(NMFCALL),IDT)
 
-                IF (MFF(2) < MFF(1) .and. MFF(2) <= ECT) THEN
+                IF (MFF(2) < MFF(1) .and. MFF(2) <= ECT_E) THEN
                   STER(J) = 1.0d00
                   IVDC(K) = 3-IVDC(K)
                   ! the configuration IVDC(K) is prefered

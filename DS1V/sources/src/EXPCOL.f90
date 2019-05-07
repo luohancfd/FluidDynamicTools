@@ -295,7 +295,7 @@ contains
     EXPCOL_Chi = PI-2.0d0*b/RM*a
   end function EXPCOL_Chi
 
-  subroutine EXPCOL_Scatter(LS,MS,BMAX,ET0,VR,VRC,VRCP,IDT)
+  subroutine EXPCOL_Scatter(LS,MS,B,ET0,VR,VRC,VRCP,IDT)
     ! VR: adjusted speed
     ! VRC: adjusted velocity
     ! VRCP: scattered velocity
@@ -303,13 +303,10 @@ contains
     USE GAS, only : SPM
     implicit none
     integer :: LS, MS, IDT
-    real(8) :: VRC(3), VR, VRCP(3), BMAX,RANF,ET0
-    real(8) :: b, CHI, CCHI, SCHI, EPSI, CEPSI, SEPSI, D
+    real(8) :: VRC(3), VR, VRCP(3), B,RANF,ET0
+    real(8) :: CHI, CCHI, SCHI, EPSI, CEPSI, SEPSI, D
 
-    call ZGF(RANF, IDT)
-    b = dsqrt(RANF)*BMAX
-
-    CHI = EXPCOL_Chi(LS,MS,b,ET0)
+    CHI = EXPCOL_Chi(LS,MS,B,ET0)
     CCHI = DCOS(CHI); SCHI = DSIN(CHI)
     CALL ZGF(RANF,IDT)
     EPSI = RANF*2.0D0*PI

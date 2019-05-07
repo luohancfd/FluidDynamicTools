@@ -21,7 +21,8 @@ INTEGER :: N,NS,NN,M,MM,L,LL,K,KK,J,I,II,III,NSP,MAXLEV,IV,IVP,NSEL,KV,LS,MS,KS,
 REAL(KIND=8) :: A,AAA,AB,B,BB,BBB,ASEL,DTC,SEP,VRI,VR,VRR,ECT,ET0,EVIB,ECC,ZV,COLT,ERM,C,D,CVR,PROB,&
                 RML,RMM,XMIN,XMAX,WFC,SVDOF(3,3),RANF,DT(ITMAX),& !--isebasti: included RANF,DT
                 RXSECTION(MNRE),SXSECTION,TXSECTION,&
-                QNU,A1,A2,B1,B2,C1,C2,SIGMA_REF,EV_POST,SUMF,E,F,EL,ED,EF,S !ME-QCT variables
+                QNU,A1,A2,B1,B2,C1,C2,SIGMA_REF,EV_POST,SUMF,E,F,EL,ED,EF,S,& !ME-QCT variables
+                BR !impact parameter of collision
 REAL(KIND=8),DIMENSION(0:100) :: VTXSECTION
 REAL(KIND=8),DIMENSION(3) :: VRC,VCM,VRCP
 REAL(KIND=8) :: ECR(2),BMAX,REST_DOF
@@ -83,8 +84,8 @@ REAL(8) :: LOCAL_EVREM
 !$OMP& PRIVATE(AB,BB,JI,IVM,PSF,IAX,JX,IKA,NPM,NSTEP,IT,DT) &
 !$OMP& PRIVATE(SXSECTION,RXSECTION,VTXSECTION,TXSECTION) &
 !$OMP& PRIVATE(QNU,A1,A2,B1,B2,C1,C2,E,F,EL,ED,ET0,SIGMA_REF,EV_POST,SUMF,EF,S) &
-!$OMP& PRIVATE(ECR,IVPS,BMAX,REST_DOF)&
-!$OMP& PRIVATE(CVR2,IVHS, SXSECTION2)&
+!$OMP& PRIVATE(ECR,IVPS,REST_DOF)&
+!$OMP& PRIVATE(CVR2,IVHS, SXSECTION2,BMAX,BR)&
 !$OMP& PRIVATE(IETDX,IEVDX,IERDX,IREACSP,LOCAL_NPVIB,LOCAL_EVREM) &
 !$OMP& PRIVATE(ELACK,IDIATOM) &
 !$OMP& REDUCTION(+:NDISSOC,NDISSL,TRECOMB,NRECOMB,TREACL,TREACG,TNEX,TFOREX,TREVEX) & !Q-K
@@ -347,7 +348,7 @@ DO N=1,NCCELLS
             ECT=0.5D00*SPM(1,LS,MS)*VRR         !collision translational energy in J
             ET0=ECT/EVOLT                       !convert to eV
             IVHS = .true.
-            CALL CALC_TOTXSEC(LS, MS, VR, VRR, ET0, -1.0d0, SXSECTION, BMAX, CVR)
+            CALL CALC_TOTXSEC(LS, MS, VR, VRR, ET0, -1.0d0,IDT,SXSECTION, BMAX,BR,CVR)
             IF (nonVHS == 3) THEN
               CVR2 = CVR   !save true vhs cross sections
               SXSECTION2 = SXSECTION
@@ -372,7 +373,7 @@ DO N=1,NCCELLS
                   WRITE(*,*) "Something wrong in collision Code:1"
                   STOP
                 END IF
-                SXSECTION = CVR/CVR2*SXSECTION2
+                SXSECTION = SXSECTION2 * CVR / CVR2
                 IVHS = .false.
               ELSE IF (LS == 3 .and. MS == 3) THEN
                 IF (IMF == 1) THEN
@@ -392,6 +393,8 @@ DO N=1,NCCELLS
                   CVR2 = VR*PI*(4.1515d-10)**2*((2.D00*BOLTZ*SPM(5,LS,MS)/(SPM(1,LS,MS)*VRR))**(0.7318D0-0.5D00))
                   CVR2 = CVR2 / GAM(2.5D0 - 0.7318D0)
                   SXSECTION2 = CVR2/VR*1e20
+                  ! BMAX should be changed if CVR2 is changed
+                  BMAX = DSQRT(SXSECTION2/PI)
 
                   IVHS = .false.
                 ELSE IF (IMF == 3) THEN
@@ -506,7 +509,7 @@ DO N=1,NCCELLS
               ! precalculate Reaction cross section before collision occur
               ! This is for the case when QCT-SSD/SSE is used
               ! Reaction cross sections might become larger than others
-              CALL CHECK_RXSECTION(RXSECTION,N,L,M,LS,MS,ECT,SXSECTION,IVDC,IDT)
+              CALL CHECK_RXSECTION(RXSECTION,N,L,M,LS,MS,ECT,SXSECTION,BMAX,BR,IVDC,IDT)
             END IF
 !
 
@@ -655,7 +658,7 @@ DO N=1,NCCELLS
                 IF (QCTMODEL .ne. 3) THEN
                   RXSECTION = 0.0d0
                   ! For non QCT model, the function is called here
-                  CALL CHECK_RXSECTION(RXSECTION,N,L,M,LS,MS,ECT,SXSECTION,IVDC,IDT)
+                  CALL CHECK_RXSECTION(RXSECTION,N,L,M,LS,MS,ECT,SXSECTION,BMAX,BR,IVDC,IDT)
                   ! for a chemical reaction K
                   ! IVDC(K) = 1:  LS = IREA(1,K), MS = IREA(2,K)
                   ! IVDC(K) = 2:  LS = IREA(2,K), MS = IREA(1,K)
@@ -1101,9 +1104,9 @@ DO N=1,NCCELLS
               ! The current implementation may not handle recombination well for EXP scattering
               IF (IVHS) THEN
                 IF (JX == 2) THEN
-                  CALL SCATTER_MOL(LS, MS, BMAX, ET0, VRI, VR, VRC, VRCP, IDT)
+                  CALL SCATTER_MOL(LS, MS, BMAX,BR, ET0, VRI, VR, VRC, VRCP, IDT)
                 ELSE
-                  CALL SCATTER_MOL(IREA(1,IKA), IREA(2,IKA), BMAX,ET0, VRI, VR, VRC, VRCP, IDT)
+                  CALL SCATTER_MOL(IREA(1,IKA), IREA(2,IKA), BMAX, BR,ET0, VRI, VR, VRC, VRCP, IDT)
                 END IF
               ELSE
                 VRCP = VRC

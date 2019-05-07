@@ -1,13 +1,16 @@
 !
 !*****************************************************************************
 !
-SUBROUTINE CALC_TOTXSEC(LS,MS,VR,VRR,ET0,EVIB,TOTXSEC,BMAX,CVR)
+SUBROUTINE CALC_TOTXSEC(LS,MS,VR,VRR,ET0,EVIB,IDT,TOTXSEC,BMAX,BR,CVR)
 !
 !--calculate the total cross sections, i.e. collision cross sections
 ! EVIB is the vibrational energy of N2 molecule for N2-O nonVHS model
+! IDT random number seed
 ! TOTXSEC in angstrom^2
 ! CVR,VR,VRR, EVIB in si
 ! ET0 in eV
+! BMAX maximum impact parameter
+! BR  (b/bmax)^2
 USE GAS, only : INONVHS, SPM
 USE CALC, only: BOLTZ, EVOLT, PI
 USE EXPCOL, only: EXPCOL_TOTXSEC
@@ -15,11 +18,11 @@ IMPLICIT NONE
 INTEGER,intent(in) :: LS,MS
 REAL(8),intent(in) :: VRR, EVIB, VR, ET0
 REAL(8) :: EVIBEV
-REAL(8),intent(out) ::TOTXSEC, CVR, BMAX
+REAL(8),intent(out) ::TOTXSEC, CVR, BMAX, BR
 REAL(8),PARAMETER :: CTOT(8) = (/46.039504155886434, 0.051004420857885, -0.584551057667247, &
                               &  -0.002969283806997, 0.281618756125794, 0.030181202283512, &
                               &  -0.436592532266083, 0.152224780739684/)
-INTEGER :: IERROR
+INTEGER :: IERROR,IDT
 
 ! ET = 0.5d0*SPM(1,LS,MS)*VRR/EVOLT  ! collisional energy in eV
 
@@ -36,5 +39,7 @@ ELSE
 END IF
 BMAX = DSQRT(TOTXSEC/PI)  !angstrom
 CVR = TOTXSEC/1.0d20*VR
+
+call ZGF(BR, IDT)
 
 END SUBROUTINE CALC_TOTXSEC
