@@ -18,8 +18,12 @@ END TYPE EXPparType
 TYPE(EXPparType),target :: EXPpar(14)
 INTEGER, ALLOCATABLE :: EXPCOLPair(:,:)
 
-INTEGER :: temp_int(5)
-real(8) :: temp_real(5)
+! variable shared between functions
+INTEGER :: temp_int(1)
+real(8) :: temp_real(4)
+real(8) :: brent_share(2)
+!$OMP THREADPRIVATE (temp_int,temp_real,brent_share)
+
 
 INTERFACE EXPCOL_POT
   module procedure EXPCOL_POT_IPAIR
@@ -249,7 +253,7 @@ contains
   function EXPCOL_DENOMS(r)
     implicit none
     real(8) :: r, EXPCOL_DENOMS
-    EXPCOL_DENOMS = 1.0d0 - temp_real(2)**2/r**2 - EXPCOL_POT(temp_int(1), r)/temp_real(1)
+    EXPCOL_DENOMS = 1.0d0 - brent_share(2)**2/r**2 - EXPCOL_POT(temp_int(1), r)/brent_share(1)
   end function EXPCOL_DENOMS
 
   function EXPCOL_SOLVERM(LS, MS, b, Et) result(RM)
@@ -258,8 +262,8 @@ contains
     real(8) :: b, Et, RM, lx, rx, tol=1.d-8, fa0, fb0
     real(8),external :: brent
     temp_int(1) = EXPCOLPair(LS, MS)
-    temp_real(1) = Et
-    temp_real(2) = b
+    brent_share(1) = Et
+    brent_share(2) = b
 
     lx = 1.0d0
     fa0 = EXPCOL_DENOMS(lx)
@@ -412,7 +416,7 @@ contains
     if (i == -1) then
       EXPCOL_RT = 1.0d0 - xout
     else
-      write(*, "(A)") "EXPCOL_RT fails for EC = ",EC, " RDOF=", RDOF
+      write(*, *) "EXPCOL_RT fails for EC = ",EC, " RDOF=", RDOF
       stop
     end if
   end function EXPCOL_RT
