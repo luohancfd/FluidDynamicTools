@@ -15,7 +15,7 @@ TYPE :: EXPparType
   REAL(8) :: collrate(3)
   ! sigma_Tref (A^2), Tref, beta
 END TYPE EXPparType
-TYPE(EXPparType),target :: EXPpar(13)
+TYPE(EXPparType),target :: EXPpar(14)
 INTEGER, ALLOCATABLE :: EXPCOLPair(:,:)
 
 INTEGER :: temp_int(5)
@@ -48,122 +48,133 @@ contains
 
     ! Xsec =totxsecpar(1)*exp(1-(Et/totxsecpar(2))^totxsecpar(3)) ! A^2
     ! Rate = sqrt(8*k*T/pi/mr)*collrate(1)*1e-20*(T/collrate(2))^collrate(3) !si
-    !N2-N2  SSE: 1.674089e-03
+    ! Chimin = 0.01
+    !N2-N2  SSE: 1.936326e-03
     EXPCOLPair(1,1) = 1
     INONVHS(1,1) = 2
     EXPpar(1)%sp1 = 1; EXPpar(1)%sp2 = 1
-    EXPpar(1)%alpha = 3.160000d+00
-    EXPpar(1)%A = 2.290000d+03
-    EXPpar(1)%totxsecpar = (/2.507358016232497d+02, 5.063345225872244d-06, 6.106254902258598d-02/)
-    EXPpar(1)%collrate = (/1.271457411427805d+02, 2.730000d+02, -1.276419988028019d-01/)
+    EXPpar(1)%alpha = 4.000000d+00
+    EXPpar(1)%A = 1.730000d+03
+    EXPpar(1)%totxsecpar = (/1.108965402524672d+02, 3.469289960850913d-05, 7.337481454465793d-02/)
+    EXPpar(1)%collrate = (/6.031917182736213d+01, 2.730000d+02, -1.539707435807606d-01/)
 
-    !N2-N  SSE: 1.809947e-03
+    !N2-N  SSE: 2.599187e-03
     EXPCOLPair(1,2) = 2; EXPCOLPair(2,1) = 2
     INONVHS(1,2) = 2; INONVHS(2,1) = 2
     EXPpar(2)%sp1 = 1; EXPpar(2)%sp2 = 2
     EXPpar(2)%alpha = 3.310000d+00
     EXPpar(2)%A = 6.200000d+02
-    EXPpar(2)%totxsecpar = (/2.041874969443462d+02, 6.584258603075655d-06, 6.483460208133425d-02/)
-    EXPpar(2)%collrate = (/1.014173134533129d+02, 2.730000d+02, -1.396703798073307d-01/)
+    EXPpar(2)%totxsecpar = (/1.476325832269978d+02, 3.702873573199604d-05, 7.715327784323149d-02/)
+    EXPpar(2)%collrate = (/7.829228722675090d+01, 2.730000d+02, -1.677368756104592d-01/)
 
-    !N2-O2  SSE: 1.884107e-03
+    !N2-O2  SSE: 1.513185e-03
     EXPCOLPair(1,3) = 3; EXPCOLPair(3,1) = 3
     INONVHS(1,3) = 2; INONVHS(3,1) = 2
     EXPpar(3)%sp1 = 1; EXPpar(3)%sp2 = 3
-    EXPpar(3)%alpha = 3.020000d+00
-    EXPpar(3)%A = 1.430000d+03
-    EXPpar(3)%totxsecpar = (/2.569702083027821d+02, 8.025301230901390d-06, 6.324566206685799d-02/)
-    EXPpar(3)%collrate = (/1.328010841984329d+02, 2.730000d+02, -1.317266718307649d-01/)
+    EXPpar(3)%alpha = 4.400000d+00
+    EXPpar(3)%A = 4.816000d+03
+    EXPpar(3)%totxsecpar = (/1.048620156743607d+02, 1.798354709647816d-05, 6.824167617837457d-02/)
+    EXPpar(3)%collrate = (/5.575141908211916d+01, 2.730000d+02, -1.423487922207107d-01/)
 
-    !N2-O  SSE: 8.126512e-04
+    !N2-O  SSE: 1.087655e-03
     EXPCOLPair(1,4) = 4; EXPCOLPair(4,1) = 4
     INONVHS(1,4) = 2; INONVHS(4,1) = 2
     EXPpar(4)%sp1 = 1; EXPpar(4)%sp2 = 4
     EXPpar(4)%alpha = 5.120000d+00
     EXPpar(4)%A = 1.135000d+04
-    EXPpar(4)%totxsecpar = (/1.189844871183966d+02, 8.979606905376216d-07, 5.436973638063227d-02/)
-    EXPpar(4)%collrate = (/5.642696893546214d+01, 2.730000d+02, -1.154919116834621d-01/)
+    EXPpar(4)%totxsecpar = (/9.096749726793419d+01, 4.869123716800271d-06, 6.262061005334335d-02/)
+    EXPpar(4)%collrate = (/4.502972355074449d+01, 2.730000d+02, -1.339051506497571d-01/)
 
-    !N2-NO  SSE: 1.305621e-03
+    !N2-NO  SSE: 1.786351e-03
     EXPCOLPair(1,5) = 5; EXPCOLPair(5,1) = 5
     INONVHS(1,5) = 2; INONVHS(5,1) = 2
     EXPpar(5)%sp1 = 1; EXPpar(5)%sp2 = 5
     EXPpar(5)%alpha = 3.610000d+00
     EXPpar(5)%A = 5.780000d+03
-    EXPpar(5)%totxsecpar = (/2.134520265014123d+02, 2.713413428398328d-06, 5.775123483594338d-02/)
-    EXPpar(5)%collrate = (/1.065667419343105d+02, 2.730000d+02, -1.203162289118382d-01/)
+    EXPpar(5)%totxsecpar = (/1.603035494740292d+02, 1.487516113109594d-05, 6.720251613387863d-02/)
+    EXPpar(5)%collrate = (/8.444141328736215d+01, 2.730000d+02, -1.404621966374895d-01/)
 
-    !N-O2  SSE: 1.141850e-03
-    EXPCOLPair(2,3) = 6; EXPCOLPair(3,2) = 6
+    !NO-N2  SSE: 1.786351e-03
+    EXPCOLPair(5,1) = 6; EXPCOLPair(1,5) = 6
+    INONVHS(5,1) = 2; INONVHS(1,5) = 2
+    EXPpar(6)%sp1 = 5; EXPpar(6)%sp2 = 1
+    EXPpar(6)%alpha = 3.610000d+00
+    EXPpar(6)%A = 5.780000d+03
+    EXPpar(6)%totxsecpar = (/1.603035494740292d+02, 1.487516113109594d-05, 6.720251613387863d-02/)
+    EXPpar(6)%collrate = (/8.444141328736215d+01, 2.730000d+02, -1.404621966374895d-01/)
+
+    !N-O2  SSE: 1.562436e-03
+    EXPCOLPair(2,3) = 7; EXPCOLPair(3,2) = 7
     INONVHS(2,3) = 2; INONVHS(3,2) = 2
-    EXPpar(6)%sp1 = 2; EXPpar(6)%sp2 = 3
-    EXPpar(6)%alpha = 4.130000d+00
-    EXPpar(6)%A = 3.870000d+03
-    EXPpar(6)%totxsecpar = (/1.630045411489098d+02, 1.830399541957495d-06, 5.776633336730437d-02/)
-    EXPpar(6)%collrate = (/7.835324391532143d+01, 2.730000d+02, -1.233829009260243d-01/)
+    EXPpar(7)%sp1 = 2; EXPpar(7)%sp2 = 3
+    EXPpar(7)%alpha = 4.130000d+00
+    EXPpar(7)%A = 3.870000d+03
+    EXPpar(7)%totxsecpar = (/1.224074399279982d+02, 1.003490054045850d-05, 6.722320553061110d-02/)
+    EXPpar(7)%collrate = (/6.181374535721175d+01, 2.730000d+02, -1.446790112112838d-01/)
 
-    !N-O  SSE: 1.849318e-03
-    EXPCOLPair(2,4) = 7; EXPCOLPair(4,2) = 7
+    !N-O  SSE: 2.686566e-03
+    EXPCOLPair(2,4) = 8; EXPCOLPair(4,2) = 8
     INONVHS(2,4) = 2; INONVHS(4,2) = 2
-    EXPpar(7)%sp1 = 2; EXPpar(7)%sp2 = 4
-    EXPpar(7)%alpha = 3.410000d+00
-    EXPpar(7)%A = 3.480000d+02
-    EXPpar(7)%totxsecpar = (/1.837102196761945d+02, 6.855802188600021d-06, 6.645367929011418d-02/)
-    EXPpar(7)%collrate = (/8.984493529798932d+01, 2.730000d+02, -1.457544969235835d-01/)
+    EXPpar(8)%sp1 = 2; EXPpar(8)%sp2 = 4
+    EXPpar(8)%alpha = 3.410000d+00
+    EXPpar(8)%A = 3.480000d+02
+    EXPpar(8)%totxsecpar = (/1.316637641550902d+02, 3.880240032574826d-05, 7.949989117481158d-02/)
+    EXPpar(8)%collrate = (/6.884919431939926d+01, 2.730000d+02, -1.766489982630202d-01/)
 
-    !N-NO  SSE: 1.073775e-03
-    EXPCOLPair(2,5) = 8; EXPCOLPair(5,2) = 8
+    !N-NO  SSE: 1.458033e-03
+    EXPCOLPair(2,5) = 9; EXPCOLPair(5,2) = 9
     INONVHS(2,5) = 2; INONVHS(5,2) = 2
-    EXPpar(8)%sp1 = 2; EXPpar(8)%sp2 = 5
-    EXPpar(8)%alpha = 4.210000d+00
-    EXPpar(8)%A = 5.333000d+03
-    EXPpar(8)%totxsecpar = (/1.630636708160226d+02, 1.396932444288509d-06, 5.659715076228259d-02/)
-    EXPpar(8)%collrate = (/7.775878439755058d+01, 2.730000d+02, -1.209190897726498d-01/)
+    EXPpar(9)%sp1 = 2; EXPpar(9)%sp2 = 5
+    EXPpar(9)%alpha = 4.210000d+00
+    EXPpar(9)%A = 5.333000d+03
+    EXPpar(9)%totxsecpar = (/1.232123873530758d+02, 7.628904920421630d-06, 6.562708422213186d-02/)
+    EXPpar(9)%collrate = (/6.156096900534855d+01, 2.730000d+02, -1.412881406811927d-01/)
 
-    !O2-O2  SSE: 2.182076e-03
-    EXPCOLPair(3,3) = 9
+    !O2-O2  SSE: 4.190829e-03
+    EXPCOLPair(3,3) = 10
     INONVHS(3,3) = 2
-    EXPpar(9)%sp1 = 3; EXPpar(9)%sp2 = 3
-    EXPpar(9)%alpha = 2.850000d+00
-    EXPpar(9)%A = 8.200000d+02
-    EXPpar(9)%totxsecpar = (/2.663120843169848d+02, 1.368006136046089d-05, 6.601000293969347d-02/)
-    EXPpar(9)%collrate = (/1.408549017303121d+02, 2.730000d+02, -1.369066052595328d-01/)
+    EXPpar(10)%sp1 = 3; EXPpar(10)%sp2 = 3
+    EXPpar(10)%alpha = 3.000000d+00
+    EXPpar(10)%A = 1.500000d+02
+    EXPpar(10)%totxsecpar = (/1.296542066319968d+02, 2.880019600775391d-04, 9.237037342416524d-02/)
+    EXPpar(10)%collrate = (/8.016374444239321d+01, 2.730000d+02, -1.915171136304186d-01/)
 
-    !O2-O  SSE: 8.730286e-04
-    EXPCOLPair(3,4) = 10; EXPCOLPair(4,3) = 10
+    !O2-O  SSE: 1.171944e-03
+    EXPCOLPair(3,4) = 11; EXPCOLPair(4,3) = 11
     INONVHS(3,4) = 2; INONVHS(4,3) = 2
-    EXPpar(10)%sp1 = 3; EXPpar(10)%sp2 = 4
-    EXPpar(10)%alpha = 4.850000d+00
-    EXPpar(10)%A = 1.025000d+04
-    EXPpar(10)%totxsecpar = (/1.304826660229918d+02, 1.048298471567289d-06, 5.483228200498218d-02/)
-    EXPpar(10)%collrate = (/6.229565363151878d+01, 2.730000d+02, -1.161953941888959d-01/)
+    EXPpar(11)%sp1 = 3; EXPpar(11)%sp2 = 4
+    EXPpar(11)%alpha = 4.850000d+00
+    EXPpar(11)%A = 1.025000d+04
+    EXPpar(11)%totxsecpar = (/9.951590682855550d+01, 5.692579541963022d-06, 6.324129325432543d-02/)
+    EXPpar(11)%collrate = (/4.966098086155651d+01, 2.730000d+02, -1.348555376875622d-01/)
 
-    !O2-NO  SSE: 1.214724e-03
-    EXPCOLPair(3,5) = 11; EXPCOLPair(5,3) = 11
+    !O2-NO  SSE: 1.654062e-03
+    EXPCOLPair(3,5) = 12; EXPCOLPair(5,3) = 12
     INONVHS(3,5) = 2; INONVHS(5,3) = 2
-    EXPpar(11)%sp1 = 3; EXPpar(11)%sp2 = 5
-    EXPpar(11)%alpha = 3.780000d+00
-    EXPpar(11)%A = 7.620000d+03
-    EXPpar(11)%totxsecpar = (/1.994013057735732d+02, 2.485868550623418d-06, 5.702576039816101d-02/)
-    EXPpar(11)%collrate = (/9.976306434042252d+01, 2.730000d+02, -1.182918288496699d-01/)
+    EXPpar(12)%sp1 = 3; EXPpar(12)%sp2 = 5
+    EXPpar(12)%alpha = 3.780000d+00
+    EXPpar(12)%A = 7.620000d+03
+    EXPpar(12)%totxsecpar = (/1.503281779683470d+02, 1.359491686241912d-05, 6.621074535037808d-02/)
+    EXPpar(12)%collrate = (/7.928364230886348d+01, 2.730000d+02, -1.376993946555516d-01/)
 
-    !O-NO  SSE: 1.236652e-03
-    EXPCOLPair(4,5) = 12; EXPCOLPair(5,4) = 12
+    !O-NO  SSE: 1.703327e-03
+    EXPCOLPair(4,5) = 13; EXPCOLPair(5,4) = 13
     INONVHS(4,5) = 2; INONVHS(5,4) = 2
-    EXPpar(12)%sp1 = 4; EXPpar(12)%sp2 = 5
-    EXPpar(12)%alpha = 3.950000d+00
-    EXPpar(12)%A = 3.140000d+03
-    EXPpar(12)%totxsecpar = (/1.725577515613599d+02, 2.405159933956255d-06, 5.875724771821587d-02/)
-    EXPpar(12)%collrate = (/8.393646414987728d+01, 2.730000d+02, -1.250446186579113d-01/)
+    EXPpar(13)%sp1 = 4; EXPpar(13)%sp2 = 5
+    EXPpar(13)%alpha = 3.950000d+00
+    EXPpar(13)%A = 3.140000d+03
+    EXPpar(13)%totxsecpar = (/1.289010496088486d+02, 1.323024590712660d-05, 6.858591898060508d-02/)
+    EXPpar(13)%collrate = (/6.606372768214798d+01, 2.730000d+02, -1.469800246259848d-01/)
 
-    !NO-NO  SSE: 1.650648e-03
-    EXPCOLPair(5,5) = 13
+    !NO-NO  SSE: 2.317134e-03
+    EXPCOLPair(5,5) = 14
     INONVHS(5,5) = 2
-    EXPpar(13)%sp1 = 5; EXPpar(13)%sp2 = 5
-    EXPpar(13)%alpha = 3.260000d+00
-    EXPpar(13)%A = 2.160000d+03
-    EXPpar(13)%totxsecpar = (/2.319680090497029d+02, 5.958044583750658d-06, 6.156689631938237d-02/)
-    EXPpar(13)%collrate = (/1.187751445857812d+02, 2.730000d+02, -1.281349445215118d-01/)
+    EXPpar(14)%sp1 = 5; EXPpar(14)%sp2 = 5
+    EXPpar(14)%alpha = 3.260000d+00
+    EXPpar(14)%A = 2.160000d+03
+    EXPpar(14)%totxsecpar = (/1.706993947811005d+02, 3.309947693741349d-05, 7.250087309058581d-02/)
+    EXPpar(14)%collrate = (/9.308534296406670d+01, 2.730000d+02, -1.512897172662553d-01/)
+
 
 
   end subroutine EXPCOL_INIT
