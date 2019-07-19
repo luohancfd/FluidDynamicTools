@@ -214,7 +214,7 @@ IF (ITYPE(2) == 1) THEN
   READ (4,*) IVB
   IF (IVB == 0) WRITE (3,*) ' The outer boundary is stationary'
   IF (IVB == 1) THEN
-    WRITE (3,*) ' The outer boundary moves with a constant speed'
+    WRITE (3,*) ' The outer boundary moves with a constant speed in +x direction'
     READ (4,*) VELOB
     WRITE (3,*) ' The speed of the outer boundary is',VELOB
   END IF
@@ -276,7 +276,6 @@ WRITE(3, *) ' noVHS = ',nonVHS
 IF (nonVHS == 3 .and. IRM .ne. 250 .and. IRM .ne. 150 .and. IRM .ne. 160 .and. IRM .ne. 0) THEN
   WRITE(3,*) ' nonVHS = 3 should be used with IRM == 250/150/160'
   WRITE(*,*) ' nonVHS = 3 should be used with IRM == 250/150/160'
-  STOP
 END IF
 
 !=== set model in DS1 head region
@@ -301,7 +300,6 @@ IF ( IMF .EQ. 0 ) IMFS = 0
 IF (nonVHS .ne. 0 .and. IMF == 0) THEN
   WRITE(*,*) ' nonVHS has only been tested with MF-DSMC model'
   WRITE(3,*) ' nonVHS has only been tested with MF-DSMC model'
-  STOP
 END IF
 
 IF (IMF .NE. 0) THEN

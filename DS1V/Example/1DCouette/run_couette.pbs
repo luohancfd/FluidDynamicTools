@@ -1,0 +1,133 @@
+#PBS -N Zr=1_1
+#PBS -l walltime=4:00:00
+#PBS -l nodes=1:ppn=20
+#PBS -q standby
+#PBS -m bea
+
+cd $PBS_O_WORKDIR
+nohup sleep 4h >  /dev/null 2>&1 &
+daemonpid=$!
+# 
+# syntax: ./run_ireac_ds1v.sh (no argument is needed)
+# comments: set ireac=2 in DS1_openmp.f90
+# Modify IRM in DS1VD.in before run
+# Modify LS+MS in code before run 
+# --------------------------------------------------------------
+# set machine (1 local run; 2 for job submission at carter)
+NMAC=1
+
+# set run parameters
+NPROC=5     #number of processors for one case
+MNPROC=20   #total number of processors
+# --------------------------------------------------------------
+# set run directories and running range
+RUN_DIR=`pwd`
+CASE=`basename ${RUN_DIR}`
+TEMPS=(3000 5000 7500 10000)
+NDENS=("2.4605e+20" "2.7698e+20" "3.0427e+20" "3.2526e+20")
+EXELOC=${RUN_DIR}/../build/DS1_openmp_reac
+POSTFIX="exp_frozen"
+NOUT=10
+NRESAMPLE=`echo "${NOUT}+6"|bc`
+# --------------------------------------------------------------
+module load intel
+for i in "${!TEMPS[@]}"; do
+  cd ${RUN_DIR}
+  TEMP=${TEMPS[$i]}
+  NDEN=${NDENS[$i]}
+
+  ii=$(printf "%03d" $i)
+
+  # create directory
+  CASE_DIR=${RUN_DIR}/"T="${TEMP}
+  mkdir -p ${CASE_DIR}
+  cd ${CASE_DIR}
+  EXE_NAME="DS1_T=${TEMP}_${POSTFIX}"
+  rm -f ${CASE_DIR}/${EXE_NAME}
+  ln -sf $EXELOC ${CASE_DIR}/${EXE_NAME}
+
+  # create input file
+  cat << EOF > ${CASE_DIR}/input_unsteady.txt
+3       !new run
+0       !seed
+0       !continue with current cells
+EOF
+
+  cat << EOF > ${CASE_DIR}/input_steady.txt
+2       !new sample
+14999    !seed ISF=0
+0       !no adaption
+EOF
+
+  cat << EOF > ${CASE_DIR}/DS1VD.in
+1       !version; 0d simulation - testing combustion reaction mechanisms
+22      !version
+20      !AMEG; AMEG*1e4/MOLSC gives the coarsest resolution, e.g., 1000*1e4/1e6=1 sampling cell
+0       !IFX: plane flow
+0.00    !XB(1)
+2       !ITYPE(1) solid surface
+1.0     !XB(2) 
+2       !ITYPE(2) solid surface
+0       !JCD, 0 TCE model
+8       !GASCODE
+0       !160     !IRM,0 no reactions;1 Sfull;2 Dfull;3 S15;4 S18;5 S27;6 S28;7 S31;8 D32;9 S10;10 S07;11 B05;12 G05 
+1       !IGS, 0 vacuum, 1 uniform stream, 2 given T and den distributions
+0       !ISEC, 0 no secondary stream, 1 secondary stream
+0.0     !XS, auxiliar interface
+${NDEN} !FND(1)
+${TEMP} !FTMP(1)
+${TEMP} !FRTMP(1)
+${TEMP} !FVTMP(1)
+0.0     !VFX(1)
+0.0     !VFY(1)
+0.0     !FSP(1,1) N2, species molar fractions
+0       !FSP(2,1) N
+1.0     !FSP(3,1) O2
+0.0     !FSP(4,1) O
+0       !FSP(5,1) OH
+0       !FSP(6,1) H2O
+0       !FSP(7,1) HO2
+0       !FSP(8,1) Ar
+${TEMP} !TSURF(1)
+0.0     !FSPEC(1)
+0.0     !VSURF(1)
+${TEMP} !TSURF(2)
+0.0     !FSPEC(2)
+300     !VSURF(2)
+500     !MOLSC; MOLSC/NICS/DCRIT=average #molecs per collision cell (DCRIT>1 for IADAPT=2)
+20      !NCIS; #collision cells per sampling cell
+0.1     !max MCT fraction; it can be changed in output subroutine
+0.2     !max MTT fraction
+0       !0 random coll partner, 1 nearest-neighbor selection
+1       !IMTS, 0 uniform move time step, 1 move time step can vary
+5       !time steps per sample
+5000    !samples per output; it can be changed in output subroutine
+2       !ISF, 0 steady, 1 unsteady flow (interval sampling), 2 unsteady flow (10 time step sampling)
+0.2     !unsteady output sampling fraction (e.g., 0.5,0.25,0.2,0.1,0.05,0.025,0.02...; used only if IUPBC>0)
+0       !IRECOM, 0 no recombinations, 1 with recombinations
+0       !IFI, forced ignition allowed 0 not allowed, 1 allowed
+2       !nonVHS
+0       !IMF, =0 for Macheret-Fridman MC model = 1 for MFP model
+EOF
+
+  if [ -f $CASE_DIR/"RESTART.DAT" ]; then
+    echo "continue"
+    cd ${CASE_DIR} && OMP_NUM_THREADS=$NPROC nohup ./${EXE_NAME} < input_steady.txt > log_steady.txt 2>&1 &
+    PID=$!
+    echo "T=${TEMP} Continue Run PID=${PID}   $(date)" >> ${RUN_DIR}/log.txt
+  else
+    echo "new"
+    cd ${CASE_DIR}
+    OMP_NUM_THREADS=$NPROC nohup ./${EXE_NAME} < input_unsteady.txt > log_unsteady.txt 2>&1 &
+    PID=$!
+    echo "T=${TEMP} New      Run PID=${PID}   $(date)" >> ${RUN_DIR}/log.txt
+
+    if [ $NRESAMPLE -gt 6 ]; then
+      TORUN="cd ${CASE_DIR} && OMP_NUM_THREADS=$NPROC nohup ./${EXE_NAME} < input_steady.txt > log_steady.txt 2>&1 &"
+      nohup ${RUN_DIR}/resample.sh ${CASE_DIR}/RunningTime.DAT ${PID} $NRESAMPLE "${TORUN}" ${RUN_DIR}/log.txt > ${CASE_DIR}/wait.log 2>&1 &
+    fi
+  fi
+  cd ${RUN_DIR}
+done
+
+wait $daemonpid

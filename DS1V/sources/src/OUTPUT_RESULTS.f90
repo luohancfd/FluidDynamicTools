@@ -21,7 +21,7 @@ INTEGER(KIND=8) :: NNN
 REAL(KIND=8) :: AA,BB,BB2,CC,AS,AT,AU,AQ  !--isebasti: included RANF,GAM
 REAL(KIND=8) :: A,B,C,C2,D,SDTM,SMCR,DOF,AVW,UU,VDOFM,TVIBM,DTMI,TT,EVIBT,RANF,F(MMVM,0:100,MSP),TVPDF(MMVM,MSP)  !--isebasti: included RANF,F,TVPDF
 REAL(KIND=8) :: VPF(MMVM,MSP),EQROT(MSP,100),EQVIBVT(MMVM,MSP,0:100),EQVIBOT(MMVM,MSP,0:100)  !--isebsati: included
-REAL(KIND=8) :: DSUM(0:12),SUMS(0:8,2),TV(MMVM,MSP),TVIB(MSP),DF(NCELLS,MMVM,MSP),VDOF(MSP),PPA(MSP),&
+REAL(KIND=8) :: DSUM(0:14),SUMS(0:8,2),TV(MMVM,MSP),TVIB(MSP),DF(NCELLS,MMVM,MSP),VDOF(MSP),PPA(MSP),&
                 THCOL(MSP,MSP),PSNAP(1,NSNAP),VSNAP(3,NSNAP),SDOF(MSP),SRR(MNRE),EVIB,QVIBVT,QVIBOT,COEF(0:9),ROOTF
 INTEGER,PARAMETER :: PQKIND = SELECTED_REAL_KIND(8)
 REAL(KIND=PQKIND) :: AQUAD
@@ -45,6 +45,8 @@ REAL(8),EXTERNAL :: ERF,gamain,GAM
 !--DSUM(10) the weighted sum over species of m*<u**2>
 !--DSUM(11) the weighted sum over species of m*<v**2>
 !--DSUM(12) sum over species of m*<w**2>
+!--DSUM(13) the weighted sum over species of m*u*v
+!--DSUM(14) the weighted sum over species of m*(u^2+v^2+w^2)*u
 !--UU velocity squared
 !--DOF degrees of freedom
 !--AVW the average value of the viscosity-temperature exponent
@@ -77,9 +79,9 @@ WRITE (*,*) 'ISF,FTIME,Number of samples',ISF,FTIME,NSAMP
 VARSP=0.D00
 IF (IFX == 0) A=FNUM/(FTIME-TISAMP)   !--flow X-section area = unity for 1-D flow
 DO JJ=1,2
-IF (IFX == 1) A=FNUM/(2.D00*PI*XB(JJ)*(FTIME-TISAMP))
-IF (IFX == 2) A=FNUM/(4.D00*PI*XB(JJ)*XB(JJ)*(FTIME-TISAMP))
-!--JJ=1 for surface at XB(1), JJ=2 for surface at XB(2)
+  IF (IFX == 1) A=FNUM/(2.D00*PI*XB(JJ)*(FTIME-TISAMP))
+  IF (IFX == 2) A=FNUM/(4.D00*PI*XB(JJ)*XB(JJ)*(FTIME-TISAMP))
+  !--JJ=1 for surface at XB(1), JJ=2 for surface at XB(2)
   IF (ITYPE(JJ) == 2) THEN
     SUMS=0.D00
     DO L=1,MSP
@@ -171,14 +173,17 @@ DO N=1,NCELLS
         END IF
       END DO
       DSUM(6)=DSUM(6)+SP(5,L)*(CS(5,N,L)+CS(6,N,L)+CS(7,N,L))
-      DSUM(10)=DSUM(10)+SP(5,L)*CS(5,N,L)
-      DSUM(11)=DSUM(11)+SP(5,L)*CS(6,N,L)
-      DSUM(12)=DSUM(12)+SP(5,L)*CS(7,N,L)
       DSUM(7)=DSUM(7)+CS(5,N,L)+CS(6,N,L)+CS(7,N,L)
       IF (ISPR(1,L) > 0) THEN
         DSUM(8)=DSUM(8)+CS(8,N,L)
         DSUM(9)=DSUM(9)+CS(1,N,L)*ISPR(1,L)
       END IF
+      DSUM(10)=DSUM(10)+SP(5,L)*CS(5,N,L)
+      DSUM(11)=DSUM(11)+SP(5,L)*CS(6,N,L)
+      DSUM(12)=DSUM(12)+SP(5,L)*CS(7,N,L)
+
+      DSUM(13)=DSUM(13)+SP(5,L)*CSH(1,N,L)
+      DSUM(14)=DSUM(14)+SP(5,L)*CSH(2,N,L)
     END IF
   END DO
   AVW=0.
@@ -217,8 +222,28 @@ DO N=1,NCELLS
     VAR(6,N)=DSUM(4)/DSUM(2)    !--v velocity component
     VAR(7,N)=DSUM(5)/DSUM(2)    !--w velocity component
     UU= VAR(5,N)**2+VAR(6,N)**2+VAR(7,N)**2
+
+    VAR(22,N)=-A*DSUM(13)  ! shear tau_xy Eqn(1.52)
+    ! for 1D case u*v should be zero, i.e. no motion in one direction
+    ! Full expression:
+    !VAR(22,N)=-A*(DSUM(13) - DSUM(2)*VAR(5,N)*VAR(4,N))
+    ! tau = - n(\bar{muv} - \bar{m} u0*v0)
+
+    VAR(23,N)= A*(0.5d0*DSUM(14) - 0.5d0*VAR(5,N)*DSUM(6) &
+                  & - VAR(5,N)*DSUM(10) - VAR(6,N)*DSUM(13) &
+                  & + VAR(5,N)**3*DSUM(2))
+    ! VAR(23,N)= A*(0.5d0*DSUM(14) - 0.5d0*VAR(5,N)*DSUM(6) &
+    !              & - VAR(5,N)*DSUM(10) - VAR(6,N)*DSUM(13) &
+    !              & + VAR(5,N)**3*DSUM(2) + VAR(5,N)*VAR(6,N)**2*DSUM(2))
+    ! Tensor notation
+    ! Denote operator Z as the summation over all molecule,
+    ! V_j = Z(m v_j) / Z(m)
+    ! q_i = A * Z( 1/2 * m (v_j-V_j)*(v_j-V_j)*(v_i - V_i))
+    !     = A * { 1/2*Z(m*v_i*v_j*v_j) - 1/2*V_i*Z(m*v_j*v_j) - V_j*Z(m*v_i*v_j) + V_i*V_j*V_j*Z(m)
+    ! For 1D case, W_0 = 0
+    ! For Couette flow, VAR(5,N) = 0, then you can get Eqn 12.14 in Bird's book
     IF (DSUM(1) > 1) THEN
-      VAR(8,N)=(ABS(DSUM(6)-DSUM(2)*UU))/(3.D00*BOLTZ*DSUM(1))  !Eqn. (4.39)
+      VAR(8,N)=(ABS(DSUM(6)-DSUM(2)*UU))/(3.D00*BOLTZ*DSUM(1))  !Eqn. (1.51)
 !--translational temperature
       VAR(19,N)=(ABS(DSUM(10)-DSUM(2)*VAR(5,N)**2))/(BOLTZ*DSUM(1))
       VAR(20,N)=(ABS(DSUM(11)-DSUM(2)*VAR(6,N)**2))/(BOLTZ*DSUM(1))
@@ -326,6 +351,11 @@ DO N=1,NCELLS
       DO L=1,MSP
         SDOF(L)=3.D00+ISPR(1,L)+VDOF(L)
         VARSP(8,N,L)=(3.*VARSP(5,N,L)+ISPR(1,L)*VARSP(6,N,L)+VDOF(L)*VARSP(7,N,L))/SDOF(L)  !species overall T
+        ! Not verified yet
+        IF (VARSP(0,N,L) > 0.5) THEN
+          VARSP(12,N,L)= (CSH(3,N,L) - CS(8,N,L)*VAR(5,N))*FNUM/(CELL(4,N)*NSAMP)
+          VARSP(13,N,L)= (CSH(5,N,L) - CS(4,N,L)*VAR(5,N))*FNUM/(CELL(4,N)*NSAMP)
+        END IF
       END DO
       A=0.D00
       B=0.D00
@@ -830,14 +860,23 @@ WRITE (3,994) '# X-coord.     Cell   Sample     Number Dens.   Density   u veloc
             &  v velocity   w velocity   Trans. Temp.   Rot. Temp.   Vib. Temp. &
             &  Temperature  Mach no.     Mols/cell    m.c.t        m.f.p     &
             &  mcs/mfp        speed      Pressure        TTX          TTY          TTZ     &
+            &  Tau_xy      Qx &
             &  dtm/mct     <dx/mfp>      Fx          Fy            Fz         Qtransfer &
             &  Species Fractions'
+WRITE (3,994,advance='no') 'VARIABLES = "x(m)","ID","NSample","n","rho","u","v","w",&
+            & "Tt","Tr","Tv","T","Ma","#Mol/Cell","mct","mfp","mcs/mfp","Speed","p=nkT",&
+            & "Ttx","Tty","Ttz","Tau_xy","Qx","dtm/mct","dx/mfp","Fx","Fy","Fz","Qtransfer",'
+DO N=1,MSP-1
+  WRITE(3,"(A3,I2,A2)",advance='no') '"Sp',N,'",'
+END DO
+WRITE(3,"(A3,I2,A1)") '"Sp',MSP,'"'
+
 WRITE (3,994) TRIM(TNAME)
 WRITE (3,994) 'SOLUTIONTIME =',FTIME
 WRITE (3,992) 'STRANDID = ',QCTMODEL
 !
 DO N=1,NCELLS
-  WRITE (3,996) VAR(1,N),N,VAR(2:21,N),DTM/VAR(14,N),(CELL(3,N)-CELL(2,N))/DFLOAT(NCIS)/VAR(15,N),&
+  WRITE (3,996) VAR(1,N),N,VAR(2:23,N),DTM/VAR(14,N),(CELL(3,N)-CELL(2,N))/DFLOAT(NCIS)/VAR(15,N),&
                 CST(1:4,N)/CST(0,N),VARSP(1,N,1:MSP)
 END DO
 CLOSE(3)
@@ -854,9 +893,9 @@ DO L=1,MSP
   WRITE (3,994) '# NCELLS:', NCELLS
   WRITE (3,994) '# NSAMP: ', NSAMP
   WRITE (3,994) '# X-coord.     Cell   Sample    Fraction     Species TTx   Species TTy  Species TTz &
-             & Trans. Temp.  Rot. Temp.   Vib. Temp.   Spec. Temp  u Diff Vel   v Diff Vel   w Diff Vel.'
+             & Trans. Temp.  Rot. Temp.   Vib. Temp.   Spec. Temp  u Diff Vel   v Diff Vel   w Diff Vel. Q_rot_x  Q_vib_x'
   DO N=1,NCELLS
-    WRITE (3,996) VAR(1,N),N,VARSP(0,N,L),VARSP(1,N,L),VARSP(2:11,N,L)
+    WRITE (3,996) VAR(1,N),N,VARSP(0,N,L),VARSP(1,N,L),VARSP(2:13,N,L)
   END DO
 CLOSE(3)
 END DO
@@ -1238,9 +1277,9 @@ WRITE (*,*) 'DTM changes  from',DTMI,' to',DTM
 !
 TPOUT=OUTRAT
 IF (ISF > 0) THEN
-  IF ((NOUT >= 0  ).AND.(NOUT < 100)) TPOUT=OUTRAT*.1d0
-  IF ((NOUT >= 0  ).AND.(NOUT < 100)) TPOUT=OUTRAT*.1d0
-  IF ((NOUT >= 100).AND.(NOUT < 150)) TPOUT=OUTRAT*.2d0
+ IF ((NOUT >= 0  ).AND.(NOUT < 100)) TPOUT=OUTRAT*.1d0
+ IF ((NOUT >= 0  ).AND.(NOUT < 100)) TPOUT=OUTRAT*.1d0
+ IF ((NOUT >= 100).AND.(NOUT < 150)) TPOUT=OUTRAT*.2d0
 !  IF ((NOUT >= 150).AND.(NOUT < 170)) TPOUT=OUTRAT*.5d0
 !  IF ((NOUT >= 200)) TPOUT=OUTRAT*INT(.9999999+(NOUT-190)/10) !comment for RELAX.DAT
 !
@@ -1256,7 +1295,7 @@ IF (ISF > 0) THEN
 END IF
 !
 IF (ISF==0) THEN !special coding for shockwave sampling
-  TPOUT=OUTRAT*2.d0
+ TPOUT=OUTRAT*2.d0
 END IF
 !
 IF (MNRE > 0) THEN

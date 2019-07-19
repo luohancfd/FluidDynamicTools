@@ -15,7 +15,7 @@ INTEGER(8), ALLOCATABLE :: NDROT(:,:),NDVIB(:,:,:,:),NSVEC(:)
 REAL(KIND=8):: TISAMP,XVELS,YVELS,AVDTM,DBINV(3),DBINC(3),DBINE(3),ENERS,ENERS0 !--isebasti: DBINV,C,ENERS,ENERS0 included
 REAL(KIND=8), ALLOCATABLE, DIMENSION(:) :: COLLS,WCOLLS,CLSEP,REAC,SREAC
 REAL(KIND=8), ALLOCATABLE, DIMENSION(:,:) :: VAR,VARS,CSSS,CST,PDF,BIN !--isebasti:CST,PDF,BIN included
-REAL(KIND=8), ALLOCATABLE, DIMENSION(:,:,:) :: CS,VARSP,PDFS,BINS !--isebasti:PDFS,BINS included
+REAL(KIND=8), ALLOCATABLE, DIMENSION(:,:,:) :: CS,CSH,VARSP,PDFS,BINS !--isebasti:PDFS,BINS included !--han: high order momentum of velocity and energy
 REAL(KIND=8), ALLOCATABLE, DIMENSION(:,:,:,:) :: CSS
 REAL(KIND=8), ALLOCATABLE, DIMENSION(:) :: EVREM
 !
@@ -35,6 +35,15 @@ REAL(KIND=8), ALLOCATABLE, DIMENSION(:) :: EVREM
 !--CS(8,N,L) sampled sum of rotational energy of species L in cell N
 !--CS(8+K,N,L) sampled sum of vibrational energy of
 !              species L in cell N for mode K
+!
+!--CSH: high order momentums
+!--CSH(1,N,L) sampled sum of u*v, similar to compute/pflux in SPARTA
+!--CSH(2,N,L) sampled sum of (u^2+v^2+w^2)*u, similar to compute/eflux in SPARTA
+!--CSH(3,N,L) sampled sum of E_rot*u
+!--CSH(4,N,L) similar to CS(8+K,N,L) but not distinguish between vibrational level
+!--CSH(5,N,L) sampled sum of E_v*u, vibrational energy is summed over all mode
+!
+!
 !
 !--in CSS, M=1 for incident molecules and M=2 for reflected molecules
 !--J=1 for surface at x=XB(1), 2 for surface at x=XB(2)
@@ -83,6 +92,8 @@ REAL(KIND=8), ALLOCATABLE, DIMENSION(:) :: EVREM
 !--M=19 x component of translational temperature TTX
 !--M=20 y component of translational temperature TTY
 !--M=21 z component of translational temperature TTZ
+!--M=22 shear stress tau_xy
+!--M=23 heat flux q_x
 !
 !--VARSP(M,N,L) the flowfield properties for species L in cell N
 !--M=0 the sample size
@@ -97,6 +108,9 @@ REAL(KIND=8), ALLOCATABLE, DIMENSION(:) :: EVREM
 !--M=9 the x component of the diffusion velocity
 !--M=10 the y component of the diffusion velocity
 !--M=11 the z component of the diffusion velocity
+!--M=12 flux of rotational energy q_rot_x
+!--M=13 flux of vibrational energy q_vib_x
+
 !
 !--VARS(N,M) surface property N on interval L of surface M
 !

@@ -28,8 +28,9 @@ TREVEX=0.D00  !--isebasti: uncommented
 TREACG=0
 TREACL=0
 TNEX=0.D00    !--isebasti: uncommented
+
 !
- CS=0. ; CSS=0. ; CSSS=0. ; CST=0.d0; BINS=0.d0; BIN=0.d0 !--isebasti: CST,BINS,BIN included
+ CS=0. ; CSH=0.; CSS=0. ; CSSS=0. ; CST=0.d0; BINS=0.d0; BIN=0.d0 !--isebasti: CST,BINS,BIN included
  CST(0,:)=1.d0; BINS(0,:,:)=1.d0; BIN(0,:)=1.d0           !--isebasti: to avoid dividing by zero
 ! Han: I don't think the following line makes sense
 ! CCELL(4,:)=SQRT(2.D00*BOLTZ*VAR(8,:)/SP(5,3))*SPM(2,3,3) !--isebasti: included

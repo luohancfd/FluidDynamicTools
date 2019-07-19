@@ -1,7 +1,11 @@
+# Introduction to shitty DS1V code
+
 ## Note
 1. If the code crashes and throws error "Segmentation Fault", it is likely due to the overflow of stack. You may need to set `export OMP_STACKSIZE=256M` or even larger
 
-## 0DRate calculation
+
+## Examples
+### 0DRate calculation
 
 1. Set the following flags
     - IREAC = 2
@@ -9,7 +13,7 @@
     - IMFS = 1 if you use MF-DSMC model
 2. Create `DS1VD.in` and `input.txt` like the ones in folder `Example/0DRate`. Remember to change `IRM` to match the reaction you want as well as the appropriate mole fraction of the species
 
-## 0DRelax calculation
+### 0DRelax calculation
 1. Set the following flags
     - IREAC = 0
     - IRELAX = 0
@@ -17,7 +21,7 @@
 3. Track `RELAX.TXT`, it should contain information needed
 
 
-## 1D Shock
+### 1D Shock
 1. Set the following flags
     - IREAC = 0
     - IRELAX = 1
@@ -33,8 +37,19 @@
     4. Sample shock:
         - Now, use `DS1_openmp_reac_sample.f90`, modify the `NSCELLS` and `NSVELS` at the beginning of the code to match your input for previous run. And sample the shock.
 
+### 1D Couette follow without chemical reaction
+1. Set the following flags
+    - IRELAX = 1, set Zr and Zv based on your need
+    - IREAC = 0 with IRM = 0 (no reaction)
+    - QCTMODEL = 2, regular LB+AHO, keep it simple
+    - appropriate values of AMEG, MOLSC and NCIS to have sample cell along the domain
+2. Run multiple cases with script `run_couette.pbs` and `resample.sh` or do it manually. What you need to do is first to run an unsteady case, until you get a good linear profile of velocity. Then you run the steady case (use `NSEED > 9999` to make `ISF=0`) to sample the properties you need.
 
 ## Special tags
 - MF-DSMC-Correct: correct of `VHS` and `ZV` for MF-DSMC model
 - trick: trick Israel made
 - WARNING: something you should be careful with
+
+## Change log
+
+- July 25th 2019: A new variables `CSH` is added to `READ/WRITE_RESTART`. The size of variables `VARSP` and `VAR` is changed. `NSEED > 9999` will make `ISF=0`. These three things may cause incompatibility with old version.

@@ -135,24 +135,22 @@ contains
     EXPpar(9)%collrate = (/6.156096900534855d+01, 2.730000d+02, -1.412881406811927d-01/)
 
     !O2-O2  SSE: 4.190829e-03
-    EXPCOLPair(3,3) = 10
-    INONVHS(3,3) = 2
-    EXPpar(10)%sp1 = 3; EXPpar(10)%sp2 = 3
-    EXPpar(10)%alpha = 3.000000d+00
-    EXPpar(10)%A = 1.500000d+02
-    EXPpar(10)%totxsecpar = (/1.296542066319968d+02, 2.880019600775391d-04, 9.237037342416524d-02/)
-    EXPpar(10)%collrate = (/8.016374444239321d+01, 2.730000d+02, -1.915171136304186d-01/)
-
-    ! Captelli value for O2+O2
-    ! VHS parameter for O2+O2 is fitted based on this
     ! EXPCOLPair(3,3) = 10
     ! INONVHS(3,3) = 2
     ! EXPpar(10)%sp1 = 3; EXPpar(10)%sp2 = 3
-    ! EXPpar(10)%alpha = 2.85d0
-    ! EXPpar(10)%A = 0.0820d4
-    ! EXPpar(10)%totxsecpar = (/2.040690e+02, 3.666459e-05, 7.614405e-02/)
-    ! EXPpar(10)%collrate = (/1.091147939692464d+02, 2.730000d+02, -1.637434586223646d-01/)
-    
+    ! EXPpar(10)%alpha = 3.000000d+00
+    ! EXPpar(10)%A = 1.500000d+02
+    ! EXPpar(10)%totxsecpar = (/1.296542066319968d+02, 2.880019600775391d-04, 9.237037342416524d-02/)
+    ! EXPpar(10)%collrate = (/8.016374444239321d+01, 2.730000d+02, -1.915171136304186d-01/)
+
+    ! Captelli value    
+    EXPCOLPair(3,3) = 10
+    INONVHS(3,3) = 2
+    EXPpar(10)%sp1 = 3; EXPpar(10)%sp2 = 3
+    EXPpar(10)%alpha = 2.85d0
+    EXPpar(10)%A = 0.0820d4
+    EXPpar(10)%totxsecpar = (/2.040690e+02, 3.666459e-05, 7.614405e-02/)
+    EXPpar(10)%collrate = (/1.091147939692464d+02, 2.730000d+02, -1.637434586223646d-01/)
 
     !O2-O  SSE: 1.171944e-03
     EXPCOLPair(3,4) = 11; EXPCOLPair(4,3) = 11

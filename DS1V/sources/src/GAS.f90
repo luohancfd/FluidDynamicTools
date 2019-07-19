@@ -171,4 +171,5 @@ LOGICAL, ALLOCATABLE, DIMENSION(:,:) :: IQCTVT(:,:)
 !                2: Collision model based on exponential potential
 !--IQCTVT(L,M): .false.  ME-QCT-VT model doesn't exist
 !               .true.   ME-QCT-VT model exists
+!--IVFP   0 set y velocity based on VFY, 1 set a Couette Flow type profile
 END MODULE GAS
