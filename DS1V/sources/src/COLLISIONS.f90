@@ -893,6 +893,8 @@ DO N=1,NCCELLS
                                 END IF
                               END IF
                               IF (IREAC<=1) THEN
+                                ! When IREAC = 2, we usually want to turn off VT relaxation
+                                ! This is achieved by setting a large Zv in OXYGEN_NITROGEN subroutine
 !VAR(8,NN)=0.154*SPVM(1,KV,KS)
 !do II=0,20
 !VAR(10,NN)=3.5d0*SPVM(1,KV,KS)*DFLOAT(ii)/20.d0
@@ -919,19 +921,19 @@ DO N=1,NCCELLS
                                 ! O2-O  omega = 0.75, dref=3.442
                                 ! IF ((LS==3.AND.MS==4).OR.(LS==4.AND.MS==3)) THEN
                                 !   !calibrated with O2-O MeQct model
-                                !   IF (VAR(8,NN)<= 1.d3) ZV=C*(60.01d0+0.04268d0*VAR(8,NN)-2.29d-5*VAR(8,NN)**2.d0)
-                                !   IF (VAR(8,NN) > 1.d3) ZV=C*DEXP(-0.1372d0*DLOG(VAR(8,NN))+5.328d0)
+                                !   IF (VAR(8,NN)<= 1.d3) ZV=(60.01d0+0.04268d0*VAR(8,NN)-2.29d-5*VAR(8,NN)**2.d0)
+                                !   IF (VAR(8,NN) > 1.d3) ZV=DEXP(-0.1372d0*DLOG(VAR(8,NN))+5.328d0)
                                 ! END IF
                                 ! IF (LS==3.AND.MS==3) THEN
                                 !   !calibrated with O2-O2 ibraguimova2013 data
                                 !   A=VAR(8,NN)**(-1.d0/3.d0)                          !T^(-1/3)
                                 !   B=7.206d0-289.4d0*A+4919.d0*A**2.d0-2.23d4*A**3.d0 !log10(Zv)
-                                !   ZV=C*10.d0**B
+                                !   ZV=10.d0**B
                                 ! END IF
 
                                 ! ============ Han's correction ===========================
-                                ! MF-DSMC-Correct by Han Luo
-                                IF (LS==3 .and. MS==3 .and. IMF .ne. 0) THEN
+                                ! O2-O2 for  MF-DSMC, Calculated by Han Luo used in 2019 POF, PRF paper
+                                IF (LS==3 .and. MS==3 .and. IMF .ne. 0 .and. nonVHS .ne. 2) THEN
                                   IF ( IMF == 1) THEN
                                     ! MF-DSMC-SHO model, the following tries to match Ibraguimova 2013's VT relaxation time
                                     ! should be used with corrected total cross sections, check around L 11187
@@ -950,8 +952,22 @@ DO N=1,NCCELLS
                                     B=1.767075d5*A**4 - 6.347191d4*A**3 + 8.422653d3*A**2 - 4.179710d2*A + 8.891025d0
                                     ZV = 10.0d0**B
                                   END IF
-                                  ZV=C*ZV
                                 END IF
+                                ! O2-O2 for Exponential potential, Captelli's parameters in 10.2514/2.6517
+                                ! Calculated by Han Luo to reproduce Ibraugimova's measurement
+                                IF (LS == 3 .and. MS == 3 .and. nonVHS == 2) THEN
+                                  A=VAR(8,NN)**(-1.d0/3.d0)
+                                  IF (VAR(8,NN) .ge. 6.0d3) THEN
+                                    B=-2.732516d+04*A**3+5.846735d+03*A**2-3.442621d+02*A**1+8.626600d+00
+                                    ZV = 10.0d0**(B)
+                                  ELSE
+                                    ZV = 1.084575d-02*DEXP(179.2681d0*A)/(1.0D0-DEXP(-2238.D0/VAR(8,NN)))
+                                  END IF
+                                END IF
+                                ZV=C*ZV
+                              END IF
+                              IF (IRELAX_VIB .ne. 1) THEN
+                                ZV = 1.0d20
                               END IF
                               CALL ZGF(RANF,IDT)
                               IF ((1.D00/ZV > RANF).OR.(IKA /= 0)) THEN
@@ -1063,6 +1079,9 @@ DO N=1,NCCELLS
                       A=5.d0-2.d0*SPM(3,KS,LS)
                       C=A/(A+ISPR(1,KS)+ISPR(1,JS)) !Zr correction
                       A=B*C                         !Corrected Zr
+                      IF (IRELAX_ROT .ne. 1) THEN
+                        A = 1.0d20
+                      END IF
                       CALL ZGF(RANF,IDT)
                       IF ((1.d0/A > RANF).OR.(IKA /= 0)) THEN
                         ! we don't distinguish for the value of IKA because PROT is REALLY zero

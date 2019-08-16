@@ -15,7 +15,7 @@ REAL(KIND=8) :: FREM,XREM,FTIME,TLIM,PI,SPI,DPI,BOLTZ,FNUM,DTM,TREF,TSAMP,TOUT,A
 REAL(KIND=8), ALLOCATABLE, DIMENSION(:) :: VNMAX
 REAL(KIND=8), ALLOCATABLE, DIMENSION(:,:) :: TCOL,CSCR
 INTEGER, ALLOCATABLE, DIMENSION(:) :: ISEED     !--isebasti: included
-INTEGER :: nonVHS  !--han add
+INTEGER :: nonVHS,IRELAX_ROT,IRELAX_VIB  !--han add
 !
 !--NVER.MVER the version number
 !--AMEG the initial number of megabytes to be used by the program
@@ -63,5 +63,5 @@ INTEGER :: nonVHS  !--han add
 !          1 for VHS/VSS model+QCT N2O model
 !          2 exponential model, fallback to 0 if parameters not found
 !          3 special fix for MF-DSMC O2/O case
-!
+!--IRELAX_VIB, IRELAX_ROT: global control of Zr and Zv
 END MODULE CALC

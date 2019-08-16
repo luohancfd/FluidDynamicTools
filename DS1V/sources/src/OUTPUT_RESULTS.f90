@@ -391,7 +391,11 @@ DO N=1,NCELLS
 !
   IF(N == NSPDF) THEN
     TVPDF(:,:)=TV(:,:)                        !store TV for the cell with pdf sampling
-    A=2.*PCOLLS*DFLOAT(NSAMP)/DSUM(1)         !mean collision times
+    IF (DSUM(1) > 0.5d0 )THEN
+      A = 2.*PCOLLS*DFLOAT(NSAMP)/DSUM(1)         !mean collision times
+    ELSE
+      A = 0.0d0
+    END IF
     MCT=A                                     !integer value
 !
     IF(VARSP(1,N,1) > VARSP(1,N,3)) THEN
@@ -409,13 +413,26 @@ DO N=1,NCELLS
     END DO
     EVIBT=(B/QVIBVT)/EVOLT                     !equilibrium vibrational temperature based Tt (ev)
 !
-    B=1.d0/(VAR(3,N)*VARSP(1,N,4)*CSCR(L,4)/TCOL(L,4)) !mct between collisions of one particular L molecule with any O
-    C=1.d0/(VAR(3,N)*VARSP(1,N,L)*CSCR(L,L)/TCOL(L,L)) !mct between collisions of one particular L molecule with any L
-!
     OPEN (7,FILE='RELAX.DAT',ACCESS='APPEND') !write temperature relaxation
-    WRITE (7,993) FTIME,VAR(8:11,N),VAR(18,N),DSUM(9)/DSUM(1),VDOFM,NM,A,&
-                  DABS(0.5*(VAR(8,N)+VAR(9,N))-VAR(10,N)),DABS(VAR(8,N)-VAR(9,N)),DABS(VAR(8,N)-VAR(10,N)),&
-                  (TV(:,L),L=1,MSP),EVIB,EVIBT,VAR(14,N),B,C
+    IF (VARSP(1,N,4)>0.0d0) THEN
+      B = 1.d0/(VAR(3,N)*VARSP(1,N,4)*CSCR(L,4)/TCOL(L,4)) !mct between collisions of one particular L molecule with any O
+    ELSE
+      B = -1.0d0
+    END IF
+    IF (VARSP(1,N,L)>0.0d0) THEN
+      C = 1.d0/(VAR(3,N)*VARSP(1,N,L)*CSCR(L,L)/TCOL(L,L)) !mct between collisions of one particular L molecule with any L
+    ELSE
+      C = -1.0d0
+    END IF
+    IF (DSUM(1) > 0.5d0 ) THEN
+      WRITE (7,993) FTIME,VAR(8:11,N),VAR(18,N),DSUM(9)/DSUM(1),VDOFM,NM,A,&
+        DABS(0.5*(VAR(8,N)+VAR(9,N))-VAR(10,N)),DABS(VAR(8,N)-VAR(9,N)),DABS(VAR(8,N)-VAR(10,N)),&
+        (TV(:,L),L=1,MSP),EVIB,EVIBT,VAR(14,N),B,C
+    ELSE
+      WRITE (7,993) FTIME,VAR(8:11,N),VAR(18,N),0.0d0,VDOFM,NM,A,&
+        DABS(0.5*(VAR(8,N)+VAR(9,N))-VAR(10,N)),DABS(VAR(8,N)-VAR(9,N)),DABS(VAR(8,N)-VAR(10,N)),&
+        (TV(:,L),L=1,MSP),EVIB,EVIBT,VAR(14,N),B,C
+    END IF
     CLOSE (7)
   END IF
 !
@@ -1277,11 +1294,11 @@ WRITE (*,*) 'DTM changes  from',DTMI,' to',DTM
 !
 TPOUT=OUTRAT
 IF (ISF > 0) THEN
- IF ((NOUT >= 0  ).AND.(NOUT < 100)) TPOUT=OUTRAT*.1d0
- IF ((NOUT >= 0  ).AND.(NOUT < 100)) TPOUT=OUTRAT*.1d0
- IF ((NOUT >= 100).AND.(NOUT < 150)) TPOUT=OUTRAT*.2d0
-!  IF ((NOUT >= 150).AND.(NOUT < 170)) TPOUT=OUTRAT*.5d0
-!  IF ((NOUT >= 200)) TPOUT=OUTRAT*INT(.9999999+(NOUT-190)/10) !comment for RELAX.DAT
+  IF ((NOUT >= 0  ).AND.(NOUT < 100)) TPOUT=OUTRAT*.1d0
+  IF ((NOUT >= 0  ).AND.(NOUT < 100)) TPOUT=OUTRAT*.1d0
+  IF ((NOUT >= 100).AND.(NOUT < 150)) TPOUT=OUTRAT*.2d0
+  IF ((NOUT >= 150).AND.(NOUT < 170)) TPOUT=OUTRAT*.5d0
+  ! IF ((NOUT >= 200)) TPOUT=OUTRAT*INT(.9999999+(NOUT-190)/10) !comment for RELAX.DAT
 !
   IF (IRELAX .eq. 0) THEN
   ! for special case, accelerate convergence
@@ -1294,9 +1311,9 @@ IF (ISF > 0) THEN
 !  IF ((CPDTM < 0.2   ).AND.(NOUT >= 250)) CPDTM=0.2
 END IF
 !
-IF (ISF==0) THEN !special coding for shockwave sampling
- TPOUT=OUTRAT*2.d0
-END IF
+! IF (ISF==0) THEN !special coding for shockwave sampling
+ ! TPOUT=OUTRAT*2.d0
+! END IF
 !
 IF (MNRE > 0) THEN
   IF ((IRM == 201).AND.(FTIME > 4.d-5)) ISF=0 !steady state is achieved

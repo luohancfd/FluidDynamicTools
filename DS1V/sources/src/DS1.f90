@@ -66,11 +66,16 @@ ITHP=0       !>0 compute thermophoretic forces
 IUBC=0       !>0 update boundary conditions
 IPRS=2       !post-reaction vibrational levels are populated using 0 LB, 1 pre-reaction pdf sampling, 2 modified LB
 ITMAX=4      !number of temperature intervlas for pre-reaction sampling (it might be redefined after reading restart files)
-IRELAX=1     !=0 for isothermal relaxation tests: 0 moving/indexing are prohibited, 1 allowed
+IRELAX=0     !=0 for isothermal relaxation tests: 0 moving/indexing are prohibited, 1 allowed
+!=== Change of Zr and Zv
+IRELAX_ROT=0 !=1 do nothing with Zr   =0 make Zr equal to 1E20
+IRELAX_VIB=1 !=1 do nothing with Zv   =0 make Zv equal to 1E20
+! This two variables are NOT saved
+!==============
 IREAC=0      !0 reaction on and rate sampling off (standard case)
 !             1 reaction on and rate sampling on (samples only NSPDF cell, requires ISF>0)
 !             2 reaction off and rate sampling on (called by run_ireac_ds1v.sh, samples only NSPDF cell, requires ISF=0 & NSEED>= 0)
-QCTMODEL=2   !0 for TCE+LB+SHO vibrational levels
+QCTMODEL=1   !0 for TCE+LB+SHO vibrational levels
              !1 for TCE/MF+LB+AHO
              !2 for TCE/MF+MEQCT+AHO (MEQCT for O2+O and N2+O), IMF should also be turned on
              !3 for TCE+SSD+SSE+MEQCT+AHO (QCT SSD for O2+O, N2+O and SSE for N2+O)
@@ -78,14 +83,14 @@ IMFS=0     ! 0 for not sampling 1 for sampling
 ! WARNING: All above variables are hard coded, pay attenton before use it
 
 ! ----- WARNING: The following variables are overwriten by reading input ------------------
-IMF=1      ! 0: do not use MF model
+IMF=0      ! 0: do not use MF model
            ! 1: use MF+SHO
            ! 2: use MF+AHO(QCT ladder)
            ! 3: use MF+AHO(Morse Potential)
            ! 4: use MF+AHO(Morse Potential)+Effective translational energy
 IMFdia=1   ! 0: for collision of same molecules, dissociate the one with higher vibrational energy
            ! 1: for collision of same molecules, dissociate the one gives lower threshold energy
-nonVHS=0
+nonVHS=2
 !-- nonVHS 0 for VHS/VSS model
 !          1 for VHS/VSS model+QCT N2O model
 !          2 exponential model, fallback to 0 if parameters not found
