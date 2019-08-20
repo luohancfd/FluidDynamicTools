@@ -50,6 +50,11 @@ LOGICAL, ALLOCATABLE, DIMENSION(:,:) :: IQCTVT(:,:)
 !           or the constant in a second order polynomial in temperature
 !--SPR(2,L) the coefficient of temperature in the polynomial
 !--SPR(3,L) the coefficient of temperature squared in the polynomial
+!---------For MSP>1
+!---------  If ISPR(2,L)=0, then Zr = SPR(1,L)*correction_coefficient, Zr=5.0 is a good value
+!---------  If ISPR(2,L)=1, then Zr = SPR(1,L)/[1+pi^{3/2}/2*A^{1/2}+(pi^2/4+pi)*A]
+!---------                  where A=SPR(2,L)/T, this formula is from doi 10.1063/1.1724417
+!---------For MSP=1, check the code by yourself
 !--SPM(1,L,M) the reduced mass for species L,M
 !--SPM(2,L,M) the reference collision cross-section for species L,M
 !--SPM(3,L,M) the mean value of the viscosity-temperature power law
@@ -172,4 +177,19 @@ LOGICAL, ALLOCATABLE, DIMENSION(:,:) :: IQCTVT(:,:)
 !--IQCTVT(L,M): .false.  ME-QCT-VT model doesn't exist
 !               .true.   ME-QCT-VT model exists
 !--IVFP   0 set y velocity based on VFY, 1 set a Couette Flow type profile
+
+CONTAINS
+  function CALC_ZR(LS,T) result(ZR)
+    USE CALC, only : PI
+    IMPLICIT NONE
+    integer :: LS
+    real(8) :: ZR, A, T
+    IF (ISPR(2,LS) == 0) THEN
+      ZR = SPR(1,LS)
+    ELSE
+      A = SPR(2,LS)/T
+      ZR = SPR(1,LS)/(1.d0+(0.5d0*PI**(3.d0/2.d0))*DSQRT(A)+PI*(1.d0+PI/4.d0)*A) !Zr
+    END IF
+    RETURN
+  end function
 END MODULE GAS

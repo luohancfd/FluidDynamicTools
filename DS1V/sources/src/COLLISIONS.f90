@@ -1070,11 +1070,10 @@ DO N=1,NCCELLS
                       END IF
                     END IF
                     IF (ISPR(1,KS) > 0) THEN
-                      IF (ISPR(2,KS) == 0) THEN
-                        B=SPM(7,KS,JS) !Zr
-                      ELSE
-                        COLT=100.d0/VAR(8,NN) !T*/Ttrans; using SMILE data
-                        B=20.d0/(1.d0+(0.5d0*PI**(3.d0/2.d0))*DSQRT(COLT)+PI*(1.d0+PI/4.d0)*COLT) !Zr
+                      B = CALC_ZR(KS,VAR(8,NN))
+                      IF (ISPR(1,JS) > 0 .and. KS .ne. JS) THEN
+                        B = B + CALC_ZR(KS,VAR(8,NN))
+                        B = B*0.5d0
                       END IF
                       A=5.d0-2.d0*SPM(3,KS,LS)
                       C=A/(A+ISPR(1,KS)+ISPR(1,JS)) !Zr correction

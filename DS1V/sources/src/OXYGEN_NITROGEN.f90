@@ -9,10 +9,23 @@ USE MOLECS
 USE EXPCOL,only : EXPCOL_INIT
 !
 IMPLICIT NONE
-REAL(KIND=8) :: VDC=-1.d0, ZV=1.d12 !1.d12
+REAL(KIND=8) :: VDC=-1.d0  !--VDC>=0 for VDC model; <0 for tce model
+
+! RT/VT relaxation numbers
+! be sure to check subroutine collisions and variable IRELAX_ROT and IRELAX_VIB
+! since these options also influence the relaxation model
+REAL(KIND=8) :: ZV=1.d122
+!--- ZV vibrational relaxation number, two options
+!--1.  A constant number for some species, like 50.0d0,1.d12, search Zv to find out which specie uses it
+!--2.  -1, let the code set it, I get it from SPARTA
+REAL(KIND=8) :: ZR=-1.0d0
+!--- ZR rotational relaxation number, two options
+!--1.  A constant number for some species, like 5.0d0, this will make ISPR(2,SP)=0
+!--2. -1, let the code set it, 5.0 for most species.
+!         oxygen and nitogen based on Parker's paper 10.1063/1.1724417
+
 INTEGER :: I,J,ZCHECK,IRATE=0,JRATE=0
 CHARACTER (LEN=16) :: FILENAME
-!--VDC>=0 for VDC model; <0 for tce model
 !--IRATE=0 uncorrected rates; 1 corrected rates for recombination and exchange reactions
 !--JRATE= same as IRATE but for dissociation reactions
 !
@@ -77,11 +90,21 @@ SP(3,1)=0.74D00
 SP(4,1)=1.D00
 SP(5,1)=4.65D-26
 ISPR(1,1)=2
-ISPR(2,1)=0             !1 for polinomial Zr, 0 for constant Zr
-SPR(1,1)=1.d0 !5.D00
+IF(ZR .lt. 0.0d0) THEN
+  ISPR(2,1) = 1
+  SPR(1,1) = 15.7d0
+  SPR(2,1) = 80.0d0
+ELSE
+  ISPR(2,1) = 0             !1 for polinomial Zr, 0 for constant Zr
+  SPR(1,1) = ZR !5.0d0
+END IF
 ISPV(1)=1
 SPVM(1,1,1)=3371.D00
-SPVM(2,1,1)=ZV  !52000.D00 !260000.D00
+IF (ZV .lt. 0.0d0) THEN
+  SPVM(2,1,1) = 1.0d0/1.90114E-5 !52000.D00 !260000.D00
+ELSE
+  SPVM(2,1,1) = ZV
+END IF
 SPVM(3,1,1)=-1.  !3371.D00
 SPVM(4,1,1)=113500.D00
 ISPVM(1,1,1)=2
@@ -106,11 +129,21 @@ SP(3,3)=0.7318d0
 SP(4,3)=1.d0            !vss 1./1.4d0 !there is some bug with vss model
 SP(5,3)=5.312D-26       !vss correction in collision subroutine must be tested
 ISPR(1,3)=2
-ISPR(2,3)=0             !1 for polinomial Zr, 0 for constant Zr
-SPR(1,3)=1.0 !5.d0           !constant Zr
+IF(ZR .lt. 0.0d0) THEN
+  ISPR(2,3) = 1
+  SPR(1,3) = 14.4d0
+  SPR(2,3) = 90.0d0
+ELSE
+  ISPR(2,3) = 0             !1 for polinomial Zr, 0 for constant Zr
+  SPR(1,3) = ZR !5.0d0
+END IF
 ISPV(3)=1               !the number of vibrational modes
 SPVM(1,1,3)=2273.54     !obtained from nist 2256.D00    !the characteristic vibrational temperature
-SPVM(2,1,3)=ZV  !18000.D00   !constant Zv, or the reference Zv
+IF (ZV .lt. 0.0d0) THEN
+  SPVM(2,1,3) = 1.0d0/5.58659E-5 !18000.0d0
+ELSE
+  SPVM(2,1,3) = ZV   !constant Zv, or the reference Zv
+END IF
 SPVM(3,1,3)=-1. !2256.d0     !-1 for a constant Zv, or the reference temperature
 SPVM(4,1,3)=59971.4D00  !the characteristic dissociation temperature
 ISPVM(1,1,3)=4
@@ -147,11 +180,21 @@ SP(3,5)=0.79D00
 SP(4,5)=1.0D00
 SP(5,5)=4.981D-26
 ISPR(1,5)=2
-ISPR(2,5)=0
+IF(ZR .lt. 0.0d0) THEN
+  ISPR(2,5) = 0
+  SPR(1,5) = 5.0d0
+ELSE
+  ISPR(2,5) = 0             !1 for polinomial Zr, 0 for constant Zr
+  SPR(1,5) = ZR !5.0d0
+END IF
 SPR(1,5)=5.D00
 ISPV(5)=1
 SPVM(1,1,5)=2719.D00
-SPVM(2,1,5)=ZV  !14000.D00   !70000.D00
+IF (ZV .lt. 0.0d0) THEN
+  SPVM(2,1,5) = 1.0d0/7.14285E-4 !1400.d00 !70000.d00
+ELSE
+  SPVM(2,1,5) = ZV   !constant Zv, or the reference Zv
+END IF
 SPVM(3,1,5)=-1. !2719.D00
 SPVM(4,1,5)=75500.D00
 ISPVM(1,1,5)=2
@@ -159,7 +202,7 @@ ISPVM(2,1,5)=4
 !--species 6 is water vapor H2O
 SP(1,6)=4.5d-10         !--estimate
 SP(2,6)=273.D00
-SP(3,6)=1.0D00         !SMILE/estimate 1.0/0.75
+SP(3,6)=1.0D00         !SMILE/estimate 1.0/0.75  
 SP(4,6)=1.0D00
 SP(5,6)=2.99D-26
 ISPR(1,6)=3
@@ -195,15 +238,15 @@ ISPR(2,7)=0
 SPR(1,7)=10.D00   !estimate
 ISPV(7)=3
 SPVM(1,1,7)=4950.D00
-SPVM(2,1,7)=ZV !250 !20000.D00   !--estimate
+SPVM(2,1,7)=250 !20000.D00   !--estimate
 SPVM(3,1,7)=-1. ! 2500.D00    !--estimate
 SPVM(4,1,7)=24988.08D00
 SPVM(1,2,7)=2000.D00
-SPVM(2,2,7)=ZV !250 !20000.D00   !--estimate
+SPVM(2,2,7)=250 !20000.D00   !--estimate
 SPVM(3,2,7)=-1. !2500.D00    !--estimate
 SPVM(4,2,7)=24988.08D00
 SPVM(1,3,7)=1580.D00
-SPVM(2,3,7)=ZV !250 !20000.D00   !--estimate
+SPVM(2,3,7)=250 !20000.D00   !--estimate
 SPVM(3,3,7)=-1. !2500.D00    !--estimate
 SPVM(4,3,7)=24988.08D00
 ISPVM(1,1,7)=2
@@ -223,15 +266,15 @@ ISPR(2,8)=0
 SPR(1,8)=10.d0 !estimate
 ISPV(8)=3
 SPVM(1,1,8)=945.d0
-SPVM(2,1,8)=ZV !250.d0    !--estimate; for different species collisions
+SPVM(2,1,8)=250.d0    !--estimate; for different species collisions
 SPVM(3,1,8)=-1.       !-2 indicates that Zv is different for same species collisions
 SPVM(4,1,8)=64015.d0
 SPVM(1,2,8)=1903.d0
-SPVM(2,2,8)=ZV !10.d0     !--for same species collisions
+SPVM(2,2,8)=10.d0     !--for same species collisions
 SPVM(3,2,8)=-1.
 SPVM(4,2,8)=64015.d0
 SPVM(1,3,8)=3329.d0
-SPVM(2,3,8)=ZV !10.d0
+SPVM(2,3,8)=10.d0
 SPVM(3,3,8)=-1.
 SPVM(4,3,8)=64015.d0
 ISPVM(1,1,8)=2
