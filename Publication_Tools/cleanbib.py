@@ -11,6 +11,8 @@ with open('DSMCMF2.bib','r', encoding='utf-8') as bibtex_file:
 bib_database = bibtexparser.loads(bibtex_str)
 
 AIAA_conference= [('2018','Aerospace Sciences Meeting','Kissimmee','Florida'),
+                  ('2018','Joint Thermophysics', 'Atlanta', 'Georgia'),
+                  ('6th', 'Joint Thermophysics', 'Colorado Springs','CO'),
                   ('47th','Aerospace Sciences Meeting','Orlando', 'Florida',),
                   ('47th','Thermophysics','Denver', 'Colorado'),
                   ('43rd','Thermophysics','New Orleans', 'Louisiana'),
