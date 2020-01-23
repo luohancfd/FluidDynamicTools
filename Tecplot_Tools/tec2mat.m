@@ -117,9 +117,9 @@ else
             if strcmpi(line(1:14),'DATASETAUXDATA')
                 line=strtrim(line(15:end));
                 temp = strsplit(line,'=');
-                temp(2)=strtrim(temp(2));
-                temp(2)=strrep(temp(2),'"','');
-                temp(2)=strrep(temp(2),'''','');
+                temp(2) = strtrim(temp(2));
+                temp(2) = strrep(temp(2),'"','');
+                temp(2) = strrep(temp(2),'''','');
                 auxdata = [auxdata;{temp(1),temp(2)}];
             end
         end
@@ -138,7 +138,16 @@ else
                         continue
                     end
                 end
-                if contains(line,'=')
+                if contains(upper(line),'AUXDATA')
+                    if strcmpi(line(1:7),'AUXDATA')
+                        line = strtrim(line(8:end));
+                    end
+                    temp = strsplit(line,'=');
+                    temp(2) = strtrim(temp(2));
+                    temp(2) = strrep(temp(2),'"','');
+                    temp(2) = strrep(temp(2),'''','');
+                    auxdata = [auxdata;{temp(1),temp(2)}];
+                elseif contains(line,'=')
                     zoneline = [zoneline,' ',line];
                 else
                     % arrive at data
