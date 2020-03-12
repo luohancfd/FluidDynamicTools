@@ -58,6 +58,8 @@ function [s] = mat2tecplot(tdata,tecfile)
 %                                            1 for center. 
 %                     lines.zonename ---zone names of each lines, if not given
 %                                      it will be named as line1,line2,... 
+%                ----------------------------------------------------------------
+%                Format one:
 %                     lines.x        ---1D x values of the line (must have)
 %                     lines.y        ---1D y values of the line (optional)
 %                                       default to zero if not given
@@ -71,6 +73,10 @@ function [s] = mat2tecplot(tdata,tecfile)
 %                                       the row (number of columns) must
 %                                       be same as x, y, z. Nvar=3+number of
 %                                       rows in v. 
+%                ----------------------------------------------------------------
+%                Format two:
+%                     lines.data      --2D array with size of [length(x),length(varnames)]
+%
 %                     lines.varmin --- minimum value of the line, automatically
 %                                      calculated if not given
 %                     lines.varmax --- maximum value of the line, automatically 
@@ -739,11 +745,11 @@ function [s] = mat2tecplot(tdata,tecfile)
 %       tdata.customlabels   --- cell array of custom labels for axis, contour
 %                                legend, value or node labels etc.
 %
-%       tdata.auxdata        --- Meta data structure array that are used to
+%       tdata.auxname, tdata.auxval   --- Meta data structure array that are used to
 %                                describe the whole dataset file.
 %
-%                                auxdata.name  ---name of an aux data
-%                                auxdata.value ---value of an aux data
+%                                auxdata.auxname(i)  ---name of an aux data
+%                                auxdata.auxval(i)   ---value of an aux data
 %                                                 (string only).
 %
 % Input:
@@ -1881,6 +1887,21 @@ if(zone_type==0)  %for ordered zone
    %check if it is (x,y) or (x,z) or (y,z)
    %if x,y,z all exist, it is a 3d line, give error and quit
    %
+   if ~isempty(find(strcmp(linefields,'data')==1, 1))
+       [~,n] = size(tdata.lines(iline).data);
+       tdata.lines(iline).x = tdata.lines(iline).data(:,1);
+       if n >= 2
+           tdata.lines(iline).y = tdata.lines(iline).data(:,2);
+           if n>=3
+               tdata.lines(iline).z = tdata.lines(iline).data(:,3);
+               if n>=4
+                   tdata.lines(iline).v = tdata.lines(iline).data(:,4:end)';
+               end
+           end
+       end
+   end
+   
+   linefields=fieldnames(tdata.lines(iline));
    have_x=~isempty(find(strcmp(linefields,'x')==1));
    have_y=~isempty(find(strcmp(linefields,'y')==1));
    have_z=~isempty(find(strcmp(linefields,'z')==1));
@@ -7940,8 +7961,8 @@ if(have_auxdata)
    if(isstruct(tdata.auxdata))
       NDatasetAux=length(tdata.auxdata);
       for i = 1:length(tdata.auxdata)
-          if isnumeric(tdata.auxdata(i).value)
-              tdata.auxdata(i).value = sprintf('%.6G',tdata.auxdata(i).value);
+          if isnumeric(tdata.auxdata(i).auxval)
+              tdata.auxdata(i).auxval = sprintf('%.6G',tdata.auxdata(i).auxval);
           end
       end
    else
