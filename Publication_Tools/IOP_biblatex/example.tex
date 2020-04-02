@@ -1,0 +1,61 @@
+\documentclass[12pt,final]{iopart}
+\newcommand{\gguide}{{\it Preparing graphics for IOP journals}}
+%Uncomment next line if AMS fonts required
+\usepackage{iopams}
+\usepackage{graphicx}
+\usepackage{caption}
+\usepackage{threeparttable}
+\usepackage{indentfirst} % indent first paragraph
+\usepackage{booktabs}  % enable toprule/midrule
+
+\usepackage[colorlinks=true,allcolors=blue]{hyperref} % make sure you are using View>Render Mode>Dvips in Yap
+
+
+% ----- use biblatex instead of bibtex-------
+\usepackage[
+	citestyle=numeric,
+	bibstyle=authoryear,
+	giveninits=true,
+	sorting=none,
+	date=year,
+	doi=false,
+%	terseinits=true,
+	maxbibnames=99]{biblatex}
+\usepackage{xpatch}
+
+% add number to reference
+\makeatletter
+\input{numeric.bbx}
+\makeatother
+
+\addbibresource{AirPlasma.bib}
+\AtEveryBibitem{\clearfield{title}} % remove title
+\renewbibmacro{in:}{}               % remove in
+\renewrobustcmd*{\bibinitperiod}{}  % remove period in initials
+\renewcommand*{\revsdnamepunct}{}   % remove comma between last name and first
+\DeclareNameAlias{author}{last-first}
+
+% remove parentheses around year
+\xpatchbibmacro{date+extradate}{%
+	\printtext[parens]%
+}{%
+	\setunit{\addperiod\space}%
+	\printtext%
+}{}{}
+
+%------use bibtex-----------------
+%\usepackage{cite}      % enable sorting of cross-reference
+%---------------------------------
+
+\graphicspath{{./Figure/}} %use with either graphicx or graphics
+
+\newcommand{\pdv}[2]{\frac{\partial #1}{\partial #2}}
+\newcommand{\ee}{\bar{\varepsilon}}
+\renewcommand{\vec}[1]{\boldsymbol{#1}}
+\newcommand{\vech}[1]{\boldsymbol{\hat{#1}}}
+\newcommand{\vecrm}[1]{\mathbf{#1}}
+\begin{document}
+
+\nocite{*} % put all in reference
+\printbibliography
+\end{document}
